@@ -26,6 +26,7 @@ typedef struct branch_str
 // Angle is measured from standard cartesian y=0, x>0 (right)
 void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int endSize, int length, int x, int y, int angle)
 {
+	cout << "[" << branch->subBranches << "," << branch->totalChildren << "]" << endl;
 	if(startSize < 2)
 	{
 		startSize = 2;
@@ -45,8 +46,8 @@ void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int end
 	double yDiff = yStep/(double)steps;
 	double rDiff = (endSize - startSize)/(2.0*steps);
 	
-	printf("Drawing branch [size[start: %u, end: %u], length: %u, step[x: %d, y: %d]]\n",startSize, endSize,length,xStep,yStep);
-	cout << "...will take " << steps << " steps." << endl;
+	//printf("Drawing branch [size[start: %u, end: %u], length: %u, step[x: %d, y: %d]]\n",startSize, endSize,length,xStep,yStep);
+	//cout << "...will take " << steps << " steps." << endl;
 	
 	// Draw branch
 	drawList->push_back(DrawableFillColor("brown"));
@@ -68,10 +69,10 @@ void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int end
 	{
 		// Create other branches
 		double aDiff = ((160/(branch->subBranches))-5+(rand()%15));
-		int _angle = -170 + (rand() % 30) + aDiff*0.5;
+		int _angle = -190 + (rand() % 30) + aDiff*0.5;
 		for(int i = 0; i < branch->subBranches; i++)
 		{
-			printf("Drawing branch at angle %d\n", angle);
+			//printf("Drawing branch at angle %d\n", angle);
 			double branchFraction = ((double)branch->branches[i]->totalChildren)/branch->totalChildren;
 			if(branchFraction < (1/(2.0*branch->subBranches)))
 			{
@@ -82,35 +83,55 @@ void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int end
 			_angle += aDiff;
 		}
 	}
-	else
+	else if(branch->totalChildren > 0)
 	{
 		// Draw leaves
 		drawList->push_back(DrawableFillColor("green"));
 		// Draw in circle around end of branch
-		int leafRadius = 5;
+		int leafRadius = 11;
+		double leafBuffer = 2.5;
+		int leafSize = 2*(leafRadius + leafBuffer);
 		if(branch->totalChildren > 1)
 		{
-			double leafBuffer = 1.5;
-			int radius = (2*(leafRadius+leafBuffer)) * (branch->totalChildren-1)/(2*PI);
-			double angDiv = (2*PI)/(branch->totalChildren-1);
-			double ang = 0;
-			for(int i = 0; i < branch->totalChildren-1; i++)
+			int radiusIncrement = leafSize + 2*leafBuffer;
+			int levels = ((int)log((branch->totalChildren-1)*leafSize/radiusIncrement) + 1);
+			if(levels < 1)
 			{
-				int __x = _x + (radius * (((rand()%650)/1000.0) + 0.5)) * cos(ang);
-				int __y = _y + (radius * (((rand()%650)/1000.0) + 0.5)) * sin(ang);
-				drawList->push_back(DrawableCircle(__x, __y, __x, __y + leafRadius));
-				ang += angDiv;
+				levels = 1;
+			}
+			int radius = 0;
+			int totalChildCount = 0;
+			int childrenAtLevel = 0;
+			for(int v = 0; v < levels; v++)
+			{
+				radius += radiusIncrement;
+				childrenAtLevel = (int)(2.0*PI*radius/leafSize);
+				totalChildCount += childrenAtLevel;
+				if(totalChildCount > branch->totalChildren)
+				{
+					childrenAtLevel = (branch->totalChildren - totalChildCount - childrenAtLevel);
+				}
+				double angDiv = (2*PI)/childrenAtLevel;
+				double ang = 0;
+				for(int i = 0; i < childrenAtLevel; i++)
+				{
+					int __x = _x + (radius * (((rand()%350)/1000.0) + 0.75)) * cos(ang);
+					int __y = _y + (radius * (((rand()%350)/1000.0) + 0.5)) * sin(ang);
+					drawList->push_back(DrawableCircle(__x, __y, __x, __y + leafRadius));
+					ang += angDiv;
+				}
 			}
 		}
+		drawList->push_back(DrawableCircle(_x, _y, _x, _y + leafRadius));
 		// Draw final node at center
-		if(branch->totalChildren > 0)
-		{
-			drawList->push_back(DrawableCircle(_x, _y, _x, _y + leafRadius));
-		}
+		//if(branch->totalChildren > 0)
+		//{
+		//	drawList->push_back(DrawableCircle(_x, _y, _x, _y + leafRadius));
+		//}
 	}
 }
 
-void drawTree(Image &image, Branch trunk, int rootSize, int height)
+void drawTree(Image &image, Branch *trunk, int rootSize, int height)
 {
 	printf("Drawing trunk\n");
 	cout << endl;
@@ -128,23 +149,27 @@ void drawTree(Image &image, Branch trunk, int rootSize, int height)
 	for(; y > HEIGHT - height - radius; y -= STEP)
 	{
 		// Draw circle
-		cout << "Drawing circle(" << (int)radius << ") at (" << x << "," << y << ")" << endl;
+		//cout << "Drawing circle(" << (int)radius << ") at (" << x << "," << y << ")" << endl;
 		//image.draw(DrawableCircle(x, y, radius, radius));
 		drawList.push_back(DrawableCircle(x, y, x, y+radius));
 	}
 	// Draw all branches
 	//int angle = 90;
-	double aDiff = ((150/(trunk.subBranches))-10+(rand()%35));
+	double aDiff = ((150/(trunk->subBranches))-10+(rand()%35));
 	int angle = -170 - (rand() % 35) + aDiff*((rand()%800)/1000.0);
-	for(int i = 0; i < trunk.subBranches; i++)
+	for(int i = 0; i < trunk->subBranches; i++)
 	{
 		printf("Drawing branch at angle %d\n", angle);
-		double branchFraction = ((double)trunk.branches[i]->totalChildren)/trunk.totalChildren;
-		if(branchFraction < 0.35)
+		double branchFraction = ((double)trunk->branches[i]->totalChildren)/trunk->totalChildren;
+		double weight = 1.0;
+		double branchWeight = 1.0;
+		if(branchFraction < 0.2)
 		{
-			branchFraction = 0.35;
+			branchFraction = 0.2;
+			weight = 0.85;
+			branchWeight = 0.35;
 		}
-		drawBranch(&drawList, trunk.branches[i], rootSize, rootSize*branchFraction, height*(((rand()%250)/1000.0)+0.5), x, y, angle);
+		drawBranch(&drawList, trunk->branches[i], rootSize*branchWeight, rootSize*branchFraction, height*(((rand()%250)/1000.0)+0.5), x, y, angle*weight);
 		angle += (aDiff * (((rand()%500)/1000.0) + 0.75));
 	}
 	
@@ -158,19 +183,19 @@ int main(int argc,char **argv)
     srand(time(0));
     
     // Setup branches
-    Branch trunk;
-    trunk.totalChildren = 100;
-    trunk.subBranches = 2;
-    trunk.branches = (Branch**)malloc(trunk.subBranches*sizeof(Branch*));
+    Branch *trunk = new Branch;
+    trunk->totalChildren = 100;
+    trunk->subBranches = 3;
+    trunk->branches = (Branch**)malloc(trunk->subBranches*sizeof(Branch*));
     
     Branch* sub1 = new Branch;
     sub1->totalChildren = 65;
     sub1->subBranches = 4;
-    trunk.branches[0] = sub1;
+    trunk->branches[0] = sub1;
     sub1->branches = (Branch**)malloc(sub1->subBranches*sizeof(Branch*));
     Branch* sub11 = new Branch;
-    sub1->totalChildren = 10;
-    sub1->subBranches = 0;
+    sub11->totalChildren = 10;
+    sub11->subBranches = 0;
     sub1->branches[0] = sub11;
     Branch* sub12 = new Branch;
     sub12->totalChildren = 35;
@@ -193,7 +218,7 @@ int main(int argc,char **argv)
     Branch* sub131 = new Branch;
     sub131->totalChildren = 15;
     sub131->subBranches = 0;
-    sub12->branches[0] = sub131;
+    sub13->branches[0] = sub131;
     Branch* sub14 = new Branch;
     sub14->totalChildren = 5;
     sub14->subBranches = 0;
@@ -202,7 +227,7 @@ int main(int argc,char **argv)
     Branch* sub2 = new Branch;
     sub2->totalChildren = 35;
     sub2->subBranches = 2;
-    trunk.branches[1] = sub2;
+    trunk->branches[1] = sub2;
     sub2->branches = (Branch**)malloc(sub2->subBranches*sizeof(Branch*));
     Branch* sub21 = new Branch;
     sub21->totalChildren = 15;
@@ -221,13 +246,17 @@ int main(int argc,char **argv)
     sub222->totalChildren = 8;
     sub222->subBranches = 0;
     sub22->branches[1] = sub222;
+    Branch* sub3 = new Branch;
+    sub3->totalChildren = 40;
+    sub3->subBranches = 0;
+    trunk->branches[2] = sub3;
 
     // Construct the image object. Seperating image construction from the
     // the read operation ensures that a failure to read the image file
     // doesn't render the image object useless.
     Image tree(Geometry(WIDTH,HEIGHT),"white");
     
-    // Start with drawing trunk.  This method iteratively draws the 
+    // Start with drawing trunk->  This method iteratively draws the 
     // branches as well.
     drawTree(tree, trunk, 30, 125);
 
