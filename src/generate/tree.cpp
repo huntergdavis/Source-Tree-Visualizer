@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include <list>
+#include "git.h"
 
 #define PI 3.14159265358979323846
 #define DEG2RAD(DEG) ((DEG)*((PI)/(180.0)))
@@ -179,6 +180,12 @@ void drawTree(Image &image, Branch *trunk, int rootSize, int height)
 
 int main(int argc,char **argv)
 {
+
+    std::string gitDirectory = "../../";
+    std::string outFile = "./outputfile.ass.outfile";
+    int retStatus = getCustomGitLog(gitDirectory,outFile);
+
+
     InitializeMagick(*argv);
     srand(time(0));
     
