@@ -131,7 +131,7 @@ void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int end
 	}
 }
 
-void drawTree(Image &image, Branch *trunk, int rootSize, int height)
+void drawTree(Image &image, Branch *trunk, int rootX, int rootSize, int height)
 {
 	printf("Drawing trunk\n");
 	cout << endl;
@@ -143,7 +143,7 @@ void drawTree(Image &image, Branch *trunk, int rootSize, int height)
 	
 	int radius = rootSize/2;
 	// Center horizontally
-	int x = (WIDTH/2) - radius;
+	int x = (rootX) - radius;
 	// Start trunk at bottom of image and grow up
 	int y = HEIGHT - radius;
 	for(; y > HEIGHT - height - radius; y -= STEP)
@@ -174,7 +174,6 @@ void drawTree(Image &image, Branch *trunk, int rootSize, int height)
 	}
 	
 	image.draw(drawList);
-	image.display();
 }
 
 int main(int argc,char **argv)
@@ -254,11 +253,21 @@ int main(int argc,char **argv)
     // Construct the image object. Seperating image construction from the
     // the read operation ensures that a failure to read the image file
     // doesn't render the image object useless.
-    Image tree(Geometry(WIDTH,HEIGHT),"white");
+    
+    int trees = 7;
+    
+    Image tree(Geometry(((trees+1)*0.75)*WIDTH,HEIGHT),"white");
     
     // Start with drawing trunk->  This method iteratively draws the 
     // branches as well.
-    drawTree(tree, trunk, 30, 125);
+    for(int i = 0; i < trees; i++)
+    {
+		drawTree(tree, trunk, (i+1)*WIDTH*0.75, 30, 125);
+	}
+    //drawTree(tree, trunk, WIDTH/2, 30, 125);
+    //drawTree(tree, trunk, WIDTH, 30, 125);
+    //drawTree(tree, trunk, 3*WIDTH/2, 30, 125);
+    tree.display();
 
     try
     {
