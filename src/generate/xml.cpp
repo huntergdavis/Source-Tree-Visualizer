@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "xml.h"
 
 
@@ -41,26 +43,43 @@ XmlLeafProcessor::~XmlLeafProcessor()
 // -------------------------------------------------------------------------
 int XmlLeafProcessor::AddLeafToXml(int x, int y, int rotation)
 {
+
+	// stringstream for integer processing
+	std::stringstream intConvertStringStreamX;
+	std::stringstream intConvertStringStreamY;
+	std::stringstream intConvertStringStreamRot;
+	std::string tempStreamStorage;
+
 	// add leaf node
 	XmlStorage += "<leaf>";
 
 	// add x value
 	XmlStorage += "<x>";
-	XmlStorage += x;
+	intConvertStringStreamX << x;
+	intConvertStringStreamX >> tempStreamStorage;
+	XmlStorage += tempStreamStorage;
+	tempStreamStorage = "";
 	XmlStorage += "</x>";
 
 	// add y value
 	XmlStorage += "<y>";
-	XmlStorage += y;
+        intConvertStringStreamY << y;
+        intConvertStringStreamY >> tempStreamStorage;
+        XmlStorage += tempStreamStorage;
 	XmlStorage += "</y>";
 	
 	// add rotation value
 	XmlStorage += "<rotation>";
-	XmlStorage += rotation;
+        intConvertStringStreamRot << rotation;
+        intConvertStringStreamRot >> tempStreamStorage;
+        XmlStorage += tempStreamStorage;
 	XmlStorage += "</rotation>";
 	
 	// close leaf tag
 	XmlStorage += "</leaf>";
+
+	// return a status
+	return 1;
 }
 
 // -------------------------------------------------------------------------
@@ -72,5 +91,17 @@ int XmlLeafProcessor::AddLeafToXml(int x, int y, int rotation)
 // -------------------------------------------------------------------------
 int XmlLeafProcessor::GenerateXmlFile(std::string fileName)
 {
+	// open a file handle to fileName
+	std::fstream xmlFile(fileName.c_str(), std::ios::out);
+	
+	// write the xml data set minus closing tags
+	xmlFile << XmlStorage.c_str();
+	xmlFile << "\n</xml>\n";
+	
+	// close the file handle
+	xmlFile.close();
+
+	// return a status
+	return 1;
 }
 

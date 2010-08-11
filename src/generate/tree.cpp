@@ -3,6 +3,7 @@
 #include <math.h>
 #include <list>
 #include "git.h"
+#include "xml.h"
 
 #define PI 3.14159265358979323846
 #define DEG2RAD(DEG) ((DEG)*((PI)/(180.0)))
@@ -15,6 +16,10 @@ using namespace Magick;
 int WIDTH = 450;
 int HEIGHT = 400;
 int STEP = 1;
+
+// temporary xml storage till we rearragne functions
+XmlLeafProcessor xmlForGit;
+
 
 typedef struct branch_str
 {
@@ -123,6 +128,8 @@ void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int end
 				}
 			}
 		}
+		// add leaf entry to xml generator
+		xmlForGit.AddLeafToXml(_x,_y,leafRadius);
 		drawList->push_back(DrawableCircle(_x, _y, _x, _y + leafRadius));
 		// Draw final node at center
 		//if(branch->totalChildren > 0)
@@ -180,6 +187,7 @@ void drawTree(Image &image, Branch *trunk, int rootX, int rootSize, int height)
 int main(int argc,char **argv)
 {
 
+    // output a git log file
     std::string gitDirectory = "../../";
     std::string outFile = "./outputfile.ass.outfile";
     int retStatus = getCustomGitLog(gitDirectory,outFile);
@@ -275,6 +283,9 @@ int main(int argc,char **argv)
     //drawTree(tree, trunk, WIDTH, 30, 125);
     //drawTree(tree, trunk, 3*WIDTH/2, 30, 125);
     tree.display();
+
+    // generate xml code
+    xmlForGit.GenerateXmlFile("./tree.xml");
 
     try
     {
