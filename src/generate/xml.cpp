@@ -16,20 +16,36 @@
 // -------------------------------------------------------------------------
 XmlLeafProcessor::XmlLeafProcessor()
 {
-	XmlStorage = "<xml> "
+	XmlStorage = "<xml> ";
 }
 
+// -------------------------------------------------------------------------
+// API :: XmlLeafProcessor::~XmlLeafProcessor
+// PURPOSE :: destructor of xml leaf processor
+//         :: 
+// PARAMETERS ::
+// RETURN :: None
+// -------------------------------------------------------------------------
 XmlLeafProcessor::~XmlLeafProcessor()
 {
 }
 
+// -------------------------------------------------------------------------
+// API :: XmlLeafProcessor::AddLeafToXml
+// PURPOSE :: add leaf xml to xml processor
+//         :: 
+// PARAMETERS :: int x : x value for leaf
+//            :: int y : y value for leaf
+//            :: int rotation : rotation value for leaf
+// RETURN :: int return status
+// -------------------------------------------------------------------------
 int XmlLeafProcessor::AddLeafToXml(int x, int y, int rotation)
 {
 	// add leaf node
 	XmlStorage += "<leaf>";
 
 	// add x value
-	XmlStorage += "<x>"
+	XmlStorage += "<x>";
 	XmlStorage += x;
 	XmlStorage += "</x>";
 
@@ -47,6 +63,13 @@ int XmlLeafProcessor::AddLeafToXml(int x, int y, int rotation)
 	XmlStorage += "</leaf>";
 }
 
+// -------------------------------------------------------------------------
+// API :: XmlLeafProcessor::GenerateXmlFile
+// PURPOSE :: instantiation of xml leaf processor
+//         :: 
+// PARAMETERS :: std::string fileName - filename to be written to 
+// RETURN :: int - return status
+// -------------------------------------------------------------------------
 int XmlLeafProcessor::GenerateXmlFile(std::string fileName)
 {
 }

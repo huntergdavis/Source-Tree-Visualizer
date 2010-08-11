@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 
-class XmlLeafProcessor {
+class XmlLeafProcessor{
 	public:
 		XmlLeafProcessor();
 		~XmlLeafProcessor();
@@ -17,6 +17,6 @@ class XmlLeafProcessor {
 	protected:
 	private:	
 		std::string XmlStorage;
-}
+};
 
 #endif //_XML_H_
