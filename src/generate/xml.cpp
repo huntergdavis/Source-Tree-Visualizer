@@ -43,37 +43,17 @@ XmlLeafProcessor::~XmlLeafProcessor()
 // -------------------------------------------------------------------------
 int XmlLeafProcessor::AddLeafToXml(int x, int y, int rotation)
 {
-
-	// stringstream for integer processing
-	std::stringstream intConvertStringStreamX;
-	std::stringstream intConvertStringStreamY;
-	std::stringstream intConvertStringStreamRot;
-	std::string tempStreamStorage;
-
 	// add leaf node
 	XmlStorage += "<leaf>";
 
 	// add x value
-	XmlStorage += "<x>";
-	intConvertStringStreamX << x;
-	intConvertStringStreamX >> tempStreamStorage;
-	XmlStorage += tempStreamStorage;
-	tempStreamStorage = "";
-	XmlStorage += "</x>";
+	AddIntToXml("x",x);
 
 	// add y value
-	XmlStorage += "<y>";
-        intConvertStringStreamY << y;
-        intConvertStringStreamY >> tempStreamStorage;
-        XmlStorage += tempStreamStorage;
-	XmlStorage += "</y>";
-	
+	AddIntToXml("y",y);
+		
 	// add rotation value
-	XmlStorage += "<rotation>";
-        intConvertStringStreamRot << rotation;
-        intConvertStringStreamRot >> tempStreamStorage;
-        XmlStorage += tempStreamStorage;
-	XmlStorage += "</rotation>";
+	AddIntToXml("rotation",rotation);
 	
 	// close leaf tag
 	XmlStorage += "</leaf>";
@@ -81,6 +61,64 @@ int XmlLeafProcessor::AddLeafToXml(int x, int y, int rotation)
 	// return a status
 	return 1;
 }
+
+
+
+// -------------------------------------------------------------------------
+// API :: XmlLeafProcessor::AddIntToXml
+// PURPOSE :: add integer to xml processor
+//         :: 
+// PARAMETERS :: std::string tagName - name of xml tag to add
+//            :: int tagValue- integer value of xml tag to add
+//            :: 
+// RETURN :: int return status
+// -------------------------------------------------------------------------
+int XmlLeafProcessor::AddIntToXml(std::string tagName,int tagValue)
+{
+	// string stream processor and storage mechanism
+	std::stringstream intConvertStringStream;
+
+	// convert integer value to string data
+	intConvertStringStream << tagValue;
+	
+	return AddTagToXml(tagName,intConvertStringStream.str());
+}
+
+
+// -------------------------------------------------------------------------
+// API :: XmlLeafProcessor::AddTagToXml
+// PURPOSE :: add generic xml to xml processor
+//         :: 
+// PARAMETERS :: std::string tagName - name of xml tag to add
+//            :: std::string tagValue- value of xml tag to add
+//            :: 
+// RETURN :: int return status
+// -------------------------------------------------------------------------
+int XmlLeafProcessor::AddTagToXml(std::string tagName,std::string tagValue)
+{
+
+	std::string tempStreamStorage;
+	
+	// add opening tag to temporary storage
+	tempStreamStorage = "<";
+	tempStreamStorage += tagName;
+	tempStreamStorage += ">";
+	
+	// add value to temporary storage
+	tempStreamStorage += tagValue;
+
+	// add closing tag to temporary storage
+	tempStreamStorage += "</";
+	tempStreamStorage += tagName;
+	tempStreamStorage += ">";
+	
+	// add new xml data to internal storage
+	XmlStorage += tempStreamStorage;
+	
+	// return a value
+	return 1;
+}
+
 
 // -------------------------------------------------------------------------
 // API :: XmlLeafProcessor::GenerateXmlFile

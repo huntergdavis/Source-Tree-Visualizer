@@ -13,5 +13,5 @@ if [ ! -d 'src/generate' ]; then
     exit 1
 fi
 
-g++ -g -Wall -o bin/tree_gen_example src/generate/tree.cpp src/generate/git.cpp src/generate/xml.cpp `Magick++-config --cppflags --cxxflags --ldflags --libs`
+g++ -g -Wall -o bin/tree_gen_example src/generate/tree.cpp src/generate/git.cpp src/generate/xml.cpp `Magick++-config --cppflags --cxxflags --ldflags --libs` > ./compile_results.txt
 

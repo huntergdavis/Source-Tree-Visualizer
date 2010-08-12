@@ -13,6 +13,8 @@ class XmlLeafProcessor{
 		XmlLeafProcessor();
 		~XmlLeafProcessor();
 		int AddLeafToXml(int x, int y, int rotation);
+		int AddIntToXml(std::string tagName,int tagValue);
+		int AddTagToXml(std::string tagName,std::string tagValue);
 		int GenerateXmlFile(std::string fileName);
 	protected:
 	private:	
