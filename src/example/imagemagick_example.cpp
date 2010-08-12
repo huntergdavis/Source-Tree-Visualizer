@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 using namespace Magick;
-int main(int argc,char **argv)
+int old_main(int argc,char **argv)
 {
     InitializeMagick(*argv);
 
