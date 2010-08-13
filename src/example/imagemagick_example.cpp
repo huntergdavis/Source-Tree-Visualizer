@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 using namespace Magick;
-int old_main(int argc,char **argv)
+int example_main(int argc,char **argv)
 {
     InitializeMagick(*argv);
 
@@ -32,8 +32,7 @@ int old_main(int argc,char **argv)
         branch.transparent("black");
 
         // Resize trunk to be as big as it should
-        int height = 150;
-        int width = 35;
+
         trunk.resize(Geometry("35x150!"));
         composite.composite(trunk,107,50,OverCompositeOp);
 

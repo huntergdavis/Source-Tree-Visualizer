@@ -184,7 +184,7 @@ void drawTree(Image &image, Branch *trunk, int rootX, int rootSize, int height)
 	image.draw(drawList);
 }
 
-int main(int argc,char **argv)
+int old_main(int argc,char **argv)
 {
 
     // output a git log file
