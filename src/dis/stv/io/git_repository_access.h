@@ -2,7 +2,7 @@
  * git_repository_access.h
  *
  *  Created on: Aug 12, 2010
- *      Author: programmer
+ *      Author: Mark Christensen
  */
 
 #ifndef GIT_REPOSITORY_ACCESS_H_
@@ -15,7 +15,9 @@
 #include <string>
 #include <vector>
 #include <boost/algorithm/string.hpp>
+#include <boost/lexical_cast.hpp>
 #include "repository_access.h"
+#include "../model/surrogate.h"
 
 using namespace std;
 

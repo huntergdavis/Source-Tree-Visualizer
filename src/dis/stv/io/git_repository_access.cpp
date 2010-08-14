@@ -58,7 +58,10 @@ void GitRepositoryAccess::parseTimeBlock(ptree* tree, long time, ifstream& log)
 					if(!op.compare("A"))
 					{
 						printf("Inserting %s @ %ld\n",filename.c_str(),time);
-						tree->put(filename,time);
+						Surrogate* file = new Surrogate();
+						string timeStr = boost::lexical_cast<string>(time);
+						(*file)["creation_time"] = timeStr.c_str();
+						tree->put(filename.c_str(),file);
 					}
 				}
 				str.clear();

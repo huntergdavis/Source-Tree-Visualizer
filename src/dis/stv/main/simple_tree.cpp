@@ -19,9 +19,11 @@ int main(int argc, char **argv)
 	// Retrieve tree from GIT and create surrogate tree
 	GitRepositoryAccess* git = new GitRepositoryAccess("~/Projects/source_tree_vis");
 	boost::property_tree::ptree* source = git->retrieve();
+
 	// Decorate surrogate tree nodes with locations
 	SpatialDisplacement* disp = new SpatialDisplacement();
 	disp->decorate(source);
+
 	// Digitize decorated surrogate tree into line segment tree
 	SpaceColonizer* digitizer = new SpaceColonizer(3);
 	DrawableData* lines = digitizer->digitize(source);
