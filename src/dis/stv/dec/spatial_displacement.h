@@ -9,20 +9,19 @@
 #define SPATIAL_DISPLACEMENT_H_
 
 #include "decorator.h"
-#include <boost/property_tree/ptree.hpp>
+#include "../model/surrogate_tree_node.h"
 #include <stdlib.h>
+#include <boost/lexical_cast.hpp>
 
-using boost::property_tree::ptree;
-using boost::property_tree::basic_ptree;
 
 class SpatialDisplacement : public Decorator
 {
 public:
-	void decorate(ptree* tree);
+	void decorate(SurrogateTreeNode* tree);
 
 private:
-	void expand(ptree tree);
-	int count(ptree tree);
+	void expand(SurrogateTreeNode* tree);
+	int count(SurrogateTreeNode* tree);
 };
 
 #endif /* SPATIAL_DISPLACEMENT_H_ */

@@ -6,6 +6,7 @@
  */
 #include <Magick++.h>
 #include <boost/property_tree/ptree.hpp>
+#include "../model/surrogate_tree_node.h"
 #include "../io/git_repository_access.h"
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
@@ -18,7 +19,8 @@ int main(int argc, char **argv)
 	// Tree Generation pipeline
 	// Retrieve tree from GIT and create surrogate tree
 	GitRepositoryAccess* git = new GitRepositoryAccess("~/Projects/source_tree_vis");
-	boost::property_tree::ptree* source = git->retrieve();
+	//boost::property_tree::ptree* source = git->retrieve();
+	SurrogateTreeNode* source = git->retrieve();
 
 	// Decorate surrogate tree nodes with locations
 	SpatialDisplacement* disp = new SpatialDisplacement();

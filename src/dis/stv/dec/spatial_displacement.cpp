@@ -9,36 +9,36 @@
 
 using namespace std;
 
-void SpatialDisplacement::decorate(ptree* tree)
+void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 {
 	// Iterate over each node with children
 	// First, count
-	for(ptree::iterator iter = tree->begin(); iter != tree->end(); ++iter)
+	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 	{
-		this->count(iter->second.data());
+		this->count(*iter);
 	}
 	// Second, float weighted surrogate nodes into position
-	for(ptree::iterator iter = tree->begin(); iter != tree->end(); ++iter)
+	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 	{
-		this->expand(iter);
+		this->expand(*iter);
 	}
 }
 
-void SpatialDisplacement::expand(ptree tree)
+void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 {
 }
 
-int SpatialDisplacement::count(ptree tree)
+int SpatialDisplacement::count(SurrogateTreeNode* tree)
 {
-	// Count all children
-	int childSum = 0;
-	for(ptree::iterator iter = tree.begin(); iter != tree.end(); ++iter)
+	// Count all children plus ourselves (initial 1)
+	int sum = 1;
+	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 	{
-		childSum += this->count(*iter);
+		sum += this->count(*iter);
 	}
 	// Assign count to data
-	// Check if ptree has data, then it is a file
-	Surrogate* node = tree.data();
+	(*tree)["size"] = boost::lexical_cast<string>(sum).c_str();
+	// Check if tree has data, then it is a file
 	// Else it is a directory and needs a node
-
+	return 0;
 }

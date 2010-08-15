@@ -17,7 +17,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include "repository_access.h"
-#include "../model/surrogate.h"
+#include "../model/surrogate_tree_node.h"
 
 using namespace std;
 
@@ -26,12 +26,13 @@ class GitRepositoryAccess : public RepositoryAccess
 private:
 	string root;
 	int generateLog();
-	ptree* generatePTree();
-	void parseTimeBlock(ptree* tree, long time, ifstream& log);
+	SurrogateTreeNode* generatePTree();
+	void parseTimeBlock(SurrogateTreeNode* tree, long time, ifstream& log);
+	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
 
 public:
 	GitRepositoryAccess(string repositoryRoot);
-	ptree* retrieve();
+	SurrogateTreeNode* retrieve();
 };
 
 #endif /* GIT_REPOSITORY_ACCESS_H_ */

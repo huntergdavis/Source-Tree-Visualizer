@@ -9,14 +9,12 @@
 #define DIGITIZER_H_
 
 #include "../draw/drawable_data.h"
-#include <boost/property_tree/ptree.hpp>
-
-using boost::property_tree::ptree;
+#include "../model/surrogate_tree_node.h"
 
 class Digitizer
 {
 public:
-	virtual DrawableData* digitize(const ptree* source) = 0;
+	virtual DrawableData* digitize(const SurrogateTreeNode* source) = 0;
 };
 
 #endif /* DIGITIZER_H_ */

@@ -9,13 +9,12 @@
 #define REPOSITORY_ACCESS_H_
 
 #include <boost/property_tree/ptree.hpp>
-
-using boost::property_tree::ptree;
+#include "../model/surrogate_tree_node.h"
 
 class RepositoryAccess
 {
 public:
-	virtual ptree* retrieve() = 0;
+	virtual SurrogateTreeNode* retrieve() = 0;
 };
 
 #endif /* REPOSITORY_ACCESS_H_ */

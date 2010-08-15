@@ -9,8 +9,7 @@
 #define SPACE_COLONIZER_H_
 
 #include "digitizer.h"
-
-using boost::property_tree::ptree;
+#include "../model/surrogate_tree_node.h"
 
 class SpaceColonizer : public Digitizer
 {
@@ -18,7 +17,7 @@ private:
 	int segLen;
 public:
 	SpaceColonizer(int segmentLength);
-	DrawableData* digitize(const ptree* source);
+	DrawableData* digitize(const SurrogateTreeNode* source);
 };
 
 #endif /* SPACE_COLONIZER_H_ */

@@ -12,7 +12,7 @@ SpaceColonizer::SpaceColonizer(int segmentLength)
 	this->segLen = segmentLength;
 }
 
-DrawableData* SpaceColonizer::digitize(const ptree* source)
+DrawableData* SpaceColonizer::digitize(const SurrogateTreeNode* source)
 {
 	return NULL;
 }
