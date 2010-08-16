@@ -14,19 +14,8 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 	// Iterate over each node with children
 	// First, count
 	this->count(tree);
-//	int sum = 1;
-//	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
-//	{
-//		printf("Counting tree %s\n",(*iter)->data["name"].c_str());
-//		sum += this->count(*iter);
-//		printf("Size of tree %s is %d\n",(*iter)->data["name"].c_str(),atoi((*iter)->data["size"].c_str()));
-//	}
 	// Second, float weighted surrogate nodes into position
 	this->expand(tree);
-//	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
-//	{
-//		this->expand(*iter);
-//	}
 }
 
 // Sorted in increasing order
