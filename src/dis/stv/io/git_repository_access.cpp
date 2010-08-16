@@ -55,11 +55,17 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		{
 			SurrogateTreeNode* local = *iter;
 			string nameComp = local->data["name"];
-			printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
+			//printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
 				// Found node
 				node = (*iter);
+				// Update node time if necessary
+				if(time < atol(node->data["creation_time"].c_str()))
+				{
+					printf("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
+					node->data["creation_time"] = boost::lexical_cast<string>(time);
+				}
 				break;
 			}
 		}
