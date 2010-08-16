@@ -14,8 +14,9 @@
 class TreeDisplacementNode : public TimeSteppedPhysicsObject, TetheredSpatialObject
 {
 public:
-	TreeDisplacementNode(double x, double y, double tetherX, double tetherY, double tetherRadius);
-	void applyAcceleration(double x, double y);
+	TreeDisplacementNode(int mass, double x, double y, double tetherX, double tetherY, double tetherRadius);
+	void step(double stepSize);
+	void update(TreeDisplacementNode source);
 };
 
 #endif /* TREE_DISPLACEMENT_NODE_H_ */

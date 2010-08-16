@@ -7,13 +7,7 @@
 
 #include "time_stepped_physics_object.h"
 
-TimeSteppedPhysicsObject::TimeSteppedPhysicsObject(int mass, double x, double y):PhysicalMass(mass),SpatialObject(x,y)
+TimeSteppedPhysicsObject::TimeSteppedPhysicsObject(int mass):PhysicalMass(mass)
 {
 
-}
-
-void TimeSteppedPhysicsObject::update(TimeSteppedPhysicsObject* source)
-{
-	this->setMass( source->getMass() );
-	this->setLocation(source->getX(), source->getY());
 }

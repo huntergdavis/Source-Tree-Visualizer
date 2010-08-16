@@ -18,4 +18,9 @@ void TimeSteppedPhysicsEngine::addMass(TimeSteppedPhysicsObject* mass)
 
 void TimeSteppedPhysicsEngine::run()
 {
+	printf("Running simulator");
+	for(int i = 0; i < this->maxSteps; i++)
+	{
+		printf("Step %d\n",i);
+	}
 }

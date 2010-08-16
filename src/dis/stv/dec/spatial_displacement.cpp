@@ -59,8 +59,46 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 		}
 
 		// Set tether radius based on number of children
-		int tetherRadius = (((tree->children.size() - 1) / 2)*10) + 10;
+		int gap = 10;
+		int tetherRadius = (((tree->children.size() - 1) / 2)*gap) + 10;
 		// Layout nodes.  Order from middle outward by creation time (oldest in the middle)
+		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(1000,0.01);
+		// Layout directories first
+		bool left = true;
+		int dist = 0;
+		for(int i = 0; i < dirs.size(); i++)
+		{
+			dist = (i+1)/2;
+			if(left)
+			{
+				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),-dist*gap,0,0,0,tetherRadius));
+			}
+			else
+			{
+				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),dist*gap,0,0,0,tetherRadius));
+			}
+
+			left = !left;
+		}
+		// Now layout files
+		int startDist = dist;
+		for(int i = 0; i < files.size(); i++)
+		{
+			dist = startDist + ((i+1)/2);
+			if(left)
+			{
+				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),-dist*gap,0,0,0,tetherRadius));
+			}
+			else
+			{
+				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),dist*gap,0,0,0,tetherRadius));
+			}
+
+			left = !left;
+		}
+		// Run simulation
+		engine->run();
+		// List new positions
 	}
 	else
 	{

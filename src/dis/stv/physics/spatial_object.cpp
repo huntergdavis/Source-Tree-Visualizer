@@ -7,8 +7,23 @@
 
 #include "spatial_object.h"
 
-SpatialObject::SpatialObject(double x, double y) : x( x ), y( y )
+SpatialObject::SpatialObject() : x( 0 ), y( 0 ), ddx( 0 ), ddy( 0 )
 {
+}
+
+SpatialObject::SpatialObject(double x, double y) : x( x ), y( y ), ddx( 0 ), ddy( 0 )
+{
+}
+
+void SpatialObject::setAcceleration(double x, double y)
+{
+	this->ddx = x;
+	this->ddy = y;
+}
+void SpatialObject::applyAcceleration(double x, double y)
+{
+	this->ddx += x;
+	this->ddy += y;
 }
 
 void SpatialObject::setLocation(double x, double y)
@@ -23,4 +38,12 @@ double SpatialObject::getX()
 double SpatialObject::getY()
 {
 	return this->y;
+}
+double SpatialObject::getAccelX()
+{
+	return this->ddx;
+}
+double SpatialObject::getAccelY()
+{
+	return this->ddy;
 }

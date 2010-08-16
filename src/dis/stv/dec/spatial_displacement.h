@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <boost/lexical_cast.hpp>
+#include "../physics/time_stepped_physics_engine.h"
+#include "../physics/tree_displacement_node.h"
 
 
 class SpatialDisplacement : public Decorator

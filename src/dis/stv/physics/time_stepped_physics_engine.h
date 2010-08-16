@@ -11,11 +11,12 @@
 #include "physics_engine.h"
 #include "time_stepped_physics_object.h"
 
-class TimeSteppedPhysicsEngine : public PhysicsEngine
+class TimeSteppedPhysicsEngine
 {
 private:
 	long maxSteps;
 	double stepTimeLength;
+	vector<TimeSteppedPhysicsObject*> masses;
 public:
 	TimeSteppedPhysicsEngine(long maxSteps, double stepTimeLength);
 	void addMass(TimeSteppedPhysicsObject* mass);

@@ -8,14 +8,14 @@
 #ifndef TIME_STEPPED_PHYSICS_OBJECT_H_
 #define TIME_STEPPED_PHYSICS_OBJECT_H_
 
+#include <stdio.h>
 #include "physical_mass.h"
-#include "spatial_object.h"
 
-class TimeSteppedPhysicsObject : public PhysicalMass, SpatialObject
+class TimeSteppedPhysicsObject : public PhysicalMass
 {
 public:
-	TimeSteppedPhysicsObject(int mass, double x, double y);
-	void update(TimeSteppedPhysicsObject* source);
+	TimeSteppedPhysicsObject(int mass);
+	virtual void step(double stepSize) = 0;
 };
 
 
