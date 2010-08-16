@@ -13,20 +13,70 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 {
 	// Iterate over each node with children
 	// First, count
-	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
-	{
-		printf("Counting tree %s\n",tree->data["name"].c_str());
-		this->count(*iter);
-	}
+	this->count(tree);
+//	int sum = 1;
+//	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+//	{
+//		printf("Counting tree %s\n",(*iter)->data["name"].c_str());
+//		sum += this->count(*iter);
+//		printf("Size of tree %s is %d\n",(*iter)->data["name"].c_str(),atoi((*iter)->data["size"].c_str()));
+//	}
 	// Second, float weighted surrogate nodes into position
-	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+	this->expand(tree);
+//	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+//	{
+//		this->expand(*iter);
+//	}
+}
+
+// Sorted in increasing order
+void SpatialDisplacement::insertOrderedBy(vector<SurrogateTreeNode*>& list, SurrogateTreeNode* tree, string property)
+{
+	SurrogateTreeNode* node;
+	for(vector<SurrogateTreeNode*>::iterator iter = list.begin(); iter != list.end(); ++iter)
 	{
-		this->expand(*iter);
+		node = *iter;
+		printf("%ld < %ld?\n",atol(tree->data[property].c_str()),atol(node->data[property].c_str()));
+		if(atol(tree->data[property].c_str()) < atol(node->data[property].c_str()))
+		{
+			list.insert(iter,tree);
+			break;
+		}
 	}
 }
 
 void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 {
+	if(tree->children.size() > 0)
+	{
+		// Determine initial layout based on creation time of child nodes.
+		// Files are split into different list than directories.
+		vector<SurrogateTreeNode*> files;
+		vector<SurrogateTreeNode*> dirs;
+		SurrogateTreeNode* node = NULL;
+		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+		{
+			node = *iter;
+			// Directory
+			if(node->children.size() > 0)
+			{
+				this->insertOrderedBy(dirs,node,"creation_time");
+			}
+			// File
+			else
+			{
+				this->insertOrderedBy(files,node,"creation_time");
+			}
+		}
+
+		// Set tether radius based on number of children
+		int tetherRadius = (((tree->children.size() - 1) / 2)*10) + 10;
+		// Layout nodes.  Order from middle outward by creation time (oldest in the middle)
+	}
+	else
+	{
+		printf("No children for node '%s'\n", tree->data["name"].c_str());
+	}
 }
 
 int SpatialDisplacement::count(SurrogateTreeNode* tree)
@@ -39,8 +89,6 @@ int SpatialDisplacement::count(SurrogateTreeNode* tree)
 	}
 	// Assign count to data
 	tree->data["size"] = boost::lexical_cast<string>(sum);
-	// Check if tree has data, then it is a file
-	// Else it is a directory and needs a node
-	printf("Size of tree %s is %d\n",tree->data["name"].c_str(),sum);
+	printf("Size of tree %s is %s\n",tree->data["name"].c_str(),tree->data["size"].c_str());
 	return sum;
 }
