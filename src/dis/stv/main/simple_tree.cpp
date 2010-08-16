@@ -21,6 +21,7 @@ int main(int argc, char **argv)
 	GitRepositoryAccess* git = new GitRepositoryAccess("~/Projects/source_tree_vis");
 	//boost::property_tree::ptree* source = git->retrieve();
 	SurrogateTreeNode* source = git->retrieve();
+	printf("Source tree name is %s\n", source->data["name"].c_str());
 
 	// Decorate surrogate tree nodes with locations
 	SpatialDisplacement* disp = new SpatialDisplacement();

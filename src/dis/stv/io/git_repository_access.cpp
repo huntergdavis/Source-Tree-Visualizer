@@ -38,8 +38,8 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		// We have no more path left.  Just a single entry (leaf)
 		SurrogateTreeNode* file = new SurrogateTreeNode();
 		string timeStr = boost::lexical_cast<string>(time);
-		(*file)["creation_time"] = timeStr.c_str();
-		(*file)["name"] = pathname.c_str();
+		file->data["creation_time"] = timeStr;
+		file->data["name"] = pathname;
 		printf("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children.push_back(file);
 	}
@@ -54,7 +54,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		for(;iter != tree->children.end(); ++iter)
 		{
 			SurrogateTreeNode* local = *iter;
-			string nameComp = (*local)["name"];
+			string nameComp = local->data["name"];
 			printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
@@ -68,8 +68,8 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		{
 			node = new SurrogateTreeNode();
 			string timeStr = boost::lexical_cast<string>(time);
-			(*node)["creation_time"] = timeStr.c_str();
-			(*node)["name"] = name.c_str();
+			node->data["creation_time"] = timeStr;
+			node->data["name"] = name;
 			printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children.push_back(node);
 		}
@@ -105,14 +105,13 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, ifs
 				vector<string> cols;
 				boost::split(cols, str, boost::is_any_of("\t "));
 				// Vector should be at least 2 columns.  Last two are: <Git Op> <Filename with path>
-				printf("Row had %d cols\n", cols.size());
 				if(cols.size() > 1)
 				{
 					vector<string>::reverse_iterator iter = cols.rbegin();
 					string filename = *iter;
 					++iter;
 					string op = *iter;
-					printf("Filename: '%s', Op: %s\n",filename.c_str(),op.c_str());
+					//printf("Filename: '%s', Op: %s\n",filename.c_str(),op.c_str());
 					if(!op.compare("A"))
 					{
 						printf("Inserting %s @ %ld\n",filename.c_str(),time);
@@ -129,6 +128,7 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTree()
 {
 	// Blank ptree
 	SurrogateTreeNode* result = new SurrogateTreeNode();
+	result->data["name"] = "root";
 	// Load log file
 	ifstream log;
 	log.open( TEMP_FILE.c_str(), ios::in );
@@ -174,6 +174,7 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 	{
 		// Create the ptree from log
 		result = this->generatePTree();
+		printf("Generated tree with name '%s'\n", result->data["name"].c_str());
 	}
 
 	return result;

@@ -15,6 +15,7 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 	// First, count
 	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 	{
+		printf("Counting tree %s\n",tree->data["name"].c_str());
 		this->count(*iter);
 	}
 	// Second, float weighted surrogate nodes into position
@@ -37,8 +38,9 @@ int SpatialDisplacement::count(SurrogateTreeNode* tree)
 		sum += this->count(*iter);
 	}
 	// Assign count to data
-	(*tree)["size"] = boost::lexical_cast<string>(sum).c_str();
+	tree->data["size"] = boost::lexical_cast<string>(sum);
 	// Check if tree has data, then it is a file
 	// Else it is a directory and needs a node
-	return 0;
+	printf("Size of tree %s is %d\n",tree->data["name"].c_str(),sum);
+	return sum;
 }

@@ -11,6 +11,7 @@
 #include "decorator.h"
 #include "../model/surrogate_tree_node.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <boost/lexical_cast.hpp>
 
 
