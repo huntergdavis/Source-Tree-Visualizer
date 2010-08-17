@@ -40,3 +40,13 @@ void TreeDisplacementNode::applyForce(double forceX, double forceY)
 {
 	this->applyAcceleration(this->accelerationFromForce(forceX), this->accelerationFromForce(forceY));
 }
+
+double TreeDisplacementNode::getLocationX()
+{
+	return this->getX();
+}
+
+double TreeDisplacementNode::getLocationY()
+{
+	return this->getY();
+}

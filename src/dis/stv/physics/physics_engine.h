@@ -10,6 +10,7 @@
 
 #include <stdlib.h>
 #include <vector>
+#include <math.h>
 #include "physical_mass.h"
 
 using namespace std;

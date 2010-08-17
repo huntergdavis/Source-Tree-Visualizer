@@ -9,5 +9,4 @@
 
 TimeSteppedPhysicsObject::TimeSteppedPhysicsObject(int mass):PhysicalMass(mass)
 {
-
 }

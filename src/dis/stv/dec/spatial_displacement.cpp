@@ -68,47 +68,70 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 			}
 		}
 
-		// Set tether radius based on number of children
+		// Map for retrieving resutls
+		unordered_map<SurrogateTreeNode*,TreeDisplacementNode*> simPairs;
 		int gap = 10;
-		int tetherRadius = (((tree->children.size() - 1) / 2)*gap) + 10;
+		// If total is even, use initial offset
+		int offset = 0;
+		if((dirs.size() + files.size()) % 2 == 0)
+		{
+			offset = -gap/2;
+		}
+		// Set tether radius based on number of children
+		int tetherRadius = (((tree->children.size() - 1) / 2)*gap) + 11 + offset;
+		printf("Tether radius is %d\n", tetherRadius);
 		// Layout nodes.  Order from middle outward by creation time (oldest in the middle)
-		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0,1,1000,0.01);
+		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0,3,5000,0.2);
+
 		// Layout directories first
 		bool left = true;
 		int dist = 0;
-		for(int i = 0; i < dirs.size(); i++)
+		TreeDisplacementNode* treeNode;
+		int i = 0;
+		for(; i < (int)dirs.size(); i++)
 		{
 			dist = (i+1)/2;
 			if(left)
 			{
-				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),-dist*gap,0,0,0,tetherRadius));
+				treeNode = new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),offset-dist*gap,0,0,0,tetherRadius);
 			}
 			else
 			{
-				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),dist*gap,0,0,0,tetherRadius));
+				treeNode = new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),offset+dist*gap,0,0,0,tetherRadius);
 			}
-
+			printf("Adding node '%s' at initial position (%f,%f)\n", dirs[i]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
+			simPairs[dirs[i]] = treeNode;
+			engine->addMass(treeNode);
 			left = !left;
 		}
 		// Now layout files
-		int startDist = dist;
-		for(int i = 0; i < files.size(); i++)
+		for(int j = 0; j < (int)files.size(); j++)
 		{
-			dist = startDist + ((i+1)/2);
+			dist = ((i + j + 1)/2);
 			if(left)
 			{
-				engine->addMass(new TreeDisplacementNode(atoi(files[i]->data["size"].c_str()),-dist*gap,0,0,0,tetherRadius));
+				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset-dist*gap,0,0,0,tetherRadius);
 			}
 			else
 			{
-				engine->addMass(new TreeDisplacementNode(atoi(files[i]->data["size"].c_str()),dist*gap,0,0,0,tetherRadius));
+				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset+dist*gap,0,0,0,tetherRadius);
 			}
-
+			printf("Adding node '%s' at initial position (%f,%f)\n", files[j]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
+			simPairs[files[j]] = treeNode;
+			engine->addMass(treeNode);
 			left = !left;
 		}
 		// Run simulation
 		engine->run();
 		// List new positions
+		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+		{
+			node = *iter;
+			treeNode = simPairs[node];
+			node->data["x"] = boost::lexical_cast<string>(treeNode->getX());
+			node->data["y"] = boost::lexical_cast<string>(treeNode->getY());
+			printf("%s @ (%s,%s)\n",node->data["name"].c_str(),node->data["x"].c_str(),node->data["y"].c_str());
+		}
 	}
 	else
 	{

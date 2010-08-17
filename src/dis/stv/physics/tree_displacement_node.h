@@ -12,7 +12,7 @@
 #include "time_stepped_physics_object.h"
 #include "tethered_spatial_object.h"
 
-class TreeDisplacementNode : public TimeSteppedPhysicsObject, TetheredSpatialObject
+class TreeDisplacementNode : public TimeSteppedPhysicsObject, public TetheredSpatialObject
 {
 public:
 	TreeDisplacementNode(int mass, double x, double y, double tetherX, double tetherY, double tetherRadius);
@@ -20,6 +20,8 @@ public:
 	void update(TimeSteppedPhysicsObject* source);
 	TimeSteppedPhysicsObject* clone();
 	void applyForce(double forceX, double forceY);
+	double getLocationX();
+	double getLocationY();
 };
 
 #endif /* TREE_DISPLACEMENT_NODE_H_ */

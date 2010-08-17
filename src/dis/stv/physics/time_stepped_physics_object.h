@@ -19,6 +19,8 @@ public:
 	virtual TimeSteppedPhysicsObject* clone() = 0;
 	virtual void update(TimeSteppedPhysicsObject* source) = 0;
 	virtual void applyForce(double forceX, double forceY) = 0;
+	virtual double getLocationX() = 0;
+	virtual double getLocationY() = 0;
 };
 
 
