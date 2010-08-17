@@ -9,6 +9,7 @@
 #define TETHERED_SPATIAL_OBJECT_H_
 
 #include <math.h>
+#include <stdio.h>
 #include "spatial_object.h"
 
 class TetheredSpatialObject : public SpatialObject

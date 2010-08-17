@@ -52,8 +52,110 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 		// calculate distance we can move before it becoming taut.
 		else
 		{
-		}
+//			double b = -2 * dist * cos(atan(ndy/ndx)-atan(dy/dx));
+//			double c = (dist * dist) - (tetherRadius * tetherRadius);
+//			double n_a = -(b + sqrt((b * b) - 4 * c))/2;
+//			double n_b = -(b - sqrt((b * b) - 4 * c))/2;
 
+			// Split segment into smaller chunks and find closest
+			// chunk length to give a radius equal to tetherRadius
+			double offs;
+			int chunks = 1000;
+			double chunkX = (ndx - dx)/chunks;
+			double chunkY = (ndy - dy)/chunks;
+			int upper = chunks;
+			int lower = 0;
+			int mid;
+			int chunksUsed = 0;
+			while(upper > lower)
+			{
+				mid = ((upper - lower)/2) + lower;
+				//printf("[%d,%d,%d]\n",upper,mid,lower);
+				ndx = dx + (mid*chunkX);
+				ndy = dy + (mid*chunkY);
+				// If the radius is still less than the tether, we can
+				// go further out.
+				if(sqrt( ndx * ndx + ndy * ndy ) < this->tetherRadius)
+				{
+					if(mid == upper - 1)
+					{
+						offs = atan((dy + (upper * chunkY))/(dx + (upper * chunkX))) - atan(dy/dx);
+						chunksUsed = upper;
+						break;
+					}
+					else
+					{
+						lower = mid + 1;
+					}
+				}
+				// We must go less far
+				else if(sqrt( ndx * ndx + ndy * ndy ) > this->tetherRadius)
+				{
+					if(mid == lower + 1)
+					{
+						offs = atan((dy + (lower * chunkY))/(dx + (lower * chunkX))) - atan(dy/dx);
+						chunksUsed = lower;
+						break;
+					}
+					else
+					{
+						upper = mid - 1;
+					}
+				}
+				// Some how we hit it exactly
+				else
+				{
+					offs = atan(ndy/ndx) - atan(dy/dx);
+					chunksUsed = mid;
+					break;
+				}
+			}
+
+			printf("(%f,%f)~(%f,%f) -> %f\n",dx,dy,ndx,ndy,offs);
+			// Use new rotation to get intermediate x,y
+			double newRot = atan(dy/dx) + offs;
+			dx = this->tetherRadius * cos(newRot);
+			dy = this->tetherRadius * sin(newRot);
+			// Do normal calculation with taut line for remainder or distance
+			// Calculate mag of accel tangential to tether
+			double aTangentX = 0;
+			double aTangentY = this->getAccelY();
+			if(dy != 0)
+			{
+				if(dx != 0)
+				{
+					double rotFromCenter = (3.14159/2) - atan(dy/dx);
+					if(rotFromCenter != (3.14159/2))
+					{
+						aTangentX = -1*cos(rotFromCenter) * this->getAccelX();
+						aTangentY = sin(rotFromCenter) * this->getAccelY();
+					}
+				}
+				else
+				{
+					aTangentX = this->getAccelX();
+					aTangentY = 0;
+				}
+			}
+			double aTangentMag = sqrt(aTangentX * aTangentX + aTangentY * aTangentY);
+			// Convert cartesian movement into polar movement.  Final term is for remainder of distance
+			double dRot = (timeDelta * timeDelta) * (aTangentMag/this->tetherRadius) * ((1000-chunksUsed)/1000.0);
+			// Calculate current polar rotation.
+			// Note, this uses a different polar coord system than the first
+			// portion of this function.
+			double currRot = 3.14159/2;
+			if(dx != 0)
+			{
+				currRot = tan(dy/dx);
+			}
+			// Calculate new polar rotation
+			double finalRot = currRot + dRot;
+			// Convert new polar rotation to cartesian coords
+			double finalX = this->tetherRadius * cos(finalRot);
+			double finalY = this->tetherRadius * sin(finalRot);
+			// Update location
+			this->setLocation(finalX, finalY);
+		}
 	}
 	// Tether is taut
 	else

@@ -7,7 +7,7 @@
 
 #include "time_stepped_physics_engine.h"
 
-TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double gravityX, double gravityY, long maxSteps, double stepTimeLength):gravityX( gravityX ), gravityY( gravityY ), repulsionX( 3 ), repulsionY( 2 ), bufferLocation( 0 ), maxSteps( maxSteps ), stepTimeLength( stepTimeLength )
+TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double gravityX, double gravityY, long maxSteps, double stepTimeLength):gravityX( gravityX ), gravityY( gravityY ), repulsionX( 2 ), repulsionY( 2 ), bufferLocation( 0 ), maxSteps( maxSteps ), stepTimeLength( stepTimeLength )
 {
 }
 
