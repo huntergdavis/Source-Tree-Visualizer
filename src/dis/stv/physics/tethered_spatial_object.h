@@ -21,6 +21,9 @@ private:
 public:
 	TetheredSpatialObject(double x, double y, double tetherX, double tetherY, double tetherRadius);
 	void updateLocation(double timeDelta);
+	double getTetherX();
+	double getTetherY();
+	double getTetherRadius();
 };
 
 #endif /* TETHERED_SPATIAL_OBJECT_H_ */

@@ -16,6 +16,9 @@ class TimeSteppedPhysicsObject : public PhysicalMass
 public:
 	TimeSteppedPhysicsObject(int mass);
 	virtual void step(double stepSize) = 0;
+	virtual TimeSteppedPhysicsObject* clone() = 0;
+	virtual void update(TimeSteppedPhysicsObject* source) = 0;
+	virtual void applyForce(double forceX, double forceY) = 0;
 };
 
 

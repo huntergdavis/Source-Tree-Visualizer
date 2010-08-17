@@ -62,7 +62,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 		int gap = 10;
 		int tetherRadius = (((tree->children.size() - 1) / 2)*gap) + 10;
 		// Layout nodes.  Order from middle outward by creation time (oldest in the middle)
-		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(1000,0.01);
+		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0,1,1000,0.01);
 		// Layout directories first
 		bool left = true;
 		int dist = 0;

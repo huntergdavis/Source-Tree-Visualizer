@@ -11,6 +11,21 @@ TetheredSpatialObject::TetheredSpatialObject(double x, double y, double tetherX,
 {
 }
 
+double TetheredSpatialObject::getTetherX()
+{
+	return this->tetherX;
+}
+
+double TetheredSpatialObject::getTetherY()
+{
+	return this->tetherY;
+}
+
+double TetheredSpatialObject::getTetherRadius()
+{
+	return this->tetherRadius;
+}
+
 // Update location based on acceleration and update constraints (tether)
 void TetheredSpatialObject::updateLocation(double timeDelta)
 {

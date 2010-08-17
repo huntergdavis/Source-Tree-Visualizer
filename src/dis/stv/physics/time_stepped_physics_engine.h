@@ -14,11 +14,16 @@
 class TimeSteppedPhysicsEngine
 {
 private:
+	double gravityX;
+	double gravityY;
+	double repulsionX;
+	double repulsionY;
+	int bufferLocation;
 	long maxSteps;
 	double stepTimeLength;
-	vector<TimeSteppedPhysicsObject*> masses;
+	vector<TimeSteppedPhysicsObject**> masses;
 public:
-	TimeSteppedPhysicsEngine(long maxSteps, double stepTimeLength);
+	TimeSteppedPhysicsEngine(double gravityX, double gravityY, long maxSteps, double stepTimeLength);
 	void addMass(TimeSteppedPhysicsObject* mass);
 	void run();
 };

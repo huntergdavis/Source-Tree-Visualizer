@@ -19,9 +19,24 @@ void TreeDisplacementNode::step(double stepSize)
 	this->setAcceleration(0,0);
 }
 
-void TreeDisplacementNode::update(TreeDisplacementNode source)
+void TreeDisplacementNode::update(TimeSteppedPhysicsObject* source)
 {
-	this->setMass(source.getMass());
-	this->setLocation(source.getX(), source.getY());
-	this->setAcceleration(source.getAccelX(), source.getAccelY());
+	this->setMass(source->getMass());
+	if(typeid(source) == typeid(TreeDisplacementNode*))
+	{
+		TreeDisplacementNode* castSource = static_cast<TreeDisplacementNode*>(source);
+		this->setLocation(castSource->getX(), castSource->getY());
+		this->setAcceleration(castSource->getAccelX(), castSource->getAccelY());
+	}
+}
+
+TimeSteppedPhysicsObject* TreeDisplacementNode::clone()
+{
+	TreeDisplacementNode* copy = new TreeDisplacementNode(this->getMass(),this->getX(),this->getY(),this->getTetherX(), this->getTetherY(), this->getTetherRadius());
+	return copy;
+}
+
+void TreeDisplacementNode::applyForce(double forceX, double forceY)
+{
+	this->applyAcceleration(this->accelerationFromForce(forceX), this->accelerationFromForce(forceY));
 }

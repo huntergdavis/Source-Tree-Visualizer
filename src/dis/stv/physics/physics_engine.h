@@ -8,6 +8,7 @@
 #ifndef PHYSICS_ENGINE_H_
 #define PHYSICS_ENGINE_H_
 
+#include <stdlib.h>
 #include <vector>
 #include "physical_mass.h"
 
