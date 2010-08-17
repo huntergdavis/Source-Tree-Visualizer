@@ -19,18 +19,26 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 }
 
 // Sorted in increasing order
-void SpatialDisplacement::insertOrderedBy(vector<SurrogateTreeNode*>& list, SurrogateTreeNode* tree, string property)
+void SpatialDisplacement::insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property)
 {
+	printf("Inserting '%s' from %s.  Current size: %d\n",property.c_str(),tree->data["name"].c_str(), list->size());
 	SurrogateTreeNode* node;
-	for(vector<SurrogateTreeNode*>::iterator iter = list.begin(); iter != list.end(); ++iter)
+	bool inserted = false;
+	for(vector<SurrogateTreeNode*>::iterator iter = list->begin(); iter != list->end(); ++iter)
 	{
 		node = *iter;
 		printf("%ld < %ld?\n",atol(tree->data[property].c_str()),atol(node->data[property].c_str()));
 		if(atol(tree->data[property].c_str()) < atol(node->data[property].c_str()))
 		{
-			list.insert(iter,tree);
+			list->insert(iter,tree);
+			inserted = true;
 			break;
 		}
+	}
+	if(!inserted)
+	{
+		printf("Inserting at end\n");
+		list->push_back(tree);
 	}
 }
 
@@ -49,12 +57,14 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 			// Directory
 			if(node->children.size() > 0)
 			{
-				this->insertOrderedBy(dirs,node,"creation_time");
+				printf("Inserting into dirs...\n");
+				this->insertOrderedBy(&dirs,node,"creation_time");
 			}
 			// File
 			else
 			{
-				this->insertOrderedBy(files,node,"creation_time");
+				printf("Inserting into files...\n");
+				this->insertOrderedBy(&files,node,"creation_time");
 			}
 		}
 
@@ -87,11 +97,11 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 			dist = startDist + ((i+1)/2);
 			if(left)
 			{
-				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),-dist*gap,0,0,0,tetherRadius));
+				engine->addMass(new TreeDisplacementNode(atoi(files[i]->data["size"].c_str()),-dist*gap,0,0,0,tetherRadius));
 			}
 			else
 			{
-				engine->addMass(new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),dist*gap,0,0,0,tetherRadius));
+				engine->addMass(new TreeDisplacementNode(atoi(files[i]->data["size"].c_str()),dist*gap,0,0,0,tetherRadius));
 			}
 
 			left = !left;

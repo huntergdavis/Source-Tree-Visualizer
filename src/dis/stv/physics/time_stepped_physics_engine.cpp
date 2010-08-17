@@ -13,6 +13,7 @@ TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double gravityX, double gravi
 
 void TimeSteppedPhysicsEngine::addMass(TimeSteppedPhysicsObject* mass)
 {
+	printf("Adding mass[%d]\n",mass->getMass());
 	TimeSteppedPhysicsObject** massSet = (TimeSteppedPhysicsObject**)malloc(2*sizeof(TimeSteppedPhysicsObject*));
 	massSet[0] = mass;
 	massSet[1] = mass->clone();
@@ -24,7 +25,7 @@ void TimeSteppedPhysicsEngine::run()
 	printf("Running simulator");
 	for(int i = 0; i < this->maxSteps; i++)
 	{
-		printf("Step %d\n",i);
+		//printf("Step %d\n",i);
 		int nextGen = ( this->bufferLocation + 1 ) % 2;
 		vector<TimeSteppedPhysicsObject**>::iterator iter = this->masses.begin();
 		TimeSteppedPhysicsObject** massSet;

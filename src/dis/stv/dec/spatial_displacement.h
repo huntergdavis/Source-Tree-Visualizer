@@ -25,7 +25,7 @@ public:
 private:
 	void expand(SurrogateTreeNode* tree);
 	int count(SurrogateTreeNode* tree);
-	void insertOrderedBy(vector<SurrogateTreeNode*>& list, SurrogateTreeNode* tree, string property);
+	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);
 };
 
 #endif /* SPATIAL_DISPLACEMENT_H_ */
