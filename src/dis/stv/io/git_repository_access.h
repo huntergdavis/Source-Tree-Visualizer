@@ -33,6 +33,7 @@ private:
 	SurrogateTreeNode* generatePTree();
 	void parseTimeBlock(SurrogateTreeNode* tree, long time, ifstream& log);
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
+	static int writer(char *data, size_t size, size_t nmemb, std::string *buffer);
 
 public:
 	GitRepositoryAccess(string repositoryRoot);

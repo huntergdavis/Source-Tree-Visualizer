@@ -34,6 +34,7 @@ LDFLAGS = -L/usr/lib \
 	-lm \
 	-lgomp \
 	-lpthread \
+	-lcurl \
 	-lltdl
 	
 SOURCES = src/dis/stv/io/git_repository_access.cpp \

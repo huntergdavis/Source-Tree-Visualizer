@@ -207,9 +207,64 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTree()
 int GitRepositoryAccess::generateLog()
 {
 	int commandReturnValue = 0;
-	string gitLogWithOutput = "cd " + this->root + "; " + GIT_COMMAND + " > " + TEMP_FILE;
-    printf("Log command: %s\n",gitLogWithOutput.c_str());
-	commandReturnValue = system(gitLogWithOutput.c_str());
+
+	if(this->gitRepoType == 1)
+	{
+		string gitLogWithOutput = "cd " + this->root + "; " + GIT_COMMAND + " > " + TEMP_FILE;
+		printf("Log command: %s\n",gitLogWithOutput.c_str());
+		commandReturnValue = system(gitLogWithOutput.c_str());
+	}
+	if(this->gitRepoType == 2)
+	{
+		// first retrieve the base log file from which to retrieve sha1 hashes for commit blobs
+		std::stringstream topLevelAPIStream;
+		topLevelAPIStream << "http://github.com/api/v2/yaml/repos/list/";
+		topLevelAPIStream << userNameCredentials;
+		topLevelAPIStream << "/";
+		topLevelAPIStream << repoNameCredentials;
+		topLevelAPIStream << "/";
+		topLevelAPIStream << "master";
+		std::string topLevelApiUrl = topLevelAPIStream.str();
+
+		// Write any errors in here
+		static char errorBuffer[CURL_ERROR_SIZE];
+
+		// Write all expected data in here
+		static string buffer;
+
+		// set up a lib curl instantiation
+		CURL *curl;
+		CURLcode result;
+
+		// Create our curl handle
+		curl = curl_easy_init();
+
+		if (curl)
+		{
+			// Now set up all of the curl options
+		   curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
+		   curl_easy_setopt(curl, CURLOPT_URL, topLevelApiUrl.c_str());
+		   curl_easy_setopt(curl, CURLOPT_HEADER, 0);
+		   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
+		   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+		   // Attempt to retrieve the remote page
+		   result = curl_easy_perform(curl);
+
+		   // Always cleanup
+		   curl_easy_cleanup(curl);
+
+		   // Did we succeed?
+		   if (result == CURLE_OK)
+		   {
+			 cout << buffer << "\n";
+			 exit(0);
+		   }
+		}
+
+	}
+	// return a value
 	return commandReturnValue;
 }
 
@@ -227,3 +282,29 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 
 	return result;
 }
+
+// -------------------------------------------------------------------------
+// API :: GitRepositoryAccess::writer
+// PURPOSE :: callback function for curl to write buffers to
+//         ::
+// PARAMETERS :: char *data, size_t size, size_t nmemb, std::string *buffer
+// RETURN :: None
+// -------------------------------------------------------------------------
+int GitRepositoryAccess::writer(char *data, size_t size, size_t nmemb, std::string *buffer)
+{
+   // What we will return
+   int result = 0;
+
+   // Is there anything in the buffer?
+   if (buffer != NULL)
+   {
+     // Append the data to the buffer
+     buffer->append(data, size * nmemb);
+
+     // How much did we write?
+     result = size * nmemb;
+   }
+   return result;
+}
+
+
