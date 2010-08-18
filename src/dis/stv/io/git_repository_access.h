@@ -18,6 +18,7 @@
 #include <boost/lexical_cast.hpp>
 #include "repository_access.h"
 #include "../model/surrogate_tree_node.h"
+#include "curl/curl.h"
 
 using namespace std;
 
@@ -25,6 +26,9 @@ class GitRepositoryAccess : public RepositoryAccess
 {
 private:
 	string root;
+	string userNameCredentials;
+	string repoNameCredentials;
+	int gitRepoType;	// 1=local,2=github
 	int generateLog();
 	SurrogateTreeNode* generatePTree();
 	void parseTimeBlock(SurrogateTreeNode* tree, long time, ifstream& log);
@@ -32,6 +36,7 @@ private:
 
 public:
 	GitRepositoryAccess(string repositoryRoot);
+	GitRepositoryAccess(string gitHubUserName,string gitHubProjectName);
 	SurrogateTreeNode* retrieve();
 };
 

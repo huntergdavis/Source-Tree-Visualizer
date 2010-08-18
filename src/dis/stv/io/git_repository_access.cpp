@@ -17,9 +17,51 @@ const string TEMP_FILE = ".gitlog.tmp";
 // Unix timestamp
 const string GIT_COMMAND = "git whatchanged --pretty=format:%ct --reverse --raw --encoding=UTF-8";
 
+// -------------------------------------------------------------------------
+// API :: GitRepositoryAccess::GitRepositoryAccess
+// PURPOSE :: instantiation of GitRepositoryAccess
+//         :: specifically, with a local root of project info
+// PARAMETERS :: std::string repositoryRoot
+// RETURN :: None
+// -------------------------------------------------------------------------
 GitRepositoryAccess::GitRepositoryAccess(string repositoryRoot)
 {
 	this->root = repositoryRoot;
+
+	// add git repo type of local files
+	this->gitRepoType = 1;
+
+	// username and repo credentials
+	this->userNameCredentials = "";
+	this->repoNameCredentials = root;
+}
+
+// -------------------------------------------------------------------------
+// API :: GitRepositoryAccess::GitRepositoryAccess
+// PURPOSE :: instantiation of GitRepositoryAccess
+//         :: specifically, with a github url of project info
+// PARAMETERS :: std::string gitHubUserName, std::string gitHubProjectName
+// RETURN :: None
+// -------------------------------------------------------------------------
+GitRepositoryAccess::GitRepositoryAccess(std::string gitHubUserName,std::string gitHubProjectName)
+{
+	// make project root the yaml api info stream for github
+    std::stringstream projectRootStream;
+    //http://github.com/api/v2/yaml/repos/show/schacon/grit
+	projectRootStream << "http://github.com/api/v2/yaml/repos/show/";
+	projectRootStream << gitHubUserName;
+	projectRootStream << "/";
+	projectRootStream << gitHubProjectName;
+	this->root = projectRootStream.str();
+
+	// add username and project name credentials to data structure
+	this->userNameCredentials = gitHubUserName;
+	this->repoNameCredentials = gitHubProjectName;
+
+	// add git repo type of github
+	this->gitRepoType = 2;
+
+
 }
 
 void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
