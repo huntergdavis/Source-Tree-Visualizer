@@ -107,7 +107,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 			{
 				treeNode = new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),offset+dist*gap);
 			}
-			printf("Adding node '%s' at initial position (%f,%f)\n", dirs[i]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
+			//printf("Adding node '%s' at initial position (%f,%f)\n", dirs[i]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
 			simPairs[dirs[i]] = treeNode;
 			engine->addMass(treeNode);
 			left = !left;
@@ -124,7 +124,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 			{
 				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset+dist*gap);
 			}
-			printf("Adding node '%s' at initial position (%f,%f)\n", files[j]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
+			//printf("Adding node '%s' at initial position (%f,%f)\n", files[j]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
 			simPairs[files[j]] = treeNode;
 			engine->addMass(treeNode);
 			left = !left;
