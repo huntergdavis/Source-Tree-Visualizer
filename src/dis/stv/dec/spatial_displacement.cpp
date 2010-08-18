@@ -15,7 +15,7 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 	// First, count
 	this->count(tree);
 	// Second, float weighted surrogate nodes into position
-	this->expand(tree,0,0);
+	this->expand(tree,0,0,0);
 }
 
 // Sorted in increasing order
@@ -42,7 +42,7 @@ void SpatialDisplacement::insertOrderedBy(vector<SurrogateTreeNode*>* list, Surr
 	}
 }
 
-void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double rootY)
+void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY)
 {
 	if(tree->children.size() > 0)
 	{
@@ -160,6 +160,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 		{
 			// Adjust
 			trans = ((rangeMax - rangeMin)/2);
+			// Only valid because we know we have a single node when we get here
 			least = treeNode->getX() - 1;
 		}
 		else
@@ -168,28 +169,27 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 		}
 		if(most - least != 0)
 		{
-
 			for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 			{
 				node = *iter;
 				treeNode = simPairs[node];
-				treeNode->setLocation((treeNode->getX() - least)*trans + rangeMin,treeNode->getY());
+				treeNode->setRotation((treeNode->getX() - least)*trans + rangeMin + rootAngle);
 				//printf("%s adjusted to (%f,%f)\n",node->data["name"].c_str(),treeNode->getX(),treeNode->getY());
-			}
-			// Transform positions to arc
-			double arcRadius = 10.0;
-			for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
-			{
-				node = *iter;
-				treeNode = simPairs[node];
-				treeNode->setLocation(arcRadius * cos(treeNode->getX()),arcRadius * sin(treeNode->getX()));
-				//printf("%s transformed to (%f,%f)\n",node->data["name"].c_str(),treeNode->getX(),treeNode->getY());
 			}
 		}
 		else
 		{
 			printf("Serious Error.  (Max: %f) Most: %f, Least: %f\n", DBL_MAX, most, least);
 			exit(1);
+		}
+		// Transform positions to arc
+		double arcRadius = 10.0;
+		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+		{
+			node = *iter;
+			treeNode = simPairs[node];
+			treeNode->setLocation(arcRadius * cos(treeNode->getRotation()),arcRadius * sin(treeNode->getRotation()));
+			//printf("%s transformed to (%f,%f)\n",node->data["name"].c_str(),treeNode->getX(),treeNode->getY());
 		}
 
 		// Update new positions
@@ -204,7 +204,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 			node->data["y"] = boost::lexical_cast<string>(newY);
 			printf("%s @ (%s,%s)\n",node->data["name"].c_str(),node->data["x"].c_str(),node->data["y"].c_str());
 			// Run expand on child
-			this->expand(node,newX,newY);
+			this->expand(node,treeNode->getRotation()/2,newX,newY);
 		}
 	}
 	else

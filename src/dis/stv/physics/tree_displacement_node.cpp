@@ -7,7 +7,7 @@
 
 #include "tree_displacement_node.h"
 
-TreeDisplacementNode::TreeDisplacementNode(int mass, double locationX):TimeSteppedPhysicsObject(mass),UnidimensionalSpatialObject(locationX)
+TreeDisplacementNode::TreeDisplacementNode(int mass, double locationX):TimeSteppedPhysicsObject(mass),UnidimensionalSpatialObject(locationX), rotation( 0 )
 {
 }
 
@@ -53,4 +53,14 @@ double TreeDisplacementNode::getLocationX()
 double TreeDisplacementNode::getLocationY()
 {
 	return this->getY();
+}
+
+void TreeDisplacementNode::setRotation(double rotation)
+{
+	this->rotation = rotation;
+}
+
+double TreeDisplacementNode::getRotation()
+{
+	return this->rotation;
 }

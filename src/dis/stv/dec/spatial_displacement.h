@@ -25,7 +25,7 @@ public:
 	void decorate(SurrogateTreeNode* tree);
 
 private:
-	void expand(SurrogateTreeNode* tree, double rootX, double rootY);
+	void expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY);
 	int count(SurrogateTreeNode* tree);
 	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);
 };

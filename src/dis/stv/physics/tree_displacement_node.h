@@ -15,6 +15,8 @@
 
 class TreeDisplacementNode : public TimeSteppedPhysicsObject, public UnidimensionalSpatialObject
 {
+private:
+	double rotation;
 public:
 	TreeDisplacementNode(int mass, double locationX);
 	double step(double stepSize);
@@ -23,6 +25,8 @@ public:
 	void applyForce(double forceX, double forceY);
 	double getLocationX();
 	double getLocationY();
+	void setRotation(double rotation);
+	double getRotation();
 };
 
 #endif /* TREE_DISPLACEMENT_NODE_H_ */
