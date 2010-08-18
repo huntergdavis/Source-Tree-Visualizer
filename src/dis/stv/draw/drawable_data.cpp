@@ -24,6 +24,7 @@ void DrawableData::insert(int layer, DrawableDatum* datum)
 	layerList->push_back(datum);
 }
 
+
 vector<DrawableDatum*>* DrawableData::getLayer(int layer)
 {
 	vector<DrawableDatum*>* layerList = this->drawItems[layer];

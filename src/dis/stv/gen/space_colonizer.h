@@ -14,6 +14,8 @@
 class SpaceColonizer : public Digitizer
 {
 private:
+	static const int TRUNK_LAYER = 0;
+	static const int LEAF_LAYER = 0;
 	int segLen;
 	void removeNodeFromSubtreeCenterOfMass(SurrogateTreeNode* source, SurrogateTreeNode* node);
 	void calculateSubtreeCenterOfMass(SurrogateTreeNode* source);
