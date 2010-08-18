@@ -15,9 +15,13 @@ class SpaceColonizer : public Digitizer
 {
 private:
 	int segLen;
+	void removeNodeFromSubtreeCenterOfMass(SurrogateTreeNode* source, SurrogateTreeNode* node);
+	void calculateSubtreeCenterOfMass(SurrogateTreeNode* source);
+	void stepOrSplit(SurrogateTreeNode* source);
+
 public:
 	SpaceColonizer(int segmentLength);
-	DrawableData* digitize(const SurrogateTreeNode* source);
+	DrawableData* digitize(SurrogateTreeNode* source);
 };
 
 #endif /* SPACE_COLONIZER_H_ */
