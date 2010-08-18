@@ -7,17 +7,19 @@
 
 #include "tree_displacement_node.h"
 
-TreeDisplacementNode::TreeDisplacementNode(int mass, double x, double y, double tetherX, double tetherY, double tetherRadius):TimeSteppedPhysicsObject(mass),TetheredSpatialObject(x,y,tetherX, tetherY, tetherRadius)
+TreeDisplacementNode::TreeDisplacementNode(int mass, double locationX):TimeSteppedPhysicsObject(mass),UnidimensionalSpatialObject(locationX)
 {
 }
 
-void TreeDisplacementNode::step(double stepSize)
+double TreeDisplacementNode::step(double stepSize)
 {
-	printf("...step: ");
+	//printf("...step: ");
 	// Apply acceleration
-	this->updateLocation(stepSize);
+	double change = fabs(this->updateLocation(stepSize));
 	// Clear acceleration. Must be recalculated before calling step again.
 	this->setAcceleration(0,0);
+
+	return change;
 }
 
 void TreeDisplacementNode::update(TimeSteppedPhysicsObject* source)
@@ -33,14 +35,14 @@ void TreeDisplacementNode::update(TimeSteppedPhysicsObject* source)
 
 TimeSteppedPhysicsObject* TreeDisplacementNode::clone()
 {
-	TreeDisplacementNode* copy = new TreeDisplacementNode(this->getMass(),this->getX(),this->getY(),this->getTetherX(), this->getTetherY(), this->getTetherRadius());
+	TreeDisplacementNode* copy = new TreeDisplacementNode(this->getMass(),this->getX());
 	return copy;
 }
 
 void TreeDisplacementNode::applyForce(double forceX, double forceY)
 {
-	printf("Applying force <%f,%f>\n",forceX,forceY);
-	this->applyAcceleration(this->accelerationFromForce(forceX), this->accelerationFromForce(forceY));
+	//printf("Applying force <%f>\n",forceX);
+	this->applyAcceleration(this->accelerationFromForce(forceX),0);
 }
 
 double TreeDisplacementNode::getLocationX()

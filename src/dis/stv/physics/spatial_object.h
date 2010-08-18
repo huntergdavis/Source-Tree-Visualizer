@@ -27,7 +27,7 @@ public:
 	double getY();
 	double getAccelX();
 	double getAccelY();
-	virtual void updateLocation(double timeDelta) = 0;
+	virtual double updateLocation(double timeDelta) = 0;
 };
 
 #endif /* SPATIAL_OBJECT_H_ */

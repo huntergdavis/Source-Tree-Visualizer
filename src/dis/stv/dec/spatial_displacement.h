@@ -12,9 +12,11 @@
 #include "../model/surrogate_tree_node.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <float.h>
 #include <boost/lexical_cast.hpp>
 #include "../physics/time_stepped_physics_engine.h"
 #include "../physics/tree_displacement_node.h"
+#include "../physics/fixed_attractor.h"
 
 
 class SpatialDisplacement : public Decorator
@@ -23,7 +25,7 @@ public:
 	void decorate(SurrogateTreeNode* tree);
 
 private:
-	void expand(SurrogateTreeNode* tree);
+	void expand(SurrogateTreeNode* tree, double rootX, double rootY);
 	int count(SurrogateTreeNode* tree);
 	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);
 };

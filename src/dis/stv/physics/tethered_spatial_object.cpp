@@ -27,6 +27,7 @@ double TetheredSpatialObject::getTetherRadius()
 }
 
 // Update location based on acceleration and update constraints (tether)
+// This is not working properly.
 void TetheredSpatialObject::updateLocation(double timeDelta)
 {
 	printf("Updating location to...\n");

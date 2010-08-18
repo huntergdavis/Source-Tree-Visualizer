@@ -7,7 +7,11 @@
 
 #include "time_stepped_physics_engine.h"
 
-TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double gravityX, double gravityY, long maxSteps, double stepTimeLength):gravityX( gravityX ), gravityY( gravityY ), repulsionX( 1.25 ), repulsionY( 1.25 ), bufferLocation( 0 ), maxSteps( maxSteps ), stepTimeLength( stepTimeLength )
+TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(long maxSteps, double stepTimeLength):repulsionX( 1.25 ), repulsionY( 1.25 ), bufferLocation( 0 ), maxSteps( maxSteps ), stepTimeLength( stepTimeLength ), minDiff( 0 )
+{
+}
+
+TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double minDiff, double stepTimeLength):repulsionX( 1.25 ), repulsionY( 1.25 ), bufferLocation( 0 ), maxSteps( 100 / minDiff ), stepTimeLength( stepTimeLength ), minDiff( minDiff )
 {
 }
 
@@ -20,30 +24,40 @@ void TimeSteppedPhysicsEngine::addMass(TimeSteppedPhysicsObject* mass)
 	this->masses.push_back(massSet);
 }
 
+bool TimeSteppedPhysicsEngine::shouldContinue(int step, double maxChange)
+{
+	bool cont = (step < this->maxSteps) && (maxChange > this->minDiff);
+	//printf("Should continue with <%d < %ld | %f > %f>? %s\n",step, this->maxSteps, maxChange, this->minDiff, cont?"true":"false");
+	return cont;
+}
+
 void TimeSteppedPhysicsEngine::run()
 {
 	printf("Running simulator\n");
-	for(int i = 0; i < this->maxSteps; i++)
+	double maxChange = 0;
+	double change = 0;
+	int i = 0;
+	//for(int i = 0; i < this->maxSteps; i++)
+	do
 	{
-
-		printf("Step %d\n",i);
+		maxChange = 0;
+//		if(i % 1000 == 0)
+//		{
+//			printf("Step %d\n",i);
+//		}
 		int nextGen = ( this->bufferLocation + 1 ) % 2;
 		vector<TimeSteppedPhysicsObject**>::iterator iter = this->masses.begin();
 		TimeSteppedPhysicsObject** massSet;
 		TimeSteppedPhysicsObject* current;
-		int item = 0;
+		//int item = 0;
 		for(;iter != this->masses.end(); ++iter)
 		{
-			printf("Forces for item #%d\n",item++);
+			//printf("Forces for item #%d\n",item++);
 			massSet = *iter;
 			// Copy all old values to the "future" generation
 			current = massSet[nextGen];
 			current->update(massSet[this->bufferLocation]);
 			// Calculate forces for this object from current generation
-			// :: Gravity ::
-			// This has the effect of normalizing the gravity to a max
-			// value of 1 for the 'heaviest' node.
-			current->applyForce(this->gravityX*current->getMass(),this->gravityY*current->getMass());
 			// :: Repulsion ::
 			vector<TimeSteppedPhysicsObject**>::iterator rep = this->masses.begin();
 			TimeSteppedPhysicsObject** resSet;
@@ -73,13 +87,22 @@ void TimeSteppedPhysicsEngine::run()
 					{
 						yOrientation = -1;
 					}
-					current->applyForce(xOrientation * this->repulsionX*massTotal/(distance * distance),yOrientation * this->repulsionY*massTotal/(distance * distance));
+					if(distance >= MIN_DISTANCE)
+					{
+						current->applyForce(xOrientation * this->repulsionX*massTotal/(distance * distance),yOrientation * this->repulsionY*massTotal/(distance * distance));
+					}
 				}
 			}
 			// Update position for node
-			current->step(this->stepTimeLength);
+			change = current->step(this->stepTimeLength);
+			if(change > maxChange)
+			{
+				//printf("Setting max change to %f\n", maxChange);
+				maxChange = change;
+			}
 		}
 		// Update buffer location
 		this->bufferLocation = nextGen;
 	}
+	while(shouldContinue(i++,maxChange));
 }

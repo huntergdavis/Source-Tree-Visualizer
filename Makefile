@@ -46,8 +46,9 @@ SOURCES = src/dis/stv/io/git_repository_access.cpp \
 	src/dis/stv/physics/time_stepped_physics_engine.cpp \
 	src/dis/stv/physics/time_stepped_physics_object.cpp \
 	src/dis/stv/physics/tree_displacement_node.cpp \
-	src/dis/stv/physics/tethered_spatial_object.cpp \
-	src/dis/stv/physics/spatial_object.cpp
+	src/dis/stv/physics/unidimensional_spatial_object.cpp \
+	src/dis/stv/physics/spatial_object.cpp \
+	src/dis/stv/physics/fixed_attractor.cpp
 	
 
 OBJECTS = $(SOURCES:.cpp=.o)

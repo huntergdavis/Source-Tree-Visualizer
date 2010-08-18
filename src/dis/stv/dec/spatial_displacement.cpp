@@ -15,19 +15,19 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 	// First, count
 	this->count(tree);
 	// Second, float weighted surrogate nodes into position
-	this->expand(tree);
+	this->expand(tree,0,0);
 }
 
 // Sorted in increasing order
 void SpatialDisplacement::insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property)
 {
-	printf("Inserting '%s' from %s.  Current size: %d\n",property.c_str(),tree->data["name"].c_str(), list->size());
+	//printf("Inserting '%s' from %s.  Current size: %d\n",property.c_str(),tree->data["name"].c_str(), list->size());
 	SurrogateTreeNode* node;
 	bool inserted = false;
 	for(vector<SurrogateTreeNode*>::iterator iter = list->begin(); iter != list->end(); ++iter)
 	{
 		node = *iter;
-		printf("%ld < %ld?\n",atol(tree->data[property].c_str()),atol(node->data[property].c_str()));
+		//printf("%ld < %ld?\n",atol(tree->data[property].c_str()),atol(node->data[property].c_str()));
 		if(atol(tree->data[property].c_str()) < atol(node->data[property].c_str()))
 		{
 			list->insert(iter,tree);
@@ -37,12 +37,12 @@ void SpatialDisplacement::insertOrderedBy(vector<SurrogateTreeNode*>* list, Surr
 	}
 	if(!inserted)
 	{
-		printf("Inserting at end\n");
+		//printf("Inserting at end\n");
 		list->push_back(tree);
 	}
 }
 
-void SpatialDisplacement::expand(SurrogateTreeNode* tree)
+void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double rootY)
 {
 	if(tree->children.size() > 0)
 	{
@@ -51,19 +51,26 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 		vector<SurrogateTreeNode*> files;
 		vector<SurrogateTreeNode*> dirs;
 		SurrogateTreeNode* node = NULL;
+		int maxChild = 1;
+		int childSize;
 		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 		{
 			node = *iter;
 			// Directory
 			if(node->children.size() > 0)
 			{
-				printf("Inserting into dirs...\n");
+				//printf("Inserting into dirs...\n");
 				this->insertOrderedBy(&dirs,node,"creation_time");
+				childSize = atoi(node->data["size"].c_str());
+				if(childSize > maxChild )
+				{
+					maxChild = childSize;
+				}
 			}
 			// File
 			else
 			{
-				printf("Inserting into files...\n");
+				//printf("Inserting into files...\n");
 				this->insertOrderedBy(&files,node,"creation_time");
 			}
 		}
@@ -77,11 +84,12 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 		{
 			offset = -gap/2;
 		}
-		// Set tether radius based on number of children
-		int tetherRadius = (((tree->children.size() - 1) / 2)*gap) + 11 + offset;
-		printf("Tether radius is %d\n", tetherRadius);
+
 		// Layout nodes.  Order from middle outward by creation time (oldest in the middle)
-		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0,2,10,1);
+		// Use minDiff version of constructor
+		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0.0005,0.2);
+		// Add centered attractor mass first
+		engine->addMass(new FixedAttractor(-0.75 * maxChild,0,0));
 
 		// Layout directories first
 		bool left = true;
@@ -93,11 +101,11 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 			dist = (i+1)/2;
 			if(left)
 			{
-				treeNode = new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),offset-dist*gap,0,0,0,tetherRadius);
+				treeNode = new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),offset-dist*gap);
 			}
 			else
 			{
-				treeNode = new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),offset+dist*gap,0,0,0,tetherRadius);
+				treeNode = new TreeDisplacementNode(atoi(dirs[i]->data["size"].c_str()),offset+dist*gap);
 			}
 			printf("Adding node '%s' at initial position (%f,%f)\n", dirs[i]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
 			simPairs[dirs[i]] = treeNode;
@@ -110,11 +118,11 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 			dist = ((i + j + 1)/2);
 			if(left)
 			{
-				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset-dist*gap,0,0,0,tetherRadius);
+				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset-dist*gap);
 			}
 			else
 			{
-				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset+dist*gap,0,0,0,tetherRadius);
+				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset+dist*gap);
 			}
 			printf("Adding node '%s' at initial position (%f,%f)\n", files[j]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
 			simPairs[files[j]] = treeNode;
@@ -123,14 +131,73 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree)
 		}
 		// Run simulation
 		engine->run();
-		// List new positions
+		// Normalize positions to range [0,pi]
+		double least = DBL_MAX;
+		double most = -DBL_MAX;
 		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 		{
 			node = *iter;
 			treeNode = simPairs[node];
-			node->data["x"] = boost::lexical_cast<string>(treeNode->getX());
-			node->data["y"] = boost::lexical_cast<string>(treeNode->getY());
+			if(treeNode->getX() < least)
+			{
+				least = treeNode->getX();
+			}
+			if(treeNode->getX() > most)
+			{
+				most = treeNode->getX();
+			}
+		}
+		double trans = 0;
+		// This only happens when we have a single node
+		if(most == least)
+		{
+			// Adjust
+			trans = (3.14159/2);
+			least = treeNode->getX() - 1;
+		}
+		else
+		{
+			trans = (3.14159)/(most - least);
+		}
+		if(most - least != 0)
+		{
+
+			for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+			{
+				node = *iter;
+				treeNode = simPairs[node];
+				treeNode->setLocation((treeNode->getX() - least)*trans,treeNode->getY());
+				//printf("%s adjusted to (%f,%f)\n",node->data["name"].c_str(),treeNode->getX(),treeNode->getY());
+			}
+			// Transform positions to arc
+			double arcRadius = 10.0;
+			for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+			{
+				node = *iter;
+				treeNode = simPairs[node];
+				treeNode->setLocation(arcRadius * cos(treeNode->getX()),arcRadius * sin(treeNode->getX()));
+				//printf("%s transformed to (%f,%f)\n",node->data["name"].c_str(),treeNode->getX(),treeNode->getY());
+			}
+		}
+		else
+		{
+			printf("Serious Error.  (Max: %f) Most: %f, Least: %f\n", DBL_MAX, most, least);
+			exit(1);
+		}
+
+		// Update new positions
+		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+		{
+			node = *iter;
+			treeNode = simPairs[node];
+			double newX = treeNode->getX() + rootX;
+			double newY = treeNode->getY() + rootY;
+			//printf("%s final position at (%f,%f)\n",node->data["name"].c_str(),newX, newY);
+			node->data["x"] = boost::lexical_cast<string>(newX);
+			node->data["y"] = boost::lexical_cast<string>(newY);
 			printf("%s @ (%s,%s)\n",node->data["name"].c_str(),node->data["x"].c_str(),node->data["y"].c_str());
+			// Run expand on child
+			this->expand(node,newX,newY);
 		}
 	}
 	else

@@ -8,15 +8,16 @@
 #ifndef TREE_DISPLACEMENT_NODE_H_
 #define TREE_DISPLACEMENT_NODE_H_
 
+#include <math.h>
 #include <typeinfo>
 #include "time_stepped_physics_object.h"
-#include "tethered_spatial_object.h"
+#include "unidimensional_spatial_object.h"
 
-class TreeDisplacementNode : public TimeSteppedPhysicsObject, public TetheredSpatialObject
+class TreeDisplacementNode : public TimeSteppedPhysicsObject, public UnidimensionalSpatialObject
 {
 public:
-	TreeDisplacementNode(int mass, double x, double y, double tetherX, double tetherY, double tetherRadius);
-	void step(double stepSize);
+	TreeDisplacementNode(int mass, double locationX);
+	double step(double stepSize);
 	void update(TimeSteppedPhysicsObject* source);
 	TimeSteppedPhysicsObject* clone();
 	void applyForce(double forceX, double forceY);

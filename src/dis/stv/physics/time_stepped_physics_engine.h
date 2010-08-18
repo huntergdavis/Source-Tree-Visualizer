@@ -14,16 +14,20 @@
 class TimeSteppedPhysicsEngine
 {
 private:
-	double gravityX;
-	double gravityY;
+	static const double MIN_DISTANCE = 0.5;
+
 	double repulsionX;
 	double repulsionY;
 	int bufferLocation;
 	long maxSteps;
 	double stepTimeLength;
+	double minDiff;
 	vector<TimeSteppedPhysicsObject**> masses;
+	bool shouldContinue(int step, double minChange);
+
 public:
-	TimeSteppedPhysicsEngine(double gravityX, double gravityY, long maxSteps, double stepTimeLength);
+	TimeSteppedPhysicsEngine(long maxSteps, double stepTimeLength);
+	TimeSteppedPhysicsEngine(double minDiff, double stepTimeLength);
 	void addMass(TimeSteppedPhysicsObject* mass);
 	void run();
 };
