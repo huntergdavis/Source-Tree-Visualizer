@@ -13,6 +13,7 @@ TreeDisplacementNode::TreeDisplacementNode(int mass, double x, double y, double 
 
 void TreeDisplacementNode::step(double stepSize)
 {
+	printf("...step: ");
 	// Apply acceleration
 	this->updateLocation(stepSize);
 	// Clear acceleration. Must be recalculated before calling step again.
@@ -38,6 +39,7 @@ TimeSteppedPhysicsObject* TreeDisplacementNode::clone()
 
 void TreeDisplacementNode::applyForce(double forceX, double forceY)
 {
+	printf("Applying force <%f,%f>\n",forceX,forceY);
 	this->applyAcceleration(this->accelerationFromForce(forceX), this->accelerationFromForce(forceY));
 }
 

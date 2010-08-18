@@ -49,6 +49,7 @@ SOURCES = src/dis/stv/io/git_repository_access.cpp \
 	src/dis/stv/physics/tethered_spatial_object.cpp \
 	src/dis/stv/physics/spatial_object.cpp
 	
+
 OBJECTS = $(SOURCES:.cpp=.o)
 EXAMPLEBINARY = bin/tree_gen_example
 PROJECTBINARY = bin/simple_tree

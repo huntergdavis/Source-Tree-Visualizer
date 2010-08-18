@@ -7,7 +7,7 @@
 
 #include "time_stepped_physics_engine.h"
 
-TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double gravityX, double gravityY, long maxSteps, double stepTimeLength):gravityX( gravityX ), gravityY( gravityY ), repulsionX( 2 ), repulsionY( 2 ), bufferLocation( 0 ), maxSteps( maxSteps ), stepTimeLength( stepTimeLength )
+TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double gravityX, double gravityY, long maxSteps, double stepTimeLength):gravityX( gravityX ), gravityY( gravityY ), repulsionX( 1.25 ), repulsionY( 1.25 ), bufferLocation( 0 ), maxSteps( maxSteps ), stepTimeLength( stepTimeLength )
 {
 }
 
@@ -25,16 +25,16 @@ void TimeSteppedPhysicsEngine::run()
 	printf("Running simulator\n");
 	for(int i = 0; i < this->maxSteps; i++)
 	{
-//		if(i % 100 == 0)
-//		{
-//			printf("Step %d\n",i);
-//		}
+
+		printf("Step %d\n",i);
 		int nextGen = ( this->bufferLocation + 1 ) % 2;
 		vector<TimeSteppedPhysicsObject**>::iterator iter = this->masses.begin();
 		TimeSteppedPhysicsObject** massSet;
 		TimeSteppedPhysicsObject* current;
+		int item = 0;
 		for(;iter != this->masses.end(); ++iter)
 		{
+			printf("Forces for item #%d\n",item++);
 			massSet = *iter;
 			// Copy all old values to the "future" generation
 			current = massSet[nextGen];
