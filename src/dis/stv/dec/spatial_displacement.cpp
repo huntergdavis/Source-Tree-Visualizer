@@ -89,7 +89,12 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 		// Use minDiff version of constructor
 		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0.0005,0.2);
 		// Add centered attractor mass first
-		engine->addMass(new FixedAttractor(-0.75 * maxChild,0,0));
+		double attractorWeight = -0.75 * maxChild;
+		if(attractorWeight > -1)
+		{
+			attractorWeight = -1;
+		}
+		engine->addMass(new FixedAttractor(attractorWeight,0,0));
 
 		// Layout directories first
 		bool left = true;
@@ -132,6 +137,8 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 		// Run simulation
 		engine->run();
 		// Normalize positions to range [0,pi]
+		double rangeMin = 3.14159/4;
+		double rangeMax = 3*3.14159/4;
 		double least = DBL_MAX;
 		double most = -DBL_MAX;
 		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
@@ -152,12 +159,12 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 		if(most == least)
 		{
 			// Adjust
-			trans = (3.14159/2);
+			trans = ((rangeMax - rangeMin)/2);
 			least = treeNode->getX() - 1;
 		}
 		else
 		{
-			trans = (3.14159)/(most - least);
+			trans = (rangeMax - rangeMin)/(most - least);
 		}
 		if(most - least != 0)
 		{
@@ -166,7 +173,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootX, double r
 			{
 				node = *iter;
 				treeNode = simPairs[node];
-				treeNode->setLocation((treeNode->getX() - least)*trans,treeNode->getY());
+				treeNode->setLocation((treeNode->getX() - least)*trans + rangeMin,treeNode->getY());
 				//printf("%s adjusted to (%f,%f)\n",node->data["name"].c_str(),treeNode->getX(),treeNode->getY());
 			}
 			// Transform positions to arc

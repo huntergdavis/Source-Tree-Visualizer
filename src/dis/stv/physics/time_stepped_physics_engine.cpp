@@ -17,7 +17,7 @@ TimeSteppedPhysicsEngine::TimeSteppedPhysicsEngine(double minDiff, double stepTi
 
 void TimeSteppedPhysicsEngine::addMass(TimeSteppedPhysicsObject* mass)
 {
-	printf("Adding mass[%d]\n",mass->getMass());
+	//printf("Adding mass[%d]\n",mass->getMass());
 	TimeSteppedPhysicsObject** massSet = (TimeSteppedPhysicsObject**)malloc(2*sizeof(TimeSteppedPhysicsObject*));
 	massSet[0] = mass;
 	massSet[1] = mass->clone();
