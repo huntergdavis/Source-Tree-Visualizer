@@ -39,6 +39,8 @@ LDFLAGS = -L/usr/lib \
 SOURCES = src/dis/stv/io/git_repository_access.cpp \
 	src/dis/stv/gen/space_colonizer.cpp \
 	src/dis/stv/draw/scanline_artist.cpp \
+	src/dis/stv/draw/drawable_data.cpp \
+	src/dis/stv/draw/drawable_datum.cpp \
 	src/dis/stv/dec/spatial_displacement.cpp \
 	src/dis/stv/main/simple_tree.cpp \
 	src/dis/stv/physics/physical_mass.cpp \

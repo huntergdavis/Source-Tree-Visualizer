@@ -14,7 +14,7 @@
 class Digitizer
 {
 public:
-	virtual DrawableData* digitize(const SurrogateTreeNode* source) = 0;
+	virtual DrawableData* digitize(SurrogateTreeNode* source) = 0;
 };
 
 #endif /* DIGITIZER_H_ */

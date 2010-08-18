@@ -7,9 +7,8 @@
 
 #include "space_colonizer.h"
 
-SpaceColonizer::SpaceColonizer(int segmentLength)
+SpaceColonizer::SpaceColonizer(int segmentLength):segLen(segmentLength)
 {
-	this->segLen = segmentLength;
 }
 
 // Updates center of mass by removing values of child
@@ -82,13 +81,12 @@ void SpaceColonizer::stepOrSplit(SurrogateTreeNode* source)
 DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 {
 	// Initialize drawable data set
-	//DrawableData* data = new DrawableData();
+	DrawableData* data = new DrawableData();
 
 	// Precalculate subtree center of mass (SCoM) for each node
 	this->calculateSubtreeCenterOfMass(source);
 
 	// Run stepOrSplit() over each leader
 
-
-	return NULL;//data;
+	return data;
 }

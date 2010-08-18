@@ -8,7 +8,6 @@
 #ifndef SCANLINE_ARTIST_H_
 #define SCANLINE_ARTIST_H_
 
-#include <Magick++.h>
 #include <iostream>
 #include <math.h>
 #include <list>

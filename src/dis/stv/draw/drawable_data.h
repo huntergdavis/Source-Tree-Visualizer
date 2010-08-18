@@ -8,14 +8,20 @@
 #ifndef DRAWABLE_H_
 #define DRAWABLE_H_
 
-#include <boost/property_tree/ptree.hpp>
+#include <vector>
+#include <unordered_map>
+#include "drawable_datum.h"
 
-using boost::property_tree::ptree;
+using namespace std;
 
 class DrawableData
 {
+private:
+	unordered_map<int,vector<DrawableDatum*>*> drawItems;
 public:
-	virtual ptree data() = 0;
+	DrawableData();
+	void insert(int layer, DrawableDatum* datum);
+	vector<DrawableDatum*>* getLayer(int layer);
 };
 
 #endif /* DRAWABLE_H_ */
