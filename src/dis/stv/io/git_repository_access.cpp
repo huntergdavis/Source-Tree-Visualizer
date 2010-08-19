@@ -31,9 +31,6 @@ GitRepositoryAccess::GitRepositoryAccess(string repositoryRoot)
 	// add git repo type of local files
 	this->gitRepoType = 1;
 
-	// username and repo credentials
-	this->userNameCredentials = "";
-	this->repoNameCredentials = root;
 }
 
 void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
@@ -209,28 +206,5 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 	return result;
 }
 
-// -------------------------------------------------------------------------
-// API :: GitRepositoryAccess::writer
-// PURPOSE :: callback function for curl to write buffers to
-//         ::
-// PARAMETERS :: char *data, size_t size, size_t nmemb, std::string *buffer
-// RETURN :: None
-// -------------------------------------------------------------------------
-int GitRepositoryAccess::writer(char *data, size_t size, size_t nmemb, std::string *buffer)
-{
-   // What we will return
-   int result = 0;
-
-   // Is there anything in the buffer?
-   if (buffer != NULL)
-   {
-     // Append the data to the buffer
-     buffer->append(data, size * nmemb);
-
-     // How much did we write?
-     result = size * nmemb;
-   }
-   return result;
-}
 
 
