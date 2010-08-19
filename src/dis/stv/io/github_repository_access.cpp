@@ -277,7 +277,7 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 	// TODO: add a time string parser using STRFTIME (not hard)
 	// TODO: pull out times with filenames using time first tagging
 	// TODO: time first tagging = collect time, apply it as "time" of commit till next, loop
-	long huntersBirthday = 357603262;
+	long earliestFileDate = 357603262;
 
 
 	// our top level line storage
@@ -297,13 +297,157 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 		if(fileNameVal > 0)
 		{
 			fileNameString = topLevelLine.substr(fileValVal,topLevelLine.size()-fileValVal);
-			//printf("FILENAME:||%s||\n",fileNameString.c_str());
-			// the end result of this function is this call
-			printf("Inserting %s @ %ld\n",fileNameString.c_str(),huntersBirthday);
-			InsertByPathName(treeResult,fileNameString,huntersBirthday);
+			// at this point we have the filename, use that for a query string for the correct date
+			earliestFileDate = retrieveDateFromGitHubFileName(&fileNameString);
+
+			printf("Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
+			InsertByPathName(treeResult,fileNameString,earliestFileDate);
 		}
 
 	}
+}
+
+// -------------------------------------------------------------------------
+// API :: GitHubRepositoryAccess::retrieveDateFromGitHubFileName
+// PURPOSE :: returns date from githubfilename
+//         ::
+// PARAMETERS :: std::string githubfilename - filename
+// RETURN :: long - oldest date associated with filename
+// -------------------------------------------------------------------------
+long GitHubRepositoryAccess::retrieveDateFromGitHubFileName(std::string *gitHubFileName)
+{
+	// At this point we have the filename key, now lets pull the creation time
+	long oldestFileDate = 1;
+
+	// Write any errors in here
+	static char errorBuffer[CURL_ERROR_SIZE];
+
+	// Write all expected data in here
+	static string buffer;
+
+	// set up a lib curl instantiation
+	CURL *curl;
+	CURLcode result;
+
+	// create this custom github api sha1 URL with strings
+	std::string gitHubApiUrl = "http://github.com/api/v2/yaml/commits/list/";
+	gitHubApiUrl += userNameCredentials;
+	gitHubApiUrl += "/";
+	gitHubApiUrl += repoNameCredentials;
+	gitHubApiUrl += "/master/";
+	gitHubApiUrl += gitHubFileName->c_str();
+
+	// Create our curl handle for the detailed info for the SHA key
+	curl = curl_easy_init();
+
+	if (curl)
+	{
+		// Now set up all of the curl options
+		curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
+		curl_easy_setopt(curl, CURLOPT_URL, gitHubApiUrl.c_str());
+		curl_easy_setopt(curl, CURLOPT_HEADER, 0);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+		// clear out the buffer to be sure
+		buffer = "";
+
+		// Attempt to retrieve the remote page
+		printf("\n curl is attempting to pull %s\n",gitHubApiUrl.c_str());
+		result = curl_easy_perform(curl);
+
+		// Always cleanup
+		curl_easy_cleanup(curl);
+
+		// Did we succeed?
+		if (result == CURLE_OK)
+		{
+		   //printf("DDDDDDDDDDDDDDDDD%s",buffer.c_str());
+			oldestFileDate = parseDetailedGitHubFileBlock(&buffer);
+		}
+	}
+
+	// return the oldest file date
+	return oldestFileDate;
+}
+
+// -------------------------------------------------------------------------
+// API :: GitHubRepositoryAccess::parseDetailedGitHubFileBlock
+// PURPOSE :: returns date from githubfilename block
+//         ::
+// PARAMETERS :: std::string buffer - filename detailed checkout info
+// RETURN :: long - oldest date associated with filename
+// -------------------------------------------------------------------------
+long GitHubRepositoryAccess::parseDetailedGitHubFileBlock(std::string *buffer)
+{
+	// create an istringstream to parse the suboutput for the oldest time
+	std::istringstream gitHubTimeBlockSS(*buffer);
+
+	// our individual filename date entire line storage
+	std::string dateLine;
+
+	// storage for the date string exactly
+	std::string dateOnlyString;
+
+	// did we find a date value
+	bool dateFound = 0;
+
+	// loop over the detailed commit and find filenames
+	while (getline (gitHubTimeBlockSS, dateLine))
+	{
+		// the "filename:" identifier will be where we find the files
+		int fileNameDateVal = dateLine.find("date:");
+		int fileDateOffsetVal = fileNameDateVal + 7;
+
+		// if we find date: , we want to keep it
+		if(fileNameDateVal > 0)
+		{
+			dateFound = 1;
+			dateOnlyString = dateLine.substr(fileDateOffsetVal,dateLine.size()-fileDateOffsetVal-7);
+		}
+	}
+
+	if (dateFound == 1)
+	{
+		//printf("\nDDDDDD|||%s|||",dateOnlyString.c_str());
+
+		// return the results of parsing this date string
+		return parseExactDateString(&dateOnlyString);
+	}
+	else
+	{
+		return 0;
+	}
+
+}
+
+// -------------------------------------------------------------------------
+// API :: GitHubRepositoryAccess::parseExactDateString
+// PURPOSE :: returns date from githubfilename block
+//         ::
+// PARAMETERS :: std::string buffer - exact date of format
+//            :: 2007-10-09T23:18:20
+// RETURN :: long - oldest date associated with filename
+// -------------------------------------------------------------------------
+long GitHubRepositoryAccess::parseExactDateString(std::string *buffer)
+{
+	// our time tm separated unix structure
+	struct tm timeStructure;
+
+	// our raw time structure
+	time_t rawTime;
+
+	// set our locale to US
+	setlocale(LC_TIME, "en_US.iso88591");
+
+	//strptime for the value
+	//strptime("2007-10-09T23:18:20", "%Y-%m-%dT%H:%M:%S", &t);
+	strptime(buffer->c_str(), "%Y-%m-%dT%H:%M:%S", &timeStructure);
+
+	rawTime = mktime(&timeStructure);
+	//printf("RAWTIME\n%ld\n",(long)rawTime);
+	return (long) rawTime;
 }
 
 

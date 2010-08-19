@@ -16,9 +16,11 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <time.h>
 #include "repository_access.h"
 #include "../model/surrogate_tree_node.h"
 #include "curl/curl.h"
+
 
 using namespace std;
 
@@ -31,7 +33,10 @@ private:
 	SurrogateTreeNode* generateTreeFromGitHub();
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
 	void retrieveDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *SHA1);
-	void parseDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *);
+	void parseDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *buffer);
+	long parseDetailedGitHubFileBlock(std::string *buffer);
+	long parseExactDateString(std::string *buffer);
+	long retrieveDateFromGitHubFileName(std::string *gitHubFileName);
 	static int writer(char *data, size_t size, size_t nmemb, std::string *buffer);
 
 public:
