@@ -46,12 +46,14 @@ void SurrogateTreeNode::scale(string property, double factor)
 	SurrogateTreeNode* node;
 	double currValue;
 	double newValue;
+
+	currValue = atof(this->data[property].c_str());
+	newValue = factor * currValue;
+	this->data[property] = boost::lexical_cast<string>(newValue);
+
 	for(vector<SurrogateTreeNode*>::iterator iter = this->children.begin(); iter != this->children.end(); ++iter)
 	{
 		node = *iter;
-		currValue = atof(node->data[property].c_str());
-		newValue = factor * currValue;
-		node->data[property] = boost::lexical_cast<string>(newValue);
 		node->scale(property, factor);
 	}
 }
@@ -61,13 +63,15 @@ void SurrogateTreeNode::transform(string property, PropertyTransformer* transfor
 	SurrogateTreeNode* node;
 	double currValue;
 	double newValue;
+
+	currValue = atof(this->data[property].c_str());
+	newValue = transformer->transform(currValue);
+	//printf("Setting '%s' to %f\n", property.c_str(),newValue);
+	this->data[property] = boost::lexical_cast<string>(newValue);
+
 	for(vector<SurrogateTreeNode*>::iterator iter = this->children.begin(); iter != this->children.end(); ++iter)
 	{
 		node = *iter;
-		currValue = atof(node->data[property].c_str());
-		newValue = transformer->transform(currValue);
-		//printf("Setting '%s' to %f\n", property.c_str(),newValue);
-		node->data[property] = boost::lexical_cast<string>(newValue);
 		node->transform(property, transformer);
 	}
 }

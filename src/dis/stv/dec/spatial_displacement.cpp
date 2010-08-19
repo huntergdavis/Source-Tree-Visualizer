@@ -48,8 +48,8 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 	tree->scale("x", scalingFactorW);
 	tree->scale("y",scalingFactorH);
 	// Transform points to look more "naturally tree-like"
-//	PropertyInverter inverter(allowedHeight);
-//	tree->transform("y",&inverter);
+	PropertyInverter inverter(allowedHeight + 20);
+	tree->transform("y",&inverter);
 	PropertyShifter shifter(this->width/2.0);
 	tree->transform("x",&shifter);
 }
@@ -123,7 +123,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 
 		// Layout nodes.  Order from middle outward by creation time (oldest in the middle)
 		// Use minDiff version of constructor
-		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0.0005,0.2);
+		TimeSteppedPhysicsEngine* engine = new TimeSteppedPhysicsEngine(0.001,0.1);
 		// Add centered attractor mass first
 		double attractorWeight = -0.75 * maxChild;
 		if(attractorWeight > -1)
@@ -240,7 +240,8 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 			node->data["y"] = boost::lexical_cast<string>(newY);
 			printf("%s @ (%s,%s)\n",node->data["name"].c_str(),node->data["x"].c_str(),node->data["y"].c_str());
 			// Run expand on child
-			this->expand(node,treeNode->getRotation()/2,newX,newY);
+			double childRot = treeNode->getRotation() + ((3.14159/2)-treeNode->getRotation())/2;
+			this->expand(node,childRot,newX,newY);
 		}
 	}
 	else

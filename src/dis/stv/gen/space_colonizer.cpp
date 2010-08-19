@@ -60,8 +60,8 @@ void SpaceColonizer::calculateSubtreeCenterOfMass(SurrogateTreeNode* source)
 			childWeight = atoi(child->data["size"].c_str());
 			this->calculateSubtreeCenterOfMass(child);
 			totalWeight += childWeight;
-			totalX += (atof(child->data["scomX"].c_str()) * childWeight);
-			totalY += (atof(child->data["scomY"].c_str()) * childWeight);
+			totalX += (atof(child->data["x"].c_str()) * childWeight);
+			totalY += (atof(child->data["y"].c_str()) * childWeight);
 		}
 		// Average together <ScoM, weight> child pairs
 		scomX = totalX / totalWeight;
@@ -204,6 +204,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				else
 				{
 					//printf("Removing leader\n");
+					printf("Removing leader at (%f, %f)\n",leader->getLocationX(),leader->getLocationY());
 					vector<ColonizationLeader*>::iterator colonIter;
 					for(colonIter = this->leaders.begin(); colonIter < this->leaders.end(); ++colonIter)
 					{
