@@ -8,20 +8,25 @@
 #ifndef COLONIZATION_LEADER_H_
 #define COLONIZATION_LEADER_H_
 
+#include "../model/surrogate_tree_node.h"
+
 class ColonizationLeader
 {
 private:
 	double locationX;
 	double locationY;
 	double orientation;
+	SurrogateTreeNode* sourceSet;
 
 public:
-	ColonizationLeader(double locationX, double locationY, double orientation);
+	ColonizationLeader(double locationX, double locationY, double orientation, SurrogateTreeNode* sourceSet);
 	double getLocationX();
 	double getLocationY();
 	double getOrientation();
 	void setLocation(double x, double y);
 	void setOrientation(double orientation);
+	SurrogateTreeNode* getSourceSet();
+	void setSourceSet(SurrogateTreeNode* newSourceSet);
 };
 
 #endif /* COLONIZATION_LEADER_H_ */

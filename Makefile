@@ -2,7 +2,9 @@
 
 CC = g++
 
-CFLAGS = -c -Wall -W -pthread -std=c++0x 
+CFLAGS = -c -Wall -W -pthread -std=c++0x
+
+DEBUGFLAGS = -ggdb
 
 INCLUDEFLAGS = -Isrc/dis/stv/dec \
 	-Isrc/dis/stv/draw \
@@ -61,10 +63,10 @@ PROJECTBINARY = bin/simple_tree
 all: $(SOURCES) $(PROJECTBINARY)
 
 $(PROJECTBINARY): $(OBJECTS)
-	$(CC) $(INCLUDEFLAGS) $(LDFLAGS) $(OBJECTS) -o $@
+	$(CC) $(DEBUGFLAGS) $(INCLUDEFLAGS) $(LDFLAGS) $(OBJECTS) -o $@
 
 .cpp.o:
-	$(CC) $(CFLAGS) $(INCLUDEFLAGS) $(LDFLAGS)  $< -o $@
+	$(CC) $(DEBUGFLAGS) $(CFLAGS) $(INCLUDEFLAGS) $(LDFLAGS)  $< -o $@
 
 clean:
 	rm $(OBJECTS)
