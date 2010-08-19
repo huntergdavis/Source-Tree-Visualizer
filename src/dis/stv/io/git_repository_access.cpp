@@ -177,7 +177,7 @@ int GitRepositoryAccess::generateLog()
 {
 	int commandReturnValue = 0;
 
-	if(this->gitRepoType == 1)
+	if(this->repoType == 1)
 	{
 		string gitLogWithOutput = "cd " + this->root + "; " + GIT_COMMAND + " > " + TEMP_FILE;
 		printf("Log command: %s\n",gitLogWithOutput.c_str());
@@ -192,7 +192,7 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 {
 	SurrogateTreeNode* result = NULL;
 
-	if(this->gitRepoType == 1)
+	if(this->repoType == 1)
 	{
 		// If we generated a log file
 		if(!this->generateLog())

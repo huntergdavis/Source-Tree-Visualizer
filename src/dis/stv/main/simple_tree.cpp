@@ -9,6 +9,7 @@
 #include "../io/git_repository_access.h"
 #include "../io/github_repository_access.h"
 #include "../io/svn_remote_repository_access.h"
+#include "../io/cvs_remote_repository_access.h"
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
 #include "../gen/space_colonizer.h"
@@ -25,8 +26,10 @@ int main(int argc, char **argv)
 
 	// Retrieve tree from GIT and create surrogate tree
 	// for now, ask the user if local files or github project
-	cout << "\n1==local\n2==gritProject\n3==any github project";
-	cout << "\n4==http://hkit.googlecode.com/svn/trunk/\n5==any SVN url\n";
+	cout << "\n1==local git\n2==grit git remote Project\n3==any github project";
+	cout << "\n4==http://hkit.googlecode.com/svn/trunk/\n5==any SVN url";
+	cout << "\n6==pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd";
+	cout << "\n7==any CVS url\n";
 	int answer = 0 * argc;
 	cin >> answer;
 
@@ -61,6 +64,17 @@ int main(int argc, char **argv)
 		cout << "\nEnter a SVN url like http://hkit.googlecode.com/svn/trunk/\n";
 		cin >> svnRepoBuffer;
 		git = new SvnRemoteRepositoryAccess(svnRepoBuffer);
+	}
+	else if(answer == 6)
+	{
+		git = new CvsRemoteRepositoryAccess("pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd");
+	}
+	else if(answer == 7)
+	{
+		char cvsRepoBuffer[255];
+		cout << "\nEnter a qualified CVS url like pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd\n";
+		cin >> cvsRepoBuffer;
+		git = new CvsRemoteRepositoryAccess(cvsRepoBuffer);
 	}
 
 	SurrogateTreeNode* source = git->retrieve();

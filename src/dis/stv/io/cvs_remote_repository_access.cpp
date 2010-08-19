@@ -5,29 +5,29 @@
  *      Author: Mark Christensen
  */
 
-#include "svn_remote_repository_access.h"
+#include "cvs_remote_repository_access.h"
 
 using namespace std;
 
 
 // -------------------------------------------------------------------------
-// API :: SvnRemoteRepositoryAccess::SvnRemoteRepositoryAccess
-// PURPOSE :: instantiation of SvnRemoteRepositoryAccess
+// API :: CvsRemoteRepositoryAccess::CvsRemoteRepositoryAccess
+// PURPOSE :: instantiation of CvsRemoteRepositoryAccess
 //         :: specifically, with a github url of project info
 // PARAMETERS :: std::string gitHubUserName, std::string gitHubProjectName
 // RETURN :: None
 // -------------------------------------------------------------------------
-SvnRemoteRepositoryAccess::SvnRemoteRepositoryAccess(std::string svnRemoteServerString)
+CvsRemoteRepositoryAccess::CvsRemoteRepositoryAccess(std::string cvsRemoteServerString)
 {
-	// make project root the yaml api info stream for svn
-	this->remoteServerString = svnRemoteServerString;
+	// make project root the yaml api info stream for cvs
+	this->remoteServerString = cvsRemoteServerString;
 
-	// add repo type of svn
-	this->repoType = 3;
+	// add repo type of cvs
+	this->repoType = 4;
 
 }
 
-void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
+void CvsRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
 {
 	// Split off first part of path
 	int firstIndex = pathname.find("/");
@@ -93,16 +93,16 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 
 
 // -------------------------------------------------------------------------
-// API :: SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn
-// PURPOSE :: generation function for tree when using svn as a medium
+// API :: CvsRemoteRepositoryAccess::generateTreeFromRemoteCvs
+// PURPOSE :: generation function for tree when using cvs as a medium
 //         ::
 // PARAMETERS ::
 // RETURN :: SurrogateTreeNode* - containing tree values generated
 // -------------------------------------------------------------------------
-SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
+SurrogateTreeNode* CvsRemoteRepositoryAccess::generateTreeFromRemoteCvs()
 {
 	// sanity check
-	if(this->repoType != 3)
+	if(this->repoType != 4)
 	{
 		// shouldn't get here
 		// TODO: add error handling function with try-catch default
@@ -113,139 +113,145 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
 	treeResult->data["name"] = "root";
 
-	// create a string for holding the svn log
-	std::string svnLog;
-	svnLog.reserve(10024);  // reserve 10k for fast allocation
+	// create a string for holding the cvs log
+	std::string cvsLog;
+	cvsLog.reserve(10024);  // reserve 10k for fast allocation
 
-	// create a string for holding the svn command
-	std::string svnCommand = "svn log --verbose --non-interactive ";
-	svnCommand += remoteServerString;
+	// create a string for holding the cvs command
+	std::string cvsCommand = " cvs -d:";
+	cvsCommand += remoteServerString;
+	cvsCommand += " history -a -xGA";
 
 	// create a file pointer handle to our command output
-	FILE *fp = popen(svnCommand.c_str(), "r" );
+	FILE *fp = popen(cvsCommand.c_str(), "r" );
 
-	// loop over all the file handle and put into stringstream
+	// loop over all the file handle and put into string
     while (true)
     {
       int c = std::fgetc( fp );
       if (c == EOF) break;
-      svnLog.push_back( (char)c );
+      cvsLog.push_back( (char)c );
     }
     std::fclose( fp );
-    //printf("SVN LOG RESULT %s",svnLog.c_str());
+    //printf("CVS LOG RESULT %s",cvsLog.c_str());
 
     // generate tree entry from log file entry
-    generateTreeFromLog(treeResult,&svnLog);
+    generateTreeFromLog(treeResult,&cvsLog);
 
 	// return the filled tree
 	return treeResult;
 }
 
 // -------------------------------------------------------------------------
-// API :: SvnRemoteRepositoryAccess::generateTreeFromLog
-// PURPOSE :: generation function for ptree when using svn as a medium
+// API :: CvsRemoteRepositoryAccess::generateTreeFromLog
+// PURPOSE :: generation function for ptree when using cvs as a medium
 //         ::
 // PARAMETERS ::
 // RETURN :: SurrogateTreeNode* - containing tree values generated
 // -------------------------------------------------------------------------
-void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer)
+void CvsRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer)
 {
 	// Blank ptree
 	SurrogateTreeNode* result = new SurrogateTreeNode();
 	result->data["name"] = "root";
 
-	// For each time block, parse files and add to ptree
-	char c,d;
+	// For each line, parse files and add to ptree
+	// create an istringstream to parse the suboutput for added files
+	std::istringstream cvsTimeBlockSS(*buffer);
 	std::string str;
-	for(int i = 0;i<(int)buffer->size()-1;i++)
+
+	// parse the cvs time block
+	// loop over the detailed commit and find filenames
+	while (getline (cvsTimeBlockSS, str))
 	{
-		c = buffer->at(i);
-		d = buffer->at(i+1);
-		if((c == '\n') && (d == '\n'))
-		{
-			parseTimeBlock(tree,&str);
-		}
-		else
-		{
-			str += c;
-		}
+		parseTimeBlock(tree,&str);
 	}
+
 }
 // -------------------------------------------------------------------------
-// API :: SvnRemoteRepositoryAccess::parseTimeBlock
+// API :: CvsRemoteRepositoryAccess::parseTimeBlock
 // PURPOSE :: parsing function for individual SVN commit log blocks
 //         ::
 // PARAMETERS ::
 // RETURN :: SurrogateTreeNode* - containing tree values generated
 // -------------------------------------------------------------------------
-void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
+void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
 {
-	//printf("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
+	//printf("\nINDIVIDUAL TIME BLOCK |%s|\n",buffer->c_str());
 
-	// at this point we have the individual SVN time block
+	// at this point we have the individual CVS time block
 	// let's pull out the date first, followed by any file additions
 	std::string dateString;
 
-	// the date is between the 2nd and 3rd pipe
-	int secondPipeIndex;
-	int firstPipeIndex;
-
-	// find the first pipe
-	firstPipeIndex = buffer->find("|");
-	if(firstPipeIndex < 0)
-	{
-		exit(1);
-	}
-
-	// find the second pipe
-	secondPipeIndex = buffer->find("|",firstPipeIndex+1);
-	if(secondPipeIndex < 0)
-	{
-		exit(1);
-	}
-
-	// pull our date string from between index 2 and 3
-	dateString = buffer->substr(secondPipeIndex+2,19);
+	// pull our date string from set index
+	dateString = buffer->substr(2,16);
 
 	// print out the date
-	//printf("\nTHEDATE: |%s| index 1:%d 2:%d\n",dateString.c_str(),firstPipeIndex,secondPipeIndex);
+	//printf("\nTHEDATE: |%s| \n",dateString.c_str());
 	long dateEpoch = parseExactDateString(&dateString);
 
-
-	// loop over each line and search for created files
-	// created files are denoted by an 'A' tag
-	// create an istringstream to parse the suboutput for added files
-	std::istringstream svnTimeBlockSS(*buffer);
-
-	// individual filename line storage
-	std::string fileNameLine;
-
-	// individual filename storage
-	std::string fileNameString;
-
-	// loop over the detailed commit and find filenames
-	while (getline (svnTimeBlockSS, fileNameLine))
+	// store all the spacing tabstops from the line
+	int tabStops[8];
+	int numberTabStops = 0;
+	for(int i = 0;i<(int)buffer->size()-1;i++)
 	{
-		if(fileNameLine.find("A") == 3)
+		if(buffer->at(i) == ' ')
 		{
-			fileNameString = fileNameLine.substr(5,fileNameLine.size()-5);
-			//printf("\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
-			// actually insert the file entry into the tree
-			InsertByPathName(tree,fileNameString,dateEpoch);
+			if(buffer->at(i+1) != ' ')
+			{
+				tabStops[numberTabStops] = i;
+				numberTabStops++;
+				//printf("\nTAB STOP #%d, VALUE %d\n",numberTabStops,i);
+			}
 		}
 	}
 
+	// now pull the filename (unqualified -- no directory)
+	std::string unqualifiedFileName;
+	int fileNameWhiteSpaceLocation = buffer->find(" ",tabStops[5]+1);
+	unqualifiedFileName = buffer->substr(tabStops[5]+1,fileNameWhiteSpaceLocation-tabStops[5]-1);
+	//printf("\nUNQUALIFIEDFILENAME: |%s|\n",unqualifiedFileName.c_str());
+
+	// now pull the directory
+	std::string directoryName;
+	int directoryNameWhiteSpaceLocation = buffer->find(" ",tabStops[6]+1);
+	directoryName = buffer->substr(tabStops[6]+1,directoryNameWhiteSpaceLocation-tabStops[6]-1);
+	//printf("\nDIRECTORYNAME: |%s|\n",directoryName.c_str());
+
+	// now put the directory and filename together
+	std::string fullyQualifiedName;
+
+	// remove any directory ./ qualifier
+	if(directoryName.find("./") == 0)
+	{
+		fullyQualifiedName = directoryName.substr(2,directoryName.length()-2);
+	}
+	else
+	{
+		fullyQualifiedName = directoryName;
+	}
+
+	// add trailing slash to directory
+	fullyQualifiedName += "/";
+
+	// add filename to fully qualified name
+	fullyQualifiedName += unqualifiedFileName;
+	//printf("\nQUALIFIEDNAME: |%s|\n",fullyQualifiedName.c_str());
+
+
+	// actually insert path into tree
+	InsertByPathName(tree,fullyQualifiedName,dateEpoch);
 }
 
 // -------------------------------------------------------------------------
-// API :: SvnRemoteRepositoryAccess::parseExactDateString
-// PURPOSE :: returns date from svn log block
+// API :: CvsRemoteRepositoryAccess::parseExactDateString
+// PURPOSE :: returns date from cvs log block
 //         ::
 // PARAMETERS :: std::string buffer - exact date of format
-//            :: 2009-05-12 05:36:53
+//            :: 2009-05-12 05:36
 // RETURN :: long - oldest date associated with filename
 // -------------------------------------------------------------------------
-long SvnRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
+long CvsRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
 {
 	// our time tm separated unix structure
 	struct tm timeStructure;
@@ -258,7 +264,7 @@ long SvnRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
 
 	//strptime for the value
 	//strptime("2007-10-09T23:18:20", "%Y-%m-%dT%H:%M:%S", &t);
-	strptime(buffer->c_str(), "%Y-%m-%d %H:%M:%S", &timeStructure);
+	strptime(buffer->c_str(), "%Y-%m-%d %H:%M", &timeStructure);
 
 	rawTime = mktime(&timeStructure);
 	//printf("RAWTIME\n%ld\n",(long)rawTime);
@@ -266,13 +272,13 @@ long SvnRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
 }
 
 
-SurrogateTreeNode* SvnRemoteRepositoryAccess::retrieve()
+SurrogateTreeNode* CvsRemoteRepositoryAccess::retrieve()
 {
 	SurrogateTreeNode* result = NULL;
 
-	if(this->repoType == 3)
+	if(this->repoType == 4)
 	{
-		result = this->generateTreeFromRemoteSvn();
+		result = this->generateTreeFromRemoteCvs();
 	}
 
 	return result;

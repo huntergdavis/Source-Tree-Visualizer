@@ -5,8 +5,8 @@
  *      Author: Mark Christensen
  */
 
-#ifndef GIT_REPOSITORY_ACCESS_H_
-#define GIT_REPOSITORY_ACCESS_H_
+#ifndef CVS_REMOTE_REPOSITORY_ACCESS_H_
+#define CVS_REMOTE_REPOSITORY_ACCESS_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,24 +16,30 @@
 #include <vector>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
+#include <time.h>
+#include <stdio.h>
 #include "repository_access.h"
 #include "../model/surrogate_tree_node.h"
 #include "curl/curl.h"
 
+
 using namespace std;
 
-class GitRepositoryAccess : public RepositoryAccess
+class CvsRemoteRepositoryAccess : public RepositoryAccess
 {
 private:
 	string root;
-	int generateLog();
-	SurrogateTreeNode* generatePTreeFromLog();
-	void parseTimeBlock(SurrogateTreeNode* tree, long time, ifstream& log);
+	string remoteServerString;
+	SurrogateTreeNode* generateTreeFromRemoteCvs();
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
+	long parseExactDateString(std::string *buffer);
+	void generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer);
+	void parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer);
+
 
 public:
-	GitRepositoryAccess(string repositoryRoot);
+	CvsRemoteRepositoryAccess(std::string cvsRemoteServerString);
 	SurrogateTreeNode* retrieve();
 };
 
-#endif /* GIT_REPOSITORY_ACCESS_H_ */
+#endif /* CVS_REMOTE_REPOSITORY_ACCESS_H_ */
