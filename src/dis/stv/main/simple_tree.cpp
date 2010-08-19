@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 	// Retrieve tree from GIT and create surrogate tree
 	// for now, ask the user if local files or github project
 	cout << "\nPress 1 and enter for local, 2 and enter for github\n";
-	int answer = 0;
+	int answer = 0 * argc;
 	cin >> answer;
 
 	GitRepositoryAccess* git;

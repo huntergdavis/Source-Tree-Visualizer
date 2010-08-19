@@ -191,15 +191,19 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromGitHub()
 		// TODO: add error handling function with try-catch default
 		exit(1);
 	}
+
+	// Blank ptree
+	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
+	treeResult->data["name"] = "root";
+
 	// first retrieve the base log file from which to retrieve sha1 hashes for commit blobs
-	std::stringstream topLevelAPIStream;
-	topLevelAPIStream << "http://github.com/api/v2/yaml/commits/list/";
-	topLevelAPIStream << userNameCredentials;
-	topLevelAPIStream << "/";
-	topLevelAPIStream << repoNameCredentials;
-	topLevelAPIStream << "/";
-	topLevelAPIStream << "master";
-	std::string topLevelApiUrl = topLevelAPIStream.str();
+	std::string topLevelApiUrl;
+	topLevelApiUrl = "http://github.com/api/v2/yaml/commits/list/";
+	topLevelApiUrl += userNameCredentials;
+	topLevelApiUrl += "/";
+	topLevelApiUrl += repoNameCredentials;
+	topLevelApiUrl += "/";
+	topLevelApiUrl += "master";
 
 	// Write any errors in here
 	static char errorBuffer[CURL_ERROR_SIZE];
@@ -242,8 +246,8 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromGitHub()
 		   int linenum = 0;
 		   // our top level line storage
 		   std::string topLevelLine;
-		   // sublevel line storage
-		   std::string subLevelSHA1;
+		   // sha1 storage
+		   std::string topLevelSHA1;
 		   while (getline (topLevelSS, topLevelLine))
 		   {
 			   linenum++;
@@ -253,44 +257,57 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromGitHub()
 			   // if we have a entry that's not a parent entry
 			   if(idVal == 2)
 			   {
-				   subLevelSHA1 = topLevelLine.substr(5,topLevelLine.size()-5);
-				   printf("\n idval %d\n full line %s\n subline %s\n",idVal,topLevelLine.c_str(),subLevelSHA1.c_str());
-
-				   // At this point we have the SHA1 key, now lets pull the filename and creation time
-				   // Create our curl handle for the detailed info for the SHA key
-				   curl = curl_easy_init();
-
-				   if (curl)
-				   {
-					   // Now set up all of the curl options
-					   curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
-					   curl_easy_setopt(curl, CURLOPT_URL, topLevelApiUrl.c_str());
-					   curl_easy_setopt(curl, CURLOPT_HEADER, 0);
-					   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
-					   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
-					   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
-
-					   // Attempt to retrieve the remote page
-					   printf("\n curl is attempting to pull %s\n",topLevelApiUrl.c_str());
-					   result = curl_easy_perform(curl);
-
-					   // Always cleanup
-					   curl_easy_cleanup(curl);
-
-					   // Did we succeed?
-					   if (result == CURLE_OK)
-					   {
-						   return 0; //what??
-					   }
-
+				   topLevelSHA1 = topLevelLine.substr(5,topLevelLine.size()-5);
+				   //printf("\n sha1 %s\n",SHA1->c_str());
+				   parseDetailedGitHubBlock(&topLevelSHA1,treeResult);
 			   }
 		   }
+	   }
+	}
+	// return the filled tree
+	return treeResult;
+}
+void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *SHA1,SurrogateTreeNode* treeResult)
+{
+	// At this point we have the SHA1 key, now lets pull the filename and creation time
+	// create this custom github api sha1 URL with strings
+	std::string subLevelApiUrl = "http://github.com/api/v2/yaml/commits/show/";
+	subLevelApiUrl += userNameCredentials;
+	subLevelApiUrl += "/";
+	subLevelApiUrl += repoNameCredentials;
+	subLevelApiUrl += "/";
+	subLevelApiUrl += topLevelSHA1;
 
-	   }
-	   else
-	   {
-		  commandReturnValue = 1;
-	   }
+	// Create our curl handle for the detailed info for the SHA key
+	curl = curl_easy_init();
+
+	if (curl)
+	{
+		// Now set up all of the curl options
+		curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
+		curl_easy_setopt(curl, CURLOPT_URL, subLevelApiUrl.c_str());
+		curl_easy_setopt(curl, CURLOPT_HEADER, 0);
+		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+		// clear out the buffer to be sure
+		buffer = "";
+
+		// Attempt to retrieve the remote page
+		printf("\n curl is attempting to pull %s\n",subLevelApiUrl.c_str());
+		result = curl_easy_perform(curl);
+
+		// Always cleanup
+		curl_easy_cleanup(curl);
+
+		// Did we succeed?
+		if (result == CURLE_OK)
+		{
+		   printf("%s",buffer.c_str());
+		   // create an istringstream to parse the suboutput
+		   std::istringstream subLevelSS(buffer);
+		}
 	}
 }
 
