@@ -9,6 +9,7 @@
 
 PropertyShifter::PropertyShifter(double shiftAmount):shiftAmount(shiftAmount)
 {
+
 }
 
 double PropertyShifter::transform(double initialValue)

@@ -139,7 +139,8 @@ void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 			drawItem = *dataList;
 			x = drawItem->getLocationX();
 			y = drawItem->getLocationY();
-			drawList.push_back(DrawableCircle(x, y, x + 2, y + 2));
+			//drawList.push_back(DrawableCircle(x, y, x, y + drawItem->getMass()));
+			drawList.push_back(DrawableCircle(x, y, x, y + 1));
 		}
 	}
 	

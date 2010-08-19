@@ -48,8 +48,8 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 	tree->scale("x", scalingFactorW);
 	tree->scale("y",scalingFactorH);
 	// Transform points to look more "naturally tree-like"
-	PropertyInverter inverter(allowedHeight);
-	tree->transform("y",&inverter);
+//	PropertyInverter inverter(allowedHeight);
+//	tree->transform("y",&inverter);
 	PropertyShifter shifter(this->width/2.0);
 	tree->transform("x",&shifter);
 }

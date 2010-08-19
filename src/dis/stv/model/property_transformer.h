@@ -11,7 +11,6 @@
 class PropertyTransformer
 {
 public:
-	PropertyTransformer();
 	virtual double transform(double initialValue) = 0;
 };
 

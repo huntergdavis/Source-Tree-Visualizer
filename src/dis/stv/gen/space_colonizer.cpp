@@ -87,43 +87,6 @@ double SpaceColonizer::angleFrom(double aX, double aY, double bX, double bY)
 			attractorAngle = 2 * 3.14159 - attractorAngle;
 		}
 	}
-//	if(dx != 0)
-//	{
-//		if(dy > 0)
-//		{
-//			attractorAngle = atan(dy/dx);
-//		}
-//		else if(dy < 0)
-//		{
-//			attractorAngle = 3.14159 - atan(dy/dx);
-//		}
-//		else
-//		{
-//			if(dx > 0)
-//			{
-//				attractorAngle = 0;
-//			}
-//			else
-//			{
-//				attractorAngle = 3.14159;
-//			}
-//		}
-//	}
-//	else
-//	{
-//		if(dy > 0)
-//		{
-//			attractorAngle = 3.14159 / 2;
-//		}
-//		else if(dy < 0)
-//		{
-//			attractorAngle = 3 * 3.14159 / 4;
-//		}
-//		else
-//		{
-//			attractorAngle = 0;
-//		}
-//	}
 	return attractorAngle;
 }
 
@@ -278,7 +241,10 @@ DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 	this->calculateSubtreeCenterOfMass(source);
 
 	// Add first leader
-	ColonizationLeader* starter = new ColonizationLeader(0,0,3.14159/2,source);
+	double x = atof(source->data["x"].c_str());
+	double y = atof(source->data["y"].c_str());
+	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,3.14159/2, atof(source->data["scomX"].c_str()),atof(source->data["scomY"].c_str()));
+	ColonizationLeader* starter = new ColonizationLeader(x,y,3.14159/2,source);
 	this->leaders.push_back(starter);
 
 	// Run stepOrSplit() over each leader while there are leaders
