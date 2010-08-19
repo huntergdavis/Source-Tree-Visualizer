@@ -117,15 +117,28 @@ void ScanlineArtist::drawBranch(list<Drawable> *drawList, Branch *branch, int st
 }
 
 
-void ScanlineArtist::draw(Image &image, const DrawableData* dataset)
+void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 {
 	printf("Drawing\n");
 	cout << endl;
 	
 	list<Drawable> drawList;
-	drawList.push_back(DrawableStrokeWidth(0));
+	drawList.push_back(DrawableStrokeWidth(1));
 	drawList.push_back(DrawableFillColor("brown"));
 	
+	map<int,vector<DrawableDatum*>*>::iterator rediculator = dataset->begin();
+	vector<DrawableDatum*>* layerData;
+	DrawableDatum* drawItem;
+	for(; rediculator != dataset->end(); ++rediculator)
+	{
+		layerData = rediculator->second;
+		for(vector<DrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
+		{
+			drawItem = *dataList;
+			drawList.push_back(DrawableCircle(drawItem->getLocationX(), drawItem->getLocationX(), drawItem->getMass(), drawItem->getMass()));
+		}
+	}
+
 //	int radius = rootSize/2;
 //	// Center horizontally
 //	int x = (rootX) - radius;

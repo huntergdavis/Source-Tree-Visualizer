@@ -9,7 +9,7 @@
 #define DRAWABLE_H_
 
 #include <vector>
-#include <unordered_map>
+#include <map>
 #include "drawable_datum.h"
 
 using namespace std;
@@ -17,11 +17,13 @@ using namespace std;
 class DrawableData
 {
 private:
-	unordered_map<int,vector<DrawableDatum*>*> drawItems;
+	map<int,vector<DrawableDatum*>*> drawItems;
 public:
 	DrawableData();
 	void insert(int layer, DrawableDatum* datum);
 	vector<DrawableDatum*>* getLayer(int layer);
+	map<int,vector<DrawableDatum*>*>::iterator begin();
+	map<int,vector<DrawableDatum*>*>::iterator end();
 };
 
 #endif /* DRAWABLE_H_ */

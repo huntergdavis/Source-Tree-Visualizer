@@ -16,7 +16,7 @@ using namespace Magick;
 class Artist
 {
 public:
-	virtual void draw(Image &image, const DrawableData* dataset) = 0;
+	virtual void draw(Image &image, DrawableData* dataset) = 0;
 };
 
 #endif /* ARTIST_H_ */

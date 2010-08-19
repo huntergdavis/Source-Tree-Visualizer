@@ -37,7 +37,7 @@ private:
 	void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int endSize, int length, int x, int y, int angle);
 
 public:
-	void draw(Image &image, const DrawableData* dataset);
+	void draw(Image &image, DrawableData* dataset);
 };
 
 #endif /* SCANLINE_ARTIST_H_ */

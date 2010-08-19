@@ -31,3 +31,12 @@ vector<DrawableDatum*>* DrawableData::getLayer(int layer)
 	return layerList;
 }
 
+map<int,vector<DrawableDatum*>*>::iterator DrawableData::begin()
+{
+	return this->drawItems.begin();
+}
+
+map<int,vector<DrawableDatum*>*>::iterator DrawableData::end()
+{
+	return this->drawItems.end();
+}

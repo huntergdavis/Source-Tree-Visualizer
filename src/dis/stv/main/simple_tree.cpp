@@ -5,7 +5,6 @@
  *      Author: programmer
  */
 #include <Magick++.h>
-#include <boost/property_tree/ptree.hpp>
 #include "../model/surrogate_tree_node.h"
 #include "../io/git_repository_access.h"
 #include "../dec/spatial_displacement.h"
@@ -19,7 +18,6 @@ int main(int argc, char **argv)
 	// Tree Generation pipeline
 	// Retrieve tree from GIT and create surrogate tree
 	GitRepositoryAccess* git = new GitRepositoryAccess("~/Projects/source_tree_vis");
-	//boost::property_tree::ptree* source = git->retrieve();
 	SurrogateTreeNode* source = git->retrieve();
 	printf("Source tree name is %s\n", source->data["name"].c_str());
 
@@ -38,6 +36,17 @@ int main(int argc, char **argv)
 	Image canvas(Geometry(WIDTH,HEIGHT),"white");
 	ScanlineArtist* artist = new ScanlineArtist();
 	artist->draw(canvas, lines);
+
+	try
+	{
+		// Write the image to a file
+		canvas.write( "out/tree.jpg" );
+	}
+	catch( Exception &error_ )
+	{
+		cout << "Caught exception: " << error_.what() << endl;
+		return 1;
+	}
 
 	return 0;
 }
