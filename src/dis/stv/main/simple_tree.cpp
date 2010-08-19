@@ -7,6 +7,7 @@
 #include <Magick++.h>
 #include "../model/surrogate_tree_node.h"
 #include "../io/git_repository_access.h"
+#include "../io/github_repository_access.h"
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
 #include "../gen/space_colonizer.h"
@@ -27,14 +28,14 @@ int main(int argc, char **argv)
 	int answer = 0 * argc;
 	cin >> answer;
 
-	GitRepositoryAccess* git;
+	RepositoryAccess* git;
 	if(answer == 1)
 	{
 		git = new GitRepositoryAccess("~/Projects/source_tree_vis");
 	}
 	else if(answer == 2)
 	{
-		git = new GitRepositoryAccess("mojombo","grit");
+		git = new GitHubRepositoryAccess("mojombo","grit");
 	}
 	else if(answer == 3)
 	{
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
 		cout << "\nEnter the github project name\n";
 		cin >> projectNameBuffer;
 
-		git = new GitRepositoryAccess(userNameBuffer,projectNameBuffer);
+		git = new GitHubRepositoryAccess(userNameBuffer,projectNameBuffer);
 	}
 
 	SurrogateTreeNode* source = git->retrieve();
