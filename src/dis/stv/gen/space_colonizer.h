@@ -9,6 +9,7 @@
 #define SPACE_COLONIZER_H_
 
 #include <math.h>
+#include <boost/lexical_cast.hpp>
 #include "digitizer.h"
 #include "colonization_leader.h"
 #include "../model/surrogate_tree_node.h"

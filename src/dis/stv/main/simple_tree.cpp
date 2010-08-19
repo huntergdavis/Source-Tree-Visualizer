@@ -15,6 +15,10 @@ using namespace Magick;
 
 int main(int argc, char **argv)
 {
+	// Tree image size parameters
+	int WIDTH = 500;
+	int HEIGHT = 500;
+
 	// Tree Generation pipeline
 	// Retrieve tree from GIT and create surrogate tree
 	GitRepositoryAccess* git = new GitRepositoryAccess("~/Projects/source_tree_vis");
@@ -22,7 +26,7 @@ int main(int argc, char **argv)
 	printf("Source tree name is %s\n", source->data["name"].c_str());
 
 	// Decorate surrogate tree nodes with locations
-	SpatialDisplacement* disp = new SpatialDisplacement();
+	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH/2.0,0);
 	disp->decorate(source);
 
 	// Digitize decorated surrogate tree into line segment tree
@@ -31,8 +35,6 @@ int main(int argc, char **argv)
 
 	// Draw tree
 	InitializeMagick(*argv);
-	int WIDTH = 500;
-	int HEIGHT = 500;
 	Image canvas(Geometry(WIDTH,HEIGHT),"white");
 	ScanlineArtist* artist = new ScanlineArtist();
 	artist->draw(canvas, lines);

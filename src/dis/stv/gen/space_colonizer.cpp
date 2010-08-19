@@ -32,9 +32,9 @@ void SpaceColonizer::removeNodeFromSubtreeCenterOfMass(SurrogateTreeNode* source
 	}
 
 	// Save new SCoM values
-	source->data["scomX"] = newX;
-	source->data["scomY"] = newY;
-	source->data["scomWeight"] = newWeight;
+	source->data["scomX"] = boost::lexical_cast<string>(newX);
+	source->data["scomY"] = boost::lexical_cast<string>(newY);
+	source->data["scomWeight"] = boost::lexical_cast<string>(newWeight);
 }
 
 // Puts value of SCoM(x,y) under "scomX" and "scomY" parameters resp.
@@ -68,9 +68,9 @@ void SpaceColonizer::calculateSubtreeCenterOfMass(SurrogateTreeNode* source)
 		scomY = totalY / totalWeight;
 	}
 	// Save SCoM values
-	source->data["scomX"] = scomX;
-	source->data["scomY"] = scomY;
-	source->data["scomWeight"] = totalWeight;
+	source->data["scomX"] = boost::lexical_cast<string>(scomX);
+	source->data["scomY"] = boost::lexical_cast<string>(scomY);
+	source->data["scomWeight"] = boost::lexical_cast<string>(totalWeight);
 }
 
 double SpaceColonizer::angleFrom(double aX, double aY, double bX, double bY)
@@ -154,7 +154,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 {
 	bool modified = false;
 	SurrogateTreeNode* source = leader->getSourceSet();
-	printf("Leader has %d attractors.\n", source->children.size());
+	//printf("Leader has %d attractors.\n", source->children.size());
 	// Look at all attractors and determine if a split should occur
 	// or if the leader should just "step"
 	bool split = false;
@@ -167,11 +167,12 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			attractor = *iter;
 			if(this->shouldSplit(attractor,leader))
 			{
-				printf("Adding leader\n");
+				//printf("Adding leader\n");
 				split = true;
 				// Create new Leader with child set that caused split
 				double attractorAngle = orientationBetween(attractor, leader);
-				ColonizationLeader* newLeader = new ColonizationLeader(leader->getLocationX(),leader->getLocationY(),attractorAngle,attractor);
+				printf("Adding leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getLocationX(),leader->getLocationY(),attractorAngle, atof(attractor->data["scomX"].c_str()),atof(attractor->data["scomY"].c_str()));
+				ColonizationLeader* newLeader = new ColonizationLeader(leader->getLocationX(),leader->getLocationY(),attractorAngle, attractor);
 				this->leaders.push_back(newLeader);
 				modified = true;
 				break;
@@ -215,7 +216,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			// If there is only a single entry, we step if far enough
 			if(sqrt(dx * dx + dy * dy) >= this->segLen)
 			{
-				printf("Distance to CoM: %f\n",sqrt(dx * dx + dy * dy));
+				//printf("Distance to CoM: %f\n",sqrt(dx * dx + dy * dy));
 				// Calculate angle towards subtree center of mass
 				double orientation = this->angleFrom(x,y,childX,childY);
 				double ndx = this->segLen * cos(orientation);
@@ -239,7 +240,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				// Otherwise remove
 				else
 				{
-					printf("Removing leader\n");
+					//printf("Removing leader\n");
 					vector<ColonizationLeader*>::iterator colonIter;
 					for(colonIter = this->leaders.begin(); colonIter < this->leaders.end(); ++colonIter)
 					{
@@ -252,6 +253,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 					modified = true;
 
 					// Insert new Leaf DrawDatum
+					printf("Adding leaf @ (%f,%f)\n",x,y);
 					data->insert(LEAF_LAYER,new DrawableDatum(x, y, 0, this->segLen, this->segLen));
 				}
 			}
@@ -283,7 +285,7 @@ DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 	ColonizationLeader* leader;
 	while(this->leaders.size() > 0)
 	{
-		printf("Leaders: %d\n", this->leaders.size());
+		//printf("Leaders: %d\n", this->leaders.size());
 		for(vector<ColonizationLeader*>::iterator iter = this->leaders.begin(); iter < this->leaders.end(); ++iter)
 		{
 			leader = *iter;

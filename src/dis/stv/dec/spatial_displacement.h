@@ -22,9 +22,12 @@
 class SpatialDisplacement : public Decorator
 {
 public:
+	SpatialDisplacement(double rootX, double rootY);
 	void decorate(SurrogateTreeNode* tree);
 
 private:
+	double rootX;
+	double rootY;
 	void expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY);
 	int count(SurrogateTreeNode* tree);
 	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);

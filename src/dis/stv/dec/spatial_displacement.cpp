@@ -9,13 +9,17 @@
 
 using namespace std;
 
+SpatialDisplacement::SpatialDisplacement(double rootX, double rootY):rootX(rootX),rootY(rootY)
+{
+}
+
 void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 {
 	// Iterate over each node with children
 	// First, count
 	this->count(tree);
 	// Second, float weighted surrogate nodes into position
-	this->expand(tree,0,0,0);
+	this->expand(tree,(3.14159/2),rootX,rootY);
 }
 
 // Sorted in increasing order
@@ -173,7 +177,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 			{
 				node = *iter;
 				treeNode = simPairs[node];
-				treeNode->setRotation((treeNode->getX() - least)*trans + rangeMin + rootAngle);
+				treeNode->setRotation((treeNode->getX() - least)*trans + rangeMin + rootAngle - (3.14159/2));
 				//printf("%s adjusted to (%f,%f)\n",node->data["name"].c_str(),treeNode->getX(),treeNode->getY());
 			}
 		}
@@ -209,7 +213,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 	}
 	else
 	{
-		printf("No children for node '%s'\n", tree->data["name"].c_str());
+		//printf("No children for node '%s'\n", tree->data["name"].c_str());
 	}
 }
 

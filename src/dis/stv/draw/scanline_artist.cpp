@@ -123,53 +123,25 @@ void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 	cout << endl;
 	
 	list<Drawable> drawList;
-	drawList.push_back(DrawableStrokeWidth(1));
+	drawList.push_back(DrawableStrokeWidth(0));
 	drawList.push_back(DrawableFillColor("brown"));
 	
 	map<int,vector<DrawableDatum*>*>::iterator rediculator = dataset->begin();
 	vector<DrawableDatum*>* layerData;
 	DrawableDatum* drawItem;
+	double x;
+	double y;
 	for(; rediculator != dataset->end(); ++rediculator)
 	{
 		layerData = rediculator->second;
 		for(vector<DrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
 		{
 			drawItem = *dataList;
-			drawList.push_back(DrawableCircle(drawItem->getLocationX(), drawItem->getLocationX(), drawItem->getMass(), drawItem->getMass()));
+			x = drawItem->getLocationX();
+			y = drawItem->getLocationY();
+			drawList.push_back(DrawableCircle(x, y, x + 2, y + 2));
 		}
 	}
-
-//	int radius = rootSize/2;
-//	// Center horizontally
-//	int x = (rootX) - radius;
-//	// Start trunk at bottom of image and grow up
-//	int y = HEIGHT - radius;
-//	for(; y > HEIGHT - height - radius; y -= STEP)
-//	{
-//		// Draw circle
-//		//cout << "Drawing circle(" << (int)radius << ") at (" << x << "," << y << ")" << endl;
-//		//image.draw(DrawableCircle(x, y, radius, radius));
-//		drawList.push_back(DrawableCircle(x, y, x, y+radius));
-//	}
-//	// Draw all branches
-//	//int angle = 90;
-//	double aDiff = ((150/(trunk->subBranches))-10+(rand()%35));
-//	int angle = -170 - (rand() % 35) + aDiff*((rand()%800)/1000.0);
-//	for(int i = 0; i < trunk->subBranches; i++)
-//	{
-//		printf("Drawing branch at angle %d\n", angle);
-//		double branchFraction = ((double)trunk->branches[i]->totalChildren)/trunk->totalChildren;
-//		double weight = 1.0;
-//		double branchWeight = 1.0;
-//		if(branchFraction < 0.2)
-//		{
-//			branchFraction = 0.2;
-//			weight = 0.85;
-//			branchWeight = 0.35;
-//		}
-//		drawBranch(&drawList, trunk->branches[i], rootSize*branchWeight, rootSize*branchFraction, height*(((rand()%250)/1000.0)+0.5), x, y, angle*weight);
-//		angle += (aDiff * (((rand()%500)/1000.0) + 0.75));
-//	}
 	
 	image.draw(drawList);
 }
