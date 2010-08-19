@@ -74,6 +74,8 @@ int main(int argc, char **argv)
 	SpaceColonizer* digitizer = new SpaceColonizer(2);
 	DrawableData* lines = digitizer->digitize(source);
 
+	// Transform
+
 	// Draw tree
 	InitializeMagick(*argv);
 	Image canvas(Geometry(WIDTH,HEIGHT),"white");

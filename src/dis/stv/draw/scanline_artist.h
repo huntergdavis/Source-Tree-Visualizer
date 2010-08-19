@@ -13,6 +13,9 @@
 #include <list>
 
 #include "artist.h"
+#include "../model/surrogate_tree_node.h"
+#include "../model/property_inverter.h"
+#include "../model/property_shifter.h"
 
 using namespace std;
 using namespace Magick;
@@ -25,16 +28,7 @@ public:
 	static const int STEP = 1;
 
 private:
-
-	typedef struct branch_str
-	{
-		// Count of all child leaves
-		int totalChildren;
-		int subBranches;
-		branch_str **branches;
-	} Branch;
-
-	void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int endSize, int length, int x, int y, int angle);
+	void transform(SurrogateTreeNode* tree);
 
 public:
 	void draw(Image &image, DrawableData* dataset);
