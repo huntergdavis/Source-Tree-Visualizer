@@ -20,8 +20,35 @@ int main(int argc, char **argv)
 	int HEIGHT = 500;
 
 	// Tree Generation pipeline
+
 	// Retrieve tree from GIT and create surrogate tree
-	GitRepositoryAccess* git = new GitRepositoryAccess("~/Projects/source_tree_vis");
+	// for now, ask the user if local files or github project
+	cout << "\n1==local\n2==gritProject\n3==any github project\n";
+	int answer = 0 * argc;
+	cin >> answer;
+
+	GitRepositoryAccess* git;
+	if(answer == 1)
+	{
+		git = new GitRepositoryAccess("~/Projects/source_tree_vis");
+	}
+	else if(answer == 2)
+	{
+		git = new GitRepositoryAccess("mojombo","grit");
+	}
+	else if(answer == 3)
+	{
+		// allow user to pick github user name/project
+		char userNameBuffer[255];
+		char projectNameBuffer[255];
+		cout << "\nEnter the github user name\n";
+		cin >> userNameBuffer;
+		cout << "\nEnter the github project name\n";
+		cin >> projectNameBuffer;
+
+		git = new GitRepositoryAccess(userNameBuffer,projectNameBuffer);
+	}
+
 	SurrogateTreeNode* source = git->retrieve();
 	printf("Source tree name is %s\n", source->data["name"].c_str());
 
