@@ -77,7 +77,7 @@ double SpaceColonizer::angleFrom(double aX, double aY, double bX, double bY)
 {
 	double attractorAngle;
 	double dx = bX - aX;
-	double dy = bY - aY;
+	double dy = bY - aY; // Has to be flipped because of stupid drawing orientation rules (y increases down)
 	double dist = sqrt(dx * dx + dy * dy);
 	if(dist != 0)
 	{
@@ -97,7 +97,7 @@ double SpaceColonizer::orientationBetween(SurrogateTreeNode* attractor, Coloniza
 	double attractorX = atof(attractor->data["x"].c_str());
 	double attractorY = atof(attractor->data["y"].c_str());
 
-	return this->angleFrom(leaderX, leaderY, attractorX, attractorY);
+	return this->angleFrom(leaderX, -leaderY, attractorX, -attractorY);
 }
 
 bool SpaceColonizer::shouldSplit(SurrogateTreeNode* attractor, ColonizationLeader* leader)
@@ -105,7 +105,7 @@ bool SpaceColonizer::shouldSplit(SurrogateTreeNode* attractor, ColonizationLeade
 	double currentOrientation = leader->getOrientation();
 	// Split if angle from leader to attractor is
 	// 'enough' more then current orientation
-	double enough = 3.14159 / 3;
+	double enough = 3.14159 / 2.5;
 
 	double attractorAngle = orientationBetween(attractor, leader);
 
@@ -153,9 +153,21 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			// Calculate angle towards subtree center of mass
 			double childX = atof(source->data["scomX"].c_str());
 			double childY = atof(source->data["scomY"].c_str());
-			double orientation = this->angleFrom(x,y,childX,childY);
+			double orientation = this->angleFrom(x,-y,childX,-childY);
+			double maxAngleChange = 3.14159/24.0;
+			if(fabs(orientation - leader->getOrientation()) > maxAngleChange)
+			{
+				if(orientation < leader->getOrientation())
+				{
+					orientation = leader->getOrientation() - maxAngleChange;
+				}
+				else
+				{
+					orientation = leader->getOrientation() + maxAngleChange;
+				}
+			}
 			double dx = this->segLen * cos(orientation);
-			double dy = this->segLen * sin(orientation);
+			double dy = -this->segLen * sin(orientation);
 
 			// Insert new DrawDatum
 			data->insert(TRUNK_LAYER,new DrawableDatum(x, y, orientation, this->segLen, atoi(source->data["size"].c_str())));
@@ -177,13 +189,25 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			double dx = childX - x;
 			double dy = childY - y;
 			// If there is only a single entry, we step if far enough
-			if(sqrt(dx * dx + dy * dy) >= this->segLen)
+			if(sqrt(dx * dx + dy * dy) >= 2*this->segLen)
 			{
 				//printf("Distance to CoM: %f\n",sqrt(dx * dx + dy * dy));
 				// Calculate angle towards subtree center of mass
-				double orientation = this->angleFrom(x,y,childX,childY);
+				double orientation = this->angleFrom(x,-y,childX,-childY);
+				double maxAngleChange = 3.14159/24.0;
+				if(fabs(orientation - leader->getOrientation()) > maxAngleChange)
+				{
+					if(orientation < leader->getOrientation())
+					{
+						orientation = leader->getOrientation() - maxAngleChange;
+					}
+					else
+					{
+						orientation = leader->getOrientation() + maxAngleChange;
+					}
+				}
 				double ndx = this->segLen * cos(orientation);
-				double ndy = this->segLen * sin(orientation);
+				double ndy = -this->segLen * sin(orientation);
 
 				// Insert new DrawDatum
 				data->insert(TRUNK_LAYER,new DrawableDatum(x, y, orientation, this->segLen, atoi(source->data["size"].c_str())));

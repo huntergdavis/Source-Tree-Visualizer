@@ -33,7 +33,7 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 {
 	// Calculate resize scaling factors
 	double allowedWidth = 0.9*this->width;
-	double allowedHeight = 0.9*this->height;
+	double allowedHeight = 0.85*this->height;
 	double xMax = tree->findMax("x");
 	double xMin = tree->findMin("x");
 	double yMax = tree->findMax("y");
@@ -42,16 +42,22 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
 
-	double scalingFactorW = allowedWidth/currWidth;
-	double scalingFactorH = allowedHeight/currHeight;
+	double minDim = min(allowedHeight, allowedWidth);
+
+	double scalingFactorW = minDim/currWidth;
+	double scalingFactorH = minDim/currHeight;
+
+	// Transform points to look more "naturally tree-like"
+	PropertyInverter inverter(currHeight * 1.1);
+	tree->transform("y",&inverter);
+	PropertyShifter shifter(currWidth / 2);
+	tree->transform("x",&shifter);
+
 	// Scale tree values
 	tree->scale("x", scalingFactorW);
 	tree->scale("y", scalingFactorH);
-	// Transform points to look more "naturally tree-like"
-	PropertyInverter inverter(allowedHeight + 50);
-	tree->transform("y",&inverter);
-	PropertyShifter shifter(this->width/2.0);
-	tree->transform("x",&shifter);
+
+
 }
 
 // Sorted in increasing order

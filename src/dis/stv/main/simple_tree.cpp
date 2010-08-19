@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 	disp->decorate(source);
 
 	// Digitize decorated surrogate tree into line segment tree
-	SpaceColonizer* digitizer = new SpaceColonizer(3);
+	SpaceColonizer* digitizer = new SpaceColonizer(2);
 	DrawableData* lines = digitizer->digitize(source);
 
 	// Draw tree
