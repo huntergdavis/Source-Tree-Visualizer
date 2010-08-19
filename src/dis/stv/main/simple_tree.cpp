@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 
 	// Retrieve tree from GIT and create surrogate tree
 	// for now, ask the user if local files or github project
-	cout << "\nPress 1 and enter for local, 2 and enter for github\n";
+	cout << "\n1==local\n2==gritProject\n3==any github project\n";
 	int answer = 0 * argc;
 	cin >> answer;
 
@@ -32,6 +32,18 @@ int main(int argc, char **argv)
 	else if(answer == 2)
 	{
 		git = new GitRepositoryAccess("mojombo","grit");
+	}
+	else if(answer == 3)
+	{
+		// allow user to pick github user name/project
+		char userNameBuffer[255];
+		char projectNameBuffer[255];
+		cout << "\nEnter the github user name\n";
+		cin >> userNameBuffer;
+		cout << "\nEnter the github project name\n";
+		cin >> projectNameBuffer;
+
+		git = new GitRepositoryAccess(userNameBuffer,projectNameBuffer);
 	}
 
 	SurrogateTreeNode* source = git->retrieve();
