@@ -17,9 +17,23 @@ using namespace Magick;
 int main(int argc, char **argv)
 {
 	// Tree Generation pipeline
+
 	// Retrieve tree from GIT and create surrogate tree
-	GitRepositoryAccess* git = new GitRepositoryAccess("~/Projects/source_tree_vis");
-	//boost::property_tree::ptree* source = git->retrieve();
+	// for now, ask the user if local files or github project
+	cout << "\nPress 1 and enter for local, 2 and enter for github\n";
+	int answer = 0;
+	cin >> answer;
+
+	GitRepositoryAccess* git;
+	if(answer == 1)
+	{
+		git = new GitRepositoryAccess("~/Projects/source_tree_vis");
+	}
+	else if(answer == 2)
+	{
+		git = new GitRepositoryAccess("mojombo","grit");
+	}
+
 	SurrogateTreeNode* source = git->retrieve();
 	printf("Source tree name is %s\n", source->data["name"].c_str());
 
