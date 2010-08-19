@@ -257,9 +257,9 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromGitHub()
 			   // if we have a entry that's not a parent entry
 			   if(idVal == 2)
 			   {
-				   topLevelSHA1 = topLevelLine.substr(5,topLevelLine.size()-5);
+				   topLevelSHA1 = topLevelLine.substr(6,topLevelLine.size()-5);
 				   //printf("\n sha1 %s\n",SHA1->c_str());
-				   parseDetailedGitHubBlock(&topLevelSHA1,treeResult);
+				   retrieveDetailedGitHubBlock(&topLevelSHA1,treeResult);
 			   }
 		   }
 	   }
@@ -267,16 +267,36 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromGitHub()
 	// return the filled tree
 	return treeResult;
 }
-void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *SHA1,SurrogateTreeNode* treeResult)
+
+// -------------------------------------------------------------------------
+// API :: GitRepositoryAccess::retrieveDetailedGitHubBlock
+// PURPOSE :: retrieves detailed git hub info page for a sha1 key
+//         ::
+// PARAMETERS :: std::string *SHA1 - sha1 key
+//            :: std::string SurrogateTreeNode* treeResult - resultant tree
+// RETURN :: SurrogateTreeNode* - containing tree values generated
+// -------------------------------------------------------------------------
+void GitRepositoryAccess::retrieveDetailedGitHubBlock(std::string *SHA1,SurrogateTreeNode* treeResult)
 {
 	// At this point we have the SHA1 key, now lets pull the filename and creation time
+
+	// Write any errors in here
+	static char errorBuffer[CURL_ERROR_SIZE];
+
+	// Write all expected data in here
+	static string buffer;
+
+	// set up a lib curl instantiation
+	CURL *curl;
+	CURLcode result;
+
 	// create this custom github api sha1 URL with strings
-	std::string subLevelApiUrl = "http://github.com/api/v2/yaml/commits/show/";
-	subLevelApiUrl += userNameCredentials;
-	subLevelApiUrl += "/";
-	subLevelApiUrl += repoNameCredentials;
-	subLevelApiUrl += "/";
-	subLevelApiUrl += topLevelSHA1;
+	std::string gitHubApiUrl = "http://github.com/api/v2/yaml/commits/show/";
+	gitHubApiUrl += userNameCredentials;
+	gitHubApiUrl += "/";
+	gitHubApiUrl += repoNameCredentials;
+	gitHubApiUrl += "/";
+	gitHubApiUrl += SHA1->c_str();
 
 	// Create our curl handle for the detailed info for the SHA key
 	curl = curl_easy_init();
@@ -285,7 +305,7 @@ void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *SHA1,SurrogateTr
 	{
 		// Now set up all of the curl options
 		curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
-		curl_easy_setopt(curl, CURLOPT_URL, subLevelApiUrl.c_str());
+		curl_easy_setopt(curl, CURLOPT_URL, gitHubApiUrl.c_str());
 		curl_easy_setopt(curl, CURLOPT_HEADER, 0);
 		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
@@ -295,7 +315,7 @@ void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *SHA1,SurrogateTr
 		buffer = "";
 
 		// Attempt to retrieve the remote page
-		printf("\n curl is attempting to pull %s\n",subLevelApiUrl.c_str());
+		printf("\n curl is attempting to pull %s\n",gitHubApiUrl.c_str());
 		result = curl_easy_perform(curl);
 
 		// Always cleanup
@@ -304,11 +324,31 @@ void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *SHA1,SurrogateTr
 		// Did we succeed?
 		if (result == CURLE_OK)
 		{
-		   printf("%s",buffer.c_str());
-		   // create an istringstream to parse the suboutput
-		   std::istringstream subLevelSS(buffer);
+		   printf("DDDDDDDDDDDDDDDDD%s",buffer.c_str());
+		   parseDetailedGitHubBlock(&buffer,treeResult);
 		}
 	}
+}
+
+// -------------------------------------------------------------------------
+// API :: GitRepositoryAccess::parseDetailedGitHubBlock
+// PURPOSE :: parses detailed git hub info page
+//         ::
+// PARAMETERS :: std::string *SHA1 - sha1 key
+//            :: std::string SurrogateTreeNode* treeResult - resultant tree
+// RETURN :: SurrogateTreeNode* - containing tree values generated
+// -------------------------------------------------------------------------
+void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *buffer,SurrogateTreeNode* treeResult)
+{
+	// create an istringstream to parse the suboutput
+	std::istringstream gitHubBlockSS(*buffer);
+
+	// each item does contain the time, but it's stringified
+	// TODO: add a time string parser using STRFTIME (not hard)
+	// TODO: pull out times with filenames using time first tagging
+	// TODO: time first tagging = collect time, apply it as "time" of commit till next, loop
+	long huntersBirthday = 357603262;
+
 }
 
 SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromLog()
