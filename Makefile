@@ -40,6 +40,7 @@ LDFLAGS = -L/usr/lib \
 	-lltdl
 	
 SOURCES = src/dis/stv/io/git_repository_access.cpp \
+	src/dis/stv/io/svn_remote_repository_access.cpp \
 	src/dis/stv/io/github_repository_access.cpp \
 	src/dis/stv/gen/space_colonizer.cpp \
 	src/dis/stv/gen/colonization_leader.cpp \

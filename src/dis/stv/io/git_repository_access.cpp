@@ -29,7 +29,7 @@ GitRepositoryAccess::GitRepositoryAccess(string repositoryRoot)
 	this->root = repositoryRoot;
 
 	// add git repo type of local files
-	this->gitRepoType = 1;
+	this->repoType = 1;
 
 }
 

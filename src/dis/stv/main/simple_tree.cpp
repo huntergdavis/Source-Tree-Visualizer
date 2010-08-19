@@ -8,6 +8,7 @@
 #include "../model/surrogate_tree_node.h"
 #include "../io/git_repository_access.h"
 #include "../io/github_repository_access.h"
+#include "../io/svn_remote_repository_access.h"
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
 #include "../gen/space_colonizer.h"
@@ -24,7 +25,7 @@ int main(int argc, char **argv)
 
 	// Retrieve tree from GIT and create surrogate tree
 	// for now, ask the user if local files or github project
-	cout << "\n1==local\n2==gritProject\n3==any github project\n";
+	cout << "\n1==local\n2==gritProject\n3==any github project\n4==any SVN url\n";
 	int answer = 0 * argc;
 	cin >> answer;
 
@@ -48,6 +49,13 @@ int main(int argc, char **argv)
 		cin >> projectNameBuffer;
 
 		git = new GitHubRepositoryAccess(userNameBuffer,projectNameBuffer);
+	}
+	else if(answer == 4)
+	{
+		char svnRepoBuffer[255];
+		cout << "\nEnter a SVN url\n";
+		cin >> svnRepoBuffer;
+		git = new SvnRemoteRepositoryAccess(svnRepoBuffer);
 	}
 
 	SurrogateTreeNode* source = git->retrieve();

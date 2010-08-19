@@ -36,7 +36,7 @@ GitHubRepositoryAccess::GitHubRepositoryAccess(std::string gitHubUserName,std::s
 	printf("\nGitHub User Name: %s, GitHub Project Name: %s\n",gitHubUserName.c_str(),gitHubProjectName.c_str());
 
 	// add git repo type of github
-	this->gitRepoType = 2;
+	this->repoType = 2;
 
 }
 
@@ -115,7 +115,7 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 {
 	// sanity check
-	if(this->gitRepoType != 2)
+	if(this->repoType != 2)
 	{
 		// shouldn't get here
 		// TODO: add error handling function with try-catch default
@@ -455,7 +455,7 @@ SurrogateTreeNode* GitHubRepositoryAccess::retrieve()
 {
 	SurrogateTreeNode* result = NULL;
 
-	if(this->gitRepoType == 2)
+	if(this->repoType == 2)
 	{
 		result = this->generateTreeFromGitHub();
 	}
