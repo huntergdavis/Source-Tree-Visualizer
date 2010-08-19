@@ -367,15 +367,13 @@ void GitRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeResult
 		if(fileNameVal > 0)
 		{
 			fileNameString = topLevelLine.substr(fileValVal,topLevelLine.size()-fileValVal);
-			printf("FILENAME:||%s||\n",fileNameString.c_str());
+			//printf("FILENAME:||%s||\n",fileNameString.c_str());
+			// the end result of this function is this call
+			printf("Inserting %s @ %ld\n",fileNameString.c_str(),huntersBirthday);
+			InsertByPathName(treeResult,fileNameString,huntersBirthday);
 		}
 
 	}
-
-
-	// the end result of this function is this call
-//	printf("Inserting %s @ %ld\n",filename.c_str(),huntersBirthday);
-//	InsertByPathName(treeResult,filename,huntersBirthday);
 }
 
 SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromLog()
