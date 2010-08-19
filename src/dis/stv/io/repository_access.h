@@ -13,6 +13,8 @@
 
 class RepositoryAccess
 {
+protected:
+	int gitRepoType;
 public:
 	virtual SurrogateTreeNode* retrieve() = 0;
 };
