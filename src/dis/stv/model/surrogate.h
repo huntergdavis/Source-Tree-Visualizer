@@ -10,13 +10,18 @@
 
 #include <unordered_map>
 #include <string>
+#include "property_transformer.h"
 
-//typedef __gnu_cxx::hash_map<const char*, const char*> Surrogate;
+using namespace std;
 
 class Surrogate
 {
 public:
-	std::unordered_map<std::string, std::string> data;
+	unordered_map<string, string> data;
+	virtual double findMin(string property) = 0;
+	virtual double findMax(string property) = 0;
+	virtual void scale(string property, double factor) = 0;
+	virtual void transform(string property, PropertyTransformer* transformer) = 0;
 };
 
 #endif /* SURROGATE_H_ */

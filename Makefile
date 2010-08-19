@@ -53,7 +53,11 @@ SOURCES = src/dis/stv/io/git_repository_access.cpp \
 	src/dis/stv/physics/tree_displacement_node.cpp \
 	src/dis/stv/physics/unidimensional_spatial_object.cpp \
 	src/dis/stv/physics/spatial_object.cpp \
-	src/dis/stv/physics/fixed_attractor.cpp 
+	src/dis/stv/physics/fixed_attractor.cpp \
+	src/dis/stv/model/surrogate_tree_node.cpp \
+	src/dis/stv/model/property_transformer.cpp \
+	src/dis/stv/model/property_inverter.cpp \
+	src/dis/stv/model/property_shifter.cpp
 	
 
 OBJECTS = $(SOURCES:.cpp=.o)

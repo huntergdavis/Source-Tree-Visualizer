@@ -9,7 +9,7 @@
 
 using namespace std;
 
-SpatialDisplacement::SpatialDisplacement(double rootX, double rootY):rootX(rootX),rootY(rootY)
+SpatialDisplacement::SpatialDisplacement(int width, int height):width(width), height(height)
 {
 }
 
@@ -19,7 +19,39 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 	// First, count
 	this->count(tree);
 	// Second, float weighted surrogate nodes into position
-	this->expand(tree,(3.14159/2),rootX,rootY);
+	this->expand(tree,(3.14159/2),0,0);
+	// Third, transform coordinats
+	this->transform(tree);
+}
+
+
+// Scale point values to fit within width and height give
+// with root at (width/2, height)
+// Transformation flips y values and shifts x values
+// after scaling
+void SpatialDisplacement::transform(SurrogateTreeNode* tree)
+{
+	// Calculate resize scaling factors
+	double allowedWidth = 0.95*this->width;
+	double allowedHeight = 0.9*this->height;
+	double xMax = tree->findMax("x");
+	double xMin = tree->findMin("x");
+	double yMax = tree->findMax("y");
+	double yMin = tree->findMin("y");
+	printf("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
+	double currWidth = xMax - xMin;
+	double currHeight = yMax - yMin;
+
+	double scalingFactorW = allowedWidth/currWidth;
+	double scalingFactorH = allowedHeight/currHeight;
+	// Scale tree values
+	tree->scale("x", scalingFactorW);
+	tree->scale("y",scalingFactorH);
+	// Transform points to look more "naturally tree-like"
+	PropertyInverter inverter(allowedHeight);
+	tree->transform("y",&inverter);
+	PropertyShifter shifter(this->width/2.0);
+	tree->transform("x",&shifter);
 }
 
 // Sorted in increasing order

@@ -17,20 +17,23 @@
 #include "../physics/time_stepped_physics_engine.h"
 #include "../physics/tree_displacement_node.h"
 #include "../physics/fixed_attractor.h"
+#include "../model/property_inverter.h"
+#include "../model/property_shifter.h"
 
 
 class SpatialDisplacement : public Decorator
 {
 public:
-	SpatialDisplacement(double rootX, double rootY);
+	SpatialDisplacement(int width, int height);
 	void decorate(SurrogateTreeNode* tree);
 
 private:
-	double rootX;
-	double rootY;
+	int width;
+	int height;
 	void expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY);
 	int count(SurrogateTreeNode* tree);
 	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);
+	void transform(SurrogateTreeNode* tree);
 };
 
 #endif /* SPATIAL_DISPLACEMENT_H_ */

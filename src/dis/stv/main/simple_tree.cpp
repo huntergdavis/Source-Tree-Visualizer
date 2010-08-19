@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	printf("Source tree name is %s\n", source->data["name"].c_str());
 
 	// Decorate surrogate tree nodes with locations
-	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH/2.0,0);
+	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH,HEIGHT);
 	disp->decorate(source);
 
 	// Digitize decorated surrogate tree into line segment tree
