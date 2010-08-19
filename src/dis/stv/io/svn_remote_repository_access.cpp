@@ -94,7 +94,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 
 // -------------------------------------------------------------------------
 // API :: SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn
-// PURPOSE :: generation function for ptree when using github as a medium
+// PURPOSE :: generation function for tree when using svn as a medium
 //         ::
 // PARAMETERS ::
 // RETURN :: SurrogateTreeNode* - containing tree values generated
@@ -132,13 +132,56 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
       svnLog.push_back( (char)c );
     }
     std::fclose( fp );
+    //printf("SVN LOG RESULT %s",svnLog.c_str());
 
-    printf("SVN LOG RESULT %s",svnLog.c_str());
+    // generate tree entry from log file entry
+    generateTreeFromLog(treeResult,&svnLog);
 
 	// return the filled tree
 	return treeResult;
 }
 
+// -------------------------------------------------------------------------
+// API :: SvnRemoteRepositoryAccess::generateTreeFromLog
+// PURPOSE :: generation function for ptree when using svn as a medium
+//         ::
+// PARAMETERS ::
+// RETURN :: SurrogateTreeNode* - containing tree values generated
+// -------------------------------------------------------------------------
+void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer)
+{
+	// Blank ptree
+	SurrogateTreeNode* result = new SurrogateTreeNode();
+	result->data["name"] = "root";
+
+	// For each time block, parse files and add to ptree
+	char c;
+	std::string str;
+	for(int i = 0;i<(int)buffer->size();i++)
+	{
+		c = buffer->at(i);
+		if(c != '\n')
+		{
+			str += c;
+		}
+		else
+		{
+			parseTimeBlock(tree,&str);
+			str.clear();
+		}
+	}
+}
+// -------------------------------------------------------------------------
+// API :: SvnRemoteRepositoryAccess::parseTimeBlock
+// PURPOSE :: parsing function for individual SVN commit log blocks
+//         ::
+// PARAMETERS ::
+// RETURN :: SurrogateTreeNode* - containing tree values generated
+// -------------------------------------------------------------------------
+void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
+{
+	printf("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
+}
 
 // -------------------------------------------------------------------------
 // API :: SvnRemoteRepositoryAccess::parseExactDateString

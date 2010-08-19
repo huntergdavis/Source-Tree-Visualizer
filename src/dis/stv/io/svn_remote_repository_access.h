@@ -32,11 +32,10 @@ private:
 	string remoteServerString;
 	SurrogateTreeNode* generateTreeFromRemoteSvn();
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
-	void retrieveDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *SHA1);
-	void parseDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *buffer);
-	long parseDetailedGitHubFileBlock(std::string *buffer);
 	long parseExactDateString(std::string *buffer);
-	long retrieveDateFromGitHubFileName(std::string *gitHubFileName);
+	void generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer);
+	void parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer);
+
 
 public:
 	SvnRemoteRepositoryAccess(std::string svnRemoteServerString);
