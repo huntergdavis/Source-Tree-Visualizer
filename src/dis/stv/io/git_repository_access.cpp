@@ -259,7 +259,7 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromGitHub()
 			   {
 				   topLevelSHA1 = topLevelLine.substr(6,topLevelLine.size()-5);
 				   //printf("\n sha1 %s\n",SHA1->c_str());
-				   retrieveDetailedGitHubBlock(&topLevelSHA1,treeResult);
+				   retrieveDetailedGitHubBlock(treeResult,&topLevelSHA1);
 			   }
 		   }
 	   }
@@ -276,7 +276,7 @@ SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromGitHub()
 //            :: std::string SurrogateTreeNode* treeResult - resultant tree
 // RETURN :: SurrogateTreeNode* - containing tree values generated
 // -------------------------------------------------------------------------
-void GitRepositoryAccess::retrieveDetailedGitHubBlock(std::string *SHA1,SurrogateTreeNode* treeResult)
+void GitRepositoryAccess::retrieveDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *SHA1)
 {
 	// At this point we have the SHA1 key, now lets pull the filename and creation time
 
@@ -324,8 +324,8 @@ void GitRepositoryAccess::retrieveDetailedGitHubBlock(std::string *SHA1,Surrogat
 		// Did we succeed?
 		if (result == CURLE_OK)
 		{
-		   printf("DDDDDDDDDDDDDDDDD%s",buffer.c_str());
-		   parseDetailedGitHubBlock(&buffer,treeResult);
+		   //printf("DDDDDDDDDDDDDDDDD%s",buffer.c_str());
+		   parseDetailedGitHubBlock(treeResult,&buffer);
 		}
 	}
 }
@@ -338,7 +338,7 @@ void GitRepositoryAccess::retrieveDetailedGitHubBlock(std::string *SHA1,Surrogat
 //            :: std::string SurrogateTreeNode* treeResult - resultant tree
 // RETURN :: SurrogateTreeNode* - containing tree values generated
 // -------------------------------------------------------------------------
-void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *buffer,SurrogateTreeNode* treeResult)
+void GitRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *buffer)
 {
 	// create an istringstream to parse the suboutput
 	std::istringstream gitHubBlockSS(*buffer);
@@ -349,6 +349,33 @@ void GitRepositoryAccess::parseDetailedGitHubBlock(std::string *buffer,Surrogate
 	// TODO: time first tagging = collect time, apply it as "time" of commit till next, loop
 	long huntersBirthday = 357603262;
 
+
+	// our top level line storage
+	std::string topLevelLine;
+
+	// our individual filename storage
+	std::string fileNameString;
+
+	// loop over the detailed commit and find filenames
+	while (getline (gitHubBlockSS, topLevelLine))
+	{
+		// the "filename:" identifier will be where we find the files
+		int fileNameVal = topLevelLine.find("filename:");
+		int fileValVal = fileNameVal + 10;
+
+		// if we find filename: , we want to insert the file to our tree
+		if(fileNameVal > 0)
+		{
+			fileNameString = topLevelLine.substr(fileValVal,topLevelLine.size()-fileValVal);
+			printf("FILENAME:||%s||\n",fileNameString.c_str());
+		}
+
+	}
+
+
+	// the end result of this function is this call
+//	printf("Inserting %s @ %ld\n",filename.c_str(),huntersBirthday);
+//	InsertByPathName(treeResult,filename,huntersBirthday);
 }
 
 SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromLog()

@@ -34,8 +34,8 @@ private:
 	SurrogateTreeNode* generatePTreeFromGitHub();
 	void parseTimeBlock(SurrogateTreeNode* tree, long time, ifstream& log);
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
-	void retrieveDetailedGitHubBlock(std::string *SHA1,SurrogateTreeNode* treeResult);
-	void parseDetailedGitHubBlock(std::string *,SurrogateTreeNode* treeResult);
+	void retrieveDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *SHA1);
+	void parseDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *);
 	static int writer(char *data, size_t size, size_t nmemb, std::string *buffer);
 
 public:
