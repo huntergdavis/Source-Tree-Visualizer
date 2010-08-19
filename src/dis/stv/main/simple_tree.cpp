@@ -25,7 +25,8 @@ int main(int argc, char **argv)
 
 	// Retrieve tree from GIT and create surrogate tree
 	// for now, ask the user if local files or github project
-	cout << "\n1==local\n2==gritProject\n3==any github project\n4==any SVN url\n";
+	cout << "\n1==local\n2==gritProject\n3==any github project";
+	cout << "\n4==http://hkit.googlecode.com/svn/trunk/\n5==any SVN url\n";
 	int answer = 0 * argc;
 	cin >> answer;
 
@@ -52,8 +53,12 @@ int main(int argc, char **argv)
 	}
 	else if(answer == 4)
 	{
+		git = new SvnRemoteRepositoryAccess(" http://hkit.googlecode.com/svn/trunk/");
+	}
+	else if(answer == 5)
+	{
 		char svnRepoBuffer[255];
-		cout << "\nEnter a SVN url\n";
+		cout << "\nEnter a SVN url like http://hkit.googlecode.com/svn/trunk/\n";
 		cin >> svnRepoBuffer;
 		git = new SvnRemoteRepositoryAccess(svnRepoBuffer);
 	}

@@ -155,19 +155,19 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 	result->data["name"] = "root";
 
 	// For each time block, parse files and add to ptree
-	char c;
+	char c,d;
 	std::string str;
-	for(int i = 0;i<(int)buffer->size();i++)
+	for(int i = 0;i<(int)buffer->size()-1;i++)
 	{
 		c = buffer->at(i);
-		if(c != '\n')
+		d = buffer->at(i+1);
+		if((c == '\n') && (d == '\n'))
 		{
-			str += c;
+			parseTimeBlock(tree,&str);
 		}
 		else
 		{
-			parseTimeBlock(tree,&str);
-			str.clear();
+			str += c;
 		}
 	}
 }
@@ -180,7 +180,61 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 // -------------------------------------------------------------------------
 void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
 {
-	printf("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
+	//printf("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
+
+	// at this point we have the individual SVN time block
+	// let's pull out the date first, followed by any file additions
+	std::string dateString;
+
+	// the date is between the 2nd and 3rd pipe
+	int secondPipeIndex;
+	int firstPipeIndex;
+
+	// find the first pipe
+	firstPipeIndex = buffer->find("|");
+	if(firstPipeIndex < 0)
+	{
+		exit(1);
+	}
+
+	// find the second pipe
+	secondPipeIndex = buffer->find("|",firstPipeIndex+1);
+	if(secondPipeIndex < 0)
+	{
+		exit(1);
+	}
+
+	// pull our date string from between index 2 and 3
+	dateString = buffer->substr(secondPipeIndex+2,19);
+
+	// print out the date
+	//printf("\nTHEDATE: |%s| index 1:%d 2:%d\n",dateString.c_str(),firstPipeIndex,secondPipeIndex);
+	long dateEpoch = parseExactDateString(&dateString);
+
+
+	// loop over each line and search for created files
+	// created files are denoted by an 'A' tag
+	// create an istringstream to parse the suboutput for added files
+	std::istringstream svnTimeBlockSS(*buffer);
+
+	// individual filename line storage
+	std::string fileNameLine;
+
+	// individual filename storage
+	std::string fileNameString;
+
+	// loop over the detailed commit and find filenames
+	while (getline (svnTimeBlockSS, fileNameLine))
+	{
+		if(fileNameLine.find("A") == 3)
+		{
+			fileNameString = fileNameLine.substr(5,fileNameLine.size()-5);
+			//printf("\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
+			// actually insert the file entry into the tree
+			InsertByPathName(tree,fileNameString,dateEpoch);
+		}
+	}
+
 }
 
 // -------------------------------------------------------------------------
@@ -188,7 +242,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 // PURPOSE :: returns date from svn log block
 //         ::
 // PARAMETERS :: std::string buffer - exact date of format
-//            :: 2007-10-09T23:18:20
+//            :: 2009-05-12 05:36:53
 // RETURN :: long - oldest date associated with filename
 // -------------------------------------------------------------------------
 long SvnRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
@@ -204,7 +258,7 @@ long SvnRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
 
 	//strptime for the value
 	//strptime("2007-10-09T23:18:20", "%Y-%m-%dT%H:%M:%S", &t);
-	strptime(buffer->c_str(), "%Y-%m-%dT%H:%M:%S", &timeStructure);
+	strptime(buffer->c_str(), "%Y-%m-%d %H:%M:%S", &timeStructure);
 
 	rawTime = mktime(&timeStructure);
 	//printf("RAWTIME\n%ld\n",(long)rawTime);
