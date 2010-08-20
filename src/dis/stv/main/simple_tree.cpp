@@ -26,6 +26,7 @@ void display_usage( void )
 	usage_string += "\n-G option - expects gitHubusername:gitHubprojectname\n";
 	usage_string += "\n-S option - expects http://hkit.googlecode.com/svn/trunk/\n";
 	usage_string += "\n-C option - expects pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd\n";
+	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, defaults to 1\n";
 
     printf("%s",usage_string.c_str());
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
 	int agentType = 0;
 
 	// our option string
-	static const char *optString = "g:G:S:C:dh?";
+	static const char *optString = "g:G:S:C:idh?";
 
 	// loop over our command options in the normal unix way
 
@@ -74,6 +75,10 @@ int main(int argc, char **argv)
 				// set the debug level
 				SetDiscursiveDebugLevel(1);
 				break;
+			case 'i':
+				// set the interactivity level
+				agentType = 5;
+				break;
 			case 'h':   /* fall-through is intentional */
 			case '?':
 				display_usage();
@@ -98,7 +103,7 @@ int main(int argc, char **argv)
 	// let an interactive or command line agent create the repository access type
 	switch(agentType)
 	{
-		case 0:
+		case 5:
 			git = interactive_agent();
 			break;
 		case 1:
@@ -107,6 +112,9 @@ int main(int argc, char **argv)
 		case 4:
 			git = noninteractive_agent(agentType, agentName);
 			break;
+		case 0:
+			display_usage();	
+			break;	
         default:
             /* You won't actually get here. */
         	DiscursiveError("an impossibility occured in error processing");
