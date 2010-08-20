@@ -40,7 +40,7 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 	double xMin = tree->findMin("x");
 	double yMax = tree->findMax("y");
 	double yMin = tree->findMin("y");
-	printf("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
+	DebugPrint("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
 
@@ -223,7 +223,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 		}
 		else
 		{
-			printf("Serious Error.  (Max: %f) Most: %f, Least: %f\n", DBL_MAX, most, least);
+			DebugPrint("Serious Error.  (Max: %f) Most: %f, Least: %f\n", DBL_MAX, most, least);
 			DiscursiveError("Serious Error");
 		}
 		// Transform positions to arc

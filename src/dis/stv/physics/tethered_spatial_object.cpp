@@ -49,7 +49,7 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 		{
 			// Update location with new values
 			this->setLocation(ndx + this->tetherX,ndy + this->tetherY);
-			printf("(%f, %f)\n",ndx + this->tetherX,ndy + this->tetherY);
+			DebugPrint("(%f, %f)\n",ndx + this->tetherX,ndy + this->tetherY);
 		}
 		// Since tether won't allow the full movement
 		// calculate distance we can move before it becoming taut.
@@ -73,7 +73,7 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 			while(upper > lower)
 			{
 				mid = ((upper - lower)/2) + lower;
-				//printf("[%d,%d,%d]\n",upper,mid,lower);
+				//DebugPrint("[%d,%d,%d]\n",upper,mid,lower);
 				ndx = dx + (mid*chunkX);
 				ndy = dy + (mid*chunkY);
 				// If the radius is still less than the tether, we can
@@ -114,7 +114,7 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 				}
 			}
 
-			printf("(%f,%f)~(%f,%f) -> %f\n",dx,dy,ndx,ndy,offs);
+			DebugPrint("(%f,%f)~(%f,%f) -> %f\n",dx,dy,ndx,ndy,offs);
 			// Use new rotation to get intermediate x,y
 			double newRot = atan(dy/dx) + offs;
 			dx = this->tetherRadius * cos(newRot);
@@ -158,13 +158,13 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 			double finalY = this->tetherRadius * sin(finalRot);
 			// Update location
 			this->setLocation(finalX, finalY);
-			printf("(%f, %f)\n",finalX,finalY);
+			DebugPrint("(%f, %f)\n",finalX,finalY);
 		}
 	}
 	// Tether is taut
 	else
 	{
-		printf("tether is taut\n");
+		DebugPrint("tether is taut\n");
 		// Calculate mag of accel tangential to tether
 		double aTangentX = 0;
 		double aTangentY = this->getAccelY();
@@ -186,7 +186,7 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 			}
 		}
 		double aTangentMag = sqrt(aTangentX * aTangentX + aTangentY * aTangentY);
-		printf("Acceleration: <%f,%f>  Tangent @ (%f,%f): <%f,%f>\n",this->getAccelX(),this->getAccelY(),this->getX(),this->getY(),aTangentX,aTangentY);
+		DebugPrint("Acceleration: <%f,%f>  Tangent @ (%f,%f): <%f,%f>\n",this->getAccelX(),this->getAccelY(),this->getX(),this->getY(),aTangentX,aTangentY);
 		// Convert cartesian movement into polar movement
 		double dRot = (timeDelta * timeDelta) * (aTangentMag/this->tetherRadius);
 		// Calculate current polar rotation.
@@ -204,6 +204,6 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 		double finalY = this->tetherRadius * sin(finalRot);
 		// Update location
 		this->setLocation(finalX, finalY);
-		printf("(%f, %f)\n",finalX,finalY);
+		DebugPrint("(%f, %f)\n",finalX,finalY);
 	}
 }

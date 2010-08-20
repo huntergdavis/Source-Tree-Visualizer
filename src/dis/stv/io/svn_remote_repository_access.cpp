@@ -45,7 +45,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		string timeStr = boost::lexical_cast<string>(time);
 		file->data["creation_time"] = timeStr;
 		file->data["name"] = pathname;
-		printf("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
+		DebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children.push_back(file);
 	}
 	else
@@ -60,7 +60,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		{
 			SurrogateTreeNode* local = *iter;
 			string nameComp = local->data["name"];
-			//printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
+			//DebugPrint("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
 				// Found node
@@ -68,7 +68,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 				// Update node time if necessary
 				if(time < atol(node->data["creation_time"].c_str()))
 				{
-					printf("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
+					DebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
 					node->data["creation_time"] = boost::lexical_cast<string>(time);
 				}
 				break;
@@ -81,7 +81,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 			string timeStr = boost::lexical_cast<string>(time);
 			node->data["creation_time"] = timeStr;
 			node->data["name"] = name;
-			printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
+			DebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children.push_back(node);
 		}
 		// Else, use found node
@@ -132,7 +132,7 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
       svnLog.push_back( (char)c );
     }
     std::fclose( fp );
-    //printf("SVN LOG RESULT %s",svnLog.c_str());
+    //DebugPrint("SVN LOG RESULT %s",svnLog.c_str());
 
     // generate tree entry from log file entry
     generateTreeFromLog(treeResult,&svnLog);
@@ -180,7 +180,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 // -------------------------------------------------------------------------
 void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
 {
-	//printf("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
+	//DebugPrint("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
 
 	// at this point we have the individual SVN time block
 	// let's pull out the date first, followed by any file additions
@@ -208,7 +208,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	dateString = buffer->substr(secondPipeIndex+2,19);
 
 	// print out the date
-	//printf("\nTHEDATE: |%s| index 1:%d 2:%d\n",dateString.c_str(),firstPipeIndex,secondPipeIndex);
+	//DebugPrint("\nTHEDATE: |%s| index 1:%d 2:%d\n",dateString.c_str(),firstPipeIndex,secondPipeIndex);
 	long dateEpoch = parseExactDateString(&dateString);
 
 
@@ -229,7 +229,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 		if(fileNameLine.find("A") == 3)
 		{
 			fileNameString = fileNameLine.substr(5,fileNameLine.size()-5);
-			//printf("\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
+			//DebugPrint("\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
 			// actually insert the file entry into the tree
 			InsertByPathName(tree,fileNameString,dateEpoch);
 		}
@@ -261,7 +261,7 @@ long SvnRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
 	strptime(buffer->c_str(), "%Y-%m-%d %H:%M:%S", &timeStructure);
 
 	rawTime = mktime(&timeStructure);
-	//printf("RAWTIME\n%ld\n",(long)rawTime);
+	//DebugPrint("RAWTIME\n%ld\n",(long)rawTime);
 	return (long) rawTime;
 }
 

@@ -18,11 +18,14 @@ void SetDiscursiveDebugLevel(int level)
 	debugLevel = level;
 }
 
-void DebugPrint(std::string debugMessage)
+void DebugPrint(std::string debugMessage,...)
 {
 	if(debugLevel == 1)
 	{
-		printf("%s",debugMessage.c_str());
+		va_list args;
+		va_start( args, debugMessage );
+		vprintf(debugMessage.c_str(), args );
+		va_end( args );
 	}
 }
 

@@ -44,7 +44,7 @@ using namespace Magick;
 
 void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 {
-	printf("Drawing\n");
+	DebugPrint("Drawing\n");
 	cout << endl;
 	
 	list<Drawable> drawList;

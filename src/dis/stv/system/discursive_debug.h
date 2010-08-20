@@ -9,10 +9,11 @@
 #define DISCURSIVE_DEBUG_H_
 
 #include <stdio.h>
+#include <stdarg.h>
 #include <string>
 
 int GetDiscursiveDebugLevel();
 void SetDiscursiveDebugLevel(int level);
-void DebugPrint(std::string debugMessage);
+void DebugPrint(std::string debugMessage,...);
 
 #endif /* DISCURSIVE_DEBUG_H_ */
