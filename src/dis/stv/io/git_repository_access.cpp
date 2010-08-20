@@ -152,7 +152,7 @@ SurrogateTreeNode* GitRepositoryAccess::generateTreeFromLog(std::string *buffer)
 		else
 		{
 			long fileTime = atol(str.c_str());
-			parseTimeBlock(result,fileTime,buffer);
+			parseTimeBlock(result,fileTime,&str);
 			str.clear();
 		}
 	}
@@ -171,7 +171,7 @@ int GitRepositoryAccess::generateLog(std::string *localGitLog)
 	// create a file pointer handle to our command output
 	FILE *fp = popen(localGitCommand.c_str(), "r" );
 
-	// loop over all the file handle and put into stringstream
+	// loop over all the file handle and put into string
     while (true)
     {
       int c = std::fgetc( fp );
