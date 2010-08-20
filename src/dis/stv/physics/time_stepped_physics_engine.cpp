@@ -33,7 +33,7 @@ bool TimeSteppedPhysicsEngine::shouldContinue(int step, double maxChange)
 
 void TimeSteppedPhysicsEngine::run()
 {
-	printf("Running simulator\n");
+	DiscursiveDebugPrint("Running simulator\n");
 	double maxChange = 0;
 	double change = 0;
 	int i = 0;

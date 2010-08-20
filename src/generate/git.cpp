@@ -9,10 +9,10 @@ std::string gitLogCommand = "git log --pretty=format:user:%aN%n%ct --reverse --r
 
 int getCustomGitLog(std::string directory,std::string outfile)
 {
-	printf("\nmaking an outfile %s \n",outfile.c_str());
+	DiscursiveDebugPrint("\nmaking an outfile %s \n",outfile.c_str());
 	int commandReturnValue = 0;
 	std::string gitLogWithOutput = gitLogCommand + " > " + outfile;
-        printf("\n%s\n",gitLogWithOutput.c_str());
+        DiscursiveDebugPrint("\n%s\n",gitLogWithOutput.c_str());
 	commandReturnValue = system(gitLogWithOutput.c_str());
 	return commandReturnValue;
 }

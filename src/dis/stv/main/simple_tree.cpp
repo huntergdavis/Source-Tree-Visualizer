@@ -49,42 +49,42 @@ int main(int argc, char **argv)
 	static const char *optString = "g:G:S:C:dh?";
 
 	// loop over our command options in the normal unix way
-	// reminder: g:G:S:C:dh?
-	int opt = getopt( argc, argv, optString );
-	    while( opt != -1 ) {
-	        switch( opt ) {
-	            case 'g':
-	            	agentName = optarg;
-	                agentType = 1;
-	                break;
-	            case 'G':
-	            	agentName = optarg;
-	                agentType = 2;
-	                break;
-	            case 'S':
-	            	agentName = optarg;
-	                agentType = 3;
-	                break;
-	            case 'C':
-	            	agentName = optarg;
-	                agentType = 4;
-	                break;
-	            case 'd':
-	            	// set the debug level
-	            	SetDiscursiveDebugLevel(1);
-	            	break;
-	            case 'h':   /* fall-through is intentional */
-	            case '?':
-	                display_usage();
-	                break;
-	            default:
-	                /* You won't actually get here. */
-	            	DiscursiveError("an impossibility occured in error processing");
-	                break;
-	        }
-	        // get the next Command Line option
-	        opt = getopt( argc, argv, optString );
-	    }
+
+	int opt;
+	opt = getopt( argc, argv, optString );
+	while( opt != -1 ) {
+		switch( opt ) {
+			case 'g':
+				agentName = optarg;
+				agentType = 1;
+				break;
+			case 'G':
+				agentName = optarg;
+				agentType = 2;
+				break;
+			case 'S':
+				agentName = optarg;
+				agentType = 3;
+				break;
+			case 'C':
+				agentName = optarg;
+				agentType = 4;
+				break;
+			case 'd':
+				// set the debug level
+				SetDiscursiveDebugLevel(1);
+				break;
+			case 'h':   /* fall-through is intentional */
+			case '?':
+				display_usage();
+				break;
+			default:
+				DiscursiveError("bad cli, bad!");
+				break;
+		}
+		// get the next Command Line option
+		opt = getopt( argc, argv, optString );
+	}
 
 
 	// Tree image size parameters
@@ -106,6 +106,7 @@ int main(int argc, char **argv)
 		case 3:
 		case 4:
 			git = noninteractive_agent(agentType, agentName);
+			break;
         default:
             /* You won't actually get here. */
         	DiscursiveError("an impossibility occured in error processing");

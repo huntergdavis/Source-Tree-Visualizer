@@ -30,7 +30,7 @@ double TetheredSpatialObject::getTetherRadius()
 // This is not working properly.
 void TetheredSpatialObject::updateLocation(double timeDelta)
 {
-	printf("Updating location to...\n");
+	DiscursiveDebugPrint("Updating location to...\n");
 	// Test unmodified acceleration values against
 	// tether location constraints:
 	// First check that distance to tether is less than
@@ -38,7 +38,7 @@ void TetheredSpatialObject::updateLocation(double timeDelta)
 	double dx = this->getX() - this->tetherX;
 	double dy = this->getY() - this->tetherY;
 	double dist = sqrt( dx * dx + dy * dy );
-	if(dist < tetherRadius)
+	if(dist < tetherRadius)printf
 	{
 
 		double ndx = this->getX() + (this->getAccelX() * (timeDelta * timeDelta)) - this->tetherX;

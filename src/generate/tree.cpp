@@ -141,7 +141,7 @@ void drawBranch(list<Drawable> *drawList, Branch *branch, int startSize, int end
 
 void drawTree(Image &image, Branch *trunk, int rootX, int rootSize, int height)
 {
-	printf("Drawing trunk\n");
+	DiscursiveDebugPrint("Drawing trunk\n");
 	cout << endl;
 	//image.fillColor("brown");
 	
@@ -167,7 +167,7 @@ void drawTree(Image &image, Branch *trunk, int rootX, int rootSize, int height)
 	int angle = -170 - (rand() % 35) + aDiff*((rand()%800)/1000.0);
 	for(int i = 0; i < trunk->subBranches; i++)
 	{
-		printf("Drawing branch at angle %d\n", angle);
+		DiscursiveDebugPrint("Drawing branch at angle %d\n", angle);
 		double branchFraction = ((double)trunk->branches[i]->totalChildren)/trunk->totalChildren;
 		double weight = 1.0;
 		double branchWeight = 1.0;
