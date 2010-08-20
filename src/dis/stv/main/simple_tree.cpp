@@ -19,6 +19,8 @@ using namespace Magick;
 
 int main(int argc, char **argv)
 {
+	// set the debug level
+	SetDiscursiveDebugLevel(1);
 	// Tree image size parameters
 	int WIDTH = 500;
 	int HEIGHT = 500;
