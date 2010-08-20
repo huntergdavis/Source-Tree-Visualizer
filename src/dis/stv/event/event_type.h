@@ -8,6 +8,9 @@
 #ifndef EVENT_TYPE_H_
 #define EVENT_TYPE_H_
 
+#include "../system/discursive_system.h"
+
+
 class EventType
 {
 public:

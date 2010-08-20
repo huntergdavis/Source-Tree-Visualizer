@@ -6,6 +6,8 @@
  */
 
 #include "spatial_displacement.h"
+#include "../system/discursive_system.h"
+
 
 using namespace std;
 

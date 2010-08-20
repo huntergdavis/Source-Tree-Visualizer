@@ -13,6 +13,8 @@
 #include "digitizer.h"
 #include "colonization_leader.h"
 #include "../model/surrogate_tree_node.h"
+#include "../system/discursive_system.h"
+
 
 class SpaceColonizer : public Digitizer
 {

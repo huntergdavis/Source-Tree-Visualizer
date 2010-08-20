@@ -10,6 +10,8 @@
 
 #include "event_driven_object.h"
 #include "event.h"
+#include "../system/discursive_system.h"
+
 
 class EventListener
 {

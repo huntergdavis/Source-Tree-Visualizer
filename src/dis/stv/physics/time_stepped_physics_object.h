@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 #include "physical_mass.h"
+#include "../system/discursive_system.h"
+
 
 class TimeSteppedPhysicsObject : public PhysicalMass
 {

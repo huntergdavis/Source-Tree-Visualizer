@@ -10,6 +10,8 @@
 
 #include <boost/property_tree/ptree.hpp>
 #include "../model/surrogate_tree_node.h"
+#include "../system/discursive_system.h"
+
 
 class RepositoryAccess
 {

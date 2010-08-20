@@ -13,6 +13,7 @@
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
 #include "../gen/space_colonizer.h"
+#include "../system/discursive_system.h"
 
 using namespace Magick;
 
@@ -103,8 +104,7 @@ int main(int argc, char **argv)
 	}
 	catch( Exception &error_ )
 	{
-		cout << "Caught exception: " << error_.what() << endl;
-		return 1;
+		DiscursiveError(error_.what());
 	}
 
 	return 0;

@@ -7,6 +7,8 @@
 
 #ifndef DRAWABLE_DATUM_H_
 #define DRAWABLE_DATUM_H_
+#include "../system/discursive_system.h"
+
 
 class DrawableDatum
 {

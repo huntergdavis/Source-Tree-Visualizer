@@ -9,6 +9,8 @@
 #define EVENT_H_
 
 #include "event_type.h"
+#include "../system/discursive_system.h"
+
 
 class Event
 {

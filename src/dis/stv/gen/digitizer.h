@@ -10,6 +10,8 @@
 
 #include "../draw/drawable_data.h"
 #include "../model/surrogate_tree_node.h"
+#include "../system/discursive_system.h"
+
 
 class Digitizer
 {

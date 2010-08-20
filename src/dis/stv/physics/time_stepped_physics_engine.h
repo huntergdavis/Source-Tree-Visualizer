@@ -10,6 +10,8 @@
 
 #include "physics_engine.h"
 #include "time_stepped_physics_object.h"
+#include "../system/discursive_system.h"
+
 
 class TimeSteppedPhysicsEngine
 {

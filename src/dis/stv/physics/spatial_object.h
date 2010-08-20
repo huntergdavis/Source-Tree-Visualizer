@@ -8,6 +8,9 @@
 #ifndef SPATIAL_OBJECT_H_
 #define SPATIAL_OBJECT_H_
 
+#include "../system/discursive_system.h"
+
+
 class SpatialObject
 {
 private:

@@ -45,7 +45,7 @@ void CvsRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		string timeStr = boost::lexical_cast<string>(time);
 		file->data["creation_time"] = timeStr;
 		file->data["name"] = pathname;
-		printf("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
+		//printf("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children.push_back(file);
 	}
 	else
@@ -68,7 +68,7 @@ void CvsRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 				// Update node time if necessary
 				if(time < atol(node->data["creation_time"].c_str()))
 				{
-					printf("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
+					//printf("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
 					node->data["creation_time"] = boost::lexical_cast<string>(time);
 				}
 				break;
@@ -81,7 +81,7 @@ void CvsRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 			string timeStr = boost::lexical_cast<string>(time);
 			node->data["creation_time"] = timeStr;
 			node->data["name"] = name;
-			printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
+			//printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children.push_back(node);
 		}
 		// Else, use found node

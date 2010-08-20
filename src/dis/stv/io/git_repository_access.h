@@ -19,6 +19,8 @@
 #include "repository_access.h"
 #include "../model/surrogate_tree_node.h"
 #include "curl/curl.h"
+#include "../system/discursive_system.h"
+
 
 
 class GitRepositoryAccess : public RepositoryAccess

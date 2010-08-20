@@ -9,6 +9,8 @@
 #define COLONIZATION_LEADER_H_
 
 #include "../model/surrogate_tree_node.h"
+#include "../system/discursive_system.h"
+
 
 class ColonizationLeader
 {

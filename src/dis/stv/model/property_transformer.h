@@ -8,6 +8,9 @@
 #ifndef PROPERTY_TRANSFORMER_H_
 #define PROPERTY_TRANSFORMER_H_
 
+#include "../system/discursive_system.h"
+
+
 class PropertyTransformer
 {
 public:

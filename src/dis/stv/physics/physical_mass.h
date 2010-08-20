@@ -7,6 +7,8 @@
 
 #ifndef PHYSICAL_MASS_H_
 #define PHYSICAL_MASS_H_
+#include "../system/discursive_system.h"
+
 
 class PhysicalMass
 {

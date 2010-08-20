@@ -11,6 +11,8 @@
 #include <unordered_map>
 #include <string>
 #include "property_transformer.h"
+#include "../system/discursive_system.h"
+
 
 using namespace std;
 

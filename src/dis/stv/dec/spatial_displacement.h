@@ -19,6 +19,8 @@
 #include "../physics/fixed_attractor.h"
 #include "../model/property_inverter.h"
 #include "../model/property_shifter.h"
+#include "../system/discursive_system.h"
+
 
 
 class SpatialDisplacement : public Decorator

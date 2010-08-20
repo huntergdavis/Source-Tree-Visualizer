@@ -11,6 +11,8 @@
 #include <vector>
 #include <map>
 #include "drawable_datum.h"
+#include "../system/discursive_system.h"
+
 
 using namespace std;
 

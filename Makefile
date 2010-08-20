@@ -39,7 +39,9 @@ LDFLAGS = -L/usr/lib \
 	-lcurl \
 	-lltdl
 	
-SOURCES = src/dis/stv/io/git_repository_access.cpp \
+SOURCES = src/dis/stv/system/discursive_error.cpp \
+	src/dis/stv/system/discursive_debug.cpp \
+	src/dis/stv/io/git_repository_access.cpp \
 	src/dis/stv/io/svn_remote_repository_access.cpp \
 	src/dis/stv/io/cvs_remote_repository_access.cpp \
 	src/dis/stv/io/github_repository_access.cpp \

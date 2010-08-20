@@ -10,6 +10,8 @@
 
 #include "drawable_data.h"
 #include <Magick++.h>
+#include "../system/discursive_system.h"
+
 
 using namespace Magick;
 

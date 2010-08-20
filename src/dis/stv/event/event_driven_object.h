@@ -11,6 +11,8 @@
 #include "event.h"
 #include "event_type.h"
 #include "event_listener.h"
+#include "../system/discursive_system.h"
+
 
 class EventDrivenObjecct
 {

@@ -9,6 +9,8 @@
 #define PROPERTY_INVERTER_H_
 
 #include "property_transformer.h"
+#include "../system/discursive_system.h"
+
 
 class PropertyInverter : public PropertyTransformer
 {

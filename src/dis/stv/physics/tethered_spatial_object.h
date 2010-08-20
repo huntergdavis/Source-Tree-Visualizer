@@ -11,6 +11,8 @@
 #include <math.h>
 #include <stdio.h>
 #include "spatial_object.h"
+#include "../system/discursive_system.h"
+
 
 class TetheredSpatialObject : public SpatialObject
 {

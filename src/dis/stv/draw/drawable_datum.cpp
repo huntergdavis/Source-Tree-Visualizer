@@ -7,6 +7,7 @@
 
 #include "drawable_datum.h"
 
+
 DrawableDatum::DrawableDatum(double locationX, double locationY, double angle, double extent, double mass):locationX(locationX), locationY(locationY),angle(angle),extent(extent),mass(mass)
 {
 }

@@ -16,6 +16,8 @@
 #include "../model/surrogate_tree_node.h"
 #include "../model/property_inverter.h"
 #include "../model/property_shifter.h"
+#include "../system/discursive_system.h"
+
 
 using namespace std;
 using namespace Magick;

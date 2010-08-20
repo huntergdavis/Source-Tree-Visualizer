@@ -6,6 +6,8 @@
  */
 
 #include "drawable_data.h"
+#include "../system/discursive_system.h"
+
 
 DrawableData::DrawableData()
 {

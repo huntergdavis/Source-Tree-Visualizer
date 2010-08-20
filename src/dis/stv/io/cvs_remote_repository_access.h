@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include "repository_access.h"
 #include "../model/surrogate_tree_node.h"
+#include "../system/discursive_system.h"
 #include "curl/curl.h"
 
 

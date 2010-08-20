@@ -12,6 +12,8 @@
 #include <typeinfo>
 #include "time_stepped_physics_object.h"
 #include "unidimensional_spatial_object.h"
+#include "../system/discursive_system.h"
+
 
 class TreeDisplacementNode : public TimeSteppedPhysicsObject, public UnidimensionalSpatialObject
 {

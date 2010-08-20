@@ -10,6 +10,8 @@
 
 #include "spatial_object.h"
 #include "time_stepped_physics_object.h"
+#include "../system/discursive_system.h"
+
 
 class FixedAttractor : public TimeSteppedPhysicsObject, public SpatialObject
 {
