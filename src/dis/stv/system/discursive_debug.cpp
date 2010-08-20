@@ -18,7 +18,7 @@ void SetDiscursiveDebugLevel(int level)
 	debugLevel = level;
 }
 
-void DebugPrint(std::string debugMessage,...)
+void DiscursiveDebugPrint(std::string debugMessage,...)
 {
 	if(debugLevel == 1)
 	{

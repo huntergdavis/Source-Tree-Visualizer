@@ -78,8 +78,11 @@ RepositoryAccess* noninteractive_agent(int agentType, std::string agentString)
 	else if(agentType == 2)
 	{
 		int colonPos = agentString.find(":");
-		printf("testing \n|%s|,|%s|\n",agentString.substr(0,colonPos).c_str(),agentString.substr(colonPos+1,agentString.size()).c_str());
-		git = new GitHubRepositoryAccess("mojombo","grit");
+		std::string gitUserName = agentString.substr(0,colonPos).c_str();
+		std::string gitProjectName = agentString.substr(colonPos+1,agentString.size()).c_str();
+		DiscursiveDebugPrint("testing \n|%s|,|%s|\n",gitUserName.c_str(),gitProjectName.c_str());
+
+		git = new GitHubRepositoryAccess(gitUserName,gitProjectName);
 	}
 	else if(agentType == 3)
 	{

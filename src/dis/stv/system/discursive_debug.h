@@ -14,6 +14,6 @@
 
 int GetDiscursiveDebugLevel();
 void SetDiscursiveDebugLevel(int level);
-void DebugPrint(std::string debugMessage,...);
+void DiscursiveDebugPrint(std::string debugMessage,...);
 
 #endif /* DISCURSIVE_DEBUG_H_ */
