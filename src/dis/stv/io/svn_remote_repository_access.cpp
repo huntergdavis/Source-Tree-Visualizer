@@ -106,7 +106,7 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 	{
 		// shouldn't get here
 		// TODO: add error handling function with try-catch default
-		exit(1);
+		DiscursiveError("Bad Repo Type");
 	}
 
 	// Blank tree
@@ -194,14 +194,14 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	firstPipeIndex = buffer->find("|");
 	if(firstPipeIndex < 0)
 	{
-		exit(1);
+		DiscursiveError("Bad Svn Pipe Parse");
 	}
 
 	// find the second pipe
 	secondPipeIndex = buffer->find("|",firstPipeIndex+1);
 	if(secondPipeIndex < 0)
 	{
-		exit(1);
+		DiscursiveError("Bad Svn Pipe Parse");
 	}
 
 	// pull our date string from between index 2 and 3

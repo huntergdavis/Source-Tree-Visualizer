@@ -119,7 +119,7 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 	{
 		// shouldn't get here
 		// TODO: add error handling function with try-catch default
-		exit(1);
+		DiscursiveError("bad repo type");
 	}
 
 	// Blank ptree

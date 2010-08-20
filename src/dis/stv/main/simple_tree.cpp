@@ -81,7 +81,9 @@ int main(int argc, char **argv)
 	}
 
 	SurrogateTreeNode* source = git->retrieve();
-	printf("Source tree name is %s\n", source->data["name"].c_str());
+	std::string sourceTreeNameOutput = "Source tree name is";
+	sourceTreeNameOutput += source->data["name"].c_str();
+	DebugPrint(sourceTreeNameOutput);
 
 	// Decorate surrogate tree nodes with locations
 	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH,HEIGHT);
