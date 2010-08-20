@@ -13,7 +13,7 @@
 #include "../draw/scanline_artist.h"
 #include "../gen/space_colonizer.h"
 #include "../system/discursive_system.h"
-#include "./interactive_agent.h"
+#include "./initial_agents.h"
 
 using namespace Magick;
 
@@ -54,19 +54,19 @@ int main(int argc, char **argv)
 	    while( opt != -1 ) {
 	        switch( opt ) {
 	            case 'g':
-	                localGit = optarg;
+	            	agentName = optarg;
 	                agentType = 1;
 	                break;
 	            case 'G':
-	                remoteGitHub = optarg;
+	            	agentName = optarg;
 	                agentType = 2;
 	                break;
 	            case 'S':
-	                svnName = optarg;
+	            	agentName = optarg;
 	                agentType = 3;
 	                break;
 	            case 'C':
-	                cvsName = optarg;
+	            	agentName = optarg;
 	                agentType = 4;
 	                break;
 	            case 'd':
@@ -102,7 +102,15 @@ int main(int argc, char **argv)
 			git = interactive_agent();
 			break;
 		case 1:
-			git = noninteractive_agent(agentType, )
+		case 2:
+		case 3:
+		case 4:
+			git = noninteractive_agent(agentType, agentName);
+        default:
+            /* You won't actually get here. */
+        	DiscursiveError("an impossibility occured in error processing");
+            break;
+	}
 
 
 
