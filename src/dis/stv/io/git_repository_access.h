@@ -20,16 +20,15 @@
 #include "../model/surrogate_tree_node.h"
 #include "curl/curl.h"
 
-using namespace std;
 
 class GitRepositoryAccess : public RepositoryAccess
 {
 private:
 	string root;
-	int generateLog();
-	SurrogateTreeNode* generatePTreeFromLog();
-	void parseTimeBlock(SurrogateTreeNode* tree, long time, ifstream& log);
-	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
+	int generateLog(std::string *localGitLog);
+	SurrogateTreeNode* generateTreeFromLog(std::string *buffer);
+	void parseTimeBlock(SurrogateTreeNode* tree, long time, std::string *buffer);
+	void InsertByPathName(SurrogateTreeNode* tree, std::string pathname, long fileTime);
 
 public:
 	GitRepositoryAccess(string repositoryRoot);

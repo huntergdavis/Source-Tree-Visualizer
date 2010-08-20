@@ -33,7 +33,7 @@ GitRepositoryAccess::GitRepositoryAccess(string repositoryRoot)
 
 }
 
-void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
+void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long fileTime)
 {
 	// Split off first part of path
 	int firstIndex = pathname.find("/");
@@ -48,10 +48,10 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 	{
 		// We have no more path left.  Just a single entry (leaf)
 		SurrogateTreeNode* file = new SurrogateTreeNode();
-		string timeStr = boost::lexical_cast<string>(time);
+		string timeStr = boost::lexical_cast<string>(fileTime);
 		file->data["creation_time"] = timeStr;
 		file->data["name"] = pathname;
-		printf("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
+		printf("Adding node '%s' @ time %ld\n",pathname.c_str(),fileTime);
 		tree->children.push_back(file);
 	}
 	else
@@ -72,10 +72,10 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 				// Found node
 				node = (*iter);
 				// Update node time if necessary
-				if(time < atol(node->data["creation_time"].c_str()))
+				if(fileTime < atol(node->data["creation_time"].c_str()))
 				{
-					printf("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
-					node->data["creation_time"] = boost::lexical_cast<string>(time);
+					printf("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), fileTime, atol(node->data["creation_time"].c_str()));
+					node->data["creation_time"] = boost::lexical_cast<string>(fileTime);
 				}
 				break;
 			}
@@ -84,108 +84,104 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		if(node == NULL)
 		{
 			node = new SurrogateTreeNode();
-			string timeStr = boost::lexical_cast<string>(time);
+			string timeStr = boost::lexical_cast<string>(fileTime);
 			node->data["creation_time"] = timeStr;
 			node->data["name"] = name;
-			printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
+			printf("Adding node '%s' @ time %ld\n",name.c_str(),fileTime);
 			tree->children.push_back(node);
 		}
 		// Else, use found node
 
 		// Parse rest of string
-		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),time);
+		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),fileTime);
 	}
 }
 
-void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, ifstream& log)
+void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std::string *buffer)
 {
-	printf("Parsing block for time %ld\n",time);
-	// Parse each line
+	//printf("Parsing block for time %ld\n BLOCK IS: \n\n%s\n\n",time,buffer->c_str());
+
+	// loop over each line and search for created files
+	// created files are denoted by an '... A' tag sequence
+	// create an istringstream to parse the suboutput for added files
+	std::istringstream localGitBlockSS(*buffer);
+
+	// individual filename line storage
+	std::string fileNameLine;
+
+	// individual filename storage
+	std::string fileNameString;
+
+	// ..a identifier location storage
+	// as it will be used in search, init to -1
+	int aLocation = -1;
+
+	// loop over the detailed commit and find new filenames
+	while (getline (localGitBlockSS, fileNameLine))
+	{
+		aLocation = fileNameLine.find("... A");
+		if(aLocation > 0)
+		{
+			fileNameString = fileNameLine.substr(aLocation+6,fileNameLine.size()-aLocation+6);
+			//printf("\nFILENAMELOCATION |%s|\n",fileNameString.c_str());
+
+			//printf("Inserting %s @ %ld\n",filename.c_str(),time);
+			InsertByPathName(tree,fileNameString,time);
+
+		}
+	}
+
+}
+
+SurrogateTreeNode* GitRepositoryAccess::generateTreeFromLog(std::string *buffer)
+{
+	// Blank ptree
+	SurrogateTreeNode* result = new SurrogateTreeNode();
+	result->data["name"] = "root";
+
+	// For each time block, parse files and add to ptree
 	char c;
 	string str;
-	while(log.get(c))
+	for(int i=0;i<(int)buffer->size();i++)
 	{
+		c = buffer->at(i);
 		if(c != '\n')
 		{
 			str += c;
 		}
 		else
 		{
-			if(str.length() == 0)
-			{
-				// Finished
-				break;
-			}
-			else
-			{
-				// Examine line for file name and Git operation
-				vector<string> cols;
-				boost::split(cols, str, boost::is_any_of("\t "));
-				// Vector should be at least 2 columns.  Last two are: <Git Op> <Filename with path>
-				if(cols.size() > 1)
-				{
-					vector<string>::reverse_iterator iter = cols.rbegin();
-					string filename = *iter;
-					++iter;
-					string op = *iter;
-					//printf("Filename: '%s', Op: %s\n",filename.c_str(),op.c_str());
-					if(!op.compare("A"))
-					{
-						printf("Inserting %s @ %ld\n",filename.c_str(),time);
-						InsertByPathName(tree,filename,time);
-					}
-				}
-				str.clear();
-			}
+			long fileTime = atol(str.c_str());
+			parseTimeBlock(result,fileTime,buffer);
+			str.clear();
 		}
-	}
-}
-
-SurrogateTreeNode* GitRepositoryAccess::generatePTreeFromLog()
-{
-	// Blank ptree
-	SurrogateTreeNode* result = new SurrogateTreeNode();
-	result->data["name"] = "root";
-	// Load log file
-	ifstream log;
-	log.open( TEMP_FILE.c_str(), ios::in );
-	if(log)
-	{
-		// For each time block, parse files and add to ptree
-		char c;
-		string str;
-		while(log.get(c))
-		{
-			if(c != '\n')
-			{
-				str += c;
-			}
-			else
-			{
-				long time = atol(str.c_str());
-				parseTimeBlock(result,time,log);
-				str.clear();
-			}
-		}
-		log.close();
 	}
 
 	return result;
 }
 
-int GitRepositoryAccess::generateLog()
+int GitRepositoryAccess::generateLog(std::string *localGitLog)
 {
-	int commandReturnValue = 0;
+	// create a string for holding the svn log
+	localGitLog->reserve(10024);  // reserve 10k for fast allocation
 
-	if(this->repoType == 1)
-	{
-		string gitLogWithOutput = "cd " + this->root + "; " + GIT_COMMAND + " > " + TEMP_FILE;
-		printf("Log command: %s\n",gitLogWithOutput.c_str());
-		commandReturnValue = system(gitLogWithOutput.c_str());
-	}
+	// create a string for holding the svn command
+	std::string localGitCommand = "cd " + this->root + "; " + GIT_COMMAND;
 
-	// return a value
-	return commandReturnValue;
+	// create a file pointer handle to our command output
+	FILE *fp = popen(localGitCommand.c_str(), "r" );
+
+	// loop over all the file handle and put into stringstream
+    while (true)
+    {
+      int c = std::fgetc( fp );
+      if (c == EOF) break;
+      localGitLog->push_back( (char)c );
+    }
+    std::fclose( fp );
+
+    // figure out a meaningful return code
+    return 1;
 }
 
 SurrogateTreeNode* GitRepositoryAccess::retrieve()
@@ -194,11 +190,12 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 
 	if(this->repoType == 1)
 	{
+		std::string localGitFile;
 		// If we generated a log file
-		if(!this->generateLog())
+		if(this->generateLog(&localGitFile))
 		{
-			// Create the ptree from log
-			result = this->generatePTreeFromLog();
+			// Create the tree from log
+			result = this->generateTreeFromLog(&localGitFile);
 			printf("Generated tree with name '%s'\n", result->data["name"].c_str());
 		}
 	}
