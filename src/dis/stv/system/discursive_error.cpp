@@ -9,6 +9,6 @@
 
 void DiscursiveError(std::string error)
 {
-	printf("%s",error.c_str());
+	printf("\n%s\n",error.c_str());
 	exit(1);
 }

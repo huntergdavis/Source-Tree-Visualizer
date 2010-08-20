@@ -224,7 +224,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 		else
 		{
 			printf("Serious Error.  (Max: %f) Most: %f, Least: %f\n", DBL_MAX, most, least);
-			exit(1);
+			DiscursiveError("Serious Error");
 		}
 		// Transform positions to arc
 		double arcRadius = 10.0;
