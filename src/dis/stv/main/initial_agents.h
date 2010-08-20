@@ -5,8 +5,8 @@
  *      Author: Hunter Davis
  */
 
-#ifndef INTERACTIVE_AGENT_H_
-#define INTERACTIVE_AGENT_H_
+#ifndef INITIAL_AGENTS_H_
+#define INITIAL_AGENTS_H_
 
 #include "../system/discursive_system.h"
 #include "../io/git_repository_access.h"
@@ -16,5 +16,6 @@
 
 
 RepositoryAccess* interactive_agent();
+RepositoryAccess* noninteractive_agent(int agentType, std::string agentString);
 
 #endif /* INTERACTIVE_AGENT_H_ */

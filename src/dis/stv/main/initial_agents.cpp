@@ -6,7 +6,7 @@
  */
 
 
-#include "./interactive_agent.h"
+#include "./initial_agents.h"
 
 
 RepositoryAccess*  interactive_agent()
@@ -65,4 +65,31 @@ RepositoryAccess*  interactive_agent()
 	}
 	return git;
 }
+
+// cli processor
+RepositoryAccess* noninteractive_agent(int agentType, std::string agentString)
+{
+	RepositoryAccess* git;
+
+	if(agentType == 1)
+	{
+		git = new GitRepositoryAccess(agentString);
+	}
+	else if(agentType == 2)
+	{
+		int colonPos = agentString.find(":");
+		printf("testing \n|%s|,|%s|\n",agentString.substr(0,colonPos-1).c_str(),agentString.substr(colonPos+1,agentString.size()).c_str());
+		git = new GitHubRepositoryAccess("mojombo","grit");
+	}
+	else if(agentType == 3)
+	{
+		git = new SvnRemoteRepositoryAccess(agentString);
+	}
+	else if(agentType == 4)
+	{
+		git = new SvnRemoteRepositoryAccess(agentString);
+	}
+	return git;
+}
+
 
