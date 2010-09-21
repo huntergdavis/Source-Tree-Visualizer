@@ -1,0 +1,18 @@
+<!--#include virtual="before_content.html" -->
+		<!--Public Domain Image of Training class from http://commons.wikimedia.org/wiki/File:Computer_class.jpg -->
+		<img src="./images/training.jpg" width="50%"/>
+		<br/>
+		<h2>Moving from Thin Clients to Thin Operating Systems</h2>
+
+One aspect of being a small company is the diversity of the projects that we are presented with.  Very quickly it became apparent that purposing physical machines for each project would soon become quite an added overhead.  Virtual machines help to mitigate the hardware issue, as do our virtual machine repository/protocol, but there is still the underlying operating system and any software running.  This presents a layer of overhead which is present in any vitalization environment.
+
+Cool Idea: Remember the laptop that was coming out with one x86 processor for general computing, and one arm processor for a quick instant on BIOS-esque web browser?  Imagine using the arm processor (or a GPU/CUDA solution....) for the hypervisor, and tthe x86 processor for the guests. Sounds like an interesting problem.. anyway
+
+One trend which falls in and out of popularity with the business computing folks is thin client computing.  Using lightweight hardware and OS’s for remote computation and applications.  Perhaps one of the reasons it’s currently struggling to find ground in the consumer market is the ever increasing speed of processors.  A 100$ machine today, on any number of vendors sites, is liable to have a 64-bit dual core processor and a gig of ram.  Far more than enough to run an OS, and certainly overkill for a thin client.
+
+Thin OS’s however, are still quite relevant when you’re trying to maximize the performance of virtual machines.  While our big irons run XEN or KVM, our laptops and desktops run an assortment of operating systems.  Converting them all to thin OSs in the short term is not a practical solution, however having a “thin” policy on software installation (install into the VM for that project) presents an environment which is predicated on lightweight computing.  Distinctions between OS’s (OSX,Linux,Windows,BEos) start to fade, and open computing slowly becomes the norm.  We hope.  It’s cheaper anyway :) 
+		
+	/Hunter
+		<p>	
+<!--#include virtual="after_content.html" -->
+ 
