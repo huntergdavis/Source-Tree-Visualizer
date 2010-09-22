@@ -27,11 +27,14 @@ class SpatialDisplacement : public Decorator
 {
 public:
 	SpatialDisplacement(int width, int height);
+	SpatialDisplacement(int width, int height, double scaleWidth, double scaleHeight);
 	void decorate(SurrogateTreeNode* tree);
 
 private:
 	int width;
 	int height;
+	double scaleWidth;
+	double scaleHeight;
 	void expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY);
 	int count(SurrogateTreeNode* tree);
 	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);

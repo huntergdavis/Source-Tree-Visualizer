@@ -28,6 +28,10 @@ void display_usage( void )
 	usage_string += "\n-C option - expects pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd\n";
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, defaults to 1\n";
+	usage_string += "\n-O option - output file name, defaults to tree.jpg\n";
+	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
+	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
+
 
     printf("%s",usage_string.c_str());
     DiscursiveError("Copyright Discursive Labs LLC, 2010");
@@ -46,8 +50,15 @@ int main(int argc, char **argv)
 	// type of agent to use, ie command line options or interactive
 	int agentType = 0;
 
+	// scaling factors to use for spatial displacement
+	double scaleHeight = 0.85;
+	double scaleWidth = 0.9;
+
+	// our filename for output file
+	std::string fileName = "out/tree.jpg";
+
 	// our option string
-	static const char *optString = "g:G:S:C:idh?";
+	static const char *optString = "g:G:S:C:H:W:O:idh?";
 
 	// loop over our command options in the normal unix way
 
@@ -70,6 +81,16 @@ int main(int argc, char **argv)
 			case 'C':
 				agentName = optarg;
 				agentType = 4;
+				break;
+			case 'W':
+				scaleWidth = atof(optarg);
+				break;
+			case 'H':
+				scaleHeight = atof(optarg);
+				break;
+			case 'O':
+				fileName = "out/";
+				fileName += optarg;
 				break;
 			case 'd':
 				// set the debug level
@@ -129,7 +150,7 @@ int main(int argc, char **argv)
 	DiscursiveDebugPrint(sourceTreeNameOutput);
 
 	// Decorate surrogate tree nodes with locations
-	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH,HEIGHT);
+	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH,HEIGHT,scaleWidth,scaleHeight);
 	disp->decorate(source);
 
 	// Digitize decorated surrogate tree into line segment tree
@@ -147,7 +168,7 @@ int main(int argc, char **argv)
 	try
 	{
 		// Write the image to a file
-		canvas.write( "out/tree.jpg" );
+		canvas.write( fileName.c_str() );
 	}
 	catch( Exception &error_ )
 	{

@@ -13,6 +13,13 @@ using namespace std;
 
 SpatialDisplacement::SpatialDisplacement(int width, int height):width(width), height(height)
 {
+	scaleWidth = 0.9;
+	scaleHeight = 0.85;
+}
+
+SpatialDisplacement::SpatialDisplacement(int width, int height, double scaleWidth, double scaleHeight):width(width), height(height) ,scaleWidth(scaleWidth), scaleHeight(scaleHeight)
+{
+
 }
 
 void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
@@ -34,8 +41,8 @@ void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 {
 	// Calculate resize scaling factors
-	double allowedWidth = 0.9*this->width;
-	double allowedHeight = 0.85*this->height;
+	double allowedWidth = scaleWidth*this->width;
+	double allowedHeight = scaleHeight*this->height;
 	double xMax = tree->findMax("x");
 	double xMin = tree->findMin("x");
 	double yMax = tree->findMax("y");
