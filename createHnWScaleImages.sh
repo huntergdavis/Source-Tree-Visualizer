@@ -4,7 +4,7 @@
 
 echo this crappy script expects scriptname Hbottom Htop Wbottom Wtop
 
-COUNT=0
+COUNT=1000
 
 # this is the height loop
 for i in $(eval echo {$1..$2})
