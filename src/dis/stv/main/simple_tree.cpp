@@ -8,6 +8,19 @@
 #include "../system/discursive_system.h"
 #include "./initial_agents.h"
 
+#include "repository_access.h"
+#include <Magick++.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include "../model/surrogate_tree_node.h"
+#include "../dec/spatial_displacement.h"
+#include "../draw/scanline_artist.h"
+#include "../gen/space_colonizer.h"
+
+using namespace Magick;
+
+
 
 // display our command usage
 void display_usage( void )
@@ -142,12 +155,33 @@ int main(int argc, char **argv)
 	git->jpgIndex = 1000;
 	git->scaleHeight = scaleHeight;
 	git->scaleWidth = scaleWidth;
+	git->fileName = (char*)fileName.c_str();
 
 	// retrieve our source tree
-	git->source = git->retrieve();
+	SurrogateTreeNode* sTN = git->retrieve();
+	git->source = sTN;
+	InitializeMagick("/");
+	std::string sourceTreeNameOutput = "Source tree name is";
+	sourceTreeNameOutput += git->source->data["name"].c_str();
+	DiscursiveDebugPrint(sourceTreeNameOutput);
+
+	// Decorate surrogate tree nodes with locations
+	SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
+	disp->decorate(git->source);
+
+	// Digitize decorated surrogate tree into line segment tree
+	SpaceColonizer* digitizer = new SpaceColonizer(2);
+	DrawableData* lines = digitizer->digitize(git->source);
+
+	// Transform
+
+	// Draw tree
+	Image canvas(Geometry(500,500),"white");
+	ScanlineArtist* artist = new ScanlineArtist();
+	artist->draw(canvas, lines);
 
 	// actually generate a tree (or the final tree if many)
-	git->GenerateTreeAndWriteJPG(&fileName);
+	git->WriteJPGFromCanvas(&canvas);
 
 	return 0;
 }

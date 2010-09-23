@@ -12,6 +12,13 @@
 #include "../model/surrogate_tree_node.h"
 #include "../system/discursive_system.h"
 
+#include <Magick++.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+using namespace Magick;
+
+
 
 class RepositoryAccess
 {
@@ -23,8 +30,9 @@ public:
 	int jpgIndex;
 	int scaleHeight;
 	int scaleWidth;
+	char* fileName;
 	SurrogateTreeNode* source;
-	int GenerateTreeAndWriteJPG(std::string *fileName);
+	int WriteJPGFromCanvas(Image* canvas);
 	virtual SurrogateTreeNode* retrieve() = 0;
 };
 

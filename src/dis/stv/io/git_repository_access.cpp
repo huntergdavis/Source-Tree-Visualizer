@@ -93,6 +93,11 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		// Else, use found node
 
 		// Parse rest of string
+//		if(this->snapshotJpgs == 1)
+//		{
+//			this->source = node;
+//			GenerateTreeAndWriteJPG();
+//		}
 		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),fileTime);
 	}
 }

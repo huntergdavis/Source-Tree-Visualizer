@@ -18,44 +18,20 @@
 using namespace Magick;
 
 
-int RepositoryAccess::GenerateTreeAndWriteJPG(std::string *fileName)
+int RepositoryAccess::WriteJPGFromCanvas(Image* canvas)
 {
-
 	// Tree image size parameters
-	int WIDTH = 500;
-	int HEIGHT = 500;
-
-	std::string sourceTreeNameOutput = "Source tree name is";
-	sourceTreeNameOutput += source->data["name"].c_str();
-	DiscursiveDebugPrint(sourceTreeNameOutput);
-
-	// Decorate surrogate tree nodes with locations
-	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH,HEIGHT,scaleWidth,scaleHeight);
-	disp->decorate(source);
-
-	// Digitize decorated surrogate tree into line segment tree
-	SpaceColonizer* digitizer = new SpaceColonizer(2);
-	DrawableData* lines = digitizer->digitize(source);
-
-	// Transform
-
-	// Draw tree
-	InitializeMagick("/");
-	Image canvas(Geometry(WIDTH,HEIGHT),"white");
-	ScanlineArtist* artist = new ScanlineArtist();
-	artist->draw(canvas, lines);
-
 	// Generate Image Name with preceding integer and increment it
 	std::stringstream integerPlusFileName;
 	integerPlusFileName << "./out/";
-	integerPlusFileName << jpgIndex;
-	integerPlusFileName << fileName->c_str();
-	jpgIndex++;
+	integerPlusFileName << this->jpgIndex;
+	integerPlusFileName << this->fileName;
+	this->jpgIndex++;
 
 	try
 	{
 		// Write the image to a file with a preceding integer
-		canvas.write(integerPlusFileName.str().c_str());
+		canvas->write(integerPlusFileName.str().c_str());
 	}
 	catch( Exception &error_ )
 	{
