@@ -231,7 +231,20 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 			fileNameString = fileNameLine.substr(5,fileNameLine.size()-5);
 			//DiscursiveDebugPrint("\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
 			// actually insert the file entry into the tree
-			InsertByPathName(tree,fileNameString,dateEpoch);
+			// increase the number of global inserts by one
+			if(insertTarget > 0)
+			{
+				localInserts++;
+				if(localInserts < insertTarget)
+				{
+					InsertByPathName(tree,fileNameString,dateEpoch);
+				}
+			}
+			else
+			{
+				globalInserts++;
+				InsertByPathName(tree,fileNameString,dateEpoch);
+			}
 		}
 	}
 

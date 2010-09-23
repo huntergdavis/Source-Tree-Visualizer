@@ -301,7 +301,21 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 			earliestFileDate = retrieveDateFromGitHubFileName(&fileNameString);
 
 			DiscursiveDebugPrint("Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
-			InsertByPathName(treeResult,fileNameString,earliestFileDate);
+
+			// increase the number of global inserts by one
+			if(insertTarget > 0)
+			{
+				localInserts++;
+				if(localInserts < insertTarget)
+				{
+					InsertByPathName(treeResult,fileNameString,earliestFileDate);
+				}
+			}
+			else
+			{
+				globalInserts++;
+				InsertByPathName(treeResult,fileNameString,earliestFileDate);
+			}
 		}
 
 	}
