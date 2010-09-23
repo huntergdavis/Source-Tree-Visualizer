@@ -35,6 +35,9 @@ void display_usage( void )
 	usage_string += "\n-d option - debug level, defaults to 1\n";
 	usage_string += "\n-O option - output file name, defaults to tree.jpg\n";
 	usage_string += "\n-m option - output many many .jpgs in sequence\n";
+	usage_string += "\n-s option - start number for many jpg tree rendering, default is 3\n";
+	usage_string += "\n-f option - finish number for many jpg tree rendering, default is treesize\n";
+	usage_string += "\n-t option - step value for many jpg tree rendering, default is 1\n";
 	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
 	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
 
@@ -66,8 +69,13 @@ int main(int argc, char **argv)
 	// should we make many jpgs?
 	int manyJpgs = 0;
 
+	// options for many jpgs
+	int jpgStep = 1;
+	int jpgStart = 3;
+	int jpgStop = 0;
+
 	// our option string
-	static const char *optString = "g:G:S:C:H:W:O:midh?";
+	static const char *optString = "g:G:S:C:H:W:O:s:f:t:midh?";
 
 	// loop over our command options in the normal unix way
 
@@ -99,6 +107,15 @@ int main(int argc, char **argv)
 				break;
 			case 'H':
 				scaleHeight = atof(optarg);
+				break;
+			case 's':
+				jpgStart = atoi(optarg);
+				break;
+			case 'f':
+				jpgStop = atoi(optarg);
+				break;
+			case 't':
+				jpgStep = atoi(optarg);
 				break;
 			case 'O':
 				fileName = optarg;
@@ -166,7 +183,12 @@ int main(int argc, char **argv)
 	// loop over a bunch of increasingly large trees
 	if(manyJpgs && (git->globalInserts > 2))
 	{
-		for(int i = 3; i< git->globalInserts-1;i++)
+		if (jpgStop >= git->globalInserts)
+		{
+			jpgStop = git->globalInserts-1;
+		}
+		// use our user-set parameters to define our step
+		for(int i = jpgStart; i<jpgStop;i+= jpgStep)
 		{
 			// reset our insert variables
 			git->localInserts = 0;
