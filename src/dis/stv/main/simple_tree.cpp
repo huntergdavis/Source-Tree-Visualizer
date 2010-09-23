@@ -4,18 +4,10 @@
  *  Created on: Aug 12, 2010
  *      Author: programmer
  */
-#include <Magick++.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include "../model/surrogate_tree_node.h"
-#include "../dec/spatial_displacement.h"
-#include "../draw/scanline_artist.h"
-#include "../gen/space_colonizer.h"
+
 #include "../system/discursive_system.h"
 #include "./initial_agents.h"
 
-using namespace Magick;
 
 // display our command usage
 void display_usage( void )
@@ -29,6 +21,7 @@ void display_usage( void )
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, defaults to 1\n";
 	usage_string += "\n-O option - output file name, defaults to tree.jpg\n";
+	usage_string += "\n-m option - output many many .jpgs in sequence\n";
 	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
 	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
 
@@ -57,8 +50,11 @@ int main(int argc, char **argv)
 	// our filename for output file
 	std::string fileName = "out/tree.jpg";
 
+	// should we make many jpgs?
+	int manyJpgs = 0;
+
 	// our option string
-	static const char *optString = "g:G:S:C:H:W:O:idh?";
+	static const char *optString = "g:G:S:C:H:W:O:midh?";
 
 	// loop over our command options in the normal unix way
 
@@ -84,6 +80,9 @@ int main(int argc, char **argv)
 				break;
 			case 'W':
 				scaleWidth = atof(optarg);
+				break;
+			case 'm':
+				manyJpgs = 1;
 				break;
 			case 'H':
 				scaleHeight = atof(optarg);
@@ -113,10 +112,6 @@ int main(int argc, char **argv)
 	}
 
 
-	// Tree image size parameters
-	int WIDTH = 500;
-	int HEIGHT = 500;
-
 	// Tree Generation pipeline
 	// create an abstract method for repository access
 	RepositoryAccess* git;
@@ -143,37 +138,14 @@ int main(int argc, char **argv)
 	}
 
 
+    // set our repository single or manyjpg options
+	git->snapshotJpgs = manyJpgs;
+	git->jpgIndex = 1000;
+	git->fileName = fileName;
+	git->scaleHeight = scaleHeight;
+	git->scaleWidth = scaleWidth;
 
-	SurrogateTreeNode* source = git->retrieve();
-	std::string sourceTreeNameOutput = "Source tree name is";
-	sourceTreeNameOutput += source->data["name"].c_str();
-	DiscursiveDebugPrint(sourceTreeNameOutput);
-
-	// Decorate surrogate tree nodes with locations
-	SpatialDisplacement* disp = new SpatialDisplacement(WIDTH,HEIGHT,scaleWidth,scaleHeight);
-	disp->decorate(source);
-
-	// Digitize decorated surrogate tree into line segment tree
-	SpaceColonizer* digitizer = new SpaceColonizer(2);
-	DrawableData* lines = digitizer->digitize(source);
-
-	// Transform
-
-	// Draw tree
-	InitializeMagick(*argv);
-	Image canvas(Geometry(WIDTH,HEIGHT),"white");
-	ScanlineArtist* artist = new ScanlineArtist();
-	artist->draw(canvas, lines);
-
-	try
-	{
-		// Write the image to a file
-		canvas.write( fileName.c_str() );
-	}
-	catch( Exception &error_ )
-	{
-		DiscursiveError(error_.what());
-	}
+	git->GenerateTreeAndWriteJPG();
 
 	return 0;
 }

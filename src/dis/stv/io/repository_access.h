@@ -17,7 +17,14 @@ class RepositoryAccess
 {
 protected:
 	int repoType;
+
 public:
+	int snapshotJpgs;
+	int jpgIndex;
+	int scaleHeight;
+	int scaleWidth;
+	std::string fileName;
+	int GenerateTreeAndWriteJPG();
 	virtual SurrogateTreeNode* retrieve() = 0;
 };
 
