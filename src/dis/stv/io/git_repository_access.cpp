@@ -91,13 +91,6 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 			tree->children.push_back(node);
 		}
 		// Else, use found node
-
-		// Parse rest of string
-//		if(this->snapshotJpgs == 1)
-//		{
-//			this->source = node;
-//			GenerateTreeAndWriteJPG();
-//		}
 		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),fileTime);
 	}
 }
@@ -131,7 +124,21 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			//printf("\nFILENAMELOCATION |%s|\n",fileNameString.c_str());
 
 			//printf("Inserting %s @ %ld\n",filename.c_str(),time);
-			InsertByPathName(tree,fileNameString,time);
+			// increase the number of global inserts by one
+			if(insertTarget > 0)
+			{
+				localInserts++;
+				if(localInserts < insertTarget)
+				{
+					InsertByPathName(tree,fileNameString,time);
+				}
+			}
+			else
+			{
+				globalInserts++;
+				InsertByPathName(tree,fileNameString,time);
+
+			}
 
 		}
 	}

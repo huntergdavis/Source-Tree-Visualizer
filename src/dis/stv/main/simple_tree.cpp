@@ -156,10 +156,47 @@ int main(int argc, char **argv)
 	git->scaleHeight = scaleHeight;
 	git->scaleWidth = scaleWidth;
 	git->fileName = (char*)fileName.c_str();
+	git->globalInserts = 0;
+	git->localInserts = 0;
+	git->insertTarget = 0;
 
 	// retrieve our source tree
 	SurrogateTreeNode* sTN = git->retrieve();
 	git->source = sTN;
+
+	if(manyJpgs && (git->globalInserts > 0))
+	{
+		for(int i = git->globalInserts;i>1;i--)
+		{
+			git->localInserts = 0;
+			git->insertTarget = i;
+			// init libmagick
+			InitializeMagick("/");
+			std::string sourceTreeNameOutput = "Source tree name is";
+			sourceTreeNameOutput += git->source->data["name"].c_str();
+			DiscursiveDebugPrint(sourceTreeNameOutput);
+
+			// Decorate surrogate tree nodes with locations
+			SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
+			disp->decorate(git->source);
+
+			// Digitize decorated surrogate tree into line segment tree
+			SpaceColonizer* digitizer = new SpaceColonizer(2);
+			DrawableData* lines = digitizer->digitize(git->source);
+
+			// Transform
+
+			// Draw tree
+			Image canvas(Geometry(500,500),"white");
+			ScanlineArtist* artist = new ScanlineArtist();
+			artist->draw(canvas, lines);
+
+			// actually generate a tree (or the final tree if many)
+			git->WriteJPGFromCanvas(&canvas);
+
+		}
+	}
+	// init libmagick
 	InitializeMagick("/");
 	std::string sourceTreeNameOutput = "Source tree name is";
 	sourceTreeNameOutput += git->source->data["name"].c_str();

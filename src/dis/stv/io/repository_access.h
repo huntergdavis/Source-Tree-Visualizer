@@ -27,6 +27,9 @@ protected:
 
 public:
 	int snapshotJpgs;
+	int globalInserts;
+	int localInserts;
+	int insertTarget;
 	int jpgIndex;
 	int scaleHeight;
 	int scaleWidth;
