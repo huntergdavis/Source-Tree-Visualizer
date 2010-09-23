@@ -161,17 +161,22 @@ int main(int argc, char **argv)
 	git->insertTarget = 0;
 
 	// retrieve our source tree
-	SurrogateTreeNode* sTN = git->retrieve();
-	git->source = sTN;
+	git->source = git->retrieve();
 
-	if(manyJpgs && (git->globalInserts > 0))
+	// loop over a bunch of increasingly large trees
+	if(manyJpgs && (git->globalInserts > 2))
 	{
-		for(int i = git->globalInserts;i>1;i--)
+		for(int i = 3; i< git->globalInserts-1;i++)
 		{
+			// reset our insert variables
 			git->localInserts = 0;
 			git->insertTarget = i;
+
+			// retrieve our source tree
+			git->source = git->retrieve();
+
 			// init libmagick
-			InitializeMagick("/");
+			//InitializeMagick("/");
 			std::string sourceTreeNameOutput = "Source tree name is";
 			sourceTreeNameOutput += git->source->data["name"].c_str();
 			DiscursiveDebugPrint(sourceTreeNameOutput);
@@ -194,10 +199,12 @@ int main(int argc, char **argv)
 			// actually generate a tree (or the final tree if many)
 			git->WriteJPGFromCanvas(&canvas);
 
+			//DestroyMagick();
+
 		}
 	}
 	// init libmagick
-	InitializeMagick("/");
+	//InitializeMagick("/");
 	std::string sourceTreeNameOutput = "Source tree name is";
 	sourceTreeNameOutput += git->source->data["name"].c_str();
 	DiscursiveDebugPrint(sourceTreeNameOutput);
