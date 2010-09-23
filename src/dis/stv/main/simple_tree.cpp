@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 	double scaleWidth = 0.9;
 
 	// our filename for output file
-	std::string fileName = "out/tree.jpg";
+	std::string fileName = "tree.jpg";
 
 	// should we make many jpgs?
 	int manyJpgs = 0;
@@ -88,8 +88,7 @@ int main(int argc, char **argv)
 				scaleHeight = atof(optarg);
 				break;
 			case 'O':
-				fileName = "out/";
-				fileName += optarg;
+				fileName = optarg;
 				break;
 			case 'd':
 				// set the debug level
@@ -141,11 +140,14 @@ int main(int argc, char **argv)
     // set our repository single or manyjpg options
 	git->snapshotJpgs = manyJpgs;
 	git->jpgIndex = 1000;
-	git->fileName = fileName;
 	git->scaleHeight = scaleHeight;
 	git->scaleWidth = scaleWidth;
 
-	git->GenerateTreeAndWriteJPG();
+	// retrieve our source tree
+	git->source = git->retrieve();
+
+	// actually generate a tree (or the final tree if many)
+	git->GenerateTreeAndWriteJPG(&fileName);
 
 	return 0;
 }

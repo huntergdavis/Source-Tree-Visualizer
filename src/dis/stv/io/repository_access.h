@@ -23,8 +23,8 @@ public:
 	int jpgIndex;
 	int scaleHeight;
 	int scaleWidth;
-	std::string fileName;
-	int GenerateTreeAndWriteJPG();
+	SurrogateTreeNode* source;
+	int GenerateTreeAndWriteJPG(std::string *fileName);
 	virtual SurrogateTreeNode* retrieve() = 0;
 };
 

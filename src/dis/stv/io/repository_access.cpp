@@ -18,13 +18,13 @@
 using namespace Magick;
 
 
-int RepositoryAccess::GenerateTreeAndWriteJPG()
+int RepositoryAccess::GenerateTreeAndWriteJPG(std::string *fileName)
 {
 
 	// Tree image size parameters
 	int WIDTH = 500;
 	int HEIGHT = 500;
-	SurrogateTreeNode* source = retrieve();
+
 	std::string sourceTreeNameOutput = "Source tree name is";
 	sourceTreeNameOutput += source->data["name"].c_str();
 	DiscursiveDebugPrint(sourceTreeNameOutput);
@@ -47,8 +47,9 @@ int RepositoryAccess::GenerateTreeAndWriteJPG()
 
 	// Generate Image Name with preceding integer and increment it
 	std::stringstream integerPlusFileName;
+	integerPlusFileName << "./out/";
 	integerPlusFileName << jpgIndex;
-	integerPlusFileName << fileName;
+	integerPlusFileName << fileName->c_str();
 	jpgIndex++;
 
 	try
