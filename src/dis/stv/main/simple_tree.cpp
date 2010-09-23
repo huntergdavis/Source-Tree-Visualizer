@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 	// options for many jpgs
 	int jpgStep = 1;
 	int jpgStart = 3;
-	int jpgStop = 0;
+	int jpgStop = 10000;
 
 	// our option string
 	static const char *optString = "g:G:S:C:H:W:O:s:f:t:midh?";
