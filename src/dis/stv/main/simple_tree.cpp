@@ -199,8 +199,6 @@ int main(int argc, char **argv)
 			// actually generate a tree (or the final tree if many)
 			git->WriteJPGFromCanvas(&canvas);
 
-			//DestroyMagick();
-
 		}
 	}
 	// init libmagick
