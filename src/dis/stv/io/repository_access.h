@@ -8,7 +8,6 @@
 #ifndef REPOSITORY_ACCESS_H_
 #define REPOSITORY_ACCESS_H_
 
-#include <boost/property_tree/ptree.hpp>
 #include "../model/surrogate_tree_node.h"
 #include "../system/discursive_system.h"
 

@@ -25,11 +25,14 @@ SpatialDisplacement::SpatialDisplacement(int width, int height, double scaleWidt
 void SpatialDisplacement::decorate(SurrogateTreeNode* tree)
 {
 	// Iterate over each node with children
-	// First, count
+	// First, "count".  Calculates child center of mass and subtree depth
 	this->count(tree);
 	// Second, float weighted surrogate nodes into position
-	this->expand(tree,(3.14159/2),0,0);
-	// Third, transform coordinats
+	//this->expand(tree,(3.14159/2),0,0);
+	// Max tree depth
+	double maxDepth = tree->findMax("depth");
+	this->expand2(tree,(3.14159/2),0,0,(this->height)/maxDepth);
+	// Third, transform coordinates
 	this->transform(tree);
 }
 
@@ -57,16 +60,16 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 	double scalingFactorH = minDim/currHeight;
 
 	// Transform points to look more "naturally tree-like"
-	PropertyInverter inverter(currHeight * 1.1);
+	tree->scale("y", scalingFactorH);
+	PropertyInverter inverter(this->height * 0.98);
 	tree->transform("y",&inverter);
-	PropertyShifter shifter(currWidth / 2);
-	tree->transform("x",&shifter);
 
+	PropertyShifter shifter(-1*((xMax + xMin) / 2));
+	tree->transform("x",&shifter);
 	// Scale tree values
 	tree->scale("x", scalingFactorW);
-	tree->scale("y", scalingFactorH);
-
-
+	PropertyShifter shifter2(minDim * (2 - scaleWidth) / 2);
+	tree->transform("x",&shifter2);
 }
 
 // Sorted in increasing order
@@ -265,16 +268,217 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 	}
 }
 
+void SpatialDisplacement::expand2(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY, double allowedHeight)
+{
+	if(tree->children.size() > 0)
+	{
+		// Determine initial layout based on creation time of child nodes.
+		// Files are split into different list than directories.
+		vector<SurrogateTreeNode*> files;
+		vector<SurrogateTreeNode*> dirs;
+		SurrogateTreeNode* node = NULL;
+		int maxChild = 1;
+		int childSize;
+		int mass = 0;
+		int children = 0;
+		double minChildMass = DBL_MAX;
+		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+		{
+			children++;
+			node = *iter;
+			// Directory
+			if(node->children.size() > 0)
+			{
+				//printf("Inserting into dirs...\n");
+				this->insertOrderedBy(&dirs,node,"size");
+				childSize = atoi(node->data["size"].c_str());
+				mass += childSize;
+				if(childSize > maxChild )
+				{
+					maxChild = childSize;
+				}
+				if(childSize < minChildMass)
+				{
+					minChildMass = childSize;
+				}
+			}
+			// File
+			else
+			{
+				//printf("Inserting into files...\n");
+				this->insertOrderedBy(&files,node,"creation_time");
+				mass++;
+				if(minChildMass > 1)
+				{
+					minChildMass = 1;
+				}
+			}
+		}
+
+		// Map for retrieving resutls
+		unordered_map<SurrogateTreeNode*,int> pairs;
+		double masses[children];
+		double positions[children];
+		memset(positions,0,sizeof(positions));
+		// Layout directories first
+		// Start left if even number of items.
+		bool left = children % 2 != 0;
+		int center = children / 2;
+		int dist = 0;
+		//TreeDisplacementNode* treeNode;
+		int i = 0;
+		int location;
+		int nodeMass;
+		for(; i < (int)dirs.size(); i++)
+		{
+			dist = (i+1)/2;
+			nodeMass = atoi(dirs[i]->data["size"].c_str());
+			if(left)
+			{
+				location = center - dist;
+			}
+			else
+			{
+				location = center + dist;
+			}
+			masses[location] = nodeMass;
+			pairs[dirs[i]] = location;
+			for(int k = location; k < children; k++)
+			{
+				positions[k] += nodeMass;
+			}
+			left = !left;
+		}
+		// Now layout files
+		for(int j = 0; j < (int)files.size(); j++)
+		{
+			dist = ((i + j + 1)/2);
+			nodeMass = 1;
+			if(left)
+			{
+				location = center - dist;
+			}
+			else
+			{
+				location = center + dist;
+			}
+			masses[location] = nodeMass;
+			pairs[files[j]] = location;
+			for(int k = location; k < children; k++)
+			{
+				positions[k] += nodeMass;
+			}
+			left = !left;
+		}
+
+		// Calculate spacing to range [0,splay]
+		double deltaSplay = 0;
+		double splay = 3.14159 / 2;
+		double com;
+		if(mass > minChildMass)
+		{
+			deltaSplay = splay / (mass - minChildMass);
+		}
+
+		printf("Subtree mass effects [");
+		for(i = 0; i < children; i++)
+		{
+			printf("%f,",positions[i]);
+		}
+		printf("] @ %f\n", deltaSplay);
+
+		positions[0] = 0;
+		com = 0;
+		for(i = 1; i < children; i++)
+		{
+			positions[i] = (positions[i] - minChildMass)*deltaSplay;
+			com += (positions[i] * masses[i]);
+		}
+		// Final part of CoM calculation
+		com /= mass;
+
+		// Transform positions to arc
+		//double arcRadius = 10.0;
+//		double deltaAngle = splay / children;
+		int maxDepth = (int)tree->findMax("depth");
+		int depth;
+		double arcRadius = allowedHeight/maxDepth;
+		double ratio;
+		double angle;
+
+		// Controls width of fan-out.  > 1 : Wide tree
+		//							   < 1 : Narrow tree
+		double widthHeightScaleFactor = 1.0;
+		// Transform positions to arc and Update new positions
+		// Dirs first
+		for(i = 0; i < (int)dirs.size(); i++)
+		{
+			node = dirs[i];
+			depth = atoi(node->data["depth"].c_str());
+			ratio = depth / (double)maxDepth;
+			angle = rootAngle - (positions[pairs[node]] - com);
+			double newX = rootX + (ratio * arcRadius * cos(angle));
+			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+			node->data["x"] = boost::lexical_cast<string>(newX);
+			node->data["y"] = boost::lexical_cast<string>(newY);
+			// Run expand on child
+			double childRot = angle + ((3.14159/2)-angle)/2;
+			this->expand2(node,childRot,newX,newY,allowedHeight - arcRadius);
+		}
+		// Then files
+		for(int j = 0; j < (int)files.size(); j++)
+		{
+			node = files[j];
+			depth = atoi(node->data["depth"].c_str());
+			ratio = depth / (double)maxDepth;
+			angle = rootAngle - (positions[pairs[node]] - com);
+			double newX = rootX + (ratio * arcRadius * cos(angle));
+			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+			node->data["x"] = boost::lexical_cast<string>(newX);
+			node->data["y"] = boost::lexical_cast<string>(newY);
+		}
+//		for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
+//		{
+//			node = *iter;
+//			depth = atoi(node->data["depth"].c_str());
+//			ratio = depth / (double)maxDepth;
+//			angle = rootAngle + ();
+//			double newX = rootX + ();
+//			double newY = rootY;
+//			//printf("%s final position at (%f,%f)\n",node->data["name"].c_str(),newX, newY);
+//			node->data["x"] = boost::lexical_cast<string>(newX);
+//			node->data["y"] = boost::lexical_cast<string>(newY);
+//			printf("%s @ (%s,%s)\n",node->data["name"].c_str(),node->data["x"].c_str(),node->data["y"].c_str());
+//			// Run expand on child
+//			double childRot = treeNode->getRotation() + ((3.14159/2)-treeNode->getRotation())/2;
+//			this->expand(node,childRot,newX,newY,allowedHeight - arcRadius);
+//		}
+	}
+	else
+	{
+		//printf("No children for node '%s'\n", tree->data["name"].c_str());
+	}
+}
+
 int SpatialDisplacement::count(SurrogateTreeNode* tree)
 {
 	// Count all children plus ourselves (initial 1)
 	int sum = 1;
+	int maxDepth = 0;
+	int childDepth = 0;
 	for(vector<SurrogateTreeNode*>::iterator iter = tree->children.begin(); iter != tree->children.end(); ++iter)
 	{
 		sum += this->count(*iter);
+		//childDepth = atoi((*iter)->data["count"].c_str());
+		childDepth = atoi((*iter)->data["depth"].c_str());
+		if(childDepth > maxDepth)
+		{
+			maxDepth = childDepth;
+		}
 	}
 	// Assign count to data
 	tree->data["size"] = boost::lexical_cast<string>(sum);
-	printf("Size of tree %s is %s\n",tree->data["name"].c_str(),tree->data["size"].c_str());
+	printf("Size of tree %s is %s in this and %d sublevels\n",tree->data["name"].c_str(),tree->data["size"].c_str(),maxDepth);
+	tree->data["depth"] = boost::lexical_cast<string>(maxDepth + 1);
 	return sum;
 }

@@ -9,8 +9,6 @@
 
 using namespace std;
 
-using boost::property_tree::ptree;
-
 const string TEMP_FILE = ".gitlog.tmp";
 // ISO 8601 timestamp
 //const string GIT_COMMAND = "git whatchanged --pretty=format:%ci --reverse --raw --encoding=UTF-8";

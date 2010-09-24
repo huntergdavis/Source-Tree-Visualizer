@@ -12,6 +12,9 @@
 #include "../model/surrogate_tree_node.h"
 #include "../system/discursive_system.h"
 
+static const int TRUNK_LAYER = 0;
+static const int LEAF_LAYER = 1;
+static const int DEBUG_LAYER = 2;
 
 class Digitizer
 {

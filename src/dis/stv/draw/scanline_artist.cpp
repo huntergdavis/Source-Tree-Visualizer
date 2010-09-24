@@ -49,15 +49,33 @@ void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 	
 	list<Drawable> drawList;
 	drawList.push_back(DrawableStrokeWidth(0));
-	drawList.push_back(DrawableFillColor("brown"));
+	//drawList.push_back(DrawableFillColor("brown"));
 	
 	map<int,vector<DrawableDatum*>*>::iterator rediculator = dataset->begin();
 	vector<DrawableDatum*>* layerData;
+	int index;
+	int size;
 	DrawableDatum* drawItem;
 	double x;
 	double y;
 	for(; rediculator != dataset->end(); ++rediculator)
 	{
+		index = rediculator->first;
+		switch(index)
+		{
+			case TRUNK_LAYER:
+				drawList.push_back(DrawableFillColor("brown"));
+				size = 1;
+				break;
+			case LEAF_LAYER:
+				drawList.push_back(DrawableFillColor("green"));
+				size = 2;
+				break;
+			case DEBUG_LAYER:
+				drawList.push_back(DrawableFillColor("blue"));
+				size = 2;
+				break;
+		}
 		layerData = rediculator->second;
 		for(vector<DrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
 		{
@@ -65,7 +83,14 @@ void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 			x = drawItem->getLocationX();
 			y = drawItem->getLocationY();
 			//drawList.push_back(DrawableCircle(x, y, x, y + drawItem->getMass()));
-			drawList.push_back(DrawableCircle(x, y, x, y + 1));
+			if(index != TRUNK_LAYER)
+			{
+				drawList.push_back(DrawableCircle(x, y, x, y + drawItem->getMass()/2));
+			}
+			else
+			{
+				drawList.push_back(DrawableCircle(x, y, x, y + 1));
+			}
 		}
 	}
 	

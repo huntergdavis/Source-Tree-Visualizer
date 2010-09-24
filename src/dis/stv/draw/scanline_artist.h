@@ -13,6 +13,7 @@
 #include <list>
 
 #include "artist.h"
+#include "../gen/digitizer.h"
 #include "../model/surrogate_tree_node.h"
 #include "../model/property_inverter.h"
 #include "../model/property_shifter.h"

@@ -105,7 +105,11 @@ bool SpaceColonizer::shouldSplit(SurrogateTreeNode* attractor, ColonizationLeade
 	double currentOrientation = leader->getOrientation();
 	// Split if angle from leader to attractor is
 	// 'enough' more then current orientation
-	double enough = 3.14159 / 2.5;
+	double enough = 3.14159 / (12 * log(fabs(leader->getLocationX() - atof(attractor->data["x"].c_str()))));
+	if(enough > 3.14159 / 2)
+	{
+		enough = 3.14159 / 2;
+	}
 
 	double attractorAngle = orientationBetween(attractor, leader);
 
@@ -138,6 +142,8 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				ColonizationLeader* newLeader = new ColonizationLeader(leader->getLocationX(),leader->getLocationY(),attractorAngle, attractor);
 				this->leaders.push_back(newLeader);
 				modified = true;
+				// Add debug marker for attractor
+				//data->insert(DEBUG_LAYER,new DrawableDatum(atof(source->data["x"].c_str()), atof(source->data["y"].c_str()), 0, 5, atoi(source->data["size"].c_str())));
 				break;
 			}
 		}
@@ -154,7 +160,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			double childX = atof(source->data["scomX"].c_str());
 			double childY = atof(source->data["scomY"].c_str());
 			double orientation = this->angleFrom(x,-y,childX,-childY);
-			double maxAngleChange = 3.14159/24.0;
+			double maxAngleChange = 3.14159/(48.0 * log(fabs(leader->getLocationX() - atof(attractor->data["x"].c_str()))));
 			if(fabs(orientation - leader->getOrientation()) > maxAngleChange)
 			{
 				if(orientation < leader->getOrientation())
@@ -243,6 +249,8 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 					// Insert new Leaf DrawDatum
 					printf("Adding leaf @ (%f,%f)\n",x,y);
 					data->insert(LEAF_LAYER,new DrawableDatum(x, y, 0, this->segLen, this->segLen));
+					// Debugging
+					//data->insert(DEBUG_LAYER,new DrawableDatum(childX, childY, 0, 5, 1));
 				}
 			}
 		}

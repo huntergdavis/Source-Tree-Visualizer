@@ -11,6 +11,7 @@
 #include "decorator.h"
 #include "../model/surrogate_tree_node.h"
 #include <stdlib.h>
+#include <string.h>
 #include <stdio.h>
 #include <float.h>
 #include <boost/lexical_cast.hpp>
@@ -36,6 +37,7 @@ private:
 	double scaleWidth;
 	double scaleHeight;
 	void expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY);
+	void expand2(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY, double allowedHeight);
 	int count(SurrogateTreeNode* tree);
 	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);
 	void transform(SurrogateTreeNode* tree);
