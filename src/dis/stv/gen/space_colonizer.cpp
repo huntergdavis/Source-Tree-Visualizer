@@ -151,6 +151,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 	// Step or stop if we didn't split
 	if(!split)
 	{
+		leader->step();
 		double x = leader->getLocationX();
 		double y = leader->getLocationY();
 		// If there are multiple targets, we always step
@@ -160,7 +161,8 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			double childX = atof(source->data["scomX"].c_str());
 			double childY = atof(source->data["scomY"].c_str());
 			double orientation = this->angleFrom(x,-y,childX,-childY);
-			double maxAngleChange = 3.14159/(48.0 * log(fabs(leader->getLocationX() - atof(attractor->data["x"].c_str()))));
+//			double maxAngleChange = 3.14159/(48.0 * log(fabs(leader->getLocationX() - atof(attractor->data["x"].c_str()))));
+			double maxAngleChange = 3.14159 * leader->getLength() /48.0;
 			if(fabs(orientation - leader->getOrientation()) > maxAngleChange)
 			{
 				if(orientation < leader->getOrientation())
@@ -200,7 +202,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				//printf("Distance to CoM: %f\n",sqrt(dx * dx + dy * dy));
 				// Calculate angle towards subtree center of mass
 				double orientation = this->angleFrom(x,-y,childX,-childY);
-				double maxAngleChange = 3.14159/24.0;
+				double maxAngleChange = 3.14159 * leader->getLength() /48.0;
 				if(fabs(orientation - leader->getOrientation()) > maxAngleChange)
 				{
 					if(orientation < leader->getOrientation())

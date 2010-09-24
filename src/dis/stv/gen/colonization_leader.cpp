@@ -7,7 +7,7 @@
 
 #include "colonization_leader.h"
 
-ColonizationLeader::ColonizationLeader(double locationX, double locationY, double orientation, SurrogateTreeNode* sourceSet):locationX(locationX), locationY(locationY),orientation(orientation),sourceSet(sourceSet)
+ColonizationLeader::ColonizationLeader(double locationX, double locationY, double orientation, SurrogateTreeNode* sourceSet):length(0), locationX(locationX), locationY(locationY),orientation(orientation),sourceSet(sourceSet)
 {
 }
 
@@ -24,6 +24,16 @@ double ColonizationLeader::getLocationY()
 double ColonizationLeader::getOrientation()
 {
 	return this->orientation;
+}
+
+int ColonizationLeader::getLength()
+{
+	return this->length;
+}
+
+int ColonizationLeader::step()
+{
+	return ++(this->length);
 }
 
 void ColonizationLeader::setLocation(double x, double y)
