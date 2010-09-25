@@ -10,5 +10,6 @@
 
 #include "./discursive_debug.h"
 #include "./discursive_error.h"
+#include "./discursive_print.h"
 
 #endif /* DISCURSIVE_SYSTEM_H_ */

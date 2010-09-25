@@ -19,7 +19,7 @@
 #include "../gen/space_colonizer.h"
 
 using namespace Magick;
-
+int debugLevel;
 
 
 // display our command usage
@@ -34,15 +34,16 @@ void display_usage( void )
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, defaults to 1\n";
 	usage_string += "\n-O option - output file name, defaults to tree.jpg\n";
-	usage_string += "\n-m option - output many many .jpgs in sequence\n";
-	usage_string += "\n-s option - start number for many jpg tree rendering, default is 3\n";
-	usage_string += "\n-f option - finish number for many jpg tree rendering, default is treesize\n";
-	usage_string += "\n-t option - step value for many jpg tree rendering, default is 1\n";
+	usage_string += "\n-m option - output the creation of the current tree via many .jpgs in sequence\n";
+	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
+	usage_string += "\n----------------start number for many jpg tree rendering, default is 3\n";
+	usage_string += "\n----------------finish number for many jpg tree rendering, default is treesize\n";
+	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
 	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
 	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
 
 
-    printf("%s",usage_string.c_str());
+	DiscursivePrint("%s",usage_string.c_str());
     DiscursiveError("Copyright Discursive Labs LLC, 2010");
 }
 
@@ -75,7 +76,7 @@ int main(int argc, char **argv)
 	int jpgStop = 10000;
 
 	// our option string
-	static const char *optString = "g:G:S:C:H:W:O:s:f:t:midh?";
+	static const char *optString = "g:G:S:C:H:W:O:m:idh?";
 
 	// loop over our command options in the normal unix way
 
@@ -104,18 +105,10 @@ int main(int argc, char **argv)
 				break;
 			case 'm':
 				manyJpgs = 1;
+				sscanf("%d:%d:%d",optarg,jpgStart,jpgStop,jpgStep);
 				break;
 			case 'H':
 				scaleHeight = atof(optarg);
-				break;
-			case 's':
-				jpgStart = atoi(optarg);
-				break;
-			case 'f':
-				jpgStop = atoi(optarg);
-				break;
-			case 't':
-				jpgStep = atoi(optarg);
 				break;
 			case 'O':
 				fileName = optarg;
@@ -203,10 +196,12 @@ int main(int argc, char **argv)
 			sourceTreeNameOutput += git->source->data["name"].c_str();
 			DiscursiveDebugPrint(sourceTreeNameOutput);
 
+			DiscursivePrint("Decorating surrogate trees\n");
 			// Decorate surrogate tree nodes with locations
 			SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
 			disp->decorate(git->source);
 
+			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees\n");
 			// Digitize decorated surrogate tree into line segment tree
 			SpaceColonizer* digitizer = new SpaceColonizer(2);
 			DrawableData* lines = digitizer->digitize(git->source);
@@ -214,11 +209,13 @@ int main(int argc, char **argv)
 			// Transform
 
 			// Draw tree
+			DiscursivePrint("Drawing Tree\n");
 			Image canvas(Geometry(500,500),"white");
 			ScanlineArtist* artist = new ScanlineArtist();
 			artist->draw(canvas, lines);
 
 			// actually generate a tree (or the final tree if many)
+			DiscursivePrint("Writing Tree\n");
 			git->WriteJPGFromCanvas(&canvas);
 
 		}
@@ -230,21 +227,25 @@ int main(int argc, char **argv)
 	DiscursiveDebugPrint(sourceTreeNameOutput);
 
 	// Decorate surrogate tree nodes with locations
+	DiscursivePrint("Decorating surrogate trees\n");
 	SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
 	disp->decorate(git->source);
 
 	// Digitize decorated surrogate tree into line segment tree
+	DiscursivePrint("Digitizing decorated surrogate trees into line segment trees\n");
 	SpaceColonizer* digitizer = new SpaceColonizer(2);
 	DrawableData* lines = digitizer->digitize(git->source);
 
 	// Transform
 
 	// Draw tree
+	DiscursivePrint("Drawing Tree\n");
 	Image canvas(Geometry(500,500),"white");
 	ScanlineArtist* artist = new ScanlineArtist();
 	artist->draw(canvas, lines);
 
 	// actually generate a tree (or the final tree if many)
+	DiscursivePrint("Writing Tree\n");
 	git->WriteJPGFromCanvas(&canvas);
 
 	return 0;

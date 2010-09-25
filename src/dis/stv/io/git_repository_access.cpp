@@ -206,7 +206,7 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 		{
 			// Create the tree from log
 			result = this->generateTreeFromLog(&localGitFile);
-			printf("Generated tree with name '%s'\n", result->data["name"].c_str());
+			DiscursiveDebugPrint("Generated tree with name '%s'\n", result->data["name"].c_str());
 		}
 	}
 

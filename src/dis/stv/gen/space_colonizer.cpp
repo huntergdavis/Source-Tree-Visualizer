@@ -138,7 +138,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				split = true;
 				// Create new Leader with child set that caused split
 				double attractorAngle = orientationBetween(attractor, leader);
-				printf("Adding leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getLocationX(),leader->getLocationY(),attractorAngle, atof(attractor->data["scomX"].c_str()),atof(attractor->data["scomY"].c_str()));
+				DiscursiveDebugPrint("Adding leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getLocationX(),leader->getLocationY(),attractorAngle, atof(attractor->data["scomX"].c_str()),atof(attractor->data["scomY"].c_str()));
 				ColonizationLeader* newLeader = new ColonizationLeader(leader->getLocationX(),leader->getLocationY(),attractorAngle, attractor);
 				this->leaders.push_back(newLeader);
 				modified = true;
@@ -236,7 +236,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				else
 				{
 					//printf("Removing leader\n");
-					printf("Removing leader at (%f, %f)\n",leader->getLocationX(),leader->getLocationY());
+					DiscursiveDebugPrint("Removing leader at (%f, %f)\n",leader->getLocationX(),leader->getLocationY());
 					vector<ColonizationLeader*>::iterator colonIter;
 					for(colonIter = this->leaders.begin(); colonIter < this->leaders.end(); ++colonIter)
 					{
@@ -249,7 +249,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 					modified = true;
 
 					// Insert new Leaf DrawDatum
-					printf("Adding leaf @ (%f,%f)\n",x,y);
+					DiscursiveDebugPrint("Adding leaf @ (%f,%f)\n",x,y);
 					data->insert(LEAF_LAYER,new DrawableDatum(x, y, 0, this->segLen, this->segLen));
 					// Debugging
 					//data->insert(DEBUG_LAYER,new DrawableDatum(childX, childY, 0, 5, 1));
@@ -278,7 +278,7 @@ DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 	// Add first leader
 	double x = atof(source->data["x"].c_str());
 	double y = atof(source->data["y"].c_str());
-	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,3.14159/2, atof(source->data["scomX"].c_str()),atof(source->data["scomY"].c_str()));
+	DiscursiveDebugPrint("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,3.14159/2, atof(source->data["scomX"].c_str()),atof(source->data["scomY"].c_str()));
 	ColonizationLeader* starter = new ColonizationLeader(x,y,3.14159/2,source);
 	this->leaders.push_back(starter);
 

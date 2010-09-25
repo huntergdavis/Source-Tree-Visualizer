@@ -7,7 +7,7 @@
 
 #include "./discursive_debug.h"
 
-int debugLevel;
+extern int debugLevel;
 
 int GetDiscursiveDebugLevel()
 {
@@ -20,12 +20,12 @@ void SetDiscursiveDebugLevel(int level)
 
 void DiscursiveDebugPrint(std::string debugMessage,...)
 {
-//	if(debugLevel == 1)
-//	{
+	if(debugLevel == 1)
+	{
 		va_list args;
 		va_start( args, debugMessage );
 		vprintf(debugMessage.c_str(), args );
 		va_end( args );
-//	}
+	}
 }
 
