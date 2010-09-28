@@ -171,7 +171,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 		if((c == '\n') && (d == '\n'))
 		{
 			parseTimeBlock(tree,&str);
-			str = "";
+			str.clear();
 		}
 		else
 		{
