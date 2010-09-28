@@ -120,29 +120,34 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
 	treeResult->data["name"] = "root";
 
-	// create a string for holding the svn log
-	std::string svnLog;
-	svnLog.reserve(10024);  // reserve 10k for fast allocation
+	if(logGenerated == 0)
+	{
+		// create a string for holding the svn log
+		repoLog.reserve(10024);  // reserve 10k for fast allocation
 
-	// create a string for holding the svn command
-	std::string svnCommand = "svn log --verbose --non-interactive ";
-	svnCommand += remoteServerString;
+		// create a string for holding the svn command
+		std::string svnCommand = "svn log --verbose --non-interactive ";
+		svnCommand += remoteServerString;
 
-	// create a file pointer handle to our command output
-	FILE *fp = popen(svnCommand.c_str(), "r" );
+		// create a file pointer handle to our command output
+		FILE *fp = popen(svnCommand.c_str(), "r" );
 
-	// loop over all the file handle and put into stringstream
-    while (true)
-    {
-      int c = std::fgetc( fp );
-      if (c == EOF) break;
-      svnLog.push_back( (char)c );
-    }
-    std::fclose( fp );
-    //DiscursiveDebugPrint("SVN LOG RESULT %s",svnLog.c_str());
+		// loop over all the file handle and put into stringstream
+		while (true)
+		{
+		  int c = std::fgetc( fp );
+		  if (c == EOF) break;
+		  repoLog.push_back( (char)c );
+		}
+		std::fclose( fp );
+		//DiscursiveDebugPrint("SVN LOG RESULT %s",svnLog.c_str());
+
+		// don't re-generate logs if not necessary
+		logGenerated = 1;
+	}
 
     // generate tree entry from log file entry
-    generateTreeFromLog(treeResult,&svnLog);
+    generateTreeFromLog(treeResult,&repoLog);
 
 	// return the filled tree
 	return treeResult;

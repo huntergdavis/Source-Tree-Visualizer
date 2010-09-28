@@ -23,6 +23,7 @@ class RepositoryAccess
 {
 protected:
 	int repoType;
+	std::string repoLog;
 
 public:
 	int snapshotJpgs;
@@ -36,6 +37,7 @@ public:
 	long jpgIndex;
 	int scaleHeight;
 	int scaleWidth;
+	int logGenerated;
 	long currentTreeSize;
 	char* fileName;
 	SurrogateTreeNode* source;

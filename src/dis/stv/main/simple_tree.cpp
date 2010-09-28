@@ -41,9 +41,9 @@ void display_usage( void )
 	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
 	usage_string += "\n-r option - output the creation of the current tree one revision at a time via many .jpgs in sequence\n";
 	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
-	usage_string += "\n----------------start number for many jpg tree rendering, default is 1\n";
+	usage_string += "\n----------------start number for many jpg tree rendering, default is 3\n";
 	usage_string += "\n----------------finish number for many jpg tree rendering, default is currentrevision\n";
-	usage_string += "\n----------------step value for many jpg tree rendering, default is 2\n";
+	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
 	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
 	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
 
@@ -119,10 +119,18 @@ int main(int argc, char **argv)
 			case 'm':
 				manyJpgs = 1;
 				sscanf("%d:%d:%d",optarg,jpgStart,jpgStop,jpgStep);
+				if(jpgStart < 3)
+				{
+					jpgStart = 3;
+				}
 				break;
 			case 'r':
 				revJpgs = 1;
 				sscanf("%d:%d:%d",optarg,revStart,revStop,revStep);
+				if(revStart < 3)
+				{
+					revStart = 3;
+				}
 				break;
 			case 'H':
 				scaleHeight = atof(optarg);
@@ -192,6 +200,7 @@ int main(int argc, char **argv)
 	git->localRevs = 0;
 	git->revTarget = 0;
 	git->currentTreeSize = 0;
+	git->logGenerated = 0;
 
 	// retrieve our source tree
 	git->source = git->retrieve();
