@@ -171,6 +171,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 		if((c == '\n') && (d == '\n'))
 		{
 			parseTimeBlock(tree,&str);
+			str = "";
 		}
 		else
 		{
@@ -187,20 +188,9 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 // -------------------------------------------------------------------------
 void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
 {
-	//DiscursiveDebugPrint("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
+	DiscursiveDebugPrint("INDIVIDUAL TIME BLOCK %s\n",buffer->c_str());
 
 	// at this point we have the individual SVN time block
-
-	// update either local revisions or global revisions
-	if(revTarget > 0)
-	{
-		localRevs++;
-	}
-	else
-	{
-		globalRevs++;
-		DiscursiveDebugPrint("First Pass: Adding Revision Number %ld \nCurrent Tree Size %ld \n",globalRevs,currentTreeSize);
-	}
 
 	// let's pull out the date first, followed by any file additions
 	std::string dateString;
@@ -213,14 +203,16 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	firstPipeIndex = buffer->find("|");
 	if(firstPipeIndex < 0)
 	{
-		DiscursiveError("Bad Svn Pipe Parse");
+		//DiscursiveError("Bad Svn Pipe Parse");
+		return;
 	}
 
 	// find the second pipe
 	secondPipeIndex = buffer->find("|",firstPipeIndex+1);
 	if(secondPipeIndex < 0)
 	{
-		DiscursiveError("Bad Svn Pipe Parse");
+		//DiscursiveError("Bad Svn Pipe Parse");
+		return;
 	}
 
 	// pull our date string from between index 2 and 3
@@ -241,6 +233,17 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 
 	// individual filename storage
 	std::string fileNameString;
+
+	// update either local revisions or global revisions
+	if(revTarget > 0)
+	{
+		localRevs++;
+	}
+	else
+	{
+		globalRevs++;
+		DiscursiveDebugPrint("First Pass: Adding Revision Number %ld \nCurrent Tree Size %ld \n",globalRevs,currentTreeSize);
+	}
 
 	// loop over the detailed commit and find filenames
 	while (getline (svnTimeBlockSS, fileNameLine))
