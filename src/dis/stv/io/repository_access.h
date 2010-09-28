@@ -29,6 +29,10 @@ public:
 	int globalInserts;
 	int localInserts;
 	int insertTarget;
+	int revJpgs;
+	int globalRevs;
+	int localRevs;
+	int revTarget;
 	int jpgIndex;
 	int scaleHeight;
 	int scaleWidth;

@@ -19,7 +19,7 @@
 #include "../gen/space_colonizer.h"
 
 using namespace Magick;
-
+int debugLevel;
 
 
 // display our command usage
@@ -34,15 +34,21 @@ void display_usage( void )
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, defaults to 1\n";
 	usage_string += "\n-O option - output file name, defaults to tree.jpg\n";
-	usage_string += "\n-m option - output many many .jpgs in sequence\n";
-	usage_string += "\n-s option - start number for many jpg tree rendering, default is 3\n";
-	usage_string += "\n-f option - finish number for many jpg tree rendering, default is treesize\n";
-	usage_string += "\n-t option - step value for many jpg tree rendering, default is 1\n";
+	usage_string += "\n-m option - output the creation of the current tree one step at a time via many .jpgs in sequence\n";
+	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
+	usage_string += "\n----------------start number for many jpg tree rendering, default is 3\n";
+	usage_string += "\n----------------finish number for many jpg tree rendering, default is treesize\n";
+	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
+	usage_string += "\n-r option - output the creation of the current tree one revision at a time via many .jpgs in sequence\n";
+	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
+	usage_string += "\n----------------start number for many jpg tree rendering, default is 1\n";
+	usage_string += "\n----------------finish number for many jpg tree rendering, default is currentrevision\n";
+	usage_string += "\n----------------step value for many jpg tree rendering, default is 2\n";
 	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
 	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
 
 
-    printf("%s",usage_string.c_str());
+	DiscursivePrint("%s",usage_string.c_str());
     DiscursiveError("Copyright Discursive Labs LLC, 2010");
 }
 
@@ -74,8 +80,16 @@ int main(int argc, char **argv)
 	int jpgStart = 3;
 	int jpgStop = 10000;
 
+	// should we output a jpg per revision?
+	int revJpgs = 0;
+
+	// options for jpg per revison
+	int revStep = 1;
+	int revStart = 2;
+	int revStop = 10000;
+
 	// our option string
-	static const char *optString = "g:G:S:C:H:W:O:s:f:t:midh?";
+	static const char *optString = "g:G:S:C:H:W:O:m:r:idh?";
 
 	// loop over our command options in the normal unix way
 
@@ -104,18 +118,14 @@ int main(int argc, char **argv)
 				break;
 			case 'm':
 				manyJpgs = 1;
+				sscanf("%d:%d:%d",optarg,jpgStart,jpgStop,jpgStep);
+				break;
+			case 'r':
+				revJpgs = 1;
+				sscanf("%d:%d:%d",optarg,revStart,revStop,revStep);
 				break;
 			case 'H':
 				scaleHeight = atof(optarg);
-				break;
-			case 's':
-				jpgStart = atoi(optarg);
-				break;
-			case 'f':
-				jpgStop = atoi(optarg);
-				break;
-			case 't':
-				jpgStep = atoi(optarg);
 				break;
 			case 'O':
 				fileName = optarg;
@@ -155,6 +165,7 @@ int main(int argc, char **argv)
 		case 2:
 		case 3:
 		case 4:
+			printf("%s\n",agentName);
 			git = noninteractive_agent(agentType, agentName);
 			break;
 		case 0:
@@ -176,11 +187,20 @@ int main(int argc, char **argv)
 	git->globalInserts = 0;
 	git->localInserts = 0;
 	git->insertTarget = 0;
+	git->revJpgs = revJpgs;
+	git->globalRevs = 0;
+	git->localRevs = 0;
+	git->revTarget = 0;
 
 	// retrieve our source tree
 	git->source = git->retrieve();
 
-	// loop over a bunch of increasingly large trees
+	// output tree info
+	DiscursivePrint("Source tree name is %s\n", git->source->data["name"].c_str());
+	DiscursivePrint("Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
+
+
+	// loop over a bunch of increasingly large trees for debug tree generation
 	if(manyJpgs && (git->globalInserts > 2))
 	{
 		if (jpgStop >= git->globalInserts)
@@ -199,14 +219,13 @@ int main(int argc, char **argv)
 
 			// init libmagick
 			//InitializeMagick("/");
-			std::string sourceTreeNameOutput = "Source tree name is";
-			sourceTreeNameOutput += git->source->data["name"].c_str();
-			DiscursiveDebugPrint(sourceTreeNameOutput);
 
+			DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,jpgStop,jpgStep);
 			// Decorate surrogate tree nodes with locations
 			SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
 			disp->decorate(git->source);
 
+			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,jpgStop,jpgStep);
 			// Digitize decorated surrogate tree into line segment tree
 			SpaceColonizer* digitizer = new SpaceColonizer(2);
 			DrawableData* lines = digitizer->digitize(git->source);
@@ -214,11 +233,60 @@ int main(int argc, char **argv)
 			// Transform
 
 			// Draw tree
+			DiscursivePrint("Drawing Tree %d out of %d step value %d",i,jpgStop,jpgStep);
 			Image canvas(Geometry(500,500),"white");
 			ScanlineArtist* artist = new ScanlineArtist();
 			artist->draw(canvas, lines);
 
-			// actually generate a tree (or the final tree if many)
+			// actually generate a tree
+			DiscursivePrint("Writing Tree %d out of %d step value %d\n\n",i,jpgStop,jpgStep);
+			git->WriteJPGFromCanvas(&canvas);
+
+		}
+	}
+	// loop over a bunch of increasingly large trees by revsion
+	if(revJpgs)
+	{
+		if (revStop >= git->globalRevs)
+		{
+			revStop = git->globalRevs-1;
+		}
+		// use our user-set parameters to define our step
+		for(int i = revStart; i<revStop;i+=revStep)
+		{
+			// reset our insert variables
+			git->localRevs = 0;
+			git->revTarget = i;
+
+			// retrieve our source tree
+			git->source = git->retrieve();
+
+			// init libmagick
+			//InitializeMagick("/");
+			std::string sourceTreeNameOutput = "Source tree name is";
+			sourceTreeNameOutput += git->source->data["name"].c_str();
+			DiscursiveDebugPrint(sourceTreeNameOutput);
+
+			DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,revStop,revStep);
+			// Decorate surrogate tree nodes with locations
+			SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
+			disp->decorate(git->source);
+
+			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,revStop,revStep);
+			// Digitize decorated surrogate tree into line segment tree
+			SpaceColonizer* digitizer = new SpaceColonizer(2);
+			DrawableData* lines = digitizer->digitize(git->source);
+
+			// Transform
+
+			// Draw tree
+			DiscursivePrint("Drawing Tree %d out of %d step value %d",i,revStop,revStep);
+			Image canvas(Geometry(500,500),"white");
+			ScanlineArtist* artist = new ScanlineArtist();
+			artist->draw(canvas, lines);
+
+			// actually generate a tree
+			DiscursivePrint("Writing Tree %d out of %d step value %d\n\n",i,revStop,revStep);
 			git->WriteJPGFromCanvas(&canvas);
 
 		}
@@ -230,21 +298,25 @@ int main(int argc, char **argv)
 	DiscursiveDebugPrint(sourceTreeNameOutput);
 
 	// Decorate surrogate tree nodes with locations
+	DiscursivePrint("Decorating surrogate trees\n");
 	SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
 	disp->decorate(git->source);
 
 	// Digitize decorated surrogate tree into line segment tree
+	DiscursivePrint("Digitizing decorated surrogate trees into line segment trees\n");
 	SpaceColonizer* digitizer = new SpaceColonizer(2);
 	DrawableData* lines = digitizer->digitize(git->source);
 
 	// Transform
 
 	// Draw tree
+	DiscursivePrint("Drawing Tree\n");
 	Image canvas(Geometry(500,500),"white");
 	ScanlineArtist* artist = new ScanlineArtist();
 	artist->draw(canvas, lines);
 
 	// actually generate a tree (or the final tree if many)
+	DiscursivePrint("Writing Final Tree\n");
 	git->WriteJPGFromCanvas(&canvas);
 
 	return 0;

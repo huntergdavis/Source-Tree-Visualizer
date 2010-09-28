@@ -183,6 +183,17 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	//DiscursiveDebugPrint("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
 
 	// at this point we have the individual SVN time block
+
+	// update either local revisions or global revisions
+	if(revTarget > 0)
+	{
+		localRevs++;
+	}
+	else
+	{
+		globalRevs++;
+	}
+
 	// let's pull out the date first, followed by any file additions
 	std::string dateString;
 
@@ -232,15 +243,16 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 			//DiscursiveDebugPrint("\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
 			// actually insert the file entry into the tree
 			// increase the number of global inserts by one
-			if(insertTarget > 0)
+			if((insertTarget > 0) && (localInserts < insertTarget))
 			{
 				localInserts++;
-				if(localInserts < insertTarget)
-				{
-					InsertByPathName(tree,fileNameString,dateEpoch);
-				}
+				InsertByPathName(tree,fileNameString,dateEpoch);
 			}
-			else
+			if((revTarget > 0) && (localRevs < revTarget))
+			{
+				InsertByPathName(tree,fileNameString,dateEpoch);
+			}
+			if((insertTarget == 0) && (revTarget == 0))
 			{
 				globalInserts++;
 				InsertByPathName(tree,fileNameString,dateEpoch);

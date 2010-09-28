@@ -380,12 +380,12 @@ void SpatialDisplacement::expand2(SurrogateTreeNode* tree, double rootAngle, dou
 			deltaSplay = splay / (mass - minChildMass);
 		}
 
-		printf("Subtree mass effects [");
+		DiscursiveDebugPrint("Subtree mass effects [");
 		for(i = 0; i < children; i++)
 		{
-			printf("%f,",positions[i]);
+			DiscursiveDebugPrint("%f,",positions[i]);
 		}
-		printf("] @ %f\n", deltaSplay);
+		DiscursiveDebugPrint("] @ %f\n", deltaSplay);
 
 		positions[0] = 0;
 		com = 0;
@@ -478,7 +478,7 @@ int SpatialDisplacement::count(SurrogateTreeNode* tree)
 	}
 	// Assign count to data
 	tree->data["size"] = boost::lexical_cast<string>(sum);
-	printf("Size of tree %s is %s in this and %d sublevels\n",tree->data["name"].c_str(),tree->data["size"].c_str(),maxDepth);
+	DiscursiveDebugPrint("Size of tree %s is %s in this and %d sublevels\n",tree->data["name"].c_str(),tree->data["size"].c_str(),maxDepth);
 	tree->data["depth"] = boost::lexical_cast<string>(maxDepth + 1);
 	return sum;
 }

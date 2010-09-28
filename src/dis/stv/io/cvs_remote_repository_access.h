@@ -29,6 +29,7 @@ using namespace std;
 class CvsRemoteRepositoryAccess : public RepositoryAccess
 {
 private:
+	long lastDate;
 	string root;
 	string remoteServerString;
 	SurrogateTreeNode* generateTreeFromRemoteCvs();

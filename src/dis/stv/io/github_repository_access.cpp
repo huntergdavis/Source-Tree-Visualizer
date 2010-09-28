@@ -171,6 +171,9 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 		   // create an instringstream object to linify the input ala terminal
 		   std::istringstream topLevelSS(buffer);
 
+		   // print debug our github top level block
+		   //DiscursiveDebugPrint(buffer);
+
 		   // loop over the outer string stream object and search for sha1 keys
 		   // keep track of line numbering
 		   int linenum = 0;
@@ -273,6 +276,15 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 	// create an istringstream to parse the suboutput
 	std::istringstream gitHubBlockSS(*buffer);
 
+	if(revTarget > 0)
+	{
+		localRevs++;
+	}
+	else
+	{
+		globalRevs++;
+	}
+
 	// each item does contain the time, but it's stringified
 	// TODO: add a time string parser using STRFTIME (not hard)
 	// TODO: pull out times with filenames using time first tagging
@@ -303,15 +315,16 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 			DiscursiveDebugPrint("Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
 
 			// increase the number of global inserts by one
-			if(insertTarget > 0)
+			if((insertTarget > 0) && (localInserts < insertTarget))
 			{
 				localInserts++;
-				if(localInserts < insertTarget)
-				{
-					InsertByPathName(treeResult,fileNameString,earliestFileDate);
-				}
+				InsertByPathName(treeResult,fileNameString,earliestFileDate);
 			}
-			else
+			if((revTarget > 0) && (localRevs < revTarget))
+			{
+				InsertByPathName(treeResult,fileNameString,earliestFileDate);
+			}
+			if((insertTarget == 0) && (revTarget == 0))
 			{
 				globalInserts++;
 				InsertByPathName(treeResult,fileNameString,earliestFileDate);
