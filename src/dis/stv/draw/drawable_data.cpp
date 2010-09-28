@@ -14,12 +14,12 @@ DrawableData::DrawableData()
 
 }
 
-void DrawableData::insert(int layer, DrawableDatum* datum)
+void DrawableData::insert(int layer, MinDrawableDatum* datum)
 {
-	vector<DrawableDatum*>* layerList = this->getLayer(layer);
+	vector<MinDrawableDatum*>* layerList = this->getLayer(layer);
 	if(layerList == NULL)
 	{
-		layerList = new vector<DrawableDatum*>();
+		layerList = new vector<MinDrawableDatum*>();
 		this->drawItems[layer] = layerList;
 	}
 
@@ -27,18 +27,18 @@ void DrawableData::insert(int layer, DrawableDatum* datum)
 }
 
 
-vector<DrawableDatum*>* DrawableData::getLayer(int layer)
+vector<MinDrawableDatum*>* DrawableData::getLayer(int layer)
 {
-	vector<DrawableDatum*>* layerList = this->drawItems[layer];
+	vector<MinDrawableDatum*>* layerList = this->drawItems[layer];
 	return layerList;
 }
 
-map<int,vector<DrawableDatum*>*>::iterator DrawableData::begin()
+map<int,vector<MinDrawableDatum*>*>::iterator DrawableData::begin()
 {
 	return this->drawItems.begin();
 }
 
-map<int,vector<DrawableDatum*>*>::iterator DrawableData::end()
+map<int,vector<MinDrawableDatum*>*>::iterator DrawableData::end()
 {
 	return this->drawItems.end();
 }

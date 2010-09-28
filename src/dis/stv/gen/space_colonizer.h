@@ -26,6 +26,7 @@ private:
 	bool stepOrSplit(DrawableData* data, ColonizationLeader* leader);
 	bool shouldSplit(SurrogateTreeNode* attractor, ColonizationLeader* leader);
 	double orientationBetween(SurrogateTreeNode* attractor, ColonizationLeader* leader);
+	double angleDiff(double ref, double compare);
 	double angleFrom(double aX, double aY, double bX, double bY);
 
 public:

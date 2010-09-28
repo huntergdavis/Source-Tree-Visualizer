@@ -422,7 +422,7 @@ void SpatialDisplacement::expand2(SurrogateTreeNode* tree, double rootAngle, dou
 			node->data["x"] = boost::lexical_cast<string>(newX);
 			node->data["y"] = boost::lexical_cast<string>(newY);
 			// Run expand on child
-			double childRot = angle + ((3.14159/2)-angle)/2;
+			double childRot = angle;// + ((3.14159/2)-angle)/2;
 			this->expand2(node,childRot,newX,newY,allowedHeight - arcRadius);
 		}
 		// Then files
