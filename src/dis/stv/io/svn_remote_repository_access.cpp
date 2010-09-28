@@ -25,6 +25,7 @@ SvnRemoteRepositoryAccess::SvnRemoteRepositoryAccess(std::string svnRemoteServer
 	// add repo type of svn
 	this->repoType = 3;
 
+
 }
 
 void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
@@ -45,8 +46,11 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		string timeStr = boost::lexical_cast<string>(time);
 		file->data["creation_time"] = timeStr;
 		file->data["name"] = pathname;
-		DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
+		//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children.push_back(file);
+
+		// update the lexical tree size when we push back
+		currentTreeSize++;
 	}
 	else
 	{
@@ -68,7 +72,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 				// Update node time if necessary
 				if(time < atol(node->data["creation_time"].c_str()))
 				{
-					DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
+					//DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
 					node->data["creation_time"] = boost::lexical_cast<string>(time);
 				}
 				break;
@@ -81,8 +85,11 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 			string timeStr = boost::lexical_cast<string>(time);
 			node->data["creation_time"] = timeStr;
 			node->data["name"] = name;
-			DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
+			//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children.push_back(node);
+
+			// update the lexical tree size when we push back
+			currentTreeSize++;
 		}
 		// Else, use found node
 
@@ -164,6 +171,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 		if((c == '\n') && (d == '\n'))
 		{
 			parseTimeBlock(tree,&str);
+			str.clear();
 		}
 		else
 		{
@@ -180,19 +188,9 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 // -------------------------------------------------------------------------
 void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
 {
-	//DiscursiveDebugPrint("INDIVIDUAL TIME BLOCK %s",buffer->c_str());
+	DiscursiveDebugPrint("INDIVIDUAL TIME BLOCK %s\n",buffer->c_str());
 
 	// at this point we have the individual SVN time block
-
-	// update either local revisions or global revisions
-	if(revTarget > 0)
-	{
-		localRevs++;
-	}
-	else
-	{
-		globalRevs++;
-	}
 
 	// let's pull out the date first, followed by any file additions
 	std::string dateString;
@@ -205,14 +203,16 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	firstPipeIndex = buffer->find("|");
 	if(firstPipeIndex < 0)
 	{
-		DiscursiveError("Bad Svn Pipe Parse");
+		//DiscursiveError("Bad Svn Pipe Parse");
+		return;
 	}
 
 	// find the second pipe
 	secondPipeIndex = buffer->find("|",firstPipeIndex+1);
 	if(secondPipeIndex < 0)
 	{
-		DiscursiveError("Bad Svn Pipe Parse");
+		//DiscursiveError("Bad Svn Pipe Parse");
+		return;
 	}
 
 	// pull our date string from between index 2 and 3
@@ -233,6 +233,17 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 
 	// individual filename storage
 	std::string fileNameString;
+
+	// update either local revisions or global revisions
+	if(revTarget > 0)
+	{
+		localRevs++;
+	}
+	else
+	{
+		globalRevs++;
+		DiscursiveDebugPrint("First Pass: Adding Revision Number %ld \nCurrent Tree Size %ld \n",globalRevs,currentTreeSize);
+	}
 
 	// loop over the detailed commit and find filenames
 	while (getline (svnTimeBlockSS, fileNameLine))

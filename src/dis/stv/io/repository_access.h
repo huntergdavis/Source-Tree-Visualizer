@@ -26,16 +26,17 @@ protected:
 
 public:
 	int snapshotJpgs;
-	int globalInserts;
-	int localInserts;
-	int insertTarget;
-	int revJpgs;
-	int globalRevs;
-	int localRevs;
-	int revTarget;
-	int jpgIndex;
+	long globalInserts;
+	long localInserts;
+	long insertTarget;
+	long revJpgs;
+	long globalRevs;
+	long localRevs;
+	long revTarget;
+	long jpgIndex;
 	int scaleHeight;
 	int scaleWidth;
+	long currentTreeSize;
 	char* fileName;
 	SurrogateTreeNode* source;
 	int WriteJPGFromCanvas(Image* canvas);
