@@ -25,6 +25,7 @@ SvnRemoteRepositoryAccess::SvnRemoteRepositoryAccess(std::string svnRemoteServer
 	// add repo type of svn
 	this->repoType = 3;
 
+
 }
 
 void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
@@ -47,6 +48,9 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		file->data["name"] = pathname;
 		//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children.push_back(file);
+
+		// update the lexical tree size when we push back
+		currentTreeSize++;
 	}
 	else
 	{
@@ -83,6 +87,9 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 			node->data["name"] = name;
 			//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children.push_back(node);
+
+			// update the lexical tree size when we push back
+			currentTreeSize++;
 		}
 		// Else, use found node
 
@@ -192,7 +199,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	else
 	{
 		globalRevs++;
-		DiscursiveDebugPrint("First Pass: Adding Revision Number %d\n",globalRevs);
+		DiscursiveDebugPrint("First Pass: Adding Revision Number %ld \nCurrent Tree Size %ld \n",globalRevs,currentTreeSize);
 	}
 
 	// let's pull out the date first, followed by any file additions

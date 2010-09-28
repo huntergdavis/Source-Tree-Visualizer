@@ -191,6 +191,7 @@ int main(int argc, char **argv)
 	git->globalRevs = 0;
 	git->localRevs = 0;
 	git->revTarget = 0;
+	git->currentTreeSize = 0;
 
 	// retrieve our source tree
 	git->source = git->retrieve();
