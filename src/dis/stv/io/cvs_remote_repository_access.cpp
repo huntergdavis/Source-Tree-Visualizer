@@ -116,30 +116,35 @@ SurrogateTreeNode* CvsRemoteRepositoryAccess::generateTreeFromRemoteCvs()
 	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
 	treeResult->data["name"] = "root";
 
-	// create a string for holding the cvs log
-	std::string cvsLog;
-	cvsLog.reserve(10024);  // reserve 10k for fast allocation
+	// only generate the log in the first pass
+	if(logGenerated == 0)
+	{
+		// create a string for holding the cvs log
+		repoLog.reserve(10024);  // reserve 10k for fast allocation
 
-	// create a string for holding the cvs command
-	std::string cvsCommand = " cvs -d:";
-	cvsCommand += remoteServerString;
-	cvsCommand += " history -a -xGA";
+		// create a string for holding the cvs command
+		std::string cvsCommand = " cvs -d:";
+		cvsCommand += remoteServerString;
+		cvsCommand += " history -a -xGA";
 
-	// create a file pointer handle to our command output
-	FILE *fp = popen(cvsCommand.c_str(), "r" );
+		// create a file pointer handle to our command output
+		FILE *fp = popen(cvsCommand.c_str(), "r" );
 
-	// loop over all the file handle and put into string
-    while (true)
-    {
-      int c = std::fgetc( fp );
-      if (c == EOF) break;
-      cvsLog.push_back( (char)c );
-    }
-    std::fclose( fp );
-    //DiscursiveDebugPrint("CVS LOG RESULT %s",cvsLog.c_str());
+		// loop over all the file handle and put into string
+		while (true)
+		{
+		  int c = std::fgetc( fp );
+		  if (c == EOF) break;
+		  repoLog.push_back( (char)c );
+		}
+		std::fclose( fp );
+		//DiscursiveDebugPrint("CVS LOG RESULT %s",cvsLog.c_str());
 
+		// don't re-generate logs if not necessary
+		logGenerated = 1;
+	}
     // generate tree entry from log file entry
-    generateTreeFromLog(treeResult,&cvsLog);
+    generateTreeFromLog(treeResult,&repoLog);
 
 	// return the filled tree
 	return treeResult;

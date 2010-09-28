@@ -27,7 +27,7 @@ class GitRepositoryAccess : public RepositoryAccess
 {
 private:
 	string root;
-	int generateLog(std::string *localGitLog);
+	int generateLog();
 	SurrogateTreeNode* generateTreeFromLog(std::string *buffer);
 	void parseTimeBlock(SurrogateTreeNode* tree, long time, std::string *buffer);
 	void InsertByPathName(SurrogateTreeNode* tree, std::string pathname, long fileTime);

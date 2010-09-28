@@ -120,6 +120,7 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
 	treeResult->data["name"] = "root";
 
+	// only generate the log in the first pass
 	if(logGenerated == 0)
 	{
 		// create a string for holding the svn log

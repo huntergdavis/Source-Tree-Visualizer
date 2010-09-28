@@ -182,29 +182,35 @@ SurrogateTreeNode* GitRepositoryAccess::generateTreeFromLog(std::string *buffer)
 	return result;
 }
 
-int GitRepositoryAccess::generateLog(std::string *localGitLog)
+int GitRepositoryAccess::generateLog()
 {
-	// create a string for holding the svn log
-	localGitLog->reserve(10024);  // reserve 10k for fast allocation
+	// only generate the log in the first pass
+	if(logGenerated == 0)
+	{
+		// create a string for holding the svn log
+		repoLog.reserve(10024);  // reserve 10k for fast allocation
 
-	// create a string for holding the svn command
-	std::string localGitCommand = "cd " + this->root + "; " + GIT_COMMAND;
+		// create a string for holding the svn command
+		std::string localGitCommand = "cd " + this->root + "; " + GIT_COMMAND;
 
-	// create a file pointer handle to our command output
-	FILE *fp = popen(localGitCommand.c_str(), "r" );
+		// create a file pointer handle to our command output
+		FILE *fp = popen(localGitCommand.c_str(), "r" );
 
-	// loop over all the file handle and put into string
-    while (true)
-    {
-      int c = std::fgetc( fp );
-      if (c == EOF) break;
-      localGitLog->push_back( (char)c );
-    }
-    std::fclose( fp );
+		// loop over all the file handle and put into string
+		while (true)
+		{
+		  int c = std::fgetc( fp );
+		  if (c == EOF) break;
+		  repoLog.push_back( (char)c );
+		}
+		std::fclose( fp );
 
-    // show the log (debug)
-    DiscursiveDebugPrint(localGitLog->c_str());
+		// show the log (debug)
+		DiscursiveDebugPrint(repoLog.c_str());
 
+		// don't re-generate logs if not necessary
+		logGenerated = 1;
+	}
     // figure out a meaningful return code
     return 1;
 }
@@ -217,10 +223,10 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 	{
 		std::string localGitFile;
 		// If we generated a log file
-		if(this->generateLog(&localGitFile))
+		if(this->generateLog())
 		{
 			// Create the tree from log
-			result = this->generateTreeFromLog(&localGitFile);
+			result = this->generateTreeFromLog(&repoLog);
 			DiscursiveDebugPrint("Generated tree with name '%s'\n", result->data["name"].c_str());
 		}
 	}
