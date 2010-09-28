@@ -39,8 +39,8 @@ void display_usage( void )
 	usage_string += "\n----------------start number for many jpg tree rendering, default is 3\n";
 	usage_string += "\n----------------finish number for many jpg tree rendering, default is treesize\n";
 	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
-	usage_string += "\n-r option - output the creation of the current tree one revision at a time via many .jpgs in sequence\n";
-	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
+	usage_string += "\n-R and -r option -output the creation of the current tree one revision at a time via many .jpgs in sequence\n";
+	usage_string += "\n-------------- -R also expects the following start:stop:step i.e. 1:400:5       \n";
 	usage_string += "\n----------------start number for many jpg tree rendering, default is 3\n";
 	usage_string += "\n----------------finish number for many jpg tree rendering, default is currentrevision\n";
 	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
