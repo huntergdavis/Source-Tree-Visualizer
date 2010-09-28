@@ -126,77 +126,85 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
 	treeResult->data["name"] = "root";
 
-	// first retrieve the base log file from which to retrieve sha1 hashes for commit blobs
-	std::string topLevelApiUrl;
-	topLevelApiUrl = "http://github.com/api/v2/yaml/commits/list/";
-	topLevelApiUrl += userNameCredentials;
-	topLevelApiUrl += "/";
-	topLevelApiUrl += repoNameCredentials;
-	topLevelApiUrl += "/";
-	topLevelApiUrl += "master";
-
-	// Write any errors in here
-	static char errorBuffer[CURL_ERROR_SIZE];
-
-	// Write all expected data in here
-	static string buffer;
-
-	// set up a lib curl instantiation
-	CURL *curl;
-	CURLcode result;
-
-	// Create our curl handle
-	curl = curl_easy_init();
-
-	if (curl)
+	// only generate the log in the first pass
+	if(logGenerated == 0)
 	{
-		// Now set up all of the curl options
-	   curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
-	   curl_easy_setopt(curl, CURLOPT_URL, topLevelApiUrl.c_str());
-	   curl_easy_setopt(curl, CURLOPT_HEADER, 0);
-	   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
-	   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
-	   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+		// first retrieve the base log file from which to retrieve sha1 hashes for commit blobs
+		std::string topLevelApiUrl;
+		topLevelApiUrl = "http://github.com/api/v2/yaml/commits/list/";
+		topLevelApiUrl += userNameCredentials;
+		topLevelApiUrl += "/";
+		topLevelApiUrl += repoNameCredentials;
+		topLevelApiUrl += "/";
+		topLevelApiUrl += "master";
 
-	   // Attempt to retrieve the remote page
-	   DiscursiveDebugPrint("\n curl is attempting to pull %s\n",topLevelApiUrl.c_str());
-	   result = curl_easy_perform(curl);
+		// Write any errors in here
+		static char errorBuffer[CURL_ERROR_SIZE];
 
-	   // Always cleanup
-	   curl_easy_cleanup(curl);
+		// Write all expected data in here
+		static string buffer;
 
-	   // Did we succeed?
-	   if (result == CURLE_OK)
-	   {
-		   // create an instringstream object to linify the input ala terminal
-		   std::istringstream topLevelSS(buffer);
+		// set up a lib curl instantiation
+		CURL *curl;
+		CURLcode result;
 
-		   // print debug our github top level block
-		   //DiscursiveDebugPrint(buffer);
+		// Create our curl handle
+		curl = curl_easy_init();
 
-		   // loop over the outer string stream object and search for sha1 keys
-		   // keep track of line numbering
-		   int linenum = 0;
-		   // our top level line storage
-		   std::string topLevelLine;
-		   // sha1 storage
-		   std::string topLevelSHA1;
-		   while (getline (topLevelSS, topLevelLine))
+		if (curl)
+		{
+			// Now set up all of the curl options
+		   curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errorBuffer);
+		   curl_easy_setopt(curl, CURLOPT_URL, topLevelApiUrl.c_str());
+		   curl_easy_setopt(curl, CURLOPT_HEADER, 0);
+		   curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+		   curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
+		   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+		   // Attempt to retrieve the remote page
+		   DiscursiveDebugPrint("\n curl is attempting to pull %s\n",topLevelApiUrl.c_str());
+		   result = curl_easy_perform(curl);
+
+		   // Always cleanup
+		   curl_easy_cleanup(curl);
+
+		   // Did we succeed?
+		   if (result == CURLE_OK)
 		   {
-			   linenum++;
+			   logGenerated = 1;
+			   repoLog = buffer;
+		   }
+		}
+	}
+	   // create an instringstream object to linify the input ala terminal
+	   std::istringstream topLevelSS(repoLog);
 
-			   // the "id:" identifier will be 2 for entries, 4 for parents
-			   int idVal = topLevelLine.find("id:");
-			   // if we have a entry that's not a parent entry
-			   if(idVal == 2)
-			   {
-				   topLevelSHA1 = topLevelLine.substr(6,topLevelLine.size()-5);
-				   //DiscursiveDebugPrint("\n sha1 %s\n",SHA1->c_str());
-				   retrieveDetailedGitHubBlock(treeResult,&topLevelSHA1);
-			   }
+	   // print debug our github top level block
+	   //DiscursiveDebugPrint(buffer);
+
+	   // loop over the outer string stream object and search for sha1 keys
+	   // keep track of line numbering
+	   int linenum = 0;
+	   // our top level line storage
+	   std::string topLevelLine;
+	   // sha1 storage
+	   std::string topLevelSHA1;
+	   while (getline (topLevelSS, topLevelLine))
+	   {
+		   linenum++;
+
+		   // the "id:" identifier will be 2 for entries, 4 for parents
+		   int idVal = topLevelLine.find("id:");
+		   // if we have a entry that's not a parent entry
+		   if(idVal == 2)
+		   {
+			   topLevelSHA1 = topLevelLine.substr(6,topLevelLine.size()-5);
+			   //DiscursiveDebugPrint("\n sha1 %s\n",SHA1->c_str());
+			   retrieveDetailedGitHubBlock(treeResult,&topLevelSHA1);
 		   }
 	   }
-	}
+
+
 	// return the filled tree
 	return treeResult;
 }
