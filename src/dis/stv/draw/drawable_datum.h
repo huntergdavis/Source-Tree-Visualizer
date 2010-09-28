@@ -9,6 +9,15 @@
 #define DRAWABLE_DATUM_H_
 #include "../system/discursive_system.h"
 
+struct MinDrawableDatum
+{
+	int locationX;
+	int locationY;
+	double angle;
+	int extent;
+	int mass;
+};
+
 
 class DrawableDatum
 {

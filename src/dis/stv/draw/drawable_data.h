@@ -19,13 +19,13 @@ using namespace std;
 class DrawableData
 {
 private:
-	map<int,vector<DrawableDatum*>*> drawItems;
+	map<int,vector<MinDrawableDatum*>*> drawItems;
 public:
 	DrawableData();
-	void insert(int layer, DrawableDatum* datum);
-	vector<DrawableDatum*>* getLayer(int layer);
-	map<int,vector<DrawableDatum*>*>::iterator begin();
-	map<int,vector<DrawableDatum*>*>::iterator end();
+	void insert(int layer, MinDrawableDatum* datum);
+	vector<MinDrawableDatum*>* getLayer(int layer);
+	map<int,vector<MinDrawableDatum*>*>::iterator begin();
+	map<int,vector<MinDrawableDatum*>*>::iterator end();
 };
 
 #endif /* DRAWABLE_H_ */

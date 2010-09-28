@@ -202,7 +202,14 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			double dy = -this->segLen * sin(orientation);
 
 			// Insert new DrawDatum
-			data->insert(TRUNK_LAYER,new DrawableDatum(x, y, orientation, this->segLen, atoi(source->data["size"].c_str())));
+			MinDrawableDatum* datum = (MinDrawableDatum*)malloc(sizeof(MinDrawableDatum));
+			datum->locationX = x;
+			datum->locationY = y;
+			datum->angle = orientation;
+			datum->extent = this->segLen;
+			datum->mass = atoi(source->data["size"].c_str());
+			//new MinDrawableDatum(x, y, orientation, this->segLen, atoi(source->data["size"].c_str()));
+			data->insert(TRUNK_LAYER,datum);
 			// Step leader towards SCoM
 			leader->setLocation(x+dx, y+dy);
 			leader->setOrientation(orientation);
@@ -244,7 +251,14 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				double ndy = -this->segLen * sin(orientation);
 
 				// Insert new DrawDatum
-				data->insert(TRUNK_LAYER,new DrawableDatum(x, y, orientation, this->segLen, atoi(source->data["size"].c_str())));
+				MinDrawableDatum* datum = (MinDrawableDatum*)malloc(sizeof(MinDrawableDatum));
+				datum->locationX = x;
+				datum->locationY = y;
+				datum->angle = orientation;
+				datum->extent = this->segLen;
+				datum->mass = atoi(source->data["size"].c_str());
+				// new DrawableDatum(x, y, orientation, this->segLen, atoi(source->data["size"].c_str()))
+				data->insert(TRUNK_LAYER,datum);
 				// Step leader towards SCoM
 				leader->setLocation(x+ndx, y+ndy);
 				leader->setOrientation(orientation);
@@ -276,7 +290,14 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 
 					// Insert new Leaf DrawDatum
 					DiscursiveDebugPrint("Adding leaf @ (%f,%f)\n",x,y);
-					data->insert(LEAF_LAYER,new DrawableDatum(x, y, 0, this->segLen, this->segLen));
+					MinDrawableDatum* datum = (MinDrawableDatum*)malloc(sizeof(MinDrawableDatum));
+					datum->locationX = x;
+					datum->locationY = y;
+					datum->angle = 0;
+					datum->extent = this->segLen;
+					datum->mass = this->segLen;
+					// new DrawableDatum(x, y, 0, this->segLen, this->segLen)
+					data->insert(LEAF_LAYER,datum);
 					// Debugging
 					//data->insert(DEBUG_LAYER,new DrawableDatum(childX, childY, 0, 5, 1));
 				}
