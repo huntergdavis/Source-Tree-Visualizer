@@ -69,7 +69,7 @@ void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 				break;
 			case LEAF_LAYER:
 				drawList.push_back(DrawableFillColor("green"));
-				size = 2;
+				size = 5;
 				break;
 			case DEBUG_LAYER:
 				drawList.push_back(DrawableFillColor("blue"));

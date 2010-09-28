@@ -105,15 +105,35 @@ bool SpaceColonizer::shouldSplit(SurrogateTreeNode* attractor, ColonizationLeade
 	double currentOrientation = leader->getOrientation();
 	// Split if angle from leader to attractor is
 	// 'enough' more then current orientation
-	double enough = 3.14159 / (12 * log(fabs(leader->getLocationX() - atof(attractor->data["x"].c_str()))));
-	if(enough > 3.14159 / 2)
+	double enough = 3.14159 * leader->getLength() / 12;
+	if(enough > 3.14159 / 3)
 	{
-		enough = 3.14159 / 2;
+		enough = 3.14159 / 3;
 	}
 
 	double attractorAngle = orientationBetween(attractor, leader);
 
 	return enough < fabs(attractorAngle - currentOrientation);
+}
+
+double SpaceColonizer::angleDiff(double ref, double compare)
+{
+	double TWO_PI = 2 * 3.14159;
+	while(ref < 0)
+	{
+		ref += TWO_PI;
+	}
+	while(compare < 0)
+	{
+		compare += TWO_PI;
+	}
+	double diff = compare - ref;
+	while(diff > TWO_PI)
+	{
+		diff -= TWO_PI;
+	}
+
+	return diff;
 }
 
 // Returns true if # of leaders changed
@@ -137,9 +157,10 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				//printf("Adding leader\n");
 				split = true;
 				// Create new Leader with child set that caused split
-				double attractorAngle = orientationBetween(attractor, leader);
-				printf("Adding leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getLocationX(),leader->getLocationY(),attractorAngle, atof(attractor->data["scomX"].c_str()),atof(attractor->data["scomY"].c_str()));
-				ColonizationLeader* newLeader = new ColonizationLeader(leader->getLocationX(),leader->getLocationY(),attractorAngle, attractor);
+				//double attractorAngle = orientationBetween(attractor, leader);
+				//printf("Adding leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getLocationX(),leader->getLocationY(),attractorAngle, atof(attractor->data["scomX"].c_str()),atof(attractor->data["scomY"].c_str()));
+				//ColonizationLeader* newLeader = new ColonizationLeader(leader->getLocationX(),leader->getLocationY(),attractorAngle, attractor);
+				ColonizationLeader* newLeader = new ColonizationLeader(leader->getLocationX(),leader->getLocationY(),leader->getOrientation(), attractor);
 				this->leaders.push_back(newLeader);
 				modified = true;
 				// Add debug marker for attractor
@@ -160,12 +181,14 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			// Calculate angle towards subtree center of mass
 			double childX = atof(source->data["scomX"].c_str());
 			double childY = atof(source->data["scomY"].c_str());
+			//double orientation = this->angleFrom(x,-y,childX,-childY);
 			double orientation = this->angleFrom(x,-y,childX,-childY);
 //			double maxAngleChange = 3.14159/(48.0 * log(fabs(leader->getLocationX() - atof(attractor->data["x"].c_str()))));
-			double maxAngleChange = 3.14159 * leader->getLength() /48.0;
-			if(fabs(orientation - leader->getOrientation()) > maxAngleChange)
+			double maxAngleChange = 3.14159 * leader->getLength() / 96.0;
+			double angleDiff = this->angleDiff(leader->getOrientation(), orientation);
+			if(fabs(angleDiff) > maxAngleChange)
 			{
-				if(orientation < leader->getOrientation())
+				if(angleDiff < 0)
 				{
 					orientation = leader->getOrientation() - maxAngleChange;
 				}
@@ -201,11 +224,13 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			{
 				//printf("Distance to CoM: %f\n",sqrt(dx * dx + dy * dy));
 				// Calculate angle towards subtree center of mass
+				//double orientation = this->angleFrom(x,-y,childX,-childY);
 				double orientation = this->angleFrom(x,-y,childX,-childY);
 				double maxAngleChange = 3.14159 * leader->getLength() /48.0;
-				if(fabs(orientation - leader->getOrientation()) > maxAngleChange)
+				double angleDiff = this->angleDiff(leader->getOrientation(), orientation);
+				if(fabs(angleDiff) > maxAngleChange)
 				{
-					if(orientation < leader->getOrientation())
+					if(angleDiff < 0)
 					{
 						orientation = leader->getOrientation() - maxAngleChange;
 					}
