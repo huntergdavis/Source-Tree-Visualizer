@@ -165,6 +165,7 @@ int main(int argc, char **argv)
 		case 2:
 		case 3:
 		case 4:
+			printf("%s\n",agentName);
 			git = noninteractive_agent(agentType, agentName);
 			break;
 		case 0:

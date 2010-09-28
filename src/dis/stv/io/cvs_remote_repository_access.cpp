@@ -25,6 +25,9 @@ CvsRemoteRepositoryAccess::CvsRemoteRepositoryAccess(std::string cvsRemoteServer
 	// add repo type of cvs
 	this->repoType = 4;
 
+	// blank the last parsed date
+	lastDate = 0;
+
 }
 
 void CvsRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
@@ -133,7 +136,7 @@ SurrogateTreeNode* CvsRemoteRepositoryAccess::generateTreeFromRemoteCvs()
       cvsLog.push_back( (char)c );
     }
     std::fclose( fp );
-    //printf("CVS LOG RESULT %s",cvsLog.c_str());
+    //DiscursiveDebugPrint("CVS LOG RESULT %s",cvsLog.c_str());
 
     // generate tree entry from log file entry
     generateTreeFromLog(treeResult,&cvsLog);
@@ -190,6 +193,25 @@ void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	//printf("\nTHEDATE: |%s| \n",dateString.c_str());
 	long dateEpoch = parseExactDateString(&dateString);
 
+
+	// new date = new revision
+	if(dateEpoch != lastDate)
+	{
+		// update either local revions or global revisions
+		if(revTarget > 0)
+		{
+			localRevs++;
+		}
+		else
+		{
+			globalRevs++;
+		}
+
+		// set last date
+		lastDate = dateEpoch;
+
+	}
+
 	// store all the spacing tabstops from the line
 	int tabStops[8];
 	int numberTabStops = 0;
@@ -241,15 +263,16 @@ void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 
 	// actually insert path into tree
 	// increase the number of global inserts by one
-	if(insertTarget > 0)
+	if((insertTarget > 0) && (localInserts < insertTarget))
 	{
 		localInserts++;
-		if(localInserts < insertTarget)
-		{
-			InsertByPathName(tree,fullyQualifiedName,dateEpoch);
-		}
+		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
 	}
-	else
+	if((revTarget > 0) && (localRevs < revTarget))
+	{
+		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+	}
+	if((insertTarget == 0) && (revTarget == 0))
 	{
 		globalInserts++;
 		InsertByPathName(tree,fullyQualifiedName,dateEpoch);

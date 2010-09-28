@@ -115,8 +115,6 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 	// loop over the detailed commit and find new filenames
 	while (getline (localGitBlockSS, fileNameLine))
 	{
-
-
 		// test for new commit blocks, update revision number
 		if(fileNameLine.find(":") != 0)
 		{
@@ -150,7 +148,6 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			{
 				globalInserts++;
 				InsertByPathName(tree,fileNameString,time);
-
 			}
 
 		}

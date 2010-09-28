@@ -90,7 +90,7 @@ RepositoryAccess* noninteractive_agent(int agentType, std::string agentString)
 	}
 	else if(agentType == 4)
 	{
-		git = new SvnRemoteRepositoryAccess(agentString);
+		git = new CvsRemoteRepositoryAccess(agentString);
 	}
 	return git;
 }
