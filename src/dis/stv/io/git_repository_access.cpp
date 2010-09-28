@@ -144,7 +144,6 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			}
 			if((revTarget > 0) && (localRevs < revTarget))
 			{
-				localRevs++;
 				InsertByPathName(tree,fileNameString,time);
 			}
 			if((insertTarget == 0) && (revTarget == 0))

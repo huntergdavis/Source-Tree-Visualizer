@@ -43,7 +43,7 @@ void display_usage( void )
 	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
 	usage_string += "\n----------------start number for many jpg tree rendering, default is 1\n";
 	usage_string += "\n----------------finish number for many jpg tree rendering, default is currentrevision\n";
-	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
+	usage_string += "\n----------------step value for many jpg tree rendering, default is 2\n";
 	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
 	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
 
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 
 	// options for jpg per revison
 	int revStep = 1;
-	int revStart = 1;
+	int revStart = 2;
 	int revStop = 10000;
 
 	// our option string
@@ -248,10 +248,10 @@ int main(int argc, char **argv)
 	{
 		if (revStop >= git->globalRevs)
 		{
-			revStop = git->globalRevs;
+			revStop = git->globalRevs-1;
 		}
 		// use our user-set parameters to define our step
-		for(int i = revStart; i<revStop;i+= revStep)
+		for(int i = revStart; i<revStop;i+=revStep)
 		{
 			// reset our insert variables
 			git->localRevs = 0;
