@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 	int revStop = 10000;
 
 	// our option string
-	static const char *optString = "g:G:S:C:H:W:O:m:r:idh?";
+	static const char *optString = "g:G:S:C:H:W:O:m:R:ridh?";
 
 	// loop over our command options in the normal unix way
 
@@ -124,13 +124,19 @@ int main(int argc, char **argv)
 					jpgStart = 3;
 				}
 				break;
-			case 'r':
+			case 'R':
 				revJpgs = 1;
 				sscanf("%d:%d:%d",optarg,revStart,revStop,revStep);
 				if(revStart < 3)
 				{
 					revStart = 3;
 				}
+				break;
+			case 'r':
+				revJpgs = 1;
+				revStart = 3;
+				revStop = 100000;
+				revStep = 1;
 				break;
 			case 'H':
 				scaleHeight = atof(optarg);
