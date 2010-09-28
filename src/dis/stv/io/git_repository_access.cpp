@@ -95,7 +95,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 
 void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std::string *buffer)
 {
-	//printf("Parsing block for time %ld\n BLOCK IS: \n\n%s\n\n",time,buffer->c_str());
+	//DiscursiveDebugPrint("Parsing block for time %ld\n BLOCK IS: \n\n%s\n\n",time,buffer->c_str());
 
 	// loop over each line and search for created files
 	// created files are denoted by an '... A' tag sequence
@@ -115,23 +115,39 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 	// loop over the detailed commit and find new filenames
 	while (getline (localGitBlockSS, fileNameLine))
 	{
+
+
+		// test for new commit blocks, update revision number
+		if(fileNameLine.find(":") != 0)
+		{
+			if(revTarget > 0)
+			{
+				localRevs++;
+			}
+			else
+			{
+				globalRevs++;
+			}
+		}
+
 		aLocation = fileNameLine.find("... A");
 		if(aLocation > 0)
 		{
+			// locate the filename in git string
 			fileNameString = fileNameLine.substr(aLocation+6,fileNameLine.size()-aLocation+6);
-			//printf("\nFILENAMELOCATION |%s|\n",fileNameString.c_str());
 
-			//printf("Inserting %s @ %ld\n",filename.c_str(),time);
 			// increase the number of global inserts by one
-			if(insertTarget > 0)
+			if((insertTarget > 0) && (localInserts < insertTarget))
 			{
-				localInserts++;
-				if(localInserts < insertTarget)
-				{
+					localInserts++;
 					InsertByPathName(tree,fileNameString,time);
-				}
 			}
-			else
+			if((revTarget > 0) && (localRevs < revTarget))
+			{
+				localRevs++;
+				InsertByPathName(tree,fileNameString,time);
+			}
+			if((insertTarget == 0) && (revTarget == 0))
 			{
 				globalInserts++;
 				InsertByPathName(tree,fileNameString,time);
@@ -189,6 +205,9 @@ int GitRepositoryAccess::generateLog(std::string *localGitLog)
       localGitLog->push_back( (char)c );
     }
     std::fclose( fp );
+
+    // show the log (debug)
+    DiscursiveDebugPrint(localGitLog->c_str());
 
     // figure out a meaningful return code
     return 1;
