@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 		case 2:
 		case 3:
 		case 4:
-			printf("%s\n",agentName);
+			DiscursiveDebugPrint("%s\n",agentName);
 			git = noninteractive_agent(agentType, agentName);
 			break;
 		case 0:
@@ -209,6 +209,7 @@ int main(int argc, char **argv)
 	git->logGenerated = 0;
 
 	// retrieve our source tree
+	DiscursivePrint("Retrieving From Server, Please Wait...\n");
 	git->source = git->retrieve();
 
 	// output tree info
@@ -242,7 +243,7 @@ int main(int argc, char **argv)
 	{
 		loopStop = git->globalInserts-1;
 	}
-	DiscursivePrint("Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
+	DiscursiveDebugPrint("Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
 	if((executeLoopType == 3) && (loopStop >= git->globalRevs))
 	{
 		loopStop = git->globalRevs-1;
