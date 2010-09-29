@@ -17,7 +17,7 @@ Digitizer::~Digitizer()
 
 SpaceColonizer::~SpaceColonizer()
 {
-	if(this->data != NULL)
+	if(this->data)
 	{
 		DiscursivePrint("Destroying SpaceColonizer\n");
 		vector<MinDrawableDatum*>* layerData;

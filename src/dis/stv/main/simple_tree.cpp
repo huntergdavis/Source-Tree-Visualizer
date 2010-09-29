@@ -283,8 +283,8 @@ int main(int argc, char **argv)
 
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %lf out of %lf step value %lf\n",i,loopStop,loopStep);
 		// Digitize decorated surrogate tree into line segment tree
-		SpaceColonizer* digitizer = new SpaceColonizer(1);
-		DrawableData* lines = digitizer->digitize(git->source);
+	    SpaceColonizer digitizer(1);
+		DrawableData* lines = digitizer.digitize(git->source);
 
 		// Transform
 
@@ -297,6 +297,7 @@ int main(int argc, char **argv)
 		// actually generate a tree
 		DiscursivePrint("Writing Tree %lf out of %lf step value %lf\n",i,loopStop,loopStep);
 		git->WriteJPGFromCanvas(&canvas);
+
 
 	}
 	return 0;
