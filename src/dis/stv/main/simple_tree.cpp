@@ -242,7 +242,8 @@ int main(int argc, char **argv)
 	{
 		loopStop = git->globalInserts-1;
 	}
-	else if((executeLoopType == 3) && (loopStop >= git->globalRevs))
+
+	if((executeLoopType == 3) && (loopStop >= git->globalRevs))
 	{
 		loopStop = git->globalRevs-1;
 	}
@@ -267,8 +268,6 @@ int main(int argc, char **argv)
 		// retrieve our source tree
 		git->source = git->retrieve();
 
-		// init libmagick
-		//InitializeMagick("/");
 
 		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		// Decorate surrogate tree nodes with locations
@@ -278,13 +277,14 @@ int main(int argc, char **argv)
 		int END_HEIGHT = 500;
 		double widthRescaling = END_WIDTH/(double)START_WIDTH;
 		double heightRescaling = END_HEIGHT/(double)START_HEIGHT;
-		SpatialDisplacement disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling);
-		disp.decorate(git->source);
+		//SpatialDisplacement *disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling) = new;
+		SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
+		disp->decorate(git->source);
 
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		// Digitize decorated surrogate tree into line segment tree
-	    SpaceColonizer digitizer(1);
-		DrawableData* lines = digitizer.digitize(git->source);
+	    SpaceColonizer *digitizer = new SpaceColonizer(1);
+		DrawableData* lines = digitizer->digitize(git->source);
 
 		// Transform
 
