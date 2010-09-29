@@ -287,14 +287,14 @@ int main(int argc, char **argv)
 
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %lf out of %lf step value %lf\n",i,loopStop,loopStep);
 		// Digitize decorated surrogate tree into line segment tree
-		SpaceColonizer* digitizer = new SpaceColonizer(1);
+	    SpaceColonizer* digitizer = new SpaceColonizer(1);
 		DrawableData* lines = digitizer->digitize(git->source);
 
 		// Transform
 
 		// Draw tree
 		DiscursivePrint("Drawing Tree %lf out of %lf step value %lf",i,loopStop,loopStep);
-		Image canvas(Geometry(500,500),"white");
+		Image canvas(Geometry(END_WIDTH,END_HEIGHT),"white");
 		ScanlineArtist artist;
 		artist.draw(canvas, lines);
 

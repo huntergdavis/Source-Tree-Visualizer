@@ -24,7 +24,8 @@ DrawableData::~DrawableData()
 		{
 			free(*dataList);
 		}
-		this->drawItems.erase(rediculator);
+		//this->drawItems[rediculator->first] = NULL;
+		//this->drawItems.erase(rediculator);
 		delete layerData;
 	}
 }
