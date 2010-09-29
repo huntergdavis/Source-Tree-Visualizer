@@ -219,7 +219,7 @@ int main(int argc, char **argv)
 	int loopStart = 0;
 	int loopStop = 1;
 	int loopStep = 1;
-	bool executeLoopType = 1;
+	int executeLoopType = 1;
 
 	// check for our custom loop types
 	if(manyJpgs)
@@ -242,7 +242,7 @@ int main(int argc, char **argv)
 	{
 		loopStop = git->globalInserts-1;
 	}
-
+	DiscursivePrint("Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
 	if((executeLoopType == 3) && (loopStop >= git->globalRevs))
 	{
 		loopStop = git->globalRevs-1;
