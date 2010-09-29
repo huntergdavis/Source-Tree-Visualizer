@@ -33,7 +33,7 @@ void display_usage( void )
 	usage_string += "\n-C option - expects pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd\n";
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, defaults to 1\n";
-	usage_string += "\n-O option - output file name, defaults to tree.jpg\n";
+	usage_string += "\n-o or -O option - output file name, defaults to tree.jpg\n";
 	usage_string += "\n-m option - output the creation of the current tree one step at a time via many .jpgs in sequence\n";
 	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
 	usage_string += "\n----------------start number for many jpg tree rendering, default is 3\n";
@@ -44,8 +44,12 @@ void display_usage( void )
 	usage_string += "\n----------------start number for many jpg tree rendering, default is 3\n";
 	usage_string += "\n----------------finish number for many jpg tree rendering, default is currentrevision\n";
 	usage_string += "\n----------------step value for many jpg tree rendering, default is 1\n";
-	usage_string += "\n-W option - spatial displacement scaling width level, defaults to .9\n";
-	usage_string += "\n-H option - spatial displacement scaling height level, defaults to .85\n";
+	usage_string += "\n-l option - spatial displacement scaling levels, expects W1:H1:W2:H2 defaults to 5000:5000:4500:4200\n";
+	usage_string += "\n----------------where W1 is the start width\n";
+	usage_string += "\n----------------where H1 is the start height\n";
+	usage_string += "\n----------------where W2 is the end width\n";
+	usage_string += "\n----------------where H2 is the end height\n";
+	usage_string += "\n-z option - image size , expects WxH, defaults to 500x500 \n";
 
 
 	DiscursivePrint("%s",usage_string.c_str());
@@ -66,8 +70,14 @@ int main(int argc, char **argv)
 	int agentType = 0;
 
 	// scaling factors to use for spatial displacement
-	double scaleHeight = 0.85;
-	double scaleWidth = 0.9;
+	int startWidth = 5000;
+	int startHeight = 5000;
+	int endWidth = 4500;
+	int endHeight = 4250;
+
+	// image size options for jpg output
+	int imageWidth = 500;
+	int imageHeight = 500;
 
 	// our filename for output file
 	std::string fileName = "tree.jpg";
@@ -89,7 +99,7 @@ int main(int argc, char **argv)
 	int revStop = 10000;
 
 	// our option string
-	static const char *optString = "g:G:S:C:H:W:O:m:R:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:R:l:z:ridh?";
 
 	// loop over our command options in the normal unix way
 
@@ -113,8 +123,11 @@ int main(int argc, char **argv)
 				agentName = optarg;
 				agentType = 4;
 				break;
-			case 'W':
-				scaleWidth = atof(optarg);
+			case 'l':
+				sscanf(optarg,"%d:%d:%d:%d",&startWidth,&startHeight,&endWidth,&endHeight);
+				break;
+			case 'z':
+				sscanf(optarg,"%dx%d",&imageWidth,&imageHeight);
 				break;
 			case 'm':
 				manyJpgs = 1;
@@ -138,9 +151,7 @@ int main(int argc, char **argv)
 				revStop = 100000;
 				revStep = 1;
 				break;
-			case 'H':
-				scaleHeight = atof(optarg);
-				break;
+			case 'o':
 			case 'O':
 				fileName = optarg;
 				break;
@@ -191,12 +202,15 @@ int main(int argc, char **argv)
             break;
 	}
 
+	// set our scaling factor from our received or default options
+	double widthRescaling = endWidth/(double)startWidth;
+	double heightRescaling = endHeight/(double)startHeight;
 
     // set our repository single or manyjpg options
 	git->snapshotJpgs = manyJpgs;
 	git->jpgIndex = 1000;
-	git->scaleHeight = scaleHeight;
-	git->scaleWidth = scaleWidth;
+	git->scaleHeight = heightRescaling;
+	git->scaleWidth = widthRescaling;
 	git->fileName = (char*)fileName.c_str();
 	git->globalInserts = 0;
 	git->localInserts = 0;
@@ -272,14 +286,7 @@ int main(int argc, char **argv)
 
 		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		// Decorate surrogate tree nodes with locations
-		int START_WIDTH = 5000;
-		int START_HEIGHT = 5000;
-		int END_WIDTH = 500;
-		int END_HEIGHT = 500;
-		double widthRescaling = END_WIDTH/(double)START_WIDTH;
-		double heightRescaling = END_HEIGHT/(double)START_HEIGHT;
-		//SpatialDisplacement *disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling) = new;
-		SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
+		SpatialDisplacement* disp = new SpatialDisplacement(imageWidth,imageHeight,widthRescaling,heightRescaling);
 		disp->decorate(git->source);
 
 		// Digitize decorated surrogate tree into line segment tree
@@ -291,7 +298,7 @@ int main(int argc, char **argv)
 
 		// Draw tree
 		DiscursivePrint("Drawing Tree %d out of %d step value %d",i,loopStop,loopStep);
-		Image canvas(Geometry(500,500),"white");
+		Image canvas(Geometry(imageWidth,imageHeight),"white");
 		ScanlineArtist artist;
 		artist.draw(canvas, lines);
 
