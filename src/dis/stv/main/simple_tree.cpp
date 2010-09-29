@@ -265,6 +265,10 @@ int main(int argc, char **argv)
 		}
 
 		// retrieve our source tree
+		if(git->source != NULL)
+		{
+			delete git->source;
+		}
 		git->source = git->retrieve();
 
 		// init libmagick
@@ -298,6 +302,7 @@ int main(int argc, char **argv)
 		DiscursivePrint("Writing Tree %lf out of %lf step value %lf\n",i,loopStop,loopStep);
 		git->WriteJPGFromCanvas(&canvas);
 
+		delete digitizer;
 	}
 	return 0;
 }

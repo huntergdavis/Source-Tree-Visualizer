@@ -22,6 +22,7 @@ private:
 	map<int,vector<MinDrawableDatum*>*> drawItems;
 public:
 	DrawableData();
+	~DrawableData();
 	void insert(int layer, MinDrawableDatum* datum);
 	vector<MinDrawableDatum*>* getLayer(int layer);
 	map<int,vector<MinDrawableDatum*>*>::iterator begin();

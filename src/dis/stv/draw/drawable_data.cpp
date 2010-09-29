@@ -14,6 +14,21 @@ DrawableData::DrawableData()
 
 }
 
+DrawableData::~DrawableData()
+{
+	vector<MinDrawableDatum*>* layerData;
+	for(map<int,vector<MinDrawableDatum*>*>::iterator rediculator = this->drawItems.begin(); rediculator != this->drawItems.end(); ++rediculator)
+	{
+		layerData = rediculator->second;
+		for(vector<MinDrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
+		{
+			free(*dataList);
+		}
+		this->drawItems.erase(rediculator);
+		delete layerData;
+	}
+}
+
 void DrawableData::insert(int layer, MinDrawableDatum* datum)
 {
 	vector<MinDrawableDatum*>* layerList = this->getLayer(layer);

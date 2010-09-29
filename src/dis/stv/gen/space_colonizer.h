@@ -34,7 +34,6 @@ public:
 	SpaceColonizer(int segmentLength);
 	~SpaceColonizer();
 	DrawableData* digitize(SurrogateTreeNode* source);
-	void clean(DrawableData*);
 };
 
 #endif /* SPACE_COLONIZER_H_ */

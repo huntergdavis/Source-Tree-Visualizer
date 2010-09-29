@@ -20,23 +20,8 @@ SpaceColonizer::~SpaceColonizer()
 	if(this->data != NULL)
 	{
 		DiscursivePrint("Destroying SpaceColonizer\n");
-		vector<MinDrawableDatum*>* layerData;
-		for(map<int,vector<MinDrawableDatum*>*>::iterator rediculator = this->data->begin(); rediculator != this->data->end(); ++rediculator)
-		{
-			layerData = rediculator->second;
-			for(vector<MinDrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
-			{
-				free(*dataList);
-			}
-		}
-		// Finally remove STL containers
 		delete this->data;
 	}
-}
-
-void SpaceColonizer::clean(DrawableData* digitizedData)
-{
-
 }
 
 // Updates center of mass by removing values of child
