@@ -172,21 +172,28 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 			left = !left;
 		}
 		// Now layout files
+		// 1 branch/node per 5 files
+		int LEAVES_PER_NODE = 5;
+		int lastLeaf = -LEAVES_PER_NODE;
 		for(int j = 0; j < (int)files.size(); j++)
 		{
-			dist = ((i + j + 1)/2);
-			if(left)
+			if(j - lastLeaf >= LEAVES_PER_NODE)
 			{
-				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset-dist*gap);
+				lastLeaf = j;
+				dist = ((i + j + 1)/2);
+				if(left)
+				{
+					treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset-dist*gap);
+				}
+				else
+				{
+					treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset+dist*gap);
+				}
+				//printf("Adding node '%s' at initial position (%f,%f)\n", files[j]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
+				simPairs[files[j]] = treeNode;
+				engine->addMass(treeNode);
+				left = !left;
 			}
-			else
-			{
-				treeNode = new TreeDisplacementNode(atoi(files[j]->data["size"].c_str()),offset+dist*gap);
-			}
-			//printf("Adding node '%s' at initial position (%f,%f)\n", files[j]->data["name"].c_str(),treeNode->getX(), treeNode->getY());
-			simPairs[files[j]] = treeNode;
-			engine->addMass(treeNode);
-			left = !left;
 		}
 		// Run simulation
 		engine->run();
