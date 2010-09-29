@@ -215,139 +215,89 @@ int main(int argc, char **argv)
 	DiscursivePrint("Source tree name is %s\n", git->source->data["name"].c_str());
 	DiscursivePrint("Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
 
+	// create loop step variables generically for any jpg looping type
+	double loopStart = 0;
+	double loopStop = 1;
+	double loopStep = 1;
+	bool executeLoopType = 1;
 
-	// loop over a bunch of increasingly large trees for debug tree generation
-	if(manyJpgs && (git->globalInserts > 2))
+	// check for our custom loop types
+	if(manyJpgs)
 	{
-		if (jpgStop >= git->globalInserts)
+		loopStart = jpgStart;
+		loopStop = jpgStop;
+		loopStep = jpgStep;
+		executeLoopType = 2;
+	}
+	else if(revJpgs)
+	{
+		loopStart = revStart;
+		loopStop = revStop;
+		loopStep = revStep;
+		executeLoopType = 3;
+	}
+
+	// check for too many global inserts or revisions
+	if((executeLoopType == 2) && (loopStop >= git->globalInserts))
+	{
+		loopStop = git->globalInserts-1;
+	}
+	else if((executeLoopType == 3) && (loopStop >= git->globalRevs))
+	{
+		loopStop = git->globalRevs-1;
+	}
+
+	// loop over a bunch of increasingly large trees for debug or revision tree generation
+	// use our user-set parameters to define our step
+	for(double i = loopStart; i<loopStop;i+= loopStep)
+	{
+
+		// reset our insert variables
+		if(executeLoopType == 2)
 		{
-			jpgStop = git->globalInserts-1;
-		}
-		// use our user-set parameters to define our step
-		for(int i = jpgStart; i<jpgStop;i+= jpgStep)
-		{
-			// reset our insert variables
 			git->localInserts = 0;
 			git->insertTarget = i;
-
-			// retrieve our source tree
-			git->source = git->retrieve();
-
-			// init libmagick
-			//InitializeMagick("/");
-
-			DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,jpgStop,jpgStep);
-			// Decorate surrogate tree nodes with locations
-			int START_WIDTH = 5000;
-			int START_HEIGHT = 5000;
-			int END_WIDTH = 500;
-			int END_HEIGHT = 500;
-			double widthRescaling = END_WIDTH/(double)START_WIDTH;
-			double heightRescaling = END_HEIGHT/(double)START_HEIGHT;
-			SpatialDisplacement disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling);
-			disp.decorate(git->source);
-
-			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,jpgStop,jpgStep);
-			// Digitize decorated surrogate tree into line segment tree
-			SpaceColonizer* digitizer = new SpaceColonizer(1);
-			DrawableData* lines = digitizer->digitize(git->source);
-
-			// Transform
-
-			// Draw tree
-			DiscursivePrint("Drawing Tree %d out of %d step value %d",i,jpgStop,jpgStep);
-			Image canvas(Geometry(500,500),"white");
-			ScanlineArtist artist;
-			artist.draw(canvas, lines);
-
-			// actually generate a tree
-			DiscursivePrint("Writing Tree %d out of %d step value %d",i,jpgStop,jpgStep);
-			git->WriteJPGFromCanvas(&canvas);
-
-			DiscursivePrint("Calling delete\n\n");
-			printf("FIZZLE DIZZLE\n");
-			delete(digitizer);
 		}
-	}
-	// loop over a bunch of increasingly large trees by revsion
-	if(revJpgs)
-	{
-		if (revStop >= git->globalRevs)
+		else if(executeLoopType == 3)
 		{
-			revStop = git->globalRevs-1;
-		}
-		// use our user-set parameters to define our step
-		for(int i = revStart; i<revStop;i+=revStep)
-		{
-			// reset our insert variables
 			git->localRevs = 0;
 			git->revTarget = i;
-
-			// retrieve our source tree
-			if(git->source != NULL)
-			{
-				DiscursivePrint("\n\nDeleting git->source\n");
-				delete git->source;
-			}
-			git->source = git->retrieve();
-
-			// init libmagick
-			//InitializeMagick("/");
-			std::string sourceTreeNameOutput = "Source tree name is";
-			sourceTreeNameOutput += git->source->data["name"].c_str();
-			DiscursiveDebugPrint(sourceTreeNameOutput);
-
-			DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,revStop,revStep);
-			// Decorate surrogate tree nodes with locations
-			SpatialDisplacement disp(500,500,scaleWidth,scaleHeight);
-			disp.decorate(git->source);
-
-			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,revStop,revStep);
-			// Digitize decorated surrogate tree into line segment tree
-			SpaceColonizer digitizer(2);
-			DrawableData* lines = digitizer.digitize(git->source);
-
-			// Transform
-
-			// Draw tree
-			DiscursivePrint("Drawing Tree %d out of %d step value %d",i,revStop,revStep);
-			Image canvas(Geometry(500,500),"white");
-			ScanlineArtist artist;
-			artist.draw(canvas, lines);
-
-			// actually generate a tree
-			DiscursivePrint("Writing Tree %d out of %d step value %d\n",i,revStop,revStep);
-			git->WriteJPGFromCanvas(&canvas);
-
 		}
+
+		// retrieve our source tree
+		git->source = git->retrieve();
+
+		// init libmagick
+		//InitializeMagick("/");
+
+		DiscursivePrint("Decorating surrogate trees %lf out of %lf step value %lf\n",i,loopStop,loopStep);
+		// Decorate surrogate tree nodes with locations
+		int START_WIDTH = 5000;
+		int START_HEIGHT = 5000;
+		int END_WIDTH = 500;
+		int END_HEIGHT = 500;
+		double widthRescaling = END_WIDTH/(double)START_WIDTH;
+		double heightRescaling = END_HEIGHT/(double)START_HEIGHT;
+		SpatialDisplacement disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling);
+		disp.decorate(git->source);
+
+		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %lf out of %lf step value %lf\n",i,loopStop,loopStep);
+		// Digitize decorated surrogate tree into line segment tree
+		SpaceColonizer* digitizer = new SpaceColonizer(1);
+		DrawableData* lines = digitizer->digitize(git->source);
+
+		// Transform
+
+		// Draw tree
+		DiscursivePrint("Drawing Tree %lf out of %lf step value %lf",i,loopStop,loopStep);
+		Image canvas(Geometry(500,500),"white");
+		ScanlineArtist artist;
+		artist.draw(canvas, lines);
+
+		// actually generate a tree
+		DiscursivePrint("Writing Tree %lf out of %lf step value %lf\n",i,loopStop,loopStep);
+		git->WriteJPGFromCanvas(&canvas);
+
 	}
-	// init libmagick
-	//InitializeMagick("/");
-	std::string sourceTreeNameOutput = "Source tree name is";
-	sourceTreeNameOutput += git->source->data["name"].c_str();
-	DiscursiveDebugPrint(sourceTreeNameOutput);
-
-	// Decorate surrogate tree nodes with locations
-	DiscursivePrint("Decorating surrogate trees\n");
-	SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
-	disp->decorate(git->source);
-
-	// Digitize decorated surrogate tree into line segment tree
-	DiscursivePrint("Digitizing decorated surrogate trees into line segment trees\n");
-	SpaceColonizer* digitizer = new SpaceColonizer(2);
-	DrawableData* lines = digitizer->digitize(git->source);
-
-	// Transform
-
-	// Draw tree
-	DiscursivePrint("Drawing Tree\n");
-	Image canvas(Geometry(500,500),"white");
-	ScanlineArtist* artist = new ScanlineArtist();
-	artist->draw(canvas, lines);
-
-	// actually generate a tree (or the final tree if many)
-	DiscursivePrint("Writing Final Tree\n");
-	git->WriteJPGFromCanvas(&canvas);
-
 	return 0;
 }
