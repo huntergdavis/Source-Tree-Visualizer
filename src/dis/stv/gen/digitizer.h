@@ -19,7 +19,9 @@ static const int DEBUG_LAYER = 2;
 class Digitizer
 {
 public:
+	virtual ~Digitizer() = 0;
 	virtual DrawableData* digitize(SurrogateTreeNode* source) = 0;
+	virtual void clean(DrawableData* digitizedData) = 0;
 };
 
 #endif /* DIGITIZER_H_ */

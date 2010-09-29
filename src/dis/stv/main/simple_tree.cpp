@@ -238,12 +238,18 @@ int main(int argc, char **argv)
 
 			DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,jpgStop,jpgStep);
 			// Decorate surrogate tree nodes with locations
-			SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
-			disp->decorate(git->source);
+			int START_WIDTH = 5000;
+			int START_HEIGHT = 5000;
+			int END_WIDTH = 500;
+			int END_HEIGHT = 500;
+			double widthRescaling = END_WIDTH/(double)START_WIDTH;
+			double heightRescaling = END_HEIGHT/(double)START_HEIGHT;
+			SpatialDisplacement disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling);
+			disp.decorate(git->source);
 
 			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,jpgStop,jpgStep);
 			// Digitize decorated surrogate tree into line segment tree
-			SpaceColonizer* digitizer = new SpaceColonizer(2);
+			SpaceColonizer* digitizer = new SpaceColonizer(1);
 			DrawableData* lines = digitizer->digitize(git->source);
 
 			// Transform
@@ -251,13 +257,16 @@ int main(int argc, char **argv)
 			// Draw tree
 			DiscursivePrint("Drawing Tree %d out of %d step value %d",i,jpgStop,jpgStep);
 			Image canvas(Geometry(500,500),"white");
-			ScanlineArtist* artist = new ScanlineArtist();
-			artist->draw(canvas, lines);
+			ScanlineArtist artist;
+			artist.draw(canvas, lines);
 
 			// actually generate a tree
-			DiscursivePrint("Writing Tree %d out of %d step value %d\n\n",i,jpgStop,jpgStep);
+			DiscursivePrint("Writing Tree %d out of %d step value %d",i,jpgStop,jpgStep);
 			git->WriteJPGFromCanvas(&canvas);
 
+			DiscursivePrint("Calling delete\n\n");
+			printf("FIZZLE DIZZLE\n");
+			delete(digitizer);
 		}
 	}
 	// loop over a bunch of increasingly large trees by revsion
@@ -285,24 +294,24 @@ int main(int argc, char **argv)
 
 			DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,revStop,revStep);
 			// Decorate surrogate tree nodes with locations
-			SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
-			disp->decorate(git->source);
+			SpatialDisplacement disp(500,500,scaleWidth,scaleHeight);
+			disp.decorate(git->source);
 
 			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,revStop,revStep);
 			// Digitize decorated surrogate tree into line segment tree
-			SpaceColonizer* digitizer = new SpaceColonizer(2);
-			DrawableData* lines = digitizer->digitize(git->source);
+			SpaceColonizer digitizer(2);
+			DrawableData* lines = digitizer.digitize(git->source);
 
 			// Transform
 
 			// Draw tree
 			DiscursivePrint("Drawing Tree %d out of %d step value %d",i,revStop,revStep);
 			Image canvas(Geometry(500,500),"white");
-			ScanlineArtist* artist = new ScanlineArtist();
-			artist->draw(canvas, lines);
+			ScanlineArtist artist;
+			artist.draw(canvas, lines);
 
 			// actually generate a tree
-			DiscursivePrint("Writing Tree %d out of %d step value %d\n\n",i,revStop,revStep);
+			DiscursivePrint("Writing Tree %d out of %d step value %d\n",i,revStop,revStep);
 			git->WriteJPGFromCanvas(&canvas);
 
 		}

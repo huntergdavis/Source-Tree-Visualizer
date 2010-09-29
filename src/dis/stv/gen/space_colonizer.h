@@ -19,6 +19,7 @@
 class SpaceColonizer : public Digitizer
 {
 private:
+	DrawableData* data;
 	int segLen;
 	vector<ColonizationLeader*> leaders;
 	void removeNodeFromSubtreeCenterOfMass(SurrogateTreeNode* source, SurrogateTreeNode* node);
@@ -31,7 +32,9 @@ private:
 
 public:
 	SpaceColonizer(int segmentLength);
+	~SpaceColonizer();
 	DrawableData* digitize(SurrogateTreeNode* source);
+	void clean(DrawableData*);
 };
 
 #endif /* SPACE_COLONIZER_H_ */

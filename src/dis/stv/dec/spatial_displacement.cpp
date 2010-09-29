@@ -172,8 +172,8 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 			left = !left;
 		}
 		// Now layout files
-		// 1 branch/node per 5 files
-		int LEAVES_PER_NODE = 5;
+		// 1 branch/node per LEAVES_PER_NODE files
+		int LEAVES_PER_NODE = 10;
 		int lastLeaf = -LEAVES_PER_NODE;
 		for(int j = 0; j < (int)files.size(); j++)
 		{
@@ -429,7 +429,7 @@ void SpatialDisplacement::expand2(SurrogateTreeNode* tree, double rootAngle, dou
 			node->data["x"] = boost::lexical_cast<string>(newX);
 			node->data["y"] = boost::lexical_cast<string>(newY);
 			// Run expand on child
-			double childRot = angle;// + ((3.14159/2)-angle)/2;
+			double childRot = (3.14159/2);//angle;// + ((3.14159/2)-angle)/2;
 			this->expand2(node,childRot,newX,newY,allowedHeight - arcRadius);
 		}
 		// Then files

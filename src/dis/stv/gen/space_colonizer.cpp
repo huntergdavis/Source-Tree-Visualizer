@@ -7,8 +7,36 @@
 
 #include "space_colonizer.h"
 
-SpaceColonizer::SpaceColonizer(int segmentLength):segLen(segmentLength)
+SpaceColonizer::SpaceColonizer(int segmentLength):data(new DrawableData()),segLen(segmentLength)
 {
+}
+
+Digitizer::~Digitizer()
+{
+}
+
+SpaceColonizer::~SpaceColonizer()
+{
+	if(this->data != NULL)
+	{
+		DiscursivePrint("Destroying SpaceColonizer\n");
+		vector<MinDrawableDatum*>* layerData;
+		for(map<int,vector<MinDrawableDatum*>*>::iterator rediculator = this->data->begin(); rediculator != this->data->end(); ++rediculator)
+		{
+			layerData = rediculator->second;
+			for(vector<MinDrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
+			{
+				free(*dataList);
+			}
+		}
+		// Finally remove STL containers
+		delete this->data;
+	}
+}
+
+void SpaceColonizer::clean(DrawableData* digitizedData)
+{
+
 }
 
 // Updates center of mass by removing values of child
@@ -286,6 +314,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 						}
 					}
 					this->leaders.erase(colonIter);
+					delete leader;
 					modified = true;
 
 					// Insert new Leaf DrawDatum
@@ -317,7 +346,6 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 {
 	// Initialize drawable data set
-	DrawableData* data = new DrawableData();
 
 	// Precalculate subtree center of mass (SCoM) for each node
 	this->calculateSubtreeCenterOfMass(source);
@@ -333,6 +361,7 @@ DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 	ColonizationLeader* leader;
 	while(this->leaders.size() > 0)
 	{
+		bool restart = false;
 		//printf("Leaders: %d\n", this->leaders.size());
 		for(vector<ColonizationLeader*>::iterator iter = this->leaders.begin(); iter < this->leaders.end(); ++iter)
 		{
@@ -341,9 +370,22 @@ DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 			if(this->stepOrSplit(data,leader))
 			{
 				// Restart loop
+				restart = true;
 				break;
 			}
 		}
+//		if(restart)
+//		{
+//			if(leader == NULL)
+//			{
+//				DiscursivePrint("Leader is null\n");
+//				fflush(stdout);
+//			}
+//			else
+//			{
+//				delete(leader);
+//			}
+//		}
 	}
 
 	return data;
