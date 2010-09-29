@@ -281,8 +281,8 @@ int main(int argc, char **argv)
 		SpatialDisplacement* disp = new SpatialDisplacement(500,500,scaleWidth,scaleHeight);
 		disp->decorate(git->source);
 
-		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		// Digitize decorated surrogate tree into line segment tree
+		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 	    SpaceColonizer *digitizer = new SpaceColonizer(1);
 		DrawableData* lines = digitizer->digitize(git->source);
 

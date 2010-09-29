@@ -184,6 +184,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 			str += c;
 		}
 	}
+	str.clear();
 }
 // -------------------------------------------------------------------------
 // API :: SvnRemoteRepositoryAccess::parseTimeBlock
