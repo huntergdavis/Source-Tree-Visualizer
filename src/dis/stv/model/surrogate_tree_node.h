@@ -20,6 +20,7 @@ using namespace std;
 class SurrogateTreeNode : public Surrogate
 {
 public:
+	~SurrogateTreeNode();
 	vector<SurrogateTreeNode*> children;
 
 	SurrogateTreeNode* getChildWithName();

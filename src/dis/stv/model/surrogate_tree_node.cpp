@@ -7,6 +7,18 @@
 
 #include "surrogate_tree_node.h"
 
+SurrogateTreeNode::~SurrogateTreeNode()
+{
+	for(vector<SurrogateTreeNode*>::iterator iter = this->children.begin(); iter != this->children.end(); ++iter)
+	{
+		delete *iter;
+	}
+	for(unordered_map<string, string>::iterator iter = this->data.begin(); iter != this->data.end(); ++iter)
+	{
+		this->data.erase(iter->first);
+	}
+}
+
 double SurrogateTreeNode::findMin(string property)
 {
 	double min = atof(this->data[property].c_str());
