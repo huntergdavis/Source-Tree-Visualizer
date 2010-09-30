@@ -55,6 +55,7 @@ void display_usage( void )
 
 int main(int argc, char **argv)
 {
+	InitializeMagick(*argv);
 	// set the debug level
 	SetDiscursiveDebugLevel(0);
 
@@ -293,9 +294,9 @@ int main(int argc, char **argv)
 
 		// Draw tree
 		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
-//		Image canvas(Geometry(END_WIDTH,END_HEIGHT),"white");
-//		ScanlineArtist artist;
-//		artist.draw(canvas, lines);
+		Image canvas(Geometry(END_WIDTH,END_HEIGHT),"white");
+		ScanlineArtist artist;
+		artist.draw(canvas, lines);
 
 		// actually generate a tree
 		DiscursivePrint("Writing Tree %d out of %d step value %d\n\n",i,loopStop,loopStep);
