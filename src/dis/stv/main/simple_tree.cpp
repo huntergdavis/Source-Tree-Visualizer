@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 				break;
 			case 'm':
 				manyJpgs = 1;
-				sscanf("%d:%d:%d",optarg,jpgStart,jpgStop,jpgStep);
+				sscanf(optarg,"%d:%d:%d",&jpgStart,&jpgStop,&jpgStep);
 				if(jpgStart < 3)
 				{
 					jpgStart = 3;
@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 				break;
 			case 'R':
 				revJpgs = 1;
-				sscanf("%d:%d:%d",optarg,revStart,revStop,revStep);
+				sscanf(optarg,"%d:%d:%d",&revStart,&revStop,&revStep);
 				if(revStart < 3)
 				{
 					revStart = 3;
@@ -212,14 +212,17 @@ int main(int argc, char **argv)
 	git->source = git->retrieve();
 
 	// output tree info
-	DiscursivePrint("Source tree name is %s\n", git->source->data["name"].c_str());
+	DiscursivePrint("Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
 	DiscursivePrint("Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
 
+	delete(git->source);
+	git->source = NULL;
+
 	// create loop step variables generically for any jpg looping type
-	double loopStart = 0;
-	double loopStop = 1;
-	double loopStep = 1;
-	bool executeLoopType = 1;
+	int loopStart = 0;
+	int loopStop = 1;
+	int loopStep = 1;
+	int executeLoopType = 1;
 
 	// check for our custom loop types
 	if(manyJpgs)
@@ -242,14 +245,15 @@ int main(int argc, char **argv)
 	{
 		loopStop = git->globalInserts-1;
 	}
-	else if((executeLoopType == 3) && (loopStop >= git->globalRevs))
+	DiscursivePrint("Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
+	if((executeLoopType == 3) && (loopStop >= git->globalRevs))
 	{
 		loopStop = git->globalRevs-1;
 	}
 
 	// loop over a bunch of increasingly large trees for debug or revision tree generation
 	// use our user-set parameters to define our step
-	for(double i = loopStart; i<loopStop;i+= loopStep)
+	for(int i = loopStart; i<loopStop;i+= loopStep)
 	{
 
 		// reset our insert variables
@@ -265,16 +269,10 @@ int main(int argc, char **argv)
 		}
 
 		// retrieve our source tree
-		if(git->source != NULL)
-		{
-			delete git->source;
-		}
 		git->source = git->retrieve();
 
-		// init libmagick
-		//InitializeMagick("/");
 
-		DiscursivePrint("Decorating surrogate trees %lf out of %lf step value %lf\n",i,loopStop,loopStep);
+		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		// Decorate surrogate tree nodes with locations
 		int START_WIDTH = 5000;
 		int START_HEIGHT = 5000;
@@ -282,27 +280,35 @@ int main(int argc, char **argv)
 		int END_HEIGHT = 500;
 		double widthRescaling = END_WIDTH/(double)START_WIDTH;
 		double heightRescaling = END_HEIGHT/(double)START_HEIGHT;
-		SpatialDisplacement disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling);
-		disp.decorate(git->source);
+		//SpatialDisplacement *disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling) = new;
+		SpatialDisplacement* disp = new SpatialDisplacement(END_WIDTH,END_HEIGHT,scaleWidth,scaleHeight);
+		disp->decorate(git->source);
 
-		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %lf out of %lf step value %lf\n",i,loopStop,loopStep);
 		// Digitize decorated surrogate tree into line segment tree
-	    SpaceColonizer* digitizer = new SpaceColonizer(1);
+		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
+	    SpaceColonizer *digitizer = new SpaceColonizer(1);
 		DrawableData* lines = digitizer->digitize(git->source);
 
 		// Transform
 
 		// Draw tree
-		DiscursivePrint("Drawing Tree %lf out of %lf step value %lf",i,loopStop,loopStep);
-		Image canvas(Geometry(END_WIDTH,END_HEIGHT),"white");
-		ScanlineArtist artist;
-		artist.draw(canvas, lines);
+		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
+//		Image canvas(Geometry(END_WIDTH,END_HEIGHT),"white");
+//		ScanlineArtist artist;
+//		artist.draw(canvas, lines);
 
 		// actually generate a tree
-		DiscursivePrint("Writing Tree %lf out of %lf step value %lf\n",i,loopStop,loopStep);
-		git->WriteJPGFromCanvas(&canvas);
+		DiscursivePrint("Writing Tree %d out of %d step value %d\n\n",i,loopStop,loopStep);
+//		git->WriteJPGFromCanvas(&canvas);
 
 		delete digitizer;
+		delete disp;
+
+//		if(git->source != NULL)
+//		{
+//			delete(git->source);
+//			git->source = NULL;
+//		}
 	}
 	return 0;
 }

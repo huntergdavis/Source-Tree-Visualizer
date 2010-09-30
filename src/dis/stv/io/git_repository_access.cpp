@@ -47,10 +47,10 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		// We have no more path left.  Just a single entry (leaf)
 		SurrogateTreeNode* file = new SurrogateTreeNode();
 		string timeStr = boost::lexical_cast<string>(fileTime);
-		file->data["creation_time"] = timeStr;
-		file->data["name"] = pathname;
+		file->set(TreeNodeKey::CREATION_TIME, timeStr);
+		file->set(TreeNodeKey::NAME, pathname);
 		DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),fileTime);
-		tree->children.push_back(file);
+		tree->children->push_back(file);
 	}
 	else
 	{
@@ -59,21 +59,21 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		// Look for node in children
 		SurrogateTreeNode* node = NULL;
 
-		vector<SurrogateTreeNode*>::iterator iter = tree->children.begin();
-		for(;iter != tree->children.end(); ++iter)
+		vector<SurrogateTreeNode*>::iterator iter = tree->children->begin();
+		for(;iter != tree->children->end(); ++iter)
 		{
 			SurrogateTreeNode* local = *iter;
-			string nameComp = local->data["name"];
+			string nameComp = local->data[TreeNodeKey::NAME];
 			//printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
 				// Found node
 				node = (*iter);
 				// Update node time if necessary
-				if(fileTime < atol(node->data["creation_time"].c_str()))
+				if(fileTime < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
 				{
-					DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), fileTime, atol(node->data["creation_time"].c_str()));
-					node->data["creation_time"] = boost::lexical_cast<string>(fileTime);
+					DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), fileTime, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
+					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(fileTime));
 				}
 				break;
 			}
@@ -83,10 +83,10 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		{
 			node = new SurrogateTreeNode();
 			string timeStr = boost::lexical_cast<string>(fileTime);
-			node->data["creation_time"] = timeStr;
-			node->data["name"] = name;
+			node->set(TreeNodeKey::CREATION_TIME, timeStr);
+			node->set(TreeNodeKey::NAME, name);
 			DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),fileTime);
-			tree->children.push_back(node);
+			tree->children->push_back(node);
 		}
 		// Else, use found node
 		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),fileTime);
@@ -159,7 +159,7 @@ SurrogateTreeNode* GitRepositoryAccess::generateTreeFromLog(std::string *buffer)
 {
 	// Blank ptree
 	SurrogateTreeNode* result = new SurrogateTreeNode();
-	result->data["name"] = "root";
+	result->set(TreeNodeKey::NAME, TreeNodeKey::ROOT);
 
 	// For each time block, parse files and add to ptree
 	char c;
@@ -227,7 +227,7 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 		{
 			// Create the tree from log
 			result = this->generateTreeFromLog(&repoLog);
-			DiscursiveDebugPrint("Generated tree with name '%s'\n", result->data["name"].c_str());
+			DiscursiveDebugPrint("Generated tree with name '%s'\n", result->data[TreeNodeKey::NAME].c_str());
 		}
 	}
 

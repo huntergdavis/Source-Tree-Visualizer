@@ -56,10 +56,10 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 		// We have no more path left.  Just a single entry (leaf)
 		SurrogateTreeNode* file = new SurrogateTreeNode();
 		string timeStr = boost::lexical_cast<string>(time);
-		file->data["creation_time"] = timeStr;
-		file->data["name"] = pathname;
+		file->set(TreeNodeKey::CREATION_TIME, timeStr);
+		file->set(TreeNodeKey::NAME, pathname);
 		DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
-		tree->children.push_back(file);
+		tree->children->push_back(file);
 	}
 	else
 	{
@@ -68,21 +68,21 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 		// Look for node in children
 		SurrogateTreeNode* node = NULL;
 
-		vector<SurrogateTreeNode*>::iterator iter = tree->children.begin();
-		for(;iter != tree->children.end(); ++iter)
+		vector<SurrogateTreeNode*>::iterator iter = tree->children->begin();
+		for(;iter != tree->children->end(); ++iter)
 		{
 			SurrogateTreeNode* local = *iter;
-			string nameComp = local->data["name"];
+			string nameComp = local->data[TreeNodeKey::NAME];
 			//DiscursiveDebugPrint("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
 				// Found node
 				node = (*iter);
 				// Update node time if necessary
-				if(time < atol(node->data["creation_time"].c_str()))
+				if(time < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
 				{
-					DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
-					node->data["creation_time"] = boost::lexical_cast<string>(time);
+					DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
+					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(time));
 				}
 				break;
 			}
@@ -92,10 +92,10 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 		{
 			node = new SurrogateTreeNode();
 			string timeStr = boost::lexical_cast<string>(time);
-			node->data["creation_time"] = timeStr;
-			node->data["name"] = name;
+			node->set(TreeNodeKey::CREATION_TIME, timeStr);
+			node->set(TreeNodeKey::NAME, name);
 			DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
-			tree->children.push_back(node);
+			tree->children->push_back(node);
 		}
 		// Else, use found node
 
@@ -124,7 +124,7 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 
 	// Blank ptree
 	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
-	treeResult->data["name"] = "root";
+	treeResult->set(TreeNodeKey::NAME, TreeNodeKey::ROOT);
 
 	// only generate the log in the first pass
 	if(logGenerated == 0)

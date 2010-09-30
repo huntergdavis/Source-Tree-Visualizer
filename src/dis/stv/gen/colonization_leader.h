@@ -23,6 +23,7 @@ private:
 
 public:
 	ColonizationLeader(double locationX, double locationY, double orientation, SurrogateTreeNode* sourceSet);
+	~ColonizationLeader();
 	double getLocationX();
 	double getLocationY();
 	double getOrientation();

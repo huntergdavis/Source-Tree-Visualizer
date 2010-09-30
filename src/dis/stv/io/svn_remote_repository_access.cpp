@@ -44,10 +44,10 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		// We have no more path left.  Just a single entry (leaf)
 		SurrogateTreeNode* file = new SurrogateTreeNode();
 		string timeStr = boost::lexical_cast<string>(time);
-		file->data["creation_time"] = timeStr;
-		file->data["name"] = pathname;
+		file->set(TreeNodeKey::CREATION_TIME, timeStr);
+		file->set(TreeNodeKey::NAME, pathname);
 		//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
-		tree->children.push_back(file);
+		tree->children->push_back(file);
 
 		// update the lexical tree size when we push back
 		currentTreeSize++;
@@ -59,21 +59,21 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		// Look for node in children
 		SurrogateTreeNode* node = NULL;
 
-		vector<SurrogateTreeNode*>::iterator iter = tree->children.begin();
-		for(;iter != tree->children.end(); ++iter)
+		vector<SurrogateTreeNode*>::iterator iter = tree->children->begin();
+		for(;iter != tree->children->end(); ++iter)
 		{
 			SurrogateTreeNode* local = *iter;
-			string nameComp = local->data["name"];
+			string nameComp = local->data[TreeNodeKey::NAME];
 			//DiscursiveDebugPrint("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
 				// Found node
 				node = (*iter);
 				// Update node time if necessary
-				if(time < atol(node->data["creation_time"].c_str()))
+				if(time < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
 				{
-					//DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data["creation_time"].c_str()));
-					node->data["creation_time"] = boost::lexical_cast<string>(time);
+					//DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
+					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(time));
 				}
 				break;
 			}
@@ -83,10 +83,10 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		{
 			node = new SurrogateTreeNode();
 			string timeStr = boost::lexical_cast<string>(time);
-			node->data["creation_time"] = timeStr;
-			node->data["name"] = name;
+			node->set(TreeNodeKey::CREATION_TIME, timeStr);
+			node->set(TreeNodeKey::NAME, name);
 			//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
-			tree->children.push_back(node);
+			tree->children->push_back(node);
 
 			// update the lexical tree size when we push back
 			currentTreeSize++;
@@ -118,11 +118,14 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 
 	// Blank tree
 	SurrogateTreeNode* treeResult = new SurrogateTreeNode();
-	treeResult->data["name"] = "root";
+//	treeResult->data[TreeNodeKey::NAME] = TreeNodeKey::ROOT;
 
 	// only generate the log in the first pass
 	if(logGenerated == 0)
 	{
+		// don't re-generate logs if not necessary
+		logGenerated = 1;
+
 		// create a string for holding the svn log
 		repoLog.reserve(10024);  // reserve 10k for fast allocation
 
@@ -142,9 +145,6 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 		}
 		std::fclose( fp );
 		//DiscursiveDebugPrint("SVN LOG RESULT %s",svnLog.c_str());
-
-		// don't re-generate logs if not necessary
-		logGenerated = 1;
 	}
 
     // generate tree entry from log file entry
@@ -164,8 +164,8 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer)
 {
 	// Blank ptree
-	SurrogateTreeNode* result = new SurrogateTreeNode();
-	result->data["name"] = "root";
+	//SurrogateTreeNode* result = new SurrogateTreeNode();
+	tree->set(TreeNodeKey::NAME, TreeNodeKey::ROOT);
 
 	// For each time block, parse files and add to ptree
 	char c,d;
@@ -184,6 +184,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 			str += c;
 		}
 	}
+	str.clear();
 }
 // -------------------------------------------------------------------------
 // API :: SvnRemoteRepositoryAccess::parseTimeBlock

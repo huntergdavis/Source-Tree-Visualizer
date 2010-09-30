@@ -19,7 +19,7 @@ using namespace std;
 class DrawableData
 {
 private:
-	map<int,vector<MinDrawableDatum*>*> drawItems;
+	map<int,vector<MinDrawableDatum*>*> *drawItems;
 public:
 	DrawableData();
 	~DrawableData();

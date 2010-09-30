@@ -15,19 +15,35 @@
 #include "../system/discursive_system.h"
 
 
+namespace TreeNodeKey
+{
+	static const string DEPTH = "depth";
+	static const string X = "x";
+	static const string Y = "y";
+	static const string SIZE = "size";
+	static const string NAME = "name";
+	static const string ROOT = "root";
+	static const string SCOMX = "scomX";
+	static const string SCOMY = "scomY";
+	static const string SCOMWEIGHT = "scomWeight";
+	static const string CREATION_TIME = "creation_time";
+};
+
 using namespace std;
 
 class SurrogateTreeNode : public Surrogate
 {
 public:
+	SurrogateTreeNode();
 	~SurrogateTreeNode();
-	vector<SurrogateTreeNode*> children;
+	vector<SurrogateTreeNode*>* children;
 
 	SurrogateTreeNode* getChildWithName();
 	double findMin(string property);
 	double findMax(string property);
 	void scale(string property, double factor);
 	void transform(string property, PropertyTransformer* transformer);
+	void set(string key, string value);
 };
 
 #endif /* SURROGATE_TREE_NODE_H_ */

@@ -15,10 +15,10 @@ using namespace Magick;
 //	// Calculate resize scaling factors
 //	double allowedWidth = 0.9*this->width;
 //	double allowedHeight = 0.85*this->height;
-//	double xMax = tree->findMax("x");
-//	double xMin = tree->findMin("x");
-//	double yMax = tree->findMax("y");
-//	double yMin = tree->findMin("y");
+//	double xMax = tree->findMax(TreeNodeKey::X);
+//	double xMin = tree->findMin(TreeNodeKey::X);
+//	double yMax = tree->findMax(TreeNodeKey::Y);
+//	double yMin = tree->findMin(TreeNodeKey::Y);
 //	printf("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
 //	double currWidth = xMax - xMin;
 //	double currHeight = yMax - yMin;
@@ -30,13 +30,13 @@ using namespace Magick;
 //
 //	// Transform points to look more "naturally tree-like"
 //	PropertyInverter inverter(currHeight * 1.1);
-//	tree->transform("y",&inverter);
+//	tree->transform(TreeNodeKey::Y,&inverter);
 //	PropertyShifter shifter(currWidth / 2);
-//	tree->transform("x",&shifter);
+//	tree->transform(TreeNodeKey::X,&shifter);
 //
 //	// Scale tree values
-//	tree->scale("x", scalingFactorW);
-//	tree->scale("y", scalingFactorH);
+//	tree->scale(TreeNodeKey::X, scalingFactorW);
+//	tree->scale(TreeNodeKey::Y, scalingFactorH);
 //
 //
 //}
@@ -45,7 +45,6 @@ using namespace Magick;
 void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 {
 	DiscursiveDebugPrint("Drawing\n");
-	cout << endl;
 	
 	list<Drawable> drawList;
 	drawList.push_back(DrawableStrokeWidth(0));
@@ -77,6 +76,7 @@ void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 				break;
 		}
 		layerData = rediculator->second;
+		printf("Drawing layer %d with %d items\n", index, layerData->size());
 		for(vector<MinDrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
 		{
 			drawItem = *dataList;

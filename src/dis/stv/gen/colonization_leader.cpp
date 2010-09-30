@@ -11,6 +11,15 @@ ColonizationLeader::ColonizationLeader(double locationX, double locationY, doubl
 {
 }
 
+ColonizationLeader::~ColonizationLeader()
+{
+	if(this->sourceSet != NULL)
+	{
+		delete(this->sourceSet);
+		this->sourceSet = NULL;
+	}
+}
+
 double ColonizationLeader::getLocationX()
 {
 	return this->locationX;
