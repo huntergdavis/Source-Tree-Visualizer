@@ -263,10 +263,12 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 			treeNode = simPairs[node];
 			double newX = treeNode->getX() + rootX;
 			double newY = treeNode->getY() + rootY;
+
 			//printf("%s final position at (%f,%f)\n",node->data[TreeNodeKey::NAME].c_str(),newX, newY);
 			node->set(TreeNodeKey::X,boost::lexical_cast<string>(newX));
 			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
-			printf("%s @ (%s,%s)\n",node->data[TreeNodeKey::NAME].c_str(),node->data[TreeNodeKey::X].c_str(),node->data[TreeNodeKey::Y].c_str());
+			//printf("%s @ (%s,%s)\n",node->data[TreeNodeKey::NAME].c_str(),node->data[TreeNodeKey::X].c_str(),node->data[TreeNodeKey::Y].c_str());
+
 			// Run expand on child
 			double childRot = treeNode->getRotation() + ((3.14159/2)-treeNode->getRotation())/2;
 			this->expand(node,childRot,newX,newY);
