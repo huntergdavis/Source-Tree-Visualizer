@@ -26,15 +26,15 @@ int RepositoryAccess::WriteJPGFromCanvas(Image* canvas)
 	integerPlusFileName << "./out/";
 	integerPlusFileName << this->jpgIndex;
 	integerPlusFileName << this->fileName;
-	const char* name = integerPlusFileName.str().c_str();
+	std::string name = integerPlusFileName.str();
 	this->jpgIndex++;
 
-	DiscursivePrint("Writing JPEG:  %s\n",name);
+	DiscursivePrint("Writing JPEG:  %s\n",name.c_str());
 
 	try
 	{
 		// Write the image to a file with a preceding integer
-		canvas->write(name);
+		canvas->write(name.c_str());
 	}
 	catch( Exception &error_ )
 	{

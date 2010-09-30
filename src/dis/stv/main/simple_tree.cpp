@@ -69,13 +69,14 @@ int main(int argc, char **argv)
 	// type of agent to use, ie command line options or interactive
 	int agentType = 0;
 
-	// scaling factors to use for spatial displacement
-	int startWidth = 5000;
-	int startHeight = 5000;
-
 	// image size options for jpg output
 	int imageWidth = 500;
 	int imageHeight = 500;
+
+	// scaling factors to use for spatial displacement
+	// Default is unity
+	int startWidth = imageWidth;
+	int startHeight = imageHeight;
 
 	// our filename for output file
 	std::string fileName = "tree.jpg";
