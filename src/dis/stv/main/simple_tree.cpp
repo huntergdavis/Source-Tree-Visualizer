@@ -33,6 +33,7 @@ void display_usage( void )
 	usage_string += "\n-C option - expects pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd\n";
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, defaults to 1\n";
+	usage_string += "\n-n option - image numbering value, defaults to 1000\n";
 	usage_string += "\n-o or -O option - output file name, defaults to tree.jpg\n";
 	usage_string += "\n-m option - output the creation of the current tree one step at a time via many .images in sequence\n";
 	usage_string += "\n--------------also expects the following start:stop:step i.e. 1:400:5       \n";
@@ -81,6 +82,7 @@ int main(int argc, char **argv)
 
 	// our filename for output file
 	std::string fileName = "tree.jpg";
+	int outputFileNumber = 1000;
 
 	// should we make many jpgs?
 	int manyJpgs = 0;
@@ -99,7 +101,7 @@ int main(int argc, char **argv)
 	int revStop = 10000;
 
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:R:l:z:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:R:l:z:n:ridh?";
 
 	// loop over our command options in the normal unix way
 
@@ -136,6 +138,9 @@ int main(int argc, char **argv)
 				{
 					jpgStart = 3;
 				}
+				break;
+			case 'n':
+				sscanf(optarg,"%d",&outputFileNumber);
 				break;
 			case 'R':
 				revJpgs = 1;
@@ -208,7 +213,7 @@ int main(int argc, char **argv)
 
     // set our repository single or manyjpg options
 	git->snapshotJpgs = manyJpgs;
-	git->jpgIndex = 1000;
+	git->jpgIndex = outputFileNumber;
 	git->scaleHeight = heightRescaling;
 	git->scaleWidth = widthRescaling;
 	git->fileName = (char*)fileName.c_str();
