@@ -299,8 +299,7 @@ int main(int argc, char **argv)
 		artist.draw(canvas, lines);
 
 		// actually generate a tree
-		DiscursivePrint("Writing Tree %d out of %d step value %d\n\n",i,loopStop,loopStep);
-//		git->WriteJPGFromCanvas(&canvas);
+		git->WriteJPGFromCanvas(&canvas);
 
 		delete digitizer;
 		delete disp;
@@ -310,6 +309,7 @@ int main(int argc, char **argv)
 //			delete(git->source);
 //			git->source = NULL;
 //		}
+		DiscursivePrint("\n");
 	}
 	return 0;
 }

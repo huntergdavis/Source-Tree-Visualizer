@@ -26,12 +26,15 @@ int RepositoryAccess::WriteJPGFromCanvas(Image* canvas)
 	integerPlusFileName << "./out/";
 	integerPlusFileName << this->jpgIndex;
 	integerPlusFileName << this->fileName;
+	char* name = integerPlusFileName.str().c_str();
 	this->jpgIndex++;
+
+	DiscursivePrint("Writing JPEG:  %s\n",name);
 
 	try
 	{
 		// Write the image to a file with a preceding integer
-		canvas->write(integerPlusFileName.str().c_str());
+		canvas->write(name);
 	}
 	catch( Exception &error_ )
 	{
