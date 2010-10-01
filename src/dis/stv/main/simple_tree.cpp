@@ -36,6 +36,9 @@ int main(int argc, char **argv)
 	// parse our command line
 	configAgent.parseCommandLine(argc,argv);
 
+	// parse our config file
+	configAgent.parseConfigFile();
+
 	// Tree Generation pipeline
 	// create an abstract method for repository access
 	RepositoryAccess* git = configAgent.initializeRepositoryType();

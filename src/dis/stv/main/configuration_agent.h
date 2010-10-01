@@ -59,6 +59,7 @@ public:
 	~ConfigurationAgent();
 	void displayUsage();
 	void parseCommandLine(int argc, char **argv);
+	void parseConfigFile();
 	std::string returnAgentName();
 	std::string returnFileName();
 	int returnOptionByName(std::string optionName);

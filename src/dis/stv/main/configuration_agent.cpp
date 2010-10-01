@@ -129,6 +129,17 @@ std::string ConfigurationAgent::returnFileName()
 }
 
 // -------------------------------------------------------------------------
+// API :: ConfigurationAgent::parseConfigFile
+// PURPOSE :: sets values based on config file input
+//         ::
+// PARAMETERS :: none
+// RETURN :: None
+// -------------------------------------------------------------------------
+void ConfigurationAgent::parseConfigFile()
+{
+
+}
+// -------------------------------------------------------------------------
 // API :: ConfigurationAgent::parseCommandLine
 // PURPOSE :: sets values based on command line input
 //         ::
