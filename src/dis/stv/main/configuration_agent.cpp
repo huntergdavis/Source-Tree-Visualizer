@@ -6,6 +6,7 @@
  */
 
 #include "configuration_agent.h"
+#include <libxml/xmlreader.h>
 
 
 // -------------------------------------------------------------------------
@@ -139,40 +140,50 @@ std::string ConfigurationAgent::returnFileName()
 // PARAMETERS :: none
 // RETURN :: None
 // -------------------------------------------------------------------------
-void ConfigurationAgent::parseConfigFile(int argc, char **argv)
+void ConfigurationAgent::parseConfigFile()
 {
+
+	// create our libxml structures
+    xmlDoc *doc = NULL;
+    xmlNode *root_element = NULL;
+
+    // use libxml to read and verify our config file name
+    doc = xmlReadFile(configFileName.c_str(), NULL, 0);
+
+    if (doc == NULL)
+      {
+             return;
+      }
+    else
+      {
+              // Get the root element node
+              root_element = xmlDocGetRootElement(doc);
+
+              // create a current node for the loop
+              xmlNode *cur_node = NULL;
+
+              for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
+                  if (cur_node->type == XML_ELEMENT_NODE) {
+                      printf("node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, cur_node->content);
+                  }
+
+                  //print_element_names(cur_node->children);
+              }
+
+              /*
+               * free the document
+               */
+              xmlFreeDoc(doc);
+      }
+    /*
+     *Free the global variables that may
+     *have been allocated by the parser.
+     */
+    xmlCleanupParser();
 
 };
 
-// -------------------------------------------------------------------------
-// API :: ConfigurationAgent::checkCommandLineForConfigFile
-// PURPOSE :: sets config file if exists from command line
-//         ::
-// PARAMETERS :: int argc, char ** argv - the cli arguments to the main program
-// RETURN :: None
-// -------------------------------------------------------------------------
-void ConfigurationAgent::checkCommandLineForConfigFile(int argc, char **argv)
-{
 
-	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:R:l:z:n:c:ridh?";
-
-	// loop over our command options in the normal unix way
-
-	int opt;
-	opt = getopt( argc, argv, optString );
-	while( opt != -1 ) {
-		switch( opt ) {
-			case 'c':
-				configFileName = optarg;
-				break;
-			default:
-				break;
-		}
-		// get the next Command Line option
-		opt = getopt( argc, argv, optString );
-	}
-};
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::parseCommandLine
 // PURPOSE :: sets values based on command line input
@@ -185,6 +196,9 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 	// our option string
 	static const char *optString = "g:G:S:C:O:o:m:R:l:z:n:c:ridh?";
 
+	// if a new config file is passed, parse it
+	bool newConfig = 0;
+
 	// loop over our command options in the normal unix way
 
 	int opt;
@@ -193,6 +207,7 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 		switch( opt ) {
 			case 'c':
 				configFileName = optarg;
+				newConfig = 1;
 				break;
 			case 'g':
 				agentName = optarg;
@@ -263,6 +278,12 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 		}
 		// get the next Command Line option
 		opt = getopt( argc, argv, optString );
+	}
+
+	// re-parse any passed-in config files
+	if(newConfig == 1)
+	{
+		parseConfigFile();
 	}
 }
 

@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fstream>
+#include <iostream>
 
 
 class ConfigurationAgent
@@ -62,8 +64,7 @@ public:
 	~ConfigurationAgent();
 	void displayUsage();
 	void parseCommandLine(int argc, char **argv);
-	void checkCommandLineForConfigFile(int argc, char **argv);
-	void parseConfigFile(int argc, char **argv);
+	void parseConfigFile();
 	std::string returnAgentName();
 	std::string returnFileName();
 	int returnOptionByName(std::string optionName);

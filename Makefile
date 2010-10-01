@@ -13,6 +13,7 @@ INCLUDEFLAGS = -Isrc/dis/stv/dec \
 	-Isrc/dis/stv/main \
 	-Isrc/dis/stv/physics \
 	-I/usr/local/boost \
+	-I/usr/include/libxml2 \
 	-I/usr/include/ImageMagick
 	
 LDFLAGS = -L/usr/lib \
@@ -37,6 +38,7 @@ LDFLAGS = -L/usr/lib \
 	-lgomp \
 	-lpthread \
 	-lcurl \
+ 	-lxml2 \
 	-lltdl
 	
 SOURCES = src/dis/stv/system/discursive_error.cpp \
