@@ -68,6 +68,7 @@ public:
 	std::string returnAgentName();
 	std::string returnFileName();
 	int returnOptionByName(std::string optionName);
+	void setOptionByName(std::string optionName, std::string optionValue);
 	RepositoryAccess* initializeRepositoryType();
 
 };

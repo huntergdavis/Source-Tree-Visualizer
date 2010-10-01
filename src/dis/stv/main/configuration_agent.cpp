@@ -7,7 +7,7 @@
 
 #include "configuration_agent.h"
 #include <libxml/xmlreader.h>
-
+extern int debugLevel;
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ConfigurationAgent
@@ -150,31 +150,47 @@ void ConfigurationAgent::parseConfigFile()
     // use libxml to read and verify our config file name
     doc = xmlReadFile(configFileName.c_str(), NULL, 0);
 
-    if (doc == NULL)
-      {
-             return;
-      }
-    else
-      {
-              // Get the root element node
-              root_element = xmlDocGetRootElement(doc);
+	if (doc == NULL)
+	  {
+			 return;
+	  }
+	else
+	  {
+			// Get the root element node
+			root_element = xmlDocGetRootElement(doc);
 
-              // create a current node for the loop
-              xmlNode *cur_node = NULL;
+			// create a current node for the loop
+			xmlNode *cur_node = root_element;
 
-              for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
-                  if (cur_node->type == XML_ELEMENT_NODE) {
-                      printf("node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, cur_node->content);
-                  }
+			cur_node = cur_node->xmlChildrenNode;
+			while (cur_node != NULL)
+			{
+				if ((!xmlStrcmp(cur_node->name, (const xmlChar *)"simple_tree_options")))
+				{
+					cur_node = cur_node->xmlChildrenNode;
+					break;
+				}
+				else
+				{
+					cur_node = cur_node->next;
+				}
+			}
 
-                  //print_element_names(cur_node->children);
-              }
+		// loop over all our simple tree options
+		for (cur_node = cur_node; cur_node; cur_node = cur_node->next)
+		{
+		  if (cur_node->type == XML_ELEMENT_NODE) {
+			  DiscursiveDebugPrint("node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
+			  setOptionByName((char*)cur_node->name, (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
+		  }
+		}
 
-              /*
-               * free the document
-               */
-              xmlFreeDoc(doc);
-      }
+		/*
+		* free the document
+		*/
+		xmlFreeDoc(doc);
+
+  }
     /*
      *Free the global variables that may
      *have been allocated by the parser.
@@ -286,6 +302,83 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 		parseConfigFile();
 	}
 }
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::setOptionByName
+// PURPOSE :: sets an option value by string name
+//         ::
+// PARAMETERS ::  std::string optionName - name of option top set
+//                std::string optionvalue - the value to set
+// RETURN :: none
+// -------------------------------------------------------------------------
+void ConfigurationAgent::setOptionByName(std::string optionName, std::string optionValue)
+{
+    if(optionName == "file_name")
+	{
+		fileName = optionValue;
+	}
+	else 	if(optionName == "image_width")
+	{
+		imageWidth  = atoi(optionValue.c_str());
+	}
+	else 	if(optionName == "image_height")
+	{
+		imageHeight = atoi(optionValue.c_str());
+	}
+	else 	if(optionName == "start_width")
+	{
+		startWidth = atoi(optionValue.c_str());
+	}
+	else 	if(optionName == "start_height")
+	{
+		 startHeight = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "output_file_number")
+	{
+		 outputFileNumber = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "many_jpgs")
+	{
+		 manyJpgs = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "jpg_step")
+	{
+		 jpgStep = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "jpg_start")
+	{
+		 jpgStart = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "jpg_stop")
+	{
+		 jpgStop = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "rev_jpgs")
+	{
+		 revJpgs = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "rev_step")
+	{
+		 revStep = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "rev_start")
+	{
+		 revStart = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "rev_stop")
+	{
+		 revStop = atoi(optionValue.c_str());;
+	}
+	else 	if(optionName == "debug")
+	{
+		SetDiscursiveDebugLevel(atoi(optionValue.c_str()));
+	}
+    else
+	{
+		// rufus: what's your favorite number?
+	    DiscursiveError("Failure to set key value: \n" + optionName);
+	}
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::returnOptionByName
