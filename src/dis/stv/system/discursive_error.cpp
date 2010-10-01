@@ -7,8 +7,15 @@
 
 #include "./discursive_error.h"
 
-void DiscursiveError(std::string error)
+void DiscursiveError(std::string error, ...)
 {
-	printf("\n%s\n",error.c_str());
+//	DiscursivePrint("\n%s\n",error.c_str());
+	char* printMessage = (char*)malloc((error.length() + 3) * sizeof(char));
+	sprintf(printMessage,"\n%s\n",error.c_str());
+
+	va_list args;
+	va_start( args, error);
+	vprintf(printMessage, args );
+	va_end( args );
 	exit(1);
 }

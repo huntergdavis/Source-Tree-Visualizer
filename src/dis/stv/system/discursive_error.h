@@ -10,8 +10,9 @@
 
 #include <stdio.h>
 #include <string>
+#include "./discursive_print.h"
 
 
-void DiscursiveError(std::string error);
+void DiscursiveError(std::string error, ...);
 
 #endif /* DISCURSIVE_ERROR_H_ */

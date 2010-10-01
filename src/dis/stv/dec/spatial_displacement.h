@@ -27,6 +27,9 @@
 class SpatialDisplacement : public Decorator
 {
 public:
+	static const double SCALE_WIDTH = 0.9;
+	static const double SCALE_HEIGHT = 0.85;
+
 	SpatialDisplacement(int width, int height);
 	SpatialDisplacement(int width, int height, double scaleWidth, double scaleHeight);
 	void decorate(SurrogateTreeNode* tree);

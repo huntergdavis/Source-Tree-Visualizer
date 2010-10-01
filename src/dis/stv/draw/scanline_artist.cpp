@@ -76,7 +76,7 @@ void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 				break;
 		}
 		layerData = rediculator->second;
-		printf("Drawing layer %d with %d items\n", index, layerData->size());
+		DiscursivePrint("Drawing layer %d with %d items\n", index, layerData->size());
 		for(vector<MinDrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
 		{
 			drawItem = *dataList;

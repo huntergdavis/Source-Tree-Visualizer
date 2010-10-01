@@ -13,8 +13,8 @@ using namespace std;
 
 SpatialDisplacement::SpatialDisplacement(int width, int height):width(width), height(height)
 {
-	scaleWidth = 0.9;
-	scaleHeight = 0.85;
+	scaleWidth = SpatialDisplacement::SCALE_WIDTH;
+	scaleHeight = SCALE_HEIGHT;
 }
 
 SpatialDisplacement::SpatialDisplacement(int width, int height, double scaleWidth, double scaleHeight):width(width), height(height) ,scaleWidth(scaleWidth), scaleHeight(scaleHeight)
