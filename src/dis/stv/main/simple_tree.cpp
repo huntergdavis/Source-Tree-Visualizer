@@ -47,8 +47,8 @@ int main(int argc, char **argv)
     // set our repository single or manyjpg options
 	git->snapshotJpgs = configAgent.returnOptionByName("manyJpgs");
 	git->jpgIndex = configAgent.returnOptionByName("outputFileNumber");
-	git->scaleHeight = configAgent.returnOptionByName("heightRescaling");
-	git->scaleWidth = configAgent.returnOptionByName("widthRescaling");
+	git->scaleHeight = heightRescaling;
+	git->scaleWidth = widthRescaling;
 	git->fileName = configAgent.returnFileName();
 	git->imageHeight = configAgent.returnOptionByName("imageHeight");
 	git->imageWidth = configAgent.returnOptionByName("imageWidth");
