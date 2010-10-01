@@ -6,6 +6,7 @@
  */
 
 #include "configuration_agent.h"
+#include <libxml/xmlreader.h>
 
 
 // -------------------------------------------------------------------------
@@ -141,6 +142,47 @@ std::string ConfigurationAgent::returnFileName()
 // -------------------------------------------------------------------------
 void ConfigurationAgent::parseConfigFile(int argc, char **argv)
 {
+	// check for alternate config file name
+	checkCommandLineForConfigFile(argc, argv);
+
+
+	// create our libxml structures
+    xmlDoc *doc = NULL;
+    xmlNode *root_element = NULL;
+
+    // use libxml to read and verify our config file name
+    doc = xmlReadFile(fileName.c_str(), NULL, 0);
+
+    if (doc == NULL)
+      {
+             return;
+      }
+    else
+      {
+              // Get the root element node
+              root_element = xmlDocGetRootElement(doc);
+
+              // create a current node for the loop
+              xmlNode *cur_node = NULL;
+
+              for (cur_node = root_element; cur_node; cur_node = cur_node->next) {
+                  if (cur_node->type == XML_ELEMENT_NODE) {
+                      printf("node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, cur_node->content);
+                  }
+
+                  //print_element_names(cur_node->children);
+              }
+
+              /*
+               * free the document
+               */
+              xmlFreeDoc(doc);
+      }
+    /*
+     *Free the global variables that may
+     *have been allocated by the parser.
+     */
+    xmlCleanupParser();
 
 };
 
