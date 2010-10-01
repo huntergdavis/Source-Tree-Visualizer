@@ -33,11 +33,11 @@ int main(int argc, char **argv)
 	// initialize our configuration agent
 	ConfigurationAgent configAgent;
 
+	// parse our config file and also pre-check command line
+	configAgent.parseConfigFile(argc, argv);
+
 	// parse our command line
 	configAgent.parseCommandLine(argc,argv);
-
-	// parse our config file
-	configAgent.parseConfigFile();
 
 	// Tree Generation pipeline
 	// create an abstract method for repository access

@@ -31,6 +31,9 @@ ConfigurationAgent::ConfigurationAgent()
 	// agentName equates to the passed command line parameter argument string
 	agentName = NULL;
 
+	// config file name defaults to ./simple_tree.config
+	configFileName = "./simple_tree.config";
+
 	// type of agent to use, ie command line options or interactive
 	agentType = 0;
 
@@ -76,6 +79,7 @@ void ConfigurationAgent::displayUsage( void )
 {
 	std::string usage_string = "\nsimple_tree [option] [optionstringorint] \n";
 	usage_string += "where option can be any of the following";
+	usage_string += "\n-c option - expects ./configFileName.config \n";
 	usage_string += "\n-g option - expects ~/Projects/source_tree_vis\n";
 	usage_string += "\n-G option - expects gitHubusername:gitHubprojectname\n";
 	usage_string += "\n-S option - expects http://hkit.googlecode.com/svn/trunk/\n";
@@ -135,10 +139,40 @@ std::string ConfigurationAgent::returnFileName()
 // PARAMETERS :: none
 // RETURN :: None
 // -------------------------------------------------------------------------
-void ConfigurationAgent::parseConfigFile()
+void ConfigurationAgent::parseConfigFile(int argc, char **argv)
 {
 
-}
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::checkCommandLineForConfigFile
+// PURPOSE :: sets config file if exists from command line
+//         ::
+// PARAMETERS :: int argc, char ** argv - the cli arguments to the main program
+// RETURN :: None
+// -------------------------------------------------------------------------
+void ConfigurationAgent::checkCommandLineForConfigFile(int argc, char **argv)
+{
+
+	// our option string
+	static const char *optString = "g:G:S:C:O:o:m:R:l:z:n:c:ridh?";
+
+	// loop over our command options in the normal unix way
+
+	int opt;
+	opt = getopt( argc, argv, optString );
+	while( opt != -1 ) {
+		switch( opt ) {
+			case 'c':
+				configFileName = optarg;
+				break;
+			default:
+				break;
+		}
+		// get the next Command Line option
+		opt = getopt( argc, argv, optString );
+	}
+};
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::parseCommandLine
 // PURPOSE :: sets values based on command line input
@@ -149,7 +183,7 @@ void ConfigurationAgent::parseConfigFile()
 void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 {
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:R:l:z:n:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:R:l:z:n:c:ridh?";
 
 	// loop over our command options in the normal unix way
 
@@ -157,6 +191,9 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 	opt = getopt( argc, argv, optString );
 	while( opt != -1 ) {
 		switch( opt ) {
+			case 'c':
+				configFileName = optarg;
+				break;
 			case 'g':
 				agentName = optarg;
 				agentType = 1;

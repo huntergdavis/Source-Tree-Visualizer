@@ -37,6 +37,9 @@ private:
 	std::string fileName;
 	int outputFileNumber;
 
+	// our config file name
+	std::string configFileName;
+
 	// should we make many jpgs?
 	int manyJpgs;
 
@@ -59,7 +62,8 @@ public:
 	~ConfigurationAgent();
 	void displayUsage();
 	void parseCommandLine(int argc, char **argv);
-	void parseConfigFile();
+	void checkCommandLineForConfigFile(int argc, char **argv);
+	void parseConfigFile(int argc, char **argv);
 	std::string returnAgentName();
 	std::string returnFileName();
 	int returnOptionByName(std::string optionName);
