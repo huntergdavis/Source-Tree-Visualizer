@@ -34,7 +34,7 @@ int main(int argc, char **argv)
 	ConfigurationAgent configAgent;
 
 	// parse our config file and also pre-check command line
-	configAgent.parseConfigFile(argc, argv);
+	configAgent.parseConfigFile();
 
 	// parse our command line
 	configAgent.parseCommandLine(argc,argv);
