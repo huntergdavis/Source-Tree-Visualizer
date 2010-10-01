@@ -19,7 +19,7 @@ SpaceColonizer::~SpaceColonizer()
 {
 	if(this->data != NULL)
 	{
-		DiscursivePrint("Destroying SpaceColonizer\n");
+//		DiscursivePrint("Destroying SpaceColonizer\n");
 		delete(this->data);
 		this->data = NULL;
 	}

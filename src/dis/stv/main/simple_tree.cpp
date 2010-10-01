@@ -13,6 +13,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "../dec/decorator_factory.h"
+#include "../gen/digitizer_factory.h"
 #include "../model/surrogate_tree_node.h"
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
@@ -130,26 +132,18 @@ int main(int argc, char **argv)
 		git->source = git->retrieve();
 
 
-		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		// Decorate surrogate tree nodes with locations
-
-//		int START_WIDTH = 5000;
-//		int START_HEIGHT = 5000;
-//		int END_WIDTH = imageWidth;
-//		int END_HEIGHT = imageHeight;
-//		double widthRescaling = END_WIDTH/(double)START_WIDTH;
-//		double heightRescaling = END_HEIGHT/(double)START_HEIGHT;
-//		//SpatialDisplacement *disp(START_WIDTH,START_HEIGHT,scaleWidth*widthRescaling,scaleHeight*heightRescaling) = new;
-//		SpatialDisplacement* disp = new SpatialDisplacement(END_WIDTH,END_HEIGHT,scaleWidth,scaleHeight);
-		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
-		disp->decorate(git->source);
+		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
+//		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,scaleWidth,scaleHeight);
+		Decorator* decorator = DecoratorFactory::getInstance(DecoratorFactory::SPATIAL_DISPLACEMENT_NAIVE, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
+		decorator->decorate(git->source);
 
 		// Digitize decorated surrogate tree into line segment tree
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
-	    SpaceColonizer *digitizer = new SpaceColonizer(1);
+		int segmentLength = 1;
+//	    SpaceColonizer *digitizer = new SpaceColonizer(segmentLength);
+		Digitizer* digitizer = DigitizerFactory::getInstance(DigitizerFactory::SPACE_COLONIZER,1,segmentLength);
 		DrawableData* lines = digitizer->digitize(git->source);
-
-		// Transform
 
 		// Draw tree
 		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
@@ -161,7 +155,7 @@ int main(int argc, char **argv)
 		git->WriteJPGFromCanvas(&canvas);
 
 		delete digitizer;
-		delete disp;
+		delete decorator;
 
 //		if(git->source != NULL)
 //		{
