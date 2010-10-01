@@ -44,6 +44,23 @@ Decorator* DecoratorFactory::getInstance(int instanceType, int argc, ...)
 	}
 	case SPATIAL_DISPLACEMENT_LEAF_CLUSTERING:
 	{
+		va_list args;
+
+		int width = 0;
+		int height = 0;
+		va_start( args, argc );
+		switch(argc)
+		{
+		case 2:
+			width = va_arg(args,int);
+			height = va_arg(args,int);
+			break;
+		default:
+			DiscursiveError("Unable to create SpatialDisplacementLeafless object with %d arguments.\n  Requires 2 arguments.\n", argc);
+			break;
+		}
+		va_end( args );
+		result = (Decorator*)(new SpatialDisplacementLeafless(width, height));
 		break;
 	}
 	default:

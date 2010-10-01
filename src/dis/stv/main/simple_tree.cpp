@@ -135,14 +135,17 @@ int main(int argc, char **argv)
 		// Decorate surrogate tree nodes with locations
 		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 //		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,scaleWidth,scaleHeight);
-		Decorator* decorator = DecoratorFactory::getInstance(DecoratorFactory::SPATIAL_DISPLACEMENT_NAIVE, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
+		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_LEAF_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
+//		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
+		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 2, git->imageWidth, git->imageHeight);
 		decorator->decorate(git->source);
 
 		// Digitize decorated surrogate tree into line segment tree
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		int segmentLength = 1;
 //	    SpaceColonizer *digitizer = new SpaceColonizer(segmentLength);
-		Digitizer* digitizer = DigitizerFactory::getInstance(DigitizerFactory::SPACE_COLONIZER,1,segmentLength);
+		int digitizerType = DigitizerFactory::SPACE_COLONIZER;
+		Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,1,segmentLength);
 		DrawableData* lines = digitizer->digitize(git->source);
 
 		// Draw tree

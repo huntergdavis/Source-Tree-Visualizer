@@ -10,6 +10,7 @@
 
 #include "./decorator.h"
 #include "./spatial_displacement.h"
+#include "./spatial_displacement_leafless.h"
 
 class DecoratorFactory {
 public:

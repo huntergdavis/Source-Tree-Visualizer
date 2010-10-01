@@ -57,6 +57,7 @@ SOURCES = src/dis/stv/system/discursive_error.cpp \
 	src/dis/stv/draw/drawable_datum.cpp \
 	src/dis/stv/dec/spatial_displacement.cpp \
 	src/dis/stv/dec/decorator_factory.cpp \
+	src/dis/stv/dec/spatial_displacement_leafless.cpp \
 	src/dis/stv/main/simple_tree.cpp \
 	src/dis/stv/main/initial_agents.cpp \
 	src/dis/stv/main/configuration_agent.cpp \
