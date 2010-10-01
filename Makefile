@@ -55,6 +55,7 @@ SOURCES = src/dis/stv/system/discursive_error.cpp \
 	src/dis/stv/dec/spatial_displacement.cpp \
 	src/dis/stv/main/simple_tree.cpp \
 	src/dis/stv/main/initial_agents.cpp \
+	src/dis/stv/main/configuration_agent.cpp \
 	src/dis/stv/physics/physical_mass.cpp \
 	src/dis/stv/physics/physics_engine.cpp \
 	src/dis/stv/physics/time_stepped_physics_engine.cpp \

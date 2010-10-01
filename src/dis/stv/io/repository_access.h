@@ -38,8 +38,10 @@ public:
 	int scaleHeight;
 	int scaleWidth;
 	int logGenerated;
+	int imageHeight;
+	int imageWidth;
 	long currentTreeSize;
-	char* fileName;
+	std::string fileName;
 	SurrogateTreeNode* source;
 	int WriteJPGFromCanvas(Image* canvas);
 	virtual SurrogateTreeNode* retrieve() = 0;
