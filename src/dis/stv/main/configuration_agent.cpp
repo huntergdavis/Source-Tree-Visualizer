@@ -18,7 +18,6 @@ extern int debugLevel;
 // -------------------------------------------------------------------------
 ConfigurationAgent::~ConfigurationAgent()
 {
-	delete agentName;
 };
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ConfigurationAgent
@@ -30,7 +29,7 @@ ConfigurationAgent::~ConfigurationAgent()
 ConfigurationAgent::ConfigurationAgent()
 {
 	// agentName equates to the passed command line parameter argument string
-	agentName = NULL;
+	agentName.clear();
 
 	// config file name defaults to ./simple_tree.config
 	configFileName = "./simple_tree.config";
@@ -373,6 +372,37 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		SetDiscursiveDebugLevel(atoi(optionValue.c_str()));
 	}
+	else if(optionName == "repo_type")
+	{
+		if(optionValue == "git")
+		{
+			agentType = 1;
+		}
+		else if(optionValue == "github")
+		{
+			agentType = 2;
+		}
+		else if(optionValue == "svn")
+		{
+			agentType = 3;
+		}
+		else if(optionValue == "cvs")
+		{
+			agentType = 4;
+		}
+		else if(optionValue == "interactive")
+		{
+			agentType = 5;
+		}
+		else
+		{
+			DiscursiveError("Wrong repository type: %s\n",optionValue.c_str());
+		}
+	}
+	else if(optionName == "repo_string")
+	{
+		agentName = optionValue.c_str();
+	}
     else
 	{
 		// rufus: what's your favorite number?
@@ -473,7 +503,7 @@ RepositoryAccess* ConfigurationAgent::initializeRepositoryType()
 		case 2:
 		case 3:
 		case 4:
-			DiscursiveDebugPrint("%s\n",agentName);
+			DiscursiveDebugPrint("%s\n",agentName.c_str());
 			return noninteractive_agent(agentType, agentName);
 			break;
 		case 0:
