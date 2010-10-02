@@ -37,31 +37,35 @@ void SpatialDisplacementLeafless::decorate(SurrogateTreeNode* tree)
 void SpatialDisplacementLeafless::transform(SurrogateTreeNode* tree)
 {
 	// Calculate resize scaling factors
-	double allowedWidth = this->width;
-	double allowedHeight = this->height;
+	double allowedWidth = this->width*0.95;
+	double allowedHeight = this->height*0.95;
 	double xMax = tree->findMax(TreeNodeKey::X);
 	double xMin = tree->findMin(TreeNodeKey::X);
 	double yMax = tree->findMax(TreeNodeKey::Y);
 	double yMin = tree->findMin(TreeNodeKey::Y);
 	DiscursiveDebugPrint("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
+	//double currWidth = xMax - xMin;
+	double maxXDim = max(fabs(xMax),fabs(xMin));
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
 
 	double minDim = min(allowedHeight, allowedWidth);
 
-	double scalingFactorW = minDim/currWidth;
+	double scalingFactorW = minDim/(2*maxXDim);
 	double scalingFactorH = minDim/currHeight;
 
 	// Transform points to look more "naturally tree-like"
-	tree->scale(TreeNodeKey::Y, scalingFactorH);
+	tree->scale(TreeNodeKey::Y, scalingFactorH * 0.98);
 	PropertyInverter inverter(this->height * 0.98);
 	tree->transform(TreeNodeKey::Y,&inverter);
 
-	PropertyShifter shifter(-1*((xMax + xMin) / 2));
+//	PropertyShifter shifter(-1*((xMax + xMin) / 2));
+	PropertyShifter shifter(-xMin);
 	tree->transform(TreeNodeKey::X,&shifter);
 	// Scale tree values
 	tree->scale(TreeNodeKey::X, scalingFactorW);
-	PropertyShifter shifter2(minDim * 1 / 2);
+//	PropertyShifter shifter2(minDim * 1 / 2);
+	PropertyShifter shifter2(maxXDim * scalingFactorW);
 	tree->transform(TreeNodeKey::X,&shifter2);
 }
 
@@ -174,31 +178,32 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			left = !left;
 		}
 		// Now layout files
-		for(int j = 0; j < (int)files.size(); j++)
-		{
-			dist = ((i + j + 1)/2);
-			nodeMass = 1;
-			if(left)
-			{
-				location = center - dist;
-			}
-			else
-			{
-				location = center + dist;
-			}
-			masses[location] = nodeMass;
-			pairs[files[j]] = location;
-			for(int k = location; k < children; k++)
-			{
-				positions[k] += nodeMass;
-			}
-			left = !left;
-		}
+//		for(int j = 0; j < (int)files.size(); j++)
+//		{
+//			dist = ((i + j + 1)/2);
+//			nodeMass = 1;
+//			if(left)
+//			{
+//				location = center - dist;
+//			}
+//			else
+//			{
+//				location = center + dist;
+//			}
+//			masses[location] = nodeMass;
+//			pairs[files[j]] = location;
+//			for(int k = location; k < children; k++)
+//			{
+//				positions[k] += nodeMass;
+//			}
+//			left = !left;
+//		}
 
 		// Calculate spacing to range [0,splay]
 		double deltaSplay = 0;
 		double splay = 3.14159 / 2;
 		double com;
+		double max = 0;
 		if(mass > minChildMass)
 		{
 			deltaSplay = splay / (mass - minChildMass);
@@ -211,15 +216,72 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		}
 		DiscursiveDebugPrint("] @ %f\n", deltaSplay);
 
+		// Convert masses to initial locations
+		// Record bounds
 		positions[0] = 0;
 		com = 0;
 		for(i = 1; i < children; i++)
 		{
 			positions[i] = (positions[i] - minChildMass)*deltaSplay;
 			com += (positions[i] * masses[i]);
+
+			if(positions[i] > max)
+			{
+				max = positions[i];
+			}
 		}
 		// Final part of CoM calculation
 		com /= mass;
+
+		// Balance tree
+		double balancedCom = com;
+		double divergence = balancedCom - (max/2);
+		double scale;
+		bool shortenLeft;
+		printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
+		while(fabs(divergence) > 3.14159 / 50)
+		{
+			// Shorten left half
+			if(divergence > 0)
+			{
+				shortenLeft = true;
+				scale = (max - balancedCom)/balancedCom;
+			}
+			// Shorten right half
+			else
+			{
+				shortenLeft = false;
+				scale = balancedCom/(max - balancedCom);
+			}
+			com = 0;
+			for(i = 1; i < children; i++)
+			{
+				// Adjust position
+				if(shortenLeft && positions[i] < balancedCom)
+				{
+					positions[i] = (positions[i] - divergence) * scale;
+				}
+				else if(!shortenLeft && positions[i] > balancedCom)
+				{
+					positions[i] = ((positions[i] - balancedCom) * scale) + balancedCom;
+				}
+				else if(shortenLeft && positions[i] > balancedCom)
+				{
+					positions[i] -= (2 * balancedCom - max);
+				}
+//				else
+//				{
+//					positions[i] = ;
+//				}
+
+				// Aggregate new position to calc new CoM
+				com += (positions[i] * masses[i]);
+			}
+			max = 2*(max - balancedCom);
+			balancedCom = com/mass;
+			divergence = balancedCom - (max/2);
+//			printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
+		}
 
 		// Transform positions to arc
 		//double arcRadius = 10.0;
@@ -261,26 +323,6 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
 			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
 		}
-//		for(vector<SurrogateTreeNode*>::iterator iter = tree->children->begin(); iter != tree->children->end(); ++iter)
-//		{
-//			node = *iter;
-//			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
-//			ratio = depth / (double)maxDepth;
-//			angle = rootAngle + ();
-//			double newX = rootX + ();
-//			double newY = rootY;
-//			//printf("%s final position at (%f,%f)\n",node->data[TreeNodeKey::NAME].c_str(),newX, newY);
-//			node->data[TreeNodeKey::X] = boost::lexical_cast<string>(newX);
-//			node->data[TreeNodeKey::Y] = boost::lexical_cast<string>(newY);
-//			printf("%s @ (%s,%s)\n",node->data[TreeNodeKey::NAME].c_str(),node->data[TreeNodeKey::X].c_str(),node->data[TreeNodeKey::Y].c_str());
-//			// Run expand on child
-//			double childRot = treeNode->getRotation() + ((3.14159/2)-treeNode->getRotation())/2;
-//			this->expand(node,childRot,newX,newY,allowedHeight - arcRadius);
-//		}
-	}
-	else
-	{
-		//printf("No children for node '%s'\n", tree->data[TreeNodeKey::NAME].c_str());
 	}
 }
 
