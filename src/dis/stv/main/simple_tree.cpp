@@ -7,7 +7,6 @@
 
 #include "../system/discursive_system.h"
 #include "./configuration_agent.h"
-
 #include "repository_access.h"
 #include <Magick++.h>
 #include <stdio.h>
@@ -31,6 +30,9 @@ int main(int argc, char **argv)
 
 	// set the debug level
 	SetDiscursiveDebugLevel(0);
+
+	// initialize our timing class
+	DiscursiveTime timerAgent;
 
 	// initialize our configuration agent
 	ConfigurationAgent configAgent;
@@ -69,7 +71,10 @@ int main(int argc, char **argv)
 
 	// retrieve our source tree
 	DiscursivePrint("Retrieving From Server, Please Wait...\n");
+	timerAgent.Tic("");
 	git->source = git->retrieve();
+	DiscursivePrint("Server Retrieval Took:\n");
+	timerAgent.PrintToc("");
 
 	// output tree info
 	DiscursivePrint("Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
@@ -134,25 +139,33 @@ int main(int argc, char **argv)
 
 		// Decorate surrogate tree nodes with locations
 		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		timerAgent.Tic("");
 //		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,scaleWidth,scaleHeight);
 		Decorator* decorator = DecoratorFactory::getInstance(DecoratorFactory::SPATIAL_DISPLACEMENT_NAIVE, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
 		decorator->decorate(git->source);
+		timerAgent.PrintToc("");
 
 		// Digitize decorated surrogate tree into line segment tree
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		timerAgent.Tic("");
 		int segmentLength = 1;
 //	    SpaceColonizer *digitizer = new SpaceColonizer(segmentLength);
 		Digitizer* digitizer = DigitizerFactory::getInstance(DigitizerFactory::SPACE_COLONIZER,1,segmentLength);
 		DrawableData* lines = digitizer->digitize(git->source);
+		timerAgent.PrintToc("");
 
 		// Draw tree
 		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
+		timerAgent.Tic("");
 		Image canvas(Geometry(git->imageWidth,git->imageHeight),"white");
 		ScanlineArtist artist;
 		artist.draw(canvas, lines);
+		timerAgent.PrintToc("");
 
 		// actually generate a tree
+		timerAgent.Tic("");
 		git->WriteJPGFromCanvas(&canvas);
+		timerAgent.PrintToc("");
 
 		delete digitizer;
 		delete decorator;
