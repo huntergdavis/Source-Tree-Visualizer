@@ -70,7 +70,7 @@ struct timeval DiscursiveTime::Toc(std::string ticType)
 	struct timeval tocValue;
 	gettimeofday(&tocValue, NULL);
 
-	if(TimeValSubtract(&result, &defaultTime,&tocValue) == 1)
+	if(TimeValSubtract(&result, &tocValue,&defaultTime) == 1)
 	{
 		DiscursiveError("Timing Function failed with a negative number.....");
 	}
@@ -99,12 +99,12 @@ void  DiscursiveTime::PrintToc(std::string ticType)
 	struct timeval resultValue;
 	gettimeofday(&tocValue, NULL);
 
-	if(TimeValSubtract(&resultValue, &defaultTime,&tocValue) == 1)
+	if(TimeValSubtract(&resultValue, &tocValue, &defaultTime) == 1)
 	{
 		DiscursiveError("Timing Function failed with a negative number.....");
 	}
 
-	DiscursivePrint("Elapsed : %ld seconds ==\n %ld useconds (microseconds (millionths of a second))\n", resultValue.tv_sec,resultValue.tv_usec);
+	DiscursivePrint("Elapsed : %ld seconds, %ld microseconds\n", resultValue.tv_sec,resultValue.tv_usec);
 };
 
 int DiscursiveTime::TimeValSubtract(struct timeval *result, struct timeval *x, struct timeval *y)
