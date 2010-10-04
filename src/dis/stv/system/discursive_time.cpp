@@ -124,14 +124,12 @@ struct timeval DiscursiveTime::Toc(std::string ticType)
 	struct timeval result;
 	struct timeval tocValue;
 	gettimeofday(&tocValue, NULL);
-	if(TimeValSubtract(&result, &tocValue,&ticTypeTimeVal) == 1)
-	{
-		DiscursiveError("Timing Function failed with a negative number.....");
-	}
+	timersub(&tocValue,&ticTypeTimeVal,&result);
 
 	// update the running total for this ticType
+	struct timeval originalTotal = keyTimeRunningTotal[ticType];
 	struct timeval runningTotal;
-	runningTotal = TimeValAdd(keyTimeRunningTotal[ticType],result);
+	timeradd(&originalTotal,&result,&runningTotal);
 	keyTimeRunningTotal[ticType] = runningTotal;
 
 	// return the difference in tic toc values
@@ -165,59 +163,13 @@ void  DiscursiveTime::PrintRunningTotals()
 {
 	// loop over all stored time value totals and print them
 	DiscursivePrint("Running Totals of all Tic/Toc Pairs:\n");
-	for( std::map<std::string,struct timeval>::iterator ii=keyTimeMap.begin(); ii!=keyTimeMap.end(); ++ii)
+	for( std::map<std::string,struct timeval>::iterator ii=keyTimeRunningTotal.begin(); ii!=keyTimeRunningTotal.end(); ++ii)
 	{
 		DiscursivePrint("Key Value: %s = %ld seconds, %ld useconds\n",(*ii).first.c_str(),(*ii).second.tv_sec,(*ii).second.tv_usec);
 	}
 
 };
 
-// -------------------------------------------------------------------------
-// API :: DiscursiveTime::TimeValSubtract
-// PURPOSE :: subtracts x from y and puts into result
-//         ::
-// PARAMETERS :: struct timeval* result, x, y
-// RETURN :: int - 1 is a negative error
-// -------------------------------------------------------------------------
-int DiscursiveTime::TimeValSubtract(struct timeval *result, struct timeval *x, struct timeval *y)
- {
-   /* Perform the carry for the later subtraction by updating y. */
-   if (x->tv_usec < y->tv_usec) {
-	 int nsec = (y->tv_usec - x->tv_usec) / 1000000 + 1;
-	 y->tv_usec -= 1000000 * nsec;
-	 y->tv_sec += nsec;
-   }
-   if (x->tv_usec - y->tv_usec > 1000000) {
-	 int nsec = (x->tv_usec - y->tv_usec) / 1000000;
-	 y->tv_usec += 1000000 * nsec;
-	 y->tv_sec -= nsec;
-   }
-
-   /* Compute the time remaining to wait.
-	  tv_usec is certainly positive. */
-   result->tv_sec = x->tv_sec - y->tv_sec;
-   result->tv_usec = x->tv_usec - y->tv_usec;
-
-   /* Return 1 if result is negative. */
-   return x->tv_sec < y->tv_sec;
- }
-
-// -------------------------------------------------------------------------
-// API :: DiscursiveTime::TimeValAdd
-// PURPOSE :: adds tv1 to tv2 and returns
-//         ::
-// PARAMETERS :: struct timeval tv1, tv2
-// RETURN :: timeval result of tv1 and tv2
-// -------------------------------------------------------------------------
-struct timeval DiscursiveTime::TimeValAdd(struct timeval tv1, struct timeval tv2)
-{
-	timeval tv;
-	tv.tv_sec = tv1.tv_sec + tv2.tv_sec ;  // add seconds
-	tv.tv_usec = tv1.tv_usec + tv2.tv_usec ; // add microseconds
-	tv.tv_sec += tv.tv_usec / 1000000 ;  // add microsecond overflow to seconds
-	tv.tv_usec %= 1000000 ; // subtract the overflow from microseconds
-	return tv;
-}
 
 
 

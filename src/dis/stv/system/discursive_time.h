@@ -34,8 +34,6 @@ public:
 	struct timeval Toc(std::string ticType);
 	void PrintToc(std::string ticType);
 	void PrintRunningTotals();
-	int TimeValSubtract(struct timeval *result, struct timeval *x, struct timeval *y);
-	struct timeval TimeValAdd(struct timeval tv1, struct timeval tv2);
 };
 
 
