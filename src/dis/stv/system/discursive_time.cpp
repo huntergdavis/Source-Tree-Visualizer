@@ -11,14 +11,20 @@
 // -------------------------------------------------------------------------
 // API :: DiscursiveTime::DiscursiveTime
 // PURPOSE :: instantiation of DiscursiveTime
-//         :: sets values to passed in values
+//         :: instantiates a default keyname 'tic'
 // PARAMETERS :: std::string keyValue - key name, struct timeval tv; keyTime - key time
 // RETURN :: None
 // -------------------------------------------------------------------------
-DiscursiveTime::DiscursiveTime(std::string keyName, struct timeval keyTime)
+DiscursiveTime::DiscursiveTime(std::string keyName)
 {
-	defaultKey = keyName;
-	defaultTime = keyTime;
+	struct timeval defaultTime;
+	gettimeofday(&defaultTime,NULL);
+	keyTimeMap[keyName] = defaultTime;
+
+	// initialize the running total for this key to be zero
+	defaultTime.tv_sec = 0;
+	defaultTime.tv_usec = 0;
+	keyTimeRunningTotal[keyName] = defaultTime;
 }
 
 // -------------------------------------------------------------------------
@@ -30,9 +36,28 @@ DiscursiveTime::DiscursiveTime(std::string keyName, struct timeval keyTime)
 // -------------------------------------------------------------------------
 DiscursiveTime::DiscursiveTime()
 {
-	defaultKey = "";
+	struct timeval defaultTime;
 	gettimeofday(&defaultTime,NULL);
+	keyTimeMap[""] = defaultTime;
+
+	// initialize the running total for this key to be zero
+	defaultTime.tv_sec = 0;
+	defaultTime.tv_usec = 0;
+	keyTimeRunningTotal[""] = defaultTime;
 }
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveTime::~DiscursiveTime
+// PURPOSE :: disinstantiation of DiscursiveTime
+//         ::
+// PARAMETERS ::
+// RETURN :: None
+// -------------------------------------------------------------------------
+DiscursiveTime::~DiscursiveTime()
+{
+
+};
+
 
 
 // -------------------------------------------------------------------------
@@ -44,12 +69,27 @@ DiscursiveTime::DiscursiveTime()
 // -------------------------------------------------------------------------
 void DiscursiveTime::Tic(std::string ticType)
 {
-	if(ticType != defaultKey)
+	struct timeval defaultTime;
+	// loop over all stored time values looking for ticType
+	// if not found, initialize the total time to be zero
+	bool foundTicType = 0;
+	for( std::map<std::string,struct timeval>::iterator i=keyTimeMap.begin(); i!=keyTimeMap.end(); ++i)
 	{
-		DiscursivePrint("Failure to Lookup ticType %s, setting tictype %s instead\n",ticType.c_str(),defaultKey.c_str());
+		if( (*i).first == ticType )
+		{
+			foundTicType = 1;
+		}
 	}
-
+	if(foundTicType == 0)
+	{
+		// initialize the running total for this key to be zero
+		defaultTime.tv_sec = 0;
+		defaultTime.tv_usec = 0;
+		keyTimeRunningTotal[ticType] = defaultTime;
+	}
 	gettimeofday(&defaultTime, NULL);
+	keyTimeMap[ticType] = defaultTime;
+
 };
 
 // -------------------------------------------------------------------------
@@ -61,20 +101,38 @@ void DiscursiveTime::Tic(std::string ticType)
 // -------------------------------------------------------------------------
 struct timeval DiscursiveTime::Toc(std::string ticType)
 {
-	if(ticType != defaultKey)
+
+	// loop over all stored time values looking for ticType
+	bool foundTicType = 0;
+	struct timeval ticTypeTimeVal;
+	for( std::map<std::string,struct timeval>::iterator ii=keyTimeMap.begin(); ii!=keyTimeMap.end(); ++ii)
 	{
-		DiscursivePrint("Failure to Lookup ticType %s, returning tictype %s instead\n",ticType.c_str(),defaultKey.c_str());
+		if( (*ii).first == ticType )
+		{
+			foundTicType = 1;
+			ticTypeTimeVal = (*ii).second;
+		}
 	}
 
+	// error out if toc called on non-existant tic value
+	if(foundTicType == 0)
+	{
+		DiscursiveError("Could not find tic type %s for toc call\n",ticType.c_str());
+	}
+
+	// subtract time values, check if in correct range
 	struct timeval result;
 	struct timeval tocValue;
 	gettimeofday(&tocValue, NULL);
-
-	if(TimeValSubtract(&result, &tocValue,&defaultTime) == 1)
+	if(TimeValSubtract(&result, &tocValue,&ticTypeTimeVal) == 1)
 	{
 		DiscursiveError("Timing Function failed with a negative number.....");
 	}
 
+	// update the running total for this ticType
+	struct timeval runningTotal;
+	runningTotal = TimeValAdd(keyTimeRunningTotal[ticType],result);
+	keyTimeRunningTotal[ticType] = runningTotal;
 
 	// return the difference in tic toc values
 	return result;
@@ -90,23 +148,37 @@ struct timeval DiscursiveTime::Toc(std::string ticType)
 // -------------------------------------------------------------------------
 void  DiscursiveTime::PrintToc(std::string ticType)
 {
-	if(ticType != defaultKey)
-	{
-		DiscursivePrint("Failure to Lookup ticType %s, returning tictype %s instead\n",ticType.c_str(),defaultKey.c_str());
-	}
-
-	struct timeval tocValue;
-	struct timeval resultValue;
-	gettimeofday(&tocValue, NULL);
-
-	if(TimeValSubtract(&resultValue, &tocValue, &defaultTime) == 1)
-	{
-		DiscursiveError("Timing Function failed with a negative number.....");
-	}
+	struct timeval resultValue = Toc(ticType);
 
 	DiscursivePrint("Elapsed : %ld seconds, %ld microseconds\n", resultValue.tv_sec,resultValue.tv_usec);
 };
 
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveTime::PrintRunningTotals
+// PURPOSE :: loops through all total pairs and prints out their values
+//         ::
+// PARAMETERS :: None
+// RETURN :: None
+// -------------------------------------------------------------------------
+void  DiscursiveTime::PrintRunningTotals()
+{
+	// loop over all stored time value totals and print them
+	DiscursivePrint("Running Totals of all Tic/Toc Pairs:\n");
+	for( std::map<std::string,struct timeval>::iterator ii=keyTimeMap.begin(); ii!=keyTimeMap.end(); ++ii)
+	{
+		DiscursivePrint("Key Value: %s = %ld seconds, %ld useconds\n",(*ii).first.c_str(),(*ii).second.tv_sec,(*ii).second.tv_usec);
+	}
+
+};
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveTime::TimeValSubtract
+// PURPOSE :: subtracts x from y and puts into result
+//         ::
+// PARAMETERS :: struct timeval* result, x, y
+// RETURN :: int - 1 is a negative error
+// -------------------------------------------------------------------------
 int DiscursiveTime::TimeValSubtract(struct timeval *result, struct timeval *x, struct timeval *y)
  {
    /* Perform the carry for the later subtraction by updating y. */
@@ -129,4 +201,24 @@ int DiscursiveTime::TimeValSubtract(struct timeval *result, struct timeval *x, s
    /* Return 1 if result is negative. */
    return x->tv_sec < y->tv_sec;
  }
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveTime::TimeValAdd
+// PURPOSE :: adds tv1 to tv2 and returns
+//         ::
+// PARAMETERS :: struct timeval tv1, tv2
+// RETURN :: timeval result of tv1 and tv2
+// -------------------------------------------------------------------------
+struct timeval DiscursiveTime::TimeValAdd(struct timeval tv1, struct timeval tv2)
+{
+	timeval tv;
+	tv.tv_sec = tv1.tv_sec + tv2.tv_sec ;  // add seconds
+	tv.tv_usec = tv1.tv_usec + tv2.tv_usec ; // add microseconds
+	tv.tv_sec += tv.tv_usec / 1000000 ;  // add microsecond overflow to seconds
+	tv.tv_usec %= 1000000 ; // subtract the overflow from microseconds
+	return tv;
+}
+
+
+
 

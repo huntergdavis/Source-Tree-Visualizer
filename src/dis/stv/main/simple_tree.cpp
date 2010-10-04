@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 	SetDiscursiveDebugLevel(0);
 
 	// initialize our timing class
-	DiscursiveTime timerAgent;
+	DiscursiveTime timerAgent("Entire SourceTreeVis Program");
 
 	// initialize our configuration agent
 	ConfigurationAgent configAgent;
@@ -71,10 +71,10 @@ int main(int argc, char **argv)
 
 	// retrieve our source tree
 	DiscursivePrint("Retrieving From Server, Please Wait...\n");
-	timerAgent.Tic("");
+	timerAgent.Tic("Initial Retrieve");
 	git->source = git->retrieve();
 	DiscursivePrint("Server Retrieval Took:\n");
-	timerAgent.PrintToc("");
+	timerAgent.PrintToc("Initial Retrieve");
 
 	// output tree info
 	DiscursivePrint("Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
@@ -139,33 +139,33 @@ int main(int argc, char **argv)
 
 		// Decorate surrogate tree nodes with locations
 		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
-		timerAgent.Tic("");
+		timerAgent.Tic("Decorating surrogate trees");
 //		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,scaleWidth,scaleHeight);
 		Decorator* decorator = DecoratorFactory::getInstance(DecoratorFactory::SPATIAL_DISPLACEMENT_NAIVE, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
 		decorator->decorate(git->source);
-		timerAgent.PrintToc("");
+		timerAgent.PrintToc("Decorating surrogate trees");
 
 		// Digitize decorated surrogate tree into line segment tree
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
-		timerAgent.Tic("");
+		timerAgent.Tic("Digitizing decorated trees into line segments");
 		int segmentLength = 1;
 //	    SpaceColonizer *digitizer = new SpaceColonizer(segmentLength);
 		Digitizer* digitizer = DigitizerFactory::getInstance(DigitizerFactory::SPACE_COLONIZER,1,segmentLength);
 		DrawableData* lines = digitizer->digitize(git->source);
-		timerAgent.PrintToc("");
+		timerAgent.PrintToc("Digitizing decorated trees into line segments");
 
 		// Draw tree
 		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
-		timerAgent.Tic("");
+		timerAgent.Tic("Drawing Tree with artist.draw");
 		Image canvas(Geometry(git->imageWidth,git->imageHeight),"white");
 		ScanlineArtist artist;
 		artist.draw(canvas, lines);
-		timerAgent.PrintToc("");
+		timerAgent.PrintToc("Drawing Tree with artist.draw");
 
 		// actually generate a tree
-		timerAgent.Tic("");
+		timerAgent.Tic("actually generating image from canvas");
 		git->WriteJPGFromCanvas(&canvas);
-		timerAgent.PrintToc("");
+		timerAgent.PrintToc("actually generating image from canvas");
 
 		delete digitizer;
 		delete decorator;
@@ -177,5 +177,9 @@ int main(int argc, char **argv)
 //		}
 		DiscursivePrint("\n");
 	}
+
+	// finish the timing on our entire program
+	timerAgent.Toc("Entire SourceTreeVis Program");
+	timerAgent.PrintRunningTotals();
 	return 0;
 }

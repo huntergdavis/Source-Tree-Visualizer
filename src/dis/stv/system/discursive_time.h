@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <map>
 #include <sys/time.h>
 #include <time.h>
 #include "./discursive_print.h"
@@ -21,17 +22,20 @@
 class DiscursiveTime
 {
 private:
-	std::string defaultKey;
-	struct timeval defaultTime;
+	std::map<std::string, struct timeval> keyTimeMap;
+	std::map<std::string, struct timeval> keyTimeRunningTotal;
 
 
 public:
-	DiscursiveTime(std::string keyName, struct timeval tv);
+	DiscursiveTime(std::string keyName);
 	DiscursiveTime();
+	~DiscursiveTime();
 	void Tic(std::string ticType);
 	struct timeval Toc(std::string ticType);
 	void PrintToc(std::string ticType);
+	void PrintRunningTotals();
 	int TimeValSubtract(struct timeval *result, struct timeval *x, struct timeval *y);
+	struct timeval TimeValAdd(struct timeval tv1, struct timeval tv2);
 };
 
 
