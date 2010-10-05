@@ -33,7 +33,7 @@ GitHubRepositoryAccess::GitHubRepositoryAccess(std::string gitHubUserName,std::s
 	this->repoNameCredentials = gitHubProjectName;
 
 	// debug output for user credentials
-	DiscursiveDebugPrint("\nGitHub User Name: %s, GitHub Project Name: %s\n",gitHubUserName.c_str(),gitHubProjectName.c_str());
+	DiscursiveDebugPrint("github,repository access","\nGitHub User Name: %s, GitHub Project Name: %s\n",gitHubUserName.c_str(),gitHubProjectName.c_str());
 
 	// add git repo type of github
 	this->repoType = 2;
@@ -58,7 +58,7 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 		string timeStr = boost::lexical_cast<string>(time);
 		file->set(TreeNodeKey::CREATION_TIME, timeStr);
 		file->set(TreeNodeKey::NAME, pathname);
-		DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
+		DiscursiveDebugPrint("github,repository access","Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children->push_back(file);
 	}
 	else
@@ -73,7 +73,7 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 		{
 			SurrogateTreeNode* local = *iter;
 			string nameComp = local->data[TreeNodeKey::NAME];
-			//DiscursiveDebugPrint("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
+			//DiscursiveDebugPrint("github,repository access","Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
 				// Found node
@@ -81,7 +81,7 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 				// Update node time if necessary
 				if(time < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
 				{
-					DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
+					DiscursiveDebugPrint("github,repository access","Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
 					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(time));
 				}
 				break;
@@ -94,7 +94,7 @@ void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pa
 			string timeStr = boost::lexical_cast<string>(time);
 			node->set(TreeNodeKey::CREATION_TIME, timeStr);
 			node->set(TreeNodeKey::NAME, name);
-			DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
+			DiscursiveDebugPrint("github,repository access","Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children->push_back(node);
 		}
 		// Else, use found node
@@ -162,7 +162,7 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 		   curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
 
 		   // Attempt to retrieve the remote page
-		   DiscursiveDebugPrint("\n curl is attempting to pull %s\n",topLevelApiUrl.c_str());
+		   DiscursiveDebugPrint("github,repository access","\n curl is attempting to pull %s\n",topLevelApiUrl.c_str());
 		   result = curl_easy_perform(curl);
 
 		   // Always cleanup
@@ -180,7 +180,7 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 	   std::istringstream topLevelSS(repoLog);
 
 	   // print debug our github top level block
-	   //DiscursiveDebugPrint(buffer);
+	   //DiscursiveDebugPrint("github,repository access",buffer);
 
 	   // loop over the outer string stream object and search for sha1 keys
 	   // keep track of line numbering
@@ -199,7 +199,7 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 		   if(idVal == 2)
 		   {
 			   topLevelSHA1 = topLevelLine.substr(6,topLevelLine.size()-5);
-			   //DiscursiveDebugPrint("\n sha1 %s\n",SHA1->c_str());
+			   //DiscursiveDebugPrint("github,repository access","\n sha1 %s\n",SHA1->c_str());
 			   retrieveDetailedGitHubBlock(treeResult,&topLevelSHA1);
 		   }
 	   }
@@ -256,7 +256,7 @@ void GitHubRepositoryAccess::retrieveDetailedGitHubBlock(SurrogateTreeNode* tree
 		buffer = "";
 
 		// Attempt to retrieve the remote page
-		DiscursiveDebugPrint("\n curl is attempting to pull %s\n",gitHubApiUrl.c_str());
+		DiscursiveDebugPrint("github,repository access","\n curl is attempting to pull %s\n",gitHubApiUrl.c_str());
 		result = curl_easy_perform(curl);
 
 		// Always cleanup
@@ -265,7 +265,7 @@ void GitHubRepositoryAccess::retrieveDetailedGitHubBlock(SurrogateTreeNode* tree
 		// Did we succeed?
 		if (result == CURLE_OK)
 		{
-		   //DiscursiveDebugPrint("DDDDDDDDDDDDDDDDD%s",buffer.c_str());
+		   //DiscursiveDebugPrint("github,repository access","DDDDDDDDDDDDDDDDD%s",buffer.c_str());
 		   parseDetailedGitHubBlock(treeResult,&buffer);
 		}
 	}
@@ -320,7 +320,7 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 			// at this point we have the filename, use that for a query string for the correct date
 			earliestFileDate = retrieveDateFromGitHubFileName(&fileNameString);
 
-			DiscursiveDebugPrint("Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
+			DiscursiveDebugPrint("github,repository access","Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
 
 			// increase the number of global inserts by one
 			if((insertTarget > 0) && (localInserts < insertTarget))
@@ -389,7 +389,7 @@ long GitHubRepositoryAccess::retrieveDateFromGitHubFileName(std::string *gitHubF
 		buffer = "";
 
 		// Attempt to retrieve the remote page
-		DiscursiveDebugPrint("\n curl is attempting to pull %s\n",gitHubApiUrl.c_str());
+		DiscursiveDebugPrint("github,repository access","\n curl is attempting to pull %s\n",gitHubApiUrl.c_str());
 		result = curl_easy_perform(curl);
 
 		// Always cleanup
@@ -398,7 +398,7 @@ long GitHubRepositoryAccess::retrieveDateFromGitHubFileName(std::string *gitHubF
 		// Did we succeed?
 		if (result == CURLE_OK)
 		{
-		   //DiscursiveDebugPrint("DDDDDDDDDDDDDDDDD%s",buffer.c_str());
+		   //DiscursiveDebugPrint("github,repository access","DDDDDDDDDDDDDDDDD%s",buffer.c_str());
 			oldestFileDate = parseDetailedGitHubFileBlock(&buffer);
 		}
 	}
@@ -445,7 +445,7 @@ long GitHubRepositoryAccess::parseDetailedGitHubFileBlock(std::string *buffer)
 
 	if (dateFound == 1)
 	{
-		//DiscursiveDebugPrint("\nDDDDDD|||%s|||",dateOnlyString.c_str());
+		//DiscursiveDebugPrint("github,repository access","\nDDDDDD|||%s|||",dateOnlyString.c_str());
 
 		// return the results of parsing this date string
 		return parseExactDateString(&dateOnlyString);
@@ -481,7 +481,7 @@ long GitHubRepositoryAccess::parseExactDateString(std::string *buffer)
 	strptime(buffer->c_str(), "%Y-%m-%dT%H:%M:%S", &timeStructure);
 
 	rawTime = mktime(&timeStructure);
-	//DiscursiveDebugPrint("RAWTIME\n%ld\n",(long)rawTime);
+	//DiscursiveDebugPrint("github,repository access","RAWTIME\n%ld\n",(long)rawTime);
 	return (long) rawTime;
 }
 

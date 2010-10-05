@@ -46,7 +46,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		string timeStr = boost::lexical_cast<string>(time);
 		file->set(TreeNodeKey::CREATION_TIME, timeStr);
 		file->set(TreeNodeKey::NAME, pathname);
-		//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
+		//DiscursiveDebugPrint("svn,repository access","Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children->push_back(file);
 
 		// update the lexical tree size when we push back
@@ -64,7 +64,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		{
 			SurrogateTreeNode* local = *iter;
 			string nameComp = local->data[TreeNodeKey::NAME];
-			//DiscursiveDebugPrint("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
+			//DiscursiveDebugPrint("svn,repository access","Comparing %s to %s\n",nameComp.c_str(),name.c_str());
 			if(!nameComp.compare(name))
 			{
 				// Found node
@@ -72,7 +72,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 				// Update node time if necessary
 				if(time < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
 				{
-					//DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
+					//DiscursiveDebugPrint("svn,repository access","Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
 					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(time));
 				}
 				break;
@@ -85,7 +85,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 			string timeStr = boost::lexical_cast<string>(time);
 			node->set(TreeNodeKey::CREATION_TIME, timeStr);
 			node->set(TreeNodeKey::NAME, name);
-			//DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),time);
+			//DiscursiveDebugPrint("svn,repository access","Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children->push_back(node);
 
 			// update the lexical tree size when we push back
@@ -144,7 +144,7 @@ SurrogateTreeNode* SvnRemoteRepositoryAccess::generateTreeFromRemoteSvn()
 		  repoLog.push_back( (char)c );
 		}
 		std::fclose( fp );
-		//DiscursiveDebugPrint("SVN LOG RESULT %s",svnLog.c_str());
+		//DiscursiveDebugPrint("svn,repository access","SVN LOG RESULT %s",svnLog.c_str());
 	}
 
     // generate tree entry from log file entry
@@ -195,7 +195,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 // -------------------------------------------------------------------------
 void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
 {
-	DiscursiveDebugPrint("INDIVIDUAL TIME BLOCK %s\n",buffer->c_str());
+	DiscursiveDebugPrint("svn,repository access","INDIVIDUAL TIME BLOCK %s\n",buffer->c_str());
 
 	// at this point we have the individual SVN time block
 
@@ -226,7 +226,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	dateString = buffer->substr(secondPipeIndex+2,19);
 
 	// print out the date
-	//DiscursiveDebugPrint("\nTHEDATE: |%s| index 1:%d 2:%d\n",dateString.c_str(),firstPipeIndex,secondPipeIndex);
+	//DiscursiveDebugPrint("svn,repository access","\nTHEDATE: |%s| index 1:%d 2:%d\n",dateString.c_str(),firstPipeIndex,secondPipeIndex);
 	long dateEpoch = parseExactDateString(&dateString);
 
 
@@ -249,7 +249,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	else
 	{
 		globalRevs++;
-		DiscursiveDebugPrint("First Pass: Adding Revision Number %ld \nCurrent Tree Size %ld \n",globalRevs,currentTreeSize);
+		DiscursiveDebugPrint("svn,repository access","First Pass: Adding Revision Number %ld \nCurrent Tree Size %ld \n",globalRevs,currentTreeSize);
 	}
 
 	// loop over the detailed commit and find filenames
@@ -258,7 +258,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 		if(fileNameLine.find("A") == 3)
 		{
 			fileNameString = fileNameLine.substr(5,fileNameLine.size()-5);
-			//DiscursiveDebugPrint("\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
+			//DiscursiveDebugPrint("svn,repository access","\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
 			// actually insert the file entry into the tree
 			// increase the number of global inserts by one
 			if((insertTarget > 0) && (localInserts < insertTarget))
@@ -304,7 +304,7 @@ long SvnRemoteRepositoryAccess::parseExactDateString(std::string *buffer)
 	strptime(buffer->c_str(), "%Y-%m-%d %H:%M:%S", &timeStructure);
 
 	rawTime = mktime(&timeStructure);
-	//DiscursiveDebugPrint("RAWTIME\n%ld\n",(long)rawTime);
+	//DiscursiveDebugPrint("svn,repository access","RAWTIME\n%ld\n",(long)rawTime);
 	return (long) rawTime;
 }
 

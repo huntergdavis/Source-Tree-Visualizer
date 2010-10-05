@@ -50,7 +50,7 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 	double xMin = tree->findMin(TreeNodeKey::X);
 	double yMax = tree->findMax(TreeNodeKey::Y);
 	double yMin = tree->findMin(TreeNodeKey::Y);
-	DiscursiveDebugPrint("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
+	DiscursiveDebugPrint("spatial displacement",Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
 
@@ -243,7 +243,7 @@ void SpatialDisplacement::expand(SurrogateTreeNode* tree, double rootAngle, doub
 		}
 		else
 		{
-			DiscursiveDebugPrint("Serious Error.  (Max: %f) Most: %f, Least: %f\n", DBL_MAX, most, least);
+			DiscursiveDebugPrint("spatial displacement","Serious Error.  (Max: %f) Most: %f, Least: %f\n", DBL_MAX, most, least);
 			DiscursiveError("Serious Error");
 		}
 		// Transform positions to arc
@@ -392,12 +392,12 @@ void SpatialDisplacement::expand2(SurrogateTreeNode* tree, double rootAngle, dou
 			deltaSplay = splay / (mass - minChildMass);
 		}
 
-		DiscursiveDebugPrint("Subtree mass effects [");
+		DiscursiveDebugPrint("spatial displacement","Subtree mass effects [");
 		for(i = 0; i < children; i++)
 		{
-			DiscursiveDebugPrint("%f,",positions[i]);
+			DiscursiveDebugPrint("spatial displacement","%f,",positions[i]);
 		}
-		DiscursiveDebugPrint("] @ %f\n", deltaSplay);
+		DiscursiveDebugPrint("spatial displacement","] @ %f\n", deltaSplay);
 
 		positions[0] = 0;
 		com = 0;
@@ -490,7 +490,7 @@ int SpatialDisplacement::count(SurrogateTreeNode* tree)
 	}
 	// Assign count to data
 	tree->set(TreeNodeKey::SIZE, boost::lexical_cast<string>(sum));
-	DiscursiveDebugPrint("Size of tree %s is %s in this and %d sublevels\n",tree->data[TreeNodeKey::NAME].c_str(),tree->data[TreeNodeKey::SIZE].c_str(),maxDepth);
+	DiscursiveDebugPrint("spatial displacement","Size of tree %s is %s in this and %d sublevels\n",tree->data[TreeNodeKey::NAME].c_str(),tree->data[TreeNodeKey::SIZE].c_str(),maxDepth);
 	tree->set(TreeNodeKey::DEPTH, boost::lexical_cast<string>(maxDepth + 1));
 	return sum;
 }

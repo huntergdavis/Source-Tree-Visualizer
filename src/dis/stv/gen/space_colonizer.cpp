@@ -295,7 +295,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				else
 				{
 					//printf("Removing leader\n");
-					DiscursiveDebugPrint("Removing leader at (%f, %f)\n",leader->getLocationX(),leader->getLocationY());
+					DiscursiveDebugPrint("space colonizer","Removing leader at (%f, %f)\n",leader->getLocationX(),leader->getLocationY());
 					vector<ColonizationLeader*>::iterator colonIter;
 					for(colonIter = this->leaders.begin(); colonIter < this->leaders.end(); ++colonIter)
 					{
@@ -312,7 +312,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 					modified = true;
 
 					// Insert new Leaf DrawDatum
-					DiscursiveDebugPrint("Adding leaf @ (%f,%f)\n",x,y);
+					DiscursiveDebugPrint("space colonizer","Adding leaf @ (%f,%f)\n",x,y);
 					MinDrawableDatum* datum = (MinDrawableDatum*)malloc(sizeof(MinDrawableDatum));
 					datum->locationX = x;
 					datum->locationY = y;
@@ -347,7 +347,7 @@ DrawableData* SpaceColonizer::digitize(SurrogateTreeNode* source)
 	// Add first leader
 	double x = atof(source->data[TreeNodeKey::X].c_str());
 	double y = atof(source->data[TreeNodeKey::Y].c_str());
-	DiscursiveDebugPrint("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,3.14159/2, atof(source->data[TreeNodeKey::SCOMX].c_str()),atof(source->data[TreeNodeKey::SCOMY].c_str()));
+	DiscursiveDebugPrint("space colonizer","Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,3.14159/2, atof(source->data[TreeNodeKey::SCOMX].c_str()),atof(source->data[TreeNodeKey::SCOMY].c_str()));
 	ColonizationLeader* starter = new ColonizationLeader(x,y,3.14159/2,source);
 	this->leaders.push_back(starter);
 

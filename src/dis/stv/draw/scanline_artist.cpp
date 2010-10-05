@@ -44,7 +44,7 @@ using namespace Magick;
 
 void ScanlineArtist::draw(Image &image, DrawableData* dataset)
 {
-	DiscursiveDebugPrint("Drawing\n");
+	DiscursiveDebugPrint("scanline artist","Drawing\n");
 	
 	list<Drawable> drawList;
 	drawList.push_back(DrawableStrokeWidth(0));

@@ -7,7 +7,7 @@
 
 #include "configuration_agent.h"
 #include <libxml/xmlreader.h>
-extern int debugLevel;
+extern DiscursiveDebugAgent debugAgent;
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ConfigurationAgent
@@ -85,7 +85,7 @@ void ConfigurationAgent::displayUsage( void )
 	usage_string += "\n-S option - expects http://hkit.googlecode.com/svn/trunk/\n";
 	usage_string += "\n-C option - expects pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd\n";
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
-	usage_string += "\n-d option - debug level, defaults to 1\n";
+	usage_string += "\n-d option - debug level, expects a debug keyword\n";
 	usage_string += "\n-n option - image numbering value, defaults to 1000\n";
 	usage_string += "\n-o or -O option - output file name, defaults to tree.jpg\n";
 	usage_string += "\n-m option - output the creation of the current tree one step at a time via many .images in sequence\n";
@@ -179,7 +179,7 @@ void ConfigurationAgent::parseConfigFile()
 		for (cur_node = cur_node; cur_node; cur_node = cur_node->next)
 		{
 		  if (cur_node->type == XML_ELEMENT_NODE) {
-			  DiscursiveDebugPrint("node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
+			  DiscursiveDebugPrint("xml,configuration","node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
 			  setOptionByName((char*)cur_node->name, (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
 		  }
 		}
@@ -276,8 +276,8 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 				fileName = optarg;
 				break;
 			case 'd':
-				// set the debug level
-				SetDiscursiveDebugLevel(1);
+				// set the debug keyword
+				debugAgent.AddDebugKeywords(optarg);
 				break;
 			case 'i':
 				// set the interactivity level
@@ -370,7 +370,7 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	}
 	else 	if(optionName == "debug")
 	{
-		SetDiscursiveDebugLevel(atoi(optionValue.c_str()));
+		debugAgent.AddDebugKeywords(optionValue);
 	}
 	else if(optionName == "repo_type")
 	{
@@ -503,7 +503,7 @@ RepositoryAccess* ConfigurationAgent::initializeRepositoryType()
 		case 2:
 		case 3:
 		case 4:
-			DiscursiveDebugPrint("%s\n",agentName.c_str());
+			DiscursiveDebugPrint("configuration,agents","%s\n",agentName.c_str());
 			return noninteractive_agent(agentType, agentName);
 			break;
 		case 0:

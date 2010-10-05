@@ -20,16 +20,13 @@
 #include "../gen/space_colonizer.h"
 
 using namespace Magick;
-int debugLevel;
+DiscursiveDebugAgent debugAgent;
 
 
 int main(int argc, char **argv)
 {
 	// initialize libmagick
 	InitializeMagick(*argv);
-
-	// set the debug level
-	SetDiscursiveDebugLevel(0);
 
 	// initialize our timing class
 	DiscursiveTime timerAgent("Entire SourceTreeVis Program");
@@ -70,15 +67,15 @@ int main(int argc, char **argv)
 	git->logGenerated = 0;
 
 	// retrieve our source tree
-	DiscursivePrint("Retrieving From Server, Please Wait...\n");
+	DiscursiveDebugPrint("default","Retrieving From Server, Please Wait...\n");
 	timerAgent.Tic("Initial Retrieve");
 	git->source = git->retrieve();
-	DiscursivePrint("Server Retrieval Took:\n");
-	timerAgent.PrintToc("Initial Retrieve");
+	DiscursiveDebugPrint("time","Server Retrieval Took:\n");
+	timerAgent.Toc("Initial Retrieve");
 
 	// output tree info
-	DiscursivePrint("Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
-	DiscursivePrint("Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
+	DiscursiveDebugPrint("default","Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
+	DiscursiveDebugPrint("default","Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
 
 	delete(git->source);
 	git->source = NULL;
@@ -138,44 +135,39 @@ int main(int argc, char **argv)
 
 
 		// Decorate surrogate tree nodes with locations
-		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursiveDebugPrint("default","Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Decorating surrogate trees");
 //		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,scaleWidth,scaleHeight);
 		Decorator* decorator = DecoratorFactory::getInstance(DecoratorFactory::SPATIAL_DISPLACEMENT_NAIVE, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
 		decorator->decorate(git->source);
-		timerAgent.PrintToc("Decorating surrogate trees");
+		timerAgent.Toc("Decorating surrogate trees");
 
 		// Digitize decorated surrogate tree into line segment tree
-		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursiveDebugPrint("default","Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Digitizing decorated trees into line segments");
 		int segmentLength = 1;
 //	    SpaceColonizer *digitizer = new SpaceColonizer(segmentLength);
 		Digitizer* digitizer = DigitizerFactory::getInstance(DigitizerFactory::SPACE_COLONIZER,1,segmentLength);
 		DrawableData* lines = digitizer->digitize(git->source);
-		timerAgent.PrintToc("Digitizing decorated trees into line segments");
+		timerAgent.Toc("Digitizing decorated trees into line segments");
 
 		// Draw tree
-		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursiveDebugPrint("default","Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Drawing Tree with artist.draw");
 		Image canvas(Geometry(git->imageWidth,git->imageHeight),"white");
 		ScanlineArtist artist;
 		artist.draw(canvas, lines);
-		timerAgent.PrintToc("Drawing Tree with artist.draw");
+		timerAgent.Toc("Drawing Tree with artist.draw");
 
 		// actually generate a tree
 		timerAgent.Tic("actually generating image from canvas");
 		git->WriteJPGFromCanvas(&canvas);
-		timerAgent.PrintToc("actually generating image from canvas");
+		timerAgent.Toc("actually generating image from canvas");
 
 		delete digitizer;
 		delete decorator;
 
-//		if(git->source != NULL)
-//		{
-//			delete(git->source);
-//			git->source = NULL;
-//		}
-		DiscursivePrint("\n");
+		DiscursiveDebugPrint("default","\n");
 	}
 
 	// finish the timing on our entire program

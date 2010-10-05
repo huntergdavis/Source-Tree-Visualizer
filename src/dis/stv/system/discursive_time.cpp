@@ -101,7 +101,6 @@ void DiscursiveTime::Tic(std::string ticType)
 // -------------------------------------------------------------------------
 struct timeval DiscursiveTime::Toc(std::string ticType)
 {
-
 	// loop over all stored time values looking for ticType
 	bool foundTicType = 0;
 	struct timeval ticTypeTimeVal;
@@ -131,6 +130,9 @@ struct timeval DiscursiveTime::Toc(std::string ticType)
 	struct timeval runningTotal;
 	timeradd(&originalTotal,&result,&runningTotal);
 	keyTimeRunningTotal[ticType] = runningTotal;
+	
+	// debug print values
+	DiscursiveDebugPrint("time","Elapsed : %ld seconds, %ld microseconds\n", result.tv_sec,result.tv_usec);
 
 	// return the difference in tic toc values
 	return result;

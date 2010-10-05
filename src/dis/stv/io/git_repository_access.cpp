@@ -49,7 +49,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		string timeStr = boost::lexical_cast<string>(fileTime);
 		file->set(TreeNodeKey::CREATION_TIME, timeStr);
 		file->set(TreeNodeKey::NAME, pathname);
-		DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",pathname.c_str(),fileTime);
+		DiscursiveDebugPrint("git,repository access","Adding node '%s' @ time %ld\n",pathname.c_str(),fileTime);
 		tree->children->push_back(file);
 	}
 	else
@@ -72,7 +72,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 				// Update node time if necessary
 				if(fileTime < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
 				{
-					DiscursiveDebugPrint("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), fileTime, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
+					DiscursiveDebugPrint("git,repository access","Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), fileTime, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
 					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(fileTime));
 				}
 				break;
@@ -85,7 +85,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 			string timeStr = boost::lexical_cast<string>(fileTime);
 			node->set(TreeNodeKey::CREATION_TIME, timeStr);
 			node->set(TreeNodeKey::NAME, name);
-			DiscursiveDebugPrint("Adding node '%s' @ time %ld\n",name.c_str(),fileTime);
+			DiscursiveDebugPrint("git,repository access","Adding node '%s' @ time %ld\n",name.c_str(),fileTime);
 			tree->children->push_back(node);
 		}
 		// Else, use found node
@@ -95,7 +95,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 
 void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std::string *buffer)
 {
-	//DiscursiveDebugPrint("Parsing block for time %ld\n BLOCK IS: \n\n%s\n\n",time,buffer->c_str());
+	//DiscursiveDebugPrint("git,repository access","Parsing block for time %ld\n BLOCK IS: \n\n%s\n\n",time,buffer->c_str());
 
 	// loop over each line and search for created files
 	// created files are denoted by an '... A' tag sequence
@@ -206,7 +206,7 @@ int GitRepositoryAccess::generateLog()
 		std::fclose( fp );
 
 		// show the log (debug)
-		DiscursiveDebugPrint(repoLog.c_str());
+		DiscursiveDebugPrint("git,repository access",repoLog.c_str());
 
 		// don't re-generate logs if not necessary
 		logGenerated = 1;
@@ -227,7 +227,7 @@ SurrogateTreeNode* GitRepositoryAccess::retrieve()
 		{
 			// Create the tree from log
 			result = this->generateTreeFromLog(&repoLog);
-			DiscursiveDebugPrint("Generated tree with name '%s'\n", result->data[TreeNodeKey::NAME].c_str());
+			DiscursiveDebugPrint("git,repository access","Generated tree with name '%s'\n", result->data[TreeNodeKey::NAME].c_str());
 		}
 	}
 

@@ -80,7 +80,7 @@ RepositoryAccess* noninteractive_agent(int agentType, std::string agentString)
 		int colonPos = agentString.find(":");
 		std::string gitUserName = agentString.substr(0,colonPos).c_str();
 		std::string gitProjectName = agentString.substr(colonPos+1,agentString.size()).c_str();
-		DiscursiveDebugPrint("testing \n|%s|,|%s|\n",gitUserName.c_str(),gitProjectName.c_str());
+		DiscursiveDebugPrint("agents,git,debug","testing \n|%s|,|%s|\n",gitUserName.c_str(),gitProjectName.c_str());
 
 		git = new GitHubRepositoryAccess(gitUserName,gitProjectName);
 	}
