@@ -21,7 +21,7 @@ class ConfigurationAgent
 {
 private:
 	// agentName equates to the passed command line parameter argument string
-	char *agentName;
+	std::string agentName;
 
 	// type of agent to use, ie command line options or interactive
 	int agentType;
@@ -68,6 +68,7 @@ public:
 	std::string returnAgentName();
 	std::string returnFileName();
 	int returnOptionByName(std::string optionName);
+	void setOptionByName(std::string optionName, std::string optionValue);
 	RepositoryAccess* initializeRepositoryType();
 
 };

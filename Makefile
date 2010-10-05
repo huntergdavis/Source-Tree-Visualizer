@@ -44,6 +44,7 @@ LDFLAGS = -L/usr/lib \
 SOURCES = src/dis/stv/system/discursive_error.cpp \
 	src/dis/stv/system/discursive_debug.cpp \
 	src/dis/stv/system/discursive_print.cpp \
+	src/dis/stv/system/discursive_time.cpp \
 	src/dis/stv/io/repository_access.cpp \
 	src/dis/stv/io/git_repository_access.cpp \
 	src/dis/stv/io/svn_remote_repository_access.cpp \
