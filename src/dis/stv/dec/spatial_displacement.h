@@ -18,8 +18,8 @@
 #include "../physics/time_stepped_physics_engine.h"
 #include "../physics/tree_displacement_node.h"
 #include "../physics/fixed_attractor.h"
-#include "../model/property_inverter.h"
-#include "../model/property_shifter.h"
+#include "../transform/property_inverter.h"
+#include "../transform/property_shifter.h"
 #include "../system/discursive_system.h"
 
 

@@ -15,8 +15,8 @@
 #include "artist.h"
 #include "../gen/digitizer.h"
 #include "../model/surrogate_tree_node.h"
-#include "../model/property_inverter.h"
-#include "../model/property_shifter.h"
+#include "../transform/property_inverter.h"
+#include "../transform/property_shifter.h"
 #include "../system/discursive_system.h"
 
 

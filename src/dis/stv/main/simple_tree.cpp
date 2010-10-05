@@ -7,21 +7,23 @@
 
 #include "../system/discursive_system.h"
 #include "./configuration_agent.h"
-#include "repository_access.h"
+#include "./repository_access.h"
 #include <Magick++.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include "../dec/decorator_factory.h"
 #include "../gen/digitizer_factory.h"
+#include "../transform/transform_factory.h"
 #include "../model/surrogate_tree_node.h"
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
 #include "../gen/space_colonizer.h"
+#include "../transform/transformer.h"
+
 
 using namespace Magick;
 int debugLevel;
-
 
 int main(int argc, char **argv)
 {
@@ -47,18 +49,18 @@ int main(int argc, char **argv)
 	// create an abstract method for repository access
 	RepositoryAccess* git = configAgent.initializeRepositoryType();
 
-	// set our scaling factor from our received or default options
-	double widthRescaling = configAgent.returnOptionByName("imageWidth")/(double)configAgent.returnOptionByName("startWidth");
-	double heightRescaling = configAgent.returnOptionByName("imageHeight")/(double)configAgent.returnOptionByName("startHeight");
-
     // set our repository single or manyjpg options
 	git->snapshotJpgs = configAgent.returnOptionByName("manyJpgs");
 	git->jpgIndex = configAgent.returnOptionByName("outputFileNumber");
-	git->scaleHeight = heightRescaling;
-	git->scaleWidth = widthRescaling;
+
 	git->fileName = configAgent.returnFileName();
-	git->imageHeight = configAgent.returnOptionByName("imageHeight");
+	git->startWidth = (double)configAgent.returnOptionByName("startWidth");
+	git->startHeight = (double)configAgent.returnOptionByName("startHeight");
 	git->imageWidth = configAgent.returnOptionByName("imageWidth");
+	git->imageHeight = configAgent.returnOptionByName("imageHeight");
+	// set our scaling factor from our received or default options
+	git->scaleWidth = git->imageWidth / git->startWidth;
+	git->scaleHeight = git->imageHeight / git->startHeight;
 	git->globalInserts = 0;
 	git->localInserts = 0;
 	git->insertTarget = 0;
@@ -143,9 +145,18 @@ int main(int argc, char **argv)
 //		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,scaleWidth,scaleHeight);
 		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_LEAF_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
 //		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
-		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 2, git->imageWidth, git->imageHeight);
+		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
 		decorator->decorate(git->source);
 		timerAgent.PrintToc("Decorating surrogate trees");
+
+		// Transform coordinates
+		DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
+		timerAgent.Tic("Transforming tree");
+		int transformerType = TransformFactory::IMAGE_MAGICK_TRANSFORMER;
+//		Transformer<SurrogateTreeNode>* transformer = TransformerFactory<SurrogateTreeNode>::getInstance(transformerType,2,git->imageWidth, (int)(0.95*git->imageHeight));
+		TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
+//		transformer->transform(git->source);
+		timerAgent.PrintToc("Transforming tree");
 
 		// Digitize decorated surrogate tree into line segment tree
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
@@ -160,10 +171,19 @@ int main(int argc, char **argv)
 		// Draw tree
 		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Drawing Tree with artist.draw");
-		Image canvas(Geometry(git->imageWidth,git->imageHeight),"white");
+		Image canvas(Geometry(git->startWidth,git->startHeight),"white");
 		ScanlineArtist artist;
 		artist.draw(canvas, lines);
 		timerAgent.PrintToc("Drawing Tree with artist.draw");
+
+		// Transform image
+		DiscursivePrint("Transforming image of size %d x %d to create %d x %d image\n",git->startWidth,git->startHeight,git->imageWidth, git->imageHeight);
+		timerAgent.Tic("Transforming image");
+		transformerType = TransformFactory::IMAGE_RESIZE_TRANSFORMER;
+//		Transformer<Image>* imageTransformer = TransformerFactory<Image>::getInstance(transformerType,2,git->imageWidth, (int)(0.95*git->imageHeight));
+		TransformFactory::transform(transformerType,3,&canvas,git->imageWidth,git->imageHeight);
+//		imageTransformer->transform(&canvas);
+		timerAgent.PrintToc("Transforming image");
 
 		// actually generate a tree
 		timerAgent.Tic("actually generating image from canvas");
@@ -186,3 +206,6 @@ int main(int argc, char **argv)
 	timerAgent.PrintRunningTotals();
 	return 0;
 }
+
+//template TransformFactory<ImageMagickTransformer>;
+//template TransformFactory<ImageResizeTransformer>;

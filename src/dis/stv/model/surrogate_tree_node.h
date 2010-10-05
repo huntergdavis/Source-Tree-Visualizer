@@ -27,6 +27,7 @@ namespace TreeNodeKey
 	static const string SCOMY = "scomY";
 	static const string SCOMWEIGHT = "scomWeight";
 	static const string CREATION_TIME = "creation_time";
+	static const string LENGTH = "length";
 };
 
 using namespace std;

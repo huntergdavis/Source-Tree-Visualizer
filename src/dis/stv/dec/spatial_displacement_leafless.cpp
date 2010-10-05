@@ -11,7 +11,7 @@
 
 using namespace std;
 
-SpatialDisplacementLeafless::SpatialDisplacementLeafless(int width, int height):width(width), height(height), growthUnit(5.0)
+SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(10.0)
 {
 }
 
@@ -21,60 +21,14 @@ void SpatialDisplacementLeafless::decorate(SurrogateTreeNode* tree)
 	// First, "count".  Calculates child center of mass and subtree depth
 	this->count(tree);
 	// Second, float weighted surrogate nodes into position
-	//this->expand(tree,(3.14159/2),0,0);
 	// Max tree depth
 	double maxDepth = tree->findMax(TreeNodeKey::DEPTH);
-	this->expand(tree,(3.14159/2),0,0,(this->height)/maxDepth);
-	// Third, transform coordinates
-	this->transform(tree);
-}
-
-
-// Scale point values to fit within width and height give
-// with root at (width/2, height)
-// Transformation flips y values and shifts x values
-// after scaling
-void SpatialDisplacementLeafless::transform(SurrogateTreeNode* tree)
-{
-	// Calculate resize scaling factors
-	double allowedWidth = this->width*0.95;
-	double allowedHeight = this->height*0.95;
-	double xMax = tree->findMax(TreeNodeKey::X);
-	double xMin = tree->findMin(TreeNodeKey::X);
-	double yMax = tree->findMax(TreeNodeKey::Y);
-	double yMin = tree->findMin(TreeNodeKey::Y);
-	DiscursiveDebugPrint("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
-	//double currWidth = xMax - xMin;
-	double maxXDim = max(fabs(xMax),fabs(xMin));
-	double currWidth = xMax - xMin;
-	double currHeight = yMax - yMin;
-
-	double minDim = min(allowedHeight, allowedWidth);
-
-	double scalingFactorW = minDim/(2*maxXDim);
-	double scalingFactorH = minDim/currHeight;
-
-	// Transform points to look more "naturally tree-like"
-	tree->scale(TreeNodeKey::Y, scalingFactorH * 0.98);
-	PropertyInverter inverter(this->height * 0.98);
-	tree->transform(TreeNodeKey::Y,&inverter);
-
-//	PropertyShifter shifter(-1*((xMax + xMin) / 2));
-//	PropertyShifter shifter(-xMin);
-	// Center on 0
-	PropertyShifter shifter(-(xMax+xMin)/2.0);
-	tree->transform(TreeNodeKey::X,&shifter);
-	// Scale tree values
-	tree->scale(TreeNodeKey::X, scalingFactorW);
-//	PropertyShifter shifter2(minDim * 1 / 2);
-	PropertyShifter shifter2(maxXDim * scalingFactorW);
-	tree->transform(TreeNodeKey::X,&shifter2);
+	this->expand(tree,(3.14159/2),0,0);
 }
 
 // Sorted in increasing order
 void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property)
 {
-	//printf("Inserting '%s' from %s.  Current size: %d\n",property.c_str(),tree->data[TreeNodeKey::NAME].c_str(), list->size());
 	SurrogateTreeNode* node;
 	bool inserted = false;
 	long comp = atol(tree->data[property].c_str());
@@ -83,7 +37,6 @@ void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* li
 	{
 		node = *iter;
 		curr = atol(node->data[property].c_str());
-		//printf("%ld < %ld?\n",atol(tree->data[property].c_str()),atol(node->data[property].c_str()));
 		if(comp < curr)
 		{
 			list->insert(iter,tree);
@@ -93,13 +46,13 @@ void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* li
 	}
 	if(!inserted)
 	{
-		//printf("Inserting at end\n");
 		list->push_back(tree);
 	}
 }
 
-void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY, double allowedHeight)
+void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY)
 {
+	bool includeFiles = true;
 	if(tree->children->size() > 0)
 	{
 		// Determine initial layout based on creation time of child nodes.
@@ -111,15 +64,16 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		int childSize;
 		int mass = 0;
 		int children = 0;
+		int subtrees = 0;
+		int leaves = 0;
 		double minChildMass = DBL_MAX;
 		for(vector<SurrogateTreeNode*>::iterator iter = tree->children->begin(); iter != tree->children->end(); ++iter)
 		{
-			children++;
 			node = *iter;
 			// Directory
 			if(node->children->size() > 0)
 			{
-				//printf("Inserting into dirs...\n");
+				subtrees++;
 				this->insertOrderedBy(&dirs,node,TreeNodeKey::SIZE);
 				childSize = atoi(node->data[TreeNodeKey::SIZE].c_str());
 				mass += childSize;
@@ -133,9 +87,9 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 				}
 			}
 			// File
-			else
+			else if(includeFiles)
 			{
-				//printf("Inserting into files...\n");
+				leaves++;
 				this->insertOrderedBy(&files,node,TreeNodeKey::CREATION_TIME);
 				mass++;
 				if(minChildMass > 1)
@@ -144,6 +98,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 				}
 			}
 		}
+		children = subtrees + leaves;
 
 		// Map for retrieving resutls
 		unordered_map<SurrogateTreeNode*,int> pairs;
@@ -155,7 +110,6 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		bool left = children % 2 != 0;
 		int center = children / 2;
 		int dist = 0;
-		//TreeDisplacementNode* treeNode;
 		int i = 0;
 		int location;
 		int nodeMass;
@@ -287,48 +241,85 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 ////			printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
 //		}
 
+		// Calculate first 2 segments of branch
+		// Branch base first
+		double length = 2*this->growthUnit;
+		// Add leaf branch spacing
+		length += ( 2 * (leaves / 5.0) ) * this->growthUnit;
+
+
 		// Transform positions to arc
 		//double arcRadius = 10.0;
 //		double deltaAngle = splay / children;
-		int maxDepth = (int)tree->findMax(TreeNodeKey::DEPTH);
-		int depth;
-		double arcRadius = allowedHeight/maxDepth;
+//		int maxDepth = (int)tree->findMax(TreeNodeKey::DEPTH);
+//		int depth;
+//		double arcRadius = allowedHeight/maxDepth;
+		double arcRadius = maxChild * this->growthUnit;
 		double ratio;
 		double angle;
 
-		// Controls width of fan-out.  > 1 : Wide tree
-		//							   < 1 : Narrow tree
-		double widthHeightScaleFactor = 0.9;
+		// Calculate fake root location
+		double fakeRootX = rootX + (length * cos(rootAngle));
+		double fakeRootY = rootY + (length * sin(rootAngle));
+
+		// Controls width of fan-out.  < 1 : Wide tree
+		//							   > 1 : Narrow tree
+		double widthHeightScaleFactor = 1.2;
 		// Transform positions to arc and Update new positions
 		// Dirs first
+		double xSum = 0;
+		double ySum = 0;
+		int lmass;
 		for(i = 0; i < (int)dirs.size(); i++)
 		{
 			node = dirs[i];
-			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
-			ratio = depth / (double)maxDepth;
-			angle = rootAngle + (positions[pairs[node]] - com);
-//			double newX = rootX + (ratio * arcRadius * cos(angle));
-//			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-			double newX = ratio * arcRadius * cos(angle);
-			double newY = ratio * arcRadius * widthHeightScaleFactor * sin(angle);
+//			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
+//			ratio = depth / (double)maxDepth;
+			ratio = atoi(node->data[TreeNodeKey::SIZE].c_str())/(double)maxChild;
+			angle = rootAngle - (positions[pairs[node]] - com);
+			double newX = fakeRootX + (ratio * arcRadius * cos(angle));
+			double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+			lmass = atoi(node->data[TreeNodeKey::SIZE].c_str());
+			xSum += (newX * lmass);
+			ySum += (newY * lmass);
+//			double newX = ratio * arcRadius * cos(angle);
+//			double newY = ratio * arcRadius * widthHeightScaleFactor * sin(angle);
 			node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
 			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
 			// Run expand on child
 			double childRot = (3.14159/2);//angle;// + ((3.14159/2)-angle)/2;
-			this->expand(node,childRot,newX,newY,allowedHeight - arcRadius);
+			this->expand(node,childRot,newX,newY);
 		}
 		// Then files
-//		for(int j = 0; j < (int)files.size(); j++)
-//		{
-//			node = files[j];
-//			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
-//			ratio = depth / (double)maxDepth;
-//			angle = rootAngle - (positions[pairs[node]] - com);
-//			double newX = rootX + (ratio * arcRadius * cos(angle));
-//			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-//			node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
-//			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
-//		}
+		if(includeFiles)
+		{
+			for(int j = 0; j < (int)files.size(); j++)
+			{
+				node = files[j];
+//				depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
+//				ratio = depth / (double)maxDepth;
+				ratio = 1 / (double)maxChild;
+				angle = rootAngle - (positions[pairs[node]] - com);
+				double newX = fakeRootX + (ratio * arcRadius * cos(angle));
+				double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+				lmass = 1;
+				xSum += (newX * lmass);
+				ySum += (newY * lmass);
+				node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
+				node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
+			}
+		}
+		xSum /= mass;
+		ySum /= mass;
+		node->set(TreeNodeKey::SCOMX,boost::lexical_cast<string>(xSum));
+		node->set(TreeNodeKey::SCOMY,boost::lexical_cast<string>(ySum));
+		// Log branch length
+		// Add sub-branch spacing
+		double dx = fakeRootX - xSum;
+		double dy = fakeRootY - ySum;
+		double branchLen = sqrt(dx*dx + dy*dy);
+		length += branchLen;
+		node->set(TreeNodeKey::LENGTH,boost::lexical_cast<string>(length));
 	}
 }
 

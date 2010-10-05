@@ -51,16 +51,14 @@ Decorator* DecoratorFactory::getInstance(int instanceType, int argc, ...)
 		va_start( args, argc );
 		switch(argc)
 		{
-		case 2:
-			width = va_arg(args,int);
-			height = va_arg(args,int);
+		case 0:
 			break;
 		default:
-			DiscursiveError("Unable to create SpatialDisplacementLeafless object with %d arguments.\n  Requires 2 arguments.\n", argc);
+			DiscursiveError("Unable to create SpatialDisplacementLeafless object with %d arguments.\n  Requires 0 arguments.\n", argc);
 			break;
 		}
 		va_end( args );
-		result = (Decorator*)(new SpatialDisplacementLeafless(width, height));
+		result = (Decorator*)(new SpatialDisplacementLeafless());
 		break;
 	}
 	default:

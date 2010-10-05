@@ -35,11 +35,14 @@ public:
 	long localRevs;
 	long revTarget;
 	long jpgIndex;
-	int scaleHeight;
-	int scaleWidth;
 	int logGenerated;
-	int imageHeight;
+	int startWidth;
+	int startHeight;
 	int imageWidth;
+	int imageHeight;
+	int scaleWidth;
+	int scaleHeight;
+
 	long currentTreeSize;
 	std::string fileName;
 	SurrogateTreeNode* source;

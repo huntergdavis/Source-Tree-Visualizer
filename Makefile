@@ -12,6 +12,7 @@ INCLUDEFLAGS = -Isrc/dis/stv/dec \
 	-Isrc/dis/stv/io \
 	-Isrc/dis/stv/main \
 	-Isrc/dis/stv/physics \
+	-Isrc/dis/stv/transform \
 	-I/usr/local/boost \
 	-I/usr/include/libxml2 \
 	-I/usr/include/ImageMagick
@@ -53,6 +54,7 @@ SOURCES = src/dis/stv/system/discursive_error.cpp \
 	src/dis/stv/gen/space_colonizer.cpp \
 	src/dis/stv/gen/colonization_leader.cpp \
 	src/dis/stv/gen/digitizer_factory.cpp \
+	src/dis/stv/gen/trapezoid_blocks.cpp \
 	src/dis/stv/draw/scanline_artist.cpp \
 	src/dis/stv/draw/drawable_data.cpp \
 	src/dis/stv/draw/drawable_datum.cpp \
@@ -71,9 +73,12 @@ SOURCES = src/dis/stv/system/discursive_error.cpp \
 	src/dis/stv/physics/spatial_object.cpp \
 	src/dis/stv/physics/fixed_attractor.cpp \
 	src/dis/stv/model/surrogate_tree_node.cpp \
-	src/dis/stv/model/property_transformer.cpp \
-	src/dis/stv/model/property_inverter.cpp \
-	src/dis/stv/model/property_shifter.cpp
+	src/dis/stv/transform/property_transformer.cpp \
+	src/dis/stv/transform/property_inverter.cpp \
+	src/dis/stv/transform/property_shifter.cpp \
+	src/dis/stv/transform/transform_factory.cpp \
+	src/dis/stv/transform/image_magick_transformer.cpp \
+	src/dis/stv/transform/image_resize_transformer.cpp
 	
 
 OBJECTS = $(SOURCES:.cpp=.o)
