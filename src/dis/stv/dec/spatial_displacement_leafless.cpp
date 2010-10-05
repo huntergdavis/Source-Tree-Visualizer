@@ -60,7 +60,9 @@ void SpatialDisplacementLeafless::transform(SurrogateTreeNode* tree)
 	tree->transform(TreeNodeKey::Y,&inverter);
 
 //	PropertyShifter shifter(-1*((xMax + xMin) / 2));
-	PropertyShifter shifter(-xMin);
+//	PropertyShifter shifter(-xMin);
+	// Center on 0
+	PropertyShifter shifter(-(xMax+xMin)/2.0);
 	tree->transform(TreeNodeKey::X,&shifter);
 	// Scale tree values
 	tree->scale(TreeNodeKey::X, scalingFactorW);
@@ -234,54 +236,56 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		com /= mass;
 
 		// Balance tree
-		double balancedCom = com;
-		double divergence = balancedCom - (max/2);
-		double scale;
-		bool shortenLeft;
-		printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
-		while(fabs(divergence) > 3.14159 / 50)
-		{
-			// Shorten left half
-			if(divergence > 0)
-			{
-				shortenLeft = true;
-				scale = (max - balancedCom)/balancedCom;
-			}
-			// Shorten right half
-			else
-			{
-				shortenLeft = false;
-				scale = balancedCom/(max - balancedCom);
-			}
-			com = 0;
-			for(i = 1; i < children; i++)
-			{
-				// Adjust position
-				if(shortenLeft && positions[i] < balancedCom)
-				{
-					positions[i] = (positions[i] - divergence) * scale;
-				}
-				else if(!shortenLeft && positions[i] > balancedCom)
-				{
-					positions[i] = ((positions[i] - balancedCom) * scale) + balancedCom;
-				}
-				else if(shortenLeft && positions[i] > balancedCom)
-				{
-					positions[i] -= (2 * balancedCom - max);
-				}
-//				else
+//		double balancedCom = com;
+//		double divergence = balancedCom - (max/2);
+//		double scale;
+//		bool shortenLeft;
+//		printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
+//		int step = 0;
+//		while(fabs(divergence) > 3.14159 / (50-step))
+//		{
+//			// Shorten left half
+//			if(divergence > 0)
+//			{
+//				shortenLeft = true;
+//				scale = (max - balancedCom)/balancedCom;
+//			}
+//			// Shorten right half
+//			else
+//			{
+//				shortenLeft = false;
+//				scale = balancedCom/(max - balancedCom);
+//			}
+//			com = 0;
+//			for(i = 1; i < children; i++)
+//			{
+//				// Adjust position
+//				if(shortenLeft && positions[i] < balancedCom)
 //				{
-//					positions[i] = ;
+//					positions[i] = (positions[i] - divergence) * scale;
 //				}
-
-				// Aggregate new position to calc new CoM
-				com += (positions[i] * masses[i]);
-			}
-			max = 2*(max - balancedCom);
-			balancedCom = com/mass;
-			divergence = balancedCom - (max/2);
-//			printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
-		}
+//				else if(!shortenLeft && positions[i] > balancedCom)
+//				{
+//					positions[i] = ((positions[i] - balancedCom) * scale) + balancedCom;
+//				}
+//				else if(shortenLeft && positions[i] > balancedCom)
+//				{
+//					positions[i] -= (2 * balancedCom - max);
+//				}
+////				else
+////				{
+////					positions[i] = ;
+////				}
+//
+//				// Aggregate new position to calc new CoM
+//				com += (positions[i] * masses[i]);
+//			}
+//			max = 2*(max - balancedCom);
+//			balancedCom = com/mass;
+//			divergence = balancedCom - (max/2);
+//			step++;
+////			printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
+//		}
 
 		// Transform positions to arc
 		//double arcRadius = 10.0;
