@@ -50,7 +50,7 @@ void SpatialDisplacement::transform(SurrogateTreeNode* tree)
 	double xMin = tree->findMin(TreeNodeKey::X);
 	double yMax = tree->findMax(TreeNodeKey::Y);
 	double yMin = tree->findMin(TreeNodeKey::Y);
-	DiscursiveDebugPrint("spatial displacement",Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
+	DiscursiveDebugPrint("spatial displacement","Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
 

@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 	{
 		loopStop = git->globalInserts-1;
 	}
-	DiscursiveDebugPrint("Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
+	DiscursiveDebugPrint("default","Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
 	if((executeLoopType == 3) && (loopStop >= git->globalRevs))
 	{
 		loopStop = git->globalRevs-1;
