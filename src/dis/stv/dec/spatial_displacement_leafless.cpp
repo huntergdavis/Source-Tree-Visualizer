@@ -298,7 +298,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Controls width of fan-out.  > 1 : Wide tree
 		//							   < 1 : Narrow tree
-		double widthHeightScaleFactor = 1.0;
+		double widthHeightScaleFactor = 0.9;
 		// Transform positions to arc and Update new positions
 		// Dirs first
 		for(i = 0; i < (int)dirs.size(); i++)
@@ -306,9 +306,11 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			node = dirs[i];
 			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
 			ratio = depth / (double)maxDepth;
-			angle = rootAngle - (positions[pairs[node]] - com);
-			double newX = rootX + (ratio * arcRadius * cos(angle));
-			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+			angle = rootAngle + (positions[pairs[node]] - com);
+//			double newX = rootX + (ratio * arcRadius * cos(angle));
+//			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+			double newX = ratio * arcRadius * cos(angle);
+			double newY = ratio * arcRadius * widthHeightScaleFactor * sin(angle);
 			node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
 			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
 			// Run expand on child
@@ -316,17 +318,17 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			this->expand(node,childRot,newX,newY,allowedHeight - arcRadius);
 		}
 		// Then files
-		for(int j = 0; j < (int)files.size(); j++)
-		{
-			node = files[j];
-			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
-			ratio = depth / (double)maxDepth;
-			angle = rootAngle - (positions[pairs[node]] - com);
-			double newX = rootX + (ratio * arcRadius * cos(angle));
-			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-			node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
-			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
-		}
+//		for(int j = 0; j < (int)files.size(); j++)
+//		{
+//			node = files[j];
+//			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
+//			ratio = depth / (double)maxDepth;
+//			angle = rootAngle - (positions[pairs[node]] - com);
+//			double newX = rootX + (ratio * arcRadius * cos(angle));
+//			double newY = rootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+//			node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
+//			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
+//		}
 	}
 }
 
