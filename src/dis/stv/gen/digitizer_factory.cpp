@@ -32,6 +32,23 @@ Digitizer* DigitizerFactory::getInstance(int instanceType, int argc, ...)
 		result = (Digitizer*)(new SpaceColonizer(segLen));
 		break;
 	}
+	case SIMPLE_TRAPEZOIDER:
+	{
+		va_list args;
+
+		va_start( args, argc );
+		switch(argc)
+		{
+		case 0:
+			break;
+		default:
+			DiscursiveError("Unable to create SpaceColonizer object with %d arguments.\n  Requires 0 arguments.\n", argc);
+			break;
+		}
+		va_end( args );
+		result = (Digitizer*)(new TrapezoidBlocks());
+		break;
+	}
 	default:
 		DiscursiveError("Request for invalid Digitizer type '%d'\n", instanceType);
 		break;

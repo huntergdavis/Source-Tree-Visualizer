@@ -187,7 +187,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 	// Step or stop if we didn't split
 	if(!split)
 	{
-		leader->step();
+//		leader->step(1.0);
 		double x = leader->getLocationX();
 		double y = leader->getLocationY();
 		// If there are multiple targets, we always step

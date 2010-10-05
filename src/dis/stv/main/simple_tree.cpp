@@ -142,9 +142,7 @@ int main(int argc, char **argv)
 		// Decorate surrogate tree nodes with locations
 		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Decorating surrogate trees");
-//		SpatialDisplacement* disp = new SpatialDisplacement(git->imageWidth,git->imageHeight,scaleWidth,scaleHeight);
 		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_LEAF_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
-//		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 4, git->imageWidth,git->imageHeight,widthRescaling,heightRescaling);
 		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
 		decorator->decorate(git->source);
 		timerAgent.PrintToc("Decorating surrogate trees");
@@ -153,18 +151,15 @@ int main(int argc, char **argv)
 		DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
 		timerAgent.Tic("Transforming tree");
 		int transformerType = TransformFactory::IMAGE_MAGICK_TRANSFORMER;
-//		Transformer<SurrogateTreeNode>* transformer = TransformerFactory<SurrogateTreeNode>::getInstance(transformerType,2,git->imageWidth, (int)(0.95*git->imageHeight));
 		TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
-//		transformer->transform(git->source);
 		timerAgent.PrintToc("Transforming tree");
 
 		// Digitize decorated surrogate tree into line segment tree
 		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Digitizing decorated trees into line segments");
 		int segmentLength = 1;
-//	    SpaceColonizer *digitizer = new SpaceColonizer(segmentLength);
-		int digitizerType = DigitizerFactory::SPACE_COLONIZER;
-		Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,1,segmentLength);
+		int digitizerType = DigitizerFactory::SIMPLE_TRAPEZOIDER;
+		Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,0);
 		DrawableData* lines = digitizer->digitize(git->source);
 		timerAgent.PrintToc("Digitizing decorated trees into line segments");
 
@@ -180,9 +175,7 @@ int main(int argc, char **argv)
 		DiscursivePrint("Transforming image of size %d x %d to create %d x %d image\n",git->startWidth,git->startHeight,git->imageWidth, git->imageHeight);
 		timerAgent.Tic("Transforming image");
 		transformerType = TransformFactory::IMAGE_RESIZE_TRANSFORMER;
-//		Transformer<Image>* imageTransformer = TransformerFactory<Image>::getInstance(transformerType,2,git->imageWidth, (int)(0.95*git->imageHeight));
 		TransformFactory::transform(transformerType,3,&canvas,git->imageWidth,git->imageHeight);
-//		imageTransformer->transform(&canvas);
 		timerAgent.PrintToc("Transforming image");
 
 		// actually generate a tree
@@ -193,11 +186,6 @@ int main(int argc, char **argv)
 		delete digitizer;
 		delete decorator;
 
-//		if(git->source != NULL)
-//		{
-//			delete(git->source);
-//			git->source = NULL;
-//		}
 		DiscursivePrint("\n");
 	}
 

@@ -2,12 +2,13 @@
  * colonization_leader.h
  *
  *  Created on: Aug 18, 2010
- *      Author: programmer
+ *      Author: Mark Christensen
  */
 
 #ifndef COLONIZATION_LEADER_H_
 #define COLONIZATION_LEADER_H_
 
+#include "math.h"
 #include "../model/surrogate_tree_node.h"
 #include "../system/discursive_system.h"
 
@@ -15,7 +16,9 @@
 class ColonizationLeader
 {
 private:
-	int length;
+	double length;
+	double startLocationX;
+	double startLocationY;
 	double locationX;
 	double locationY;
 	double orientation;
@@ -28,7 +31,7 @@ public:
 	double getLocationY();
 	double getOrientation();
 	int getLength();
-	int step();
+	double step(double stepSize);
 	void setLocation(double x, double y);
 	void setOrientation(double orientation);
 	SurrogateTreeNode* getSourceSet();

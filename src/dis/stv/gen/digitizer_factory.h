@@ -10,10 +10,12 @@
 
 #include "./digitizer.h"
 #include "./space_colonizer.h"
+#include "./trapezoid_blocks.h"
 
 class DigitizerFactory {
 public:
 	static const int SPACE_COLONIZER = 0;
+	static const int SIMPLE_TRAPEZOIDER = 1;
 
 	static Digitizer* getInstance(int instanceType, int argc, ...);
 };
