@@ -11,7 +11,7 @@
 
 using namespace std;
 
-SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(10.0)
+SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(50.0)
 {
 }
 
@@ -22,7 +22,7 @@ void SpatialDisplacementLeafless::decorate(SurrogateTreeNode* tree)
 	this->count(tree);
 	// Second, float weighted surrogate nodes into position
 	// Max tree depth
-	double maxDepth = tree->findMax(TreeNodeKey::DEPTH);
+//	double maxDepth = tree->findMax(TreeNodeKey::DEPTH);
 	this->expand(tree,(3.14159/2),0,0);
 }
 
@@ -53,6 +53,10 @@ void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* li
 void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY)
 {
 	bool includeFiles = true;
+
+	tree->set(TreeNodeKey::X, boost::lexical_cast<string>(rootX));
+	tree->set(TreeNodeKey::Y, boost::lexical_cast<string>(rootY));
+
 	if(tree->children->size() > 0)
 	{
 		// Determine initial layout based on creation time of child nodes.
@@ -254,7 +258,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 //		int maxDepth = (int)tree->findMax(TreeNodeKey::DEPTH);
 //		int depth;
 //		double arcRadius = allowedHeight/maxDepth;
-		double arcRadius = maxChild * this->growthUnit;
+		double arcRadius = 2.0 * maxChild * this->growthUnit;
 		double ratio;
 		double angle;
 
@@ -264,12 +268,13 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Controls width of fan-out.  < 1 : Wide tree
 		//							   > 1 : Narrow tree
-		double widthHeightScaleFactor = 1.2;
+		double widthHeightScaleFactor = 0.8;
 		// Transform positions to arc and Update new positions
 		// Dirs first
 		double xSum = 0;
 		double ySum = 0;
 		int lmass;
+		double massSum = 0;
 		for(i = 0; i < (int)dirs.size(); i++)
 		{
 			node = dirs[i];
@@ -279,13 +284,12 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			angle = rootAngle - (positions[pairs[node]] - com);
 			double newX = fakeRootX + (ratio * arcRadius * cos(angle));
 			double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-			lmass = atoi(node->data[TreeNodeKey::SIZE].c_str());
+			lmass = 5.0 * atoi(node->data[TreeNodeKey::SIZE].c_str()) / (double)maxChild;
 			xSum += (newX * lmass);
 			ySum += (newY * lmass);
+			massSum += lmass;
 //			double newX = ratio * arcRadius * cos(angle);
 //			double newY = ratio * arcRadius * widthHeightScaleFactor * sin(angle);
-			node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
-			node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
 			// Run expand on child
 			double childRot = (3.14159/2);//angle;// + ((3.14159/2)-angle)/2;
 			this->expand(node,childRot,newX,newY);
@@ -302,21 +306,30 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 				angle = rootAngle - (positions[pairs[node]] - com);
 				double newX = fakeRootX + (ratio * arcRadius * cos(angle));
 				double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-				lmass = 1;
+				lmass = 5.0 / (double)maxChild;
 				xSum += (newX * lmass);
 				ySum += (newY * lmass);
+				massSum += lmass;
 				node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
 				node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
 			}
 		}
-		xSum /= mass;
-		ySum /= mass;
-		node->set(TreeNodeKey::SCOMX,boost::lexical_cast<string>(xSum));
-		node->set(TreeNodeKey::SCOMY,boost::lexical_cast<string>(ySum));
+		if(massSum != 0)
+		{
+			xSum /= massSum;
+			ySum /= massSum;
+			tree->set(TreeNodeKey::SCOMX,boost::lexical_cast<string>(xSum));
+			tree->set(TreeNodeKey::SCOMY,boost::lexical_cast<string>(ySum));
+		}
+		else
+		{
+			tree->set(TreeNodeKey::SCOMX,boost::lexical_cast<string>(rootX));
+			tree->set(TreeNodeKey::SCOMY,boost::lexical_cast<string>(rootY));
+		}
 		// Log branch length
 		// Add sub-branch spacing
-		double dx = fakeRootX - xSum;
-		double dy = fakeRootY - ySum;
+		double dx = xSum - fakeRootX;
+		double dy = ySum - fakeRootY;
 		double branchLen = sqrt(dx*dx + dy*dy);
 		length += branchLen;
 		node->set(TreeNodeKey::LENGTH,boost::lexical_cast<string>(length));

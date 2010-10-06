@@ -18,6 +18,7 @@
 #include "../model/surrogate_tree_node.h"
 #include "../dec/spatial_displacement.h"
 #include "../draw/scanline_artist.h"
+#include "../draw/trapezoid_artist.h"
 #include "../gen/space_colonizer.h"
 #include "../transform/transformer.h"
 
@@ -151,6 +152,7 @@ int main(int argc, char **argv)
 		DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
 		timerAgent.Tic("Transforming tree");
 		int transformerType = TransformFactory::IMAGE_MAGICK_TRANSFORMER;
+		printf("Calling transform with (%d, %d, %p, %d, %d)\n",transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
 		TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
 		timerAgent.PrintToc("Transforming tree");
 
@@ -167,7 +169,7 @@ int main(int argc, char **argv)
 		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Drawing Tree with artist.draw");
 		Image canvas(Geometry(git->startWidth,git->startHeight),"white");
-		ScanlineArtist artist;
+		TrapezoidArtist artist;
 		artist.draw(canvas, lines);
 		timerAgent.PrintToc("Drawing Tree with artist.draw");
 

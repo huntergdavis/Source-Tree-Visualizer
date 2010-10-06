@@ -21,6 +21,7 @@ void ImageMagickTransformer::transform(va_list args)
 	SurrogateTreeNode* tree = va_arg(args,SurrogateTreeNode*);
 	int width = va_arg(args,int);
 	int height = va_arg(args,int);
+	printf("Transform called with (%p, %d, %d)\n",tree,width,height);
 	// Calculate resize scaling factors
 	double allowedWidth = 0.95*width;
 	double allowedHeight = 0.95*height;
@@ -28,19 +29,29 @@ void ImageMagickTransformer::transform(va_list args)
 	double xMin = tree->findMin(TreeNodeKey::X);
 	double yMax = tree->findMax(TreeNodeKey::Y);
 	double yMin = tree->findMin(TreeNodeKey::Y);
-	DiscursiveDebugPrint("Mins: (%f,%f), Maxs: (%f,%f)\n",xMin,yMin,xMax,yMax);
+	DiscursiveDebugPrint("Mins: (%f,%f), Maxs: (%f,%f) | Bounds: (%d x %d)\n",xMin,yMin,xMax,yMax,(int)allowedWidth, (int)allowedHeight);
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
 
 	double minDim = min(allowedHeight, allowedWidth);
 
-	double scalingFactorW = minDim/currWidth;
+	double scalingFactorW = 1;
+	if(currWidth > minDim)
+	{
+		scalingFactorW = minDim/currWidth;
+	}
 	double scalingFactorH = minDim/currHeight;
+	if(currHeight > minDim)
+	{
+		scalingFactorH = minDim/currHeight;
+	}
 
 	// Transform points to look more "naturally tree-like"
 	tree->scale(TreeNodeKey::Y, scalingFactorH);
 	PropertyInverter inverter(height * 0.98);
 	tree->transform(TreeNodeKey::Y,&inverter);
+	tree->scale(TreeNodeKey::SCOMY, scalingFactorH);
+	tree->transform(TreeNodeKey::SCOMY,&inverter);
 
 	PropertyShifter shifter(-1*((xMax + xMin) / 2));
 	tree->transform(TreeNodeKey::X,&shifter);
@@ -48,4 +59,9 @@ void ImageMagickTransformer::transform(va_list args)
 	tree->scale(TreeNodeKey::X, scalingFactorW);
 	PropertyShifter shifter2(minDim / 2.0);
 	tree->transform(TreeNodeKey::X,&shifter2);
+
+	tree->transform(TreeNodeKey::SCOMX,&shifter);
+	// Scale subtree values
+	tree->scale(TreeNodeKey::SCOMX, scalingFactorW);
+	tree->transform(TreeNodeKey::SCOMX,&shifter2);
 }

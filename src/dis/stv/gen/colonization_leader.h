@@ -16,9 +16,7 @@
 class ColonizationLeader
 {
 private:
-	double length;
-	double startLocationX;
-	double startLocationY;
+	int length;
 	double locationX;
 	double locationY;
 	double orientation;
@@ -31,7 +29,7 @@ public:
 	double getLocationY();
 	double getOrientation();
 	int getLength();
-	double step(double stepSize);
+	int step();
 	void setLocation(double x, double y);
 	void setOrientation(double orientation);
 	SurrogateTreeNode* getSourceSet();

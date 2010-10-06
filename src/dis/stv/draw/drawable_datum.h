@@ -16,6 +16,7 @@ struct MinDrawableDatum
 	double angle;
 	int extent;
 	int mass;
+	double massRatio;
 };
 
 

@@ -55,9 +55,11 @@ SOURCES = src/dis/stv/system/discursive_error.cpp \
 	src/dis/stv/gen/colonization_leader.cpp \
 	src/dis/stv/gen/digitizer_factory.cpp \
 	src/dis/stv/gen/trapezoid_blocks.cpp \
+	src/dis/stv/gen/trapezoid_leader.cpp \
 	src/dis/stv/draw/scanline_artist.cpp \
 	src/dis/stv/draw/drawable_data.cpp \
 	src/dis/stv/draw/drawable_datum.cpp \
+	src/dis/stv/draw/trapezoid_artist.cpp \
 	src/dis/stv/dec/spatial_displacement.cpp \
 	src/dis/stv/dec/decorator_factory.cpp \
 	src/dis/stv/dec/spatial_displacement_leafless.cpp \
