@@ -35,7 +35,7 @@ private:
 	double growthUnit;
 	void expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY);
 	int count(SurrogateTreeNode* tree);
-	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property);
+	void insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property, bool ascending);
 };
 
 #endif /* SPATIAL_DISPLACEMENT_LEAFLESS_H_ */

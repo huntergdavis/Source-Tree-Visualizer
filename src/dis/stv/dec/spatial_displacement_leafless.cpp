@@ -27,7 +27,7 @@ void SpatialDisplacementLeafless::decorate(SurrogateTreeNode* tree)
 }
 
 // Sorted in increasing order
-void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property)
+void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* list, SurrogateTreeNode* tree, string property, bool ascending = true)
 {
 	SurrogateTreeNode* node;
 	bool inserted = false;
@@ -37,7 +37,7 @@ void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* li
 	{
 		node = *iter;
 		curr = atol(node->data[property].c_str());
-		if(comp < curr)
+		if((ascending && comp < curr) || (!ascending && comp > curr))
 		{
 			list->insert(iter,tree);
 			inserted = true;
@@ -52,7 +52,7 @@ void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* li
 
 void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY)
 {
-	bool includeFiles = true;
+//	bool includeFiles = true;
 
 	tree->set(TreeNodeKey::X, boost::lexical_cast<string>(rootX));
 	tree->set(TreeNodeKey::Y, boost::lexical_cast<string>(rootY));
@@ -78,7 +78,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			if(node->children->size() > 0)
 			{
 				subtrees++;
-				this->insertOrderedBy(&dirs,node,TreeNodeKey::SIZE);
+				this->insertOrderedBy(&dirs,node,TreeNodeKey::SIZE,false);
 				childSize = atoi(node->data[TreeNodeKey::SIZE].c_str());
 				mass += childSize;
 				if(childSize > maxChild )
@@ -91,15 +91,16 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 				}
 			}
 			// File
-			else if(includeFiles)
+//			else if(includeFiles)
+			else
 			{
 				leaves++;
-				this->insertOrderedBy(&files,node,TreeNodeKey::CREATION_TIME);
-				mass++;
-				if(minChildMass > 1)
-				{
-					minChildMass = 1;
-				}
+//				this->insertOrderedBy(&files,node,TreeNodeKey::CREATION_TIME);
+//				mass++;
+//				if(minChildMass > 1)
+//				{
+//					minChildMass = 1;
+//				}
 			}
 		}
 		children = subtrees + leaves;
@@ -161,7 +162,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Calculate spacing to range [0,splay]
 		double deltaSplay = 0;
-		double splay = 3.14159 / 2;
+		double splay = 3.14159 / 1.4;
 		double com;
 		double max = 0;
 		if(mass > minChildMass)
@@ -195,7 +196,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Balance tree
 //		double balancedCom = com;
-//		double divergence = balancedCom - (max/2);
+		double divergence = com - (3.14159/2);
 //		double scale;
 //		bool shortenLeft;
 //		printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
@@ -247,7 +248,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Calculate first 2 segments of branch
 		// Branch base first
-		double length = 2*this->growthUnit;
+		double length = 5 * this->growthUnit;
 		// Add leaf branch spacing
 		length += ( 2 * (leaves / 5.0) ) * this->growthUnit;
 
@@ -295,25 +296,25 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			this->expand(node,childRot,newX,newY);
 		}
 		// Then files
-		if(includeFiles)
-		{
-			for(int j = 0; j < (int)files.size(); j++)
-			{
-				node = files[j];
-//				depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
-//				ratio = depth / (double)maxDepth;
-				ratio = 1 / (double)maxChild;
-				angle = rootAngle - (positions[pairs[node]] - com);
-				double newX = fakeRootX + (ratio * arcRadius * cos(angle));
-				double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-				lmass = 5.0 / (double)maxChild;
-				xSum += (newX * lmass);
-				ySum += (newY * lmass);
-				massSum += lmass;
-				node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
-				node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
-			}
-		}
+//		if(includeFiles)
+//		{
+//			for(int j = 0; j < (int)files.size(); j++)
+//			{
+//				node = files[j];
+////				depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
+////				ratio = depth / (double)maxDepth;
+//				ratio = 1 / (double)maxChild;
+//				angle = rootAngle - (positions[pairs[node]] - com);
+//				double newX = fakeRootX + (ratio * arcRadius * cos(angle));
+//				double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
+//				lmass = 5.0 / (double)maxChild;
+//				xSum += (newX * lmass);
+//				ySum += (newY * lmass);
+//				massSum += lmass;
+//				node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
+//				node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
+//			}
+//		}
 		if(massSum != 0)
 		{
 			xSum /= massSum;

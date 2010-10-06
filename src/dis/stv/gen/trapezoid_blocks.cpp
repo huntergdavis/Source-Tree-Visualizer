@@ -62,11 +62,12 @@ bool TrapezoidBlocks::shouldSplit(SurrogateTreeNode* attractor, TrapezoidLeader*
 	double currentOrientation = leader->getOrientation();
 	// Split if angle from leader to attractor is
 	// 'enough' more then current orientation
-	double enough = 3.14159 * leader->getLength() / 12;
-	if(enough > 3.14159 / 3)
-	{
-		enough = 3.14159 / 3;
-	}
+	//double enough = 3.14159 * leader->getLength() / 12;
+	double enough = 3.14159 / 3.0;
+//	if(enough > 3.14159 / 2.0)
+//	{
+//		enough = 3.14159 / 2.0;
+//	}
 
 	double attractorAngle = orientationBetween(attractor, leader);
 
