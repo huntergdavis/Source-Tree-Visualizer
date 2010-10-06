@@ -28,12 +28,15 @@ namespace TreeNodeKey
 	static const string SCOMWEIGHT = "scomWeight";
 	static const string CREATION_TIME = "creation_time";
 	static const string LENGTH = "length";
+	static const string REVISIONCREATED = "revisioncreated";
 };
 
 using namespace std;
 
 class SurrogateTreeNode : public Surrogate
 {
+private:
+	int creationRevisionNumber;
 public:
 	SurrogateTreeNode();
 	~SurrogateTreeNode();
@@ -45,6 +48,7 @@ public:
 	void scale(string property, double factor);
 	void transform(string property, PropertyTransformer* transformer);
 	void set(string key, string value);
+	void set(string key, int value);
 };
 
 #endif /* SURROGATE_TREE_NODE_H_ */

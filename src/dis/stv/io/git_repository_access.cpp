@@ -49,6 +49,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		string timeStr = boost::lexical_cast<string>(fileTime);
 		file->set(TreeNodeKey::CREATION_TIME, timeStr);
 		file->set(TreeNodeKey::NAME, pathname);
+		file->set(TreeNodeKey::REVISIONCREATED, localRevs);
 		DiscursiveDebugPrint("git,repository access","Adding node '%s' @ time %ld\n",pathname.c_str(),fileTime);
 		tree->children->push_back(file);
 	}
@@ -74,6 +75,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 				{
 					DiscursiveDebugPrint("git,repository access","Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), fileTime, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
 					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(fileTime));
+					node->set(TreeNodeKey::REVISIONCREATED, localRevs);
 				}
 				break;
 			}
@@ -85,6 +87,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 			string timeStr = boost::lexical_cast<string>(fileTime);
 			node->set(TreeNodeKey::CREATION_TIME, timeStr);
 			node->set(TreeNodeKey::NAME, name);
+			node->set(TreeNodeKey::REVISIONCREATED, localRevs);
 			DiscursiveDebugPrint("git,repository access","Adding node '%s' @ time %ld\n",name.c_str(),fileTime);
 			tree->children->push_back(node);
 		}
