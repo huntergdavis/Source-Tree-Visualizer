@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 		DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
 		timerAgent.Tic("Transforming tree");
 		int transformerType = TransformFactory::IMAGE_MAGICK_TRANSFORMER;
-		printf("Calling transform with (%d, %d, %p, %d, %d)\n",transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
+//		printf("Calling transform with (%d, %d, %p, %d, %d)\n",transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
 		TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
 		timerAgent.PrintToc("Transforming tree");
 

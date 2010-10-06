@@ -20,6 +20,6 @@ void ImageResizeTransformer::transform(va_list args)
 	Image* canvas = va_arg(args,Image*);
 	int width = va_arg(args,int);
 	int height = va_arg(args,int);
-	printf("%d x %d\n",width,height);
+//	printf("%d x %d\n",width,height);
 	canvas->scale(Geometry(width,height));
 }

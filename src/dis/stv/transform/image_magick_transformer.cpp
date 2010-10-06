@@ -21,7 +21,7 @@ void ImageMagickTransformer::transform(va_list args)
 	SurrogateTreeNode* tree = va_arg(args,SurrogateTreeNode*);
 	int width = va_arg(args,int);
 	int height = va_arg(args,int);
-	printf("Transform called with (%p, %d, %d)\n",tree,width,height);
+//	printf("Transform called with (%p, %d, %d)\n",tree,width,height);
 	// Calculate resize scaling factors
 	double allowedWidth = 0.95*width;
 	double allowedHeight = 0.95*height;

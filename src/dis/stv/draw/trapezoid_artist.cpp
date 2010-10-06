@@ -77,14 +77,14 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 				dy = -1 * (drawItem->mass * drawItem->massRatio/2.0) * sin(drawItem->angle);
 				trapezoid.push_back(Coordinate(endX + dy,endY - dx));
 				trapezoid.push_back(Coordinate(endX - dy,endY + dx));
-				printf("Drawing polygon [");
-				Coordinate p;
-				for(list<Coordinate>::iterator pt = trapezoid.begin(); pt != trapezoid.end(); ++pt)
-				{
-					p = *pt;
-					printf("<%d,%d>,",(int)p.x(),(int)p.y());
-				}
-				printf("]\n");
+//				printf("Drawing polygon [");
+//				Coordinate p;
+//				for(list<Coordinate>::iterator pt = trapezoid.begin(); pt != trapezoid.end(); ++pt)
+//				{
+//					p = *pt;
+//					printf("<%d,%d>,",(int)p.x(),(int)p.y());
+//				}
+//				printf("]\n");
 				drawList.push_back(DrawableCircle(x, y, x, y + (drawItem->mass/2.0)));
 				drawList.push_back(DrawablePolygon(trapezoid));
 			}
