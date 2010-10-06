@@ -29,7 +29,7 @@ double TetheredSpatialObject::getTetherRadius()
 // Update location based on acceleration and update constraints (tether)
 double TetheredSpatialObject::updateLocation(double timeDelta)
 {
-	DiscursiveDebugPrint("Updating location to...\n");
+	DiscursiveDebugPrint("spatial physics","Updating location to...\n");
 	// Test unmodified acceleration values against
 	// tether location constraints:
 	// First check that distance to tether is less than
@@ -48,7 +48,7 @@ double TetheredSpatialObject::updateLocation(double timeDelta)
 		{
 			// Update location with new values
 			this->setLocation(ndx + this->tetherX,ndy + this->tetherY);
-			DiscursiveDebugPrint("(%f, %f)\n",ndx + this->tetherX,ndy + this->tetherY);
+			DiscursiveDebugPrint("spatial physics","(%f, %f)\n",ndx + this->tetherX,ndy + this->tetherY);
 		}
 		// Since tether won't allow the full movement
 		// calculate distance we can move before it becoming taut.
@@ -113,7 +113,7 @@ double TetheredSpatialObject::updateLocation(double timeDelta)
 				}
 			}
 
-			DiscursiveDebugPrint("(%f,%f)~(%f,%f) -> %f\n",dx,dy,ndx,ndy,offs);
+			DiscursiveDebugPrint("spatial physics","(%f,%f)~(%f,%f) -> %f\n",dx,dy,ndx,ndy,offs);
 			// Use new rotation to get intermediate x,y
 			double newRot = atan(dy/dx) + offs;
 			dx = this->tetherRadius * cos(newRot);
@@ -157,13 +157,13 @@ double TetheredSpatialObject::updateLocation(double timeDelta)
 			double finalY = this->tetherRadius * sin(finalRot);
 			// Update location
 			this->setLocation(finalX, finalY);
-			DiscursiveDebugPrint("(%f, %f)\n",finalX,finalY);
+			DiscursiveDebugPrint("spatial physics","(%f, %f)\n",finalX,finalY);
 		}
 	}
 	// Tether is taut
 	else
 	{
-		DiscursiveDebugPrint("tether is taut\n");
+		DiscursiveDebugPrint("spatial physics","tether is taut\n");
 		// Calculate mag of accel tangential to tether
 		double aTangentX = 0;
 		double aTangentY = this->getAccelY();
@@ -185,7 +185,7 @@ double TetheredSpatialObject::updateLocation(double timeDelta)
 			}
 		}
 		double aTangentMag = sqrt(aTangentX * aTangentX + aTangentY * aTangentY);
-		DiscursiveDebugPrint("Acceleration: <%f,%f>  Tangent @ (%f,%f): <%f,%f>\n",this->getAccelX(),this->getAccelY(),this->getX(),this->getY(),aTangentX,aTangentY);
+		DiscursiveDebugPrint("spatial physics","Acceleration: <%f,%f>  Tangent @ (%f,%f): <%f,%f>\n",this->getAccelX(),this->getAccelY(),this->getX(),this->getY(),aTangentX,aTangentY);
 		// Convert cartesian movement into polar movement
 		double dRot = (timeDelta * timeDelta) * (aTangentMag/this->tetherRadius);
 		// Calculate current polar rotation.
@@ -203,7 +203,7 @@ double TetheredSpatialObject::updateLocation(double timeDelta)
 		double finalY = this->tetherRadius * sin(finalRot);
 		// Update location
 		this->setLocation(finalX, finalY);
-		DiscursiveDebugPrint("(%f, %f)\n",finalX,finalY);
+		DiscursiveDebugPrint("spatial physics","(%f, %f)\n",finalX,finalY);
 	}
 	return 0;
 }

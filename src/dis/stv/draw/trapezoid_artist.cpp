@@ -16,7 +16,7 @@ using namespace Magick;
 
 void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 {
-	DiscursiveDebugPrint("Drawing\n");
+	DiscursiveDebugPrint("trapezoid artist","Drawing\n");
 	
 	list<Drawable> drawList;
 	drawList.push_back(DrawableStrokeWidth(0));

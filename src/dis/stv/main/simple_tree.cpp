@@ -24,15 +24,12 @@
 
 
 using namespace Magick;
-int debugLevel;
+DiscursiveDebugAgent debugAgent;
 
 int main(int argc, char **argv)
 {
 	// initialize libmagick
 	InitializeMagick(*argv);
-
-	// set the debug level
-	SetDiscursiveDebugLevel(0);
 
 	// initialize our timing class
 	DiscursiveTime timerAgent("Entire SourceTreeVis Program");
@@ -73,15 +70,15 @@ int main(int argc, char **argv)
 	git->logGenerated = 0;
 
 	// retrieve our source tree
-	DiscursivePrint("Retrieving From Server, Please Wait...\n");
+	DiscursiveDebugPrint("default","Retrieving From Server, Please Wait...\n");
 	timerAgent.Tic("Initial Retrieve");
 	git->source = git->retrieve();
-	DiscursivePrint("Server Retrieval Took:\n");
-	timerAgent.PrintToc("Initial Retrieve");
+	DiscursiveDebugPrint("time","Server Retrieval Took:\n");
+	timerAgent.Toc("Initial Retrieve");
 
 	// output tree info
-	DiscursivePrint("Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
-	DiscursivePrint("Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
+	DiscursiveDebugPrint("default","Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
+	DiscursiveDebugPrint("default","Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
 
 	delete(git->source);
 	git->source = NULL;
@@ -113,7 +110,7 @@ int main(int argc, char **argv)
 	{
 		loopStop = git->globalInserts-1;
 	}
-	DiscursiveDebugPrint("Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
+	DiscursiveDebugPrint("default","Total revs in repo = %d and loopstop = %d\n",git->globalRevs,loopStop);
 	if((executeLoopType == 3) && (loopStop >= git->globalRevs))
 	{
 		loopStop = git->globalRevs-1;
@@ -141,12 +138,12 @@ int main(int argc, char **argv)
 
 
 		// Decorate surrogate tree nodes with locations
-		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursiveDebugPrint("default","Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Decorating surrogate trees");
 		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_LEAF_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
 		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
 		decorator->decorate(git->source);
-		timerAgent.PrintToc("Decorating surrogate trees");
+		timerAgent.Toc("Decorating surrogate trees");
 
 		// Transform coordinates
 		DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
@@ -157,21 +154,21 @@ int main(int argc, char **argv)
 		timerAgent.PrintToc("Transforming tree");
 
 		// Digitize decorated surrogate tree into line segment tree
-		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursiveDebugPrint("default","Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Digitizing decorated trees into line segments");
 		int segmentLength = 1;
 		int digitizerType = DigitizerFactory::SIMPLE_TRAPEZOIDER;
 		Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,0);
 		DrawableData* lines = digitizer->digitize(git->source);
-		timerAgent.PrintToc("Digitizing decorated trees into line segments");
+		timerAgent.Toc("Digitizing decorated trees into line segments");
 
 		// Draw tree
-		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursiveDebugPrint("default","Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Drawing Tree with artist.draw");
 		Image canvas(Geometry(git->startWidth,git->startHeight),"white");
 		TrapezoidArtist artist;
 		artist.draw(canvas, lines);
-		timerAgent.PrintToc("Drawing Tree with artist.draw");
+		timerAgent.Toc("Drawing Tree with artist.draw");
 
 		// Transform image
 		DiscursivePrint("Transforming image of size %d x %d to create %d x %d image\n",git->startWidth,git->startHeight,git->imageWidth, git->imageHeight);
@@ -183,12 +180,12 @@ int main(int argc, char **argv)
 		// actually generate a tree
 		timerAgent.Tic("actually generating image from canvas");
 		git->WriteJPGFromCanvas(&canvas);
-		timerAgent.PrintToc("actually generating image from canvas");
+		timerAgent.Toc("actually generating image from canvas");
 
 		delete digitizer;
 		delete decorator;
 
-		DiscursivePrint("\n");
+		DiscursiveDebugPrint("default","\n");
 	}
 
 	// finish the timing on our entire program

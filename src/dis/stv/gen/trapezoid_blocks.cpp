@@ -138,7 +138,7 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 						// Create new Leader with child set that caused split
 						double attractorAngle = orientationBetweenSubtree(attractor, leader);
 						int subtreeMass = atoi(source->data[TreeNodeKey::SIZE].c_str());
-						printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
+//						printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
 						TrapezoidLeader* newLeader = new TrapezoidLeader(leader->getX(),leader->getY(), subtreeMass, attractorAngle, attractor);
 
 						this->leaders.push_back(newLeader);
@@ -173,7 +173,7 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 					attractorAngle = orientationBetweenSubtree(attractor, leader);
 					double attractorX = atof(source->data[TreeNodeKey::SCOMX].c_str());
 					double attractorY = atof(source->data[TreeNodeKey::SCOMY].c_str());
-					printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
+//					printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
 					int subtreeMass = atoi(source->data[TreeNodeKey::SIZE].c_str());
 					endMass += subtreeMass;
 					TrapezoidLeader* newLeader = new TrapezoidLeader(leader->getX(),leader->getY(), subtreeMass, attractorAngle, attractor);
@@ -198,7 +198,7 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 	double attractorY = atof(source->data[TreeNodeKey::SCOMY].c_str());
 
 	double attractorAngle = this->angleFrom(x, -y, attractorX, -attractorY);
-	DiscursiveDebugPrint("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
+	DiscursiveDebugPrint("trapezoid_blocks","Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
 
 	TrapezoidLeader* starter = new TrapezoidLeader(x,y,atoi(source->data[TreeNodeKey::SIZE].c_str()),attractorAngle,source);
 	this->leaders.push_back(starter);
@@ -222,7 +222,7 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 			oldSize = this->leaders.size();
 			if(!this->step(data,leader))
 			{
-				printf("Removing leader\n");
+//				printf("Removing leader\n");
 				fflush(stdout);
 				this->finalizeLeader(leader);
 				removed = true;
@@ -244,7 +244,7 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 
 void TrapezoidBlocks::finalizeLeader(TrapezoidLeader* leader)
 {
-	printf("Finalizing leader\n");
+//	printf("Finalizing leader\n");
 	fflush(stdout);
 	SurrogateTreeNode* source = leader->getSourceSet();
 	// Remove all references to the children
@@ -259,7 +259,7 @@ void TrapezoidBlocks::finalizeLeader(TrapezoidLeader* leader)
 	datum->extent = leader->getLength();
 	datum->mass = leader->getBaseWidth();
 	datum->massRatio = (leader->getEndWidth()/datum->mass);
-	printf("Adding draw object at (%d,%d) with length %d pointed at %f\n",datum->locationX,datum->locationY, datum->extent,datum->angle);
+//	printf("Adding draw object at (%d,%d) with length %d pointed at %f\n",datum->locationX,datum->locationY, datum->extent,datum->angle);
 	data->insert(TRUNK_LAYER,datum);
 
 	// Clear node

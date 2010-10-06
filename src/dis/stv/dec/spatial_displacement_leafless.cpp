@@ -169,12 +169,12 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			deltaSplay = splay / (mass - minChildMass);
 		}
 
-		DiscursiveDebugPrint("Subtree mass effects [");
+		DiscursiveDebugPrint("sdl","Subtree mass effects [");
 		for(i = 0; i < children; i++)
 		{
-			DiscursiveDebugPrint("%f,",positions[i]);
+			DiscursiveDebugPrint("sdl","%f,",positions[i]);
 		}
-		DiscursiveDebugPrint("] @ %f\n", deltaSplay);
+		DiscursiveDebugPrint("sdl","] @ %f\n", deltaSplay);
 
 		// Convert masses to initial locations
 		// Record bounds
@@ -354,7 +354,7 @@ int SpatialDisplacementLeafless::count(SurrogateTreeNode* tree)
 	}
 	// Assign count to data
 	tree->set(TreeNodeKey::SIZE, boost::lexical_cast<string>(sum));
-	DiscursiveDebugPrint("Size of tree %s is %s in this and %d sublevels\n",tree->data[TreeNodeKey::NAME].c_str(),tree->data[TreeNodeKey::SIZE].c_str(),maxDepth);
+	DiscursiveDebugPrint("sdl","Size of tree %s is %s in this and %d sublevels\n",tree->data[TreeNodeKey::NAME].c_str(),tree->data[TreeNodeKey::SIZE].c_str(),maxDepth);
 	tree->set(TreeNodeKey::DEPTH, boost::lexical_cast<string>(maxDepth + 1));
 	return sum;
 }

@@ -29,7 +29,7 @@ void ImageMagickTransformer::transform(va_list args)
 	double xMin = tree->findMin(TreeNodeKey::X);
 	double yMax = tree->findMax(TreeNodeKey::Y);
 	double yMin = tree->findMin(TreeNodeKey::Y);
-	DiscursiveDebugPrint("Mins: (%f,%f), Maxs: (%f,%f) | Bounds: (%d x %d)\n",xMin,yMin,xMax,yMax,(int)allowedWidth, (int)allowedHeight);
+	DiscursiveDebugPrint("imagemagick transformer","Mins: (%f,%f), Maxs: (%f,%f) | Bounds: (%d x %d)\n",xMin,yMin,xMax,yMax,(int)allowedWidth, (int)allowedHeight);
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
 

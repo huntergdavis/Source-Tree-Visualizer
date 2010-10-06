@@ -138,7 +138,7 @@ SurrogateTreeNode* CvsRemoteRepositoryAccess::generateTreeFromRemoteCvs()
 		  repoLog.push_back( (char)c );
 		}
 		std::fclose( fp );
-		//DiscursiveDebugPrint("CVS LOG RESULT %s",cvsLog.c_str());
+		//DiscursiveDebugPrint("cvs,repository access","CVS LOG RESULT %s",cvsLog.c_str());
 
 		// don't re-generate logs if not necessary
 		logGenerated = 1;
