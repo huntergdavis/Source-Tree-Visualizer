@@ -46,6 +46,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 		string timeStr = boost::lexical_cast<string>(time);
 		file->set(TreeNodeKey::CREATION_TIME, timeStr);
 		file->set(TreeNodeKey::NAME, pathname);
+		file->set(TreeNodeKey::REVISIONCREATED, localRevs);
 		//DiscursiveDebugPrint("svn,repository access","Adding node '%s' @ time %ld\n",pathname.c_str(),time);
 		tree->children->push_back(file);
 
@@ -74,6 +75,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 				{
 					//DiscursiveDebugPrint("svn,repository access","Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
 					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(time));
+					node->set(TreeNodeKey::REVISIONCREATED, localRevs);
 				}
 				break;
 			}
@@ -85,6 +87,7 @@ void SvnRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string
 			string timeStr = boost::lexical_cast<string>(time);
 			node->set(TreeNodeKey::CREATION_TIME, timeStr);
 			node->set(TreeNodeKey::NAME, name);
+			node->set(TreeNodeKey::REVISIONCREATED, localRevs);
 			//DiscursiveDebugPrint("svn,repository access","Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children->push_back(node);
 
@@ -166,6 +169,7 @@ void SvnRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 	// Blank ptree
 	//SurrogateTreeNode* result = new SurrogateTreeNode();
 	tree->set(TreeNodeKey::NAME, TreeNodeKey::ROOT);
+	tree->set(TreeNodeKey::REVISIONCREATED, localRevs);
 
 	// For each time block, parse files and add to ptree
 	char c,d;

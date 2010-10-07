@@ -6,8 +6,7 @@
  */
 
 #include "surrogate_tree_node.h"
-
-
+#include <sstream>
 
 //const string TreeNodeKey::DEPTH = "depth";
 //const string TreeNodeKey::X = "x";
@@ -76,6 +75,21 @@ void SurrogateTreeNode::set(string key, string value)
 //		delete existing;
 	}
 	this->data[key] = value;
+}
+
+void SurrogateTreeNode::set(string key, int value)
+{
+	std::string stringValue;
+	std::stringstream intToString;
+	intToString << value;
+	stringValue = intToString.str();
+	unordered_map<string, string>::iterator existing = this->data.find(key);
+	if(existing != this->data.end())
+	{
+		// delete existing;
+		this->data.erase(key);
+	}
+	this->data[key] = stringValue;
 }
 
 double SurrogateTreeNode::findMin(string property)
