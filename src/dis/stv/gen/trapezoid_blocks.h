@@ -27,6 +27,7 @@ public:
 private:
 	DrawableData* data;
 	list<TrapezoidLeader*> leaders;
+	void initializeLeader(TrapezoidLeader* leader);
 	void finalizeLeader(TrapezoidLeader* leader);
 	bool step(DrawableData* data, TrapezoidLeader* leader);
 	bool shouldSplit(SurrogateTreeNode* attractor, TrapezoidLeader* leader);

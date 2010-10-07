@@ -91,19 +91,12 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 				}
 			}
 			// File
-//			else if(includeFiles)
 			else
 			{
 				leaves++;
-//				this->insertOrderedBy(&files,node,TreeNodeKey::CREATION_TIME);
-//				mass++;
-//				if(minChildMass > 1)
-//				{
-//					minChildMass = 1;
-//				}
 			}
 		}
-		children = subtrees + leaves;
+		children = subtrees;// + leaves;
 
 		// Map for retrieving resutls
 		unordered_map<SurrogateTreeNode*,int> pairs;
@@ -138,31 +131,16 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			}
 			left = !left;
 		}
-		// Now layout files
-//		for(int j = 0; j < (int)files.size(); j++)
-//		{
-//			dist = ((i + j + 1)/2);
-//			nodeMass = 1;
-//			if(left)
-//			{
-//				location = center - dist;
-//			}
-//			else
-//			{
-//				location = center + dist;
-//			}
-//			masses[location] = nodeMass;
-//			pairs[files[j]] = location;
-//			for(int k = location; k < children; k++)
-//			{
-//				positions[k] += nodeMass;
-//			}
-//			left = !left;
-//		}
 
 		// Calculate spacing to range [0,splay]
 		double deltaSplay = 0;
-		double splay = 3.14159 / 1.4;
+		double splayModifier = 8.0;
+		splayModifier /= (2.0 * pow(2,children/5.0));
+		if(splayModifier < 2)
+		{
+			splayModifier = 2;
+		}
+		double splay = 3.14159 / splayModifier;
 		double com;
 		double max = 0;
 		if(mass > minChildMass)
@@ -192,65 +170,21 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			}
 		}
 		// Final part of CoM calculation
-		com /= mass;
+		if(mass > 0)
+		{
+			com /= mass;
+		}
 
 		// Balance tree
-//		double balancedCom = com;
 		double divergence = com - (3.14159/2);
-//		double scale;
-//		bool shortenLeft;
-//		printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
-//		int step = 0;
-//		while(fabs(divergence) > 3.14159 / (50-step))
-//		{
-//			// Shorten left half
-//			if(divergence > 0)
-//			{
-//				shortenLeft = true;
-//				scale = (max - balancedCom)/balancedCom;
-//			}
-//			// Shorten right half
-//			else
-//			{
-//				shortenLeft = false;
-//				scale = balancedCom/(max - balancedCom);
-//			}
-//			com = 0;
-//			for(i = 1; i < children; i++)
-//			{
-//				// Adjust position
-//				if(shortenLeft && positions[i] < balancedCom)
-//				{
-//					positions[i] = (positions[i] - divergence) * scale;
-//				}
-//				else if(!shortenLeft && positions[i] > balancedCom)
-//				{
-//					positions[i] = ((positions[i] - balancedCom) * scale) + balancedCom;
-//				}
-//				else if(shortenLeft && positions[i] > balancedCom)
-//				{
-//					positions[i] -= (2 * balancedCom - max);
-//				}
-////				else
-////				{
-////					positions[i] = ;
-////				}
-//
-//				// Aggregate new position to calc new CoM
-//				com += (positions[i] * masses[i]);
-//			}
-//			max = 2*(max - balancedCom);
-//			balancedCom = com/mass;
-//			divergence = balancedCom - (max/2);
-//			step++;
-////			printf("CoM: %f, Max: %f, Divergence: %f\n", balancedCom, max, divergence);
-//		}
+		printf("CoM: %f, Max: %f, Divergence: %f\n", com, max, divergence);
+
 
 		// Calculate first 2 segments of branch
 		// Branch base first
 		double length = 5 * this->growthUnit;
 		// Add leaf branch spacing
-		length += ( 2 * (leaves / 5.0) ) * this->growthUnit;
+		length += (leaves / 5.0) * (2 * this->growthUnit);
 
 
 		// Transform positions to arc

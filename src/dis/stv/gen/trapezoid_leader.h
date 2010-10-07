@@ -11,7 +11,11 @@
 #include "math.h"
 #include "../model/surrogate_tree_node.h"
 #include "../system/discursive_system.h"
-
+//
+//struct LeafBranch
+//{
+//	vector<SurrogateTreeNode*>* leaves;
+//};
 
 class TrapezoidLeader
 {
@@ -23,6 +27,7 @@ private:
 	double endWidth;
 	double orientation;
 	SurrogateTreeNode* sourceSet;
+//	vector<LeafBranch*>* leafBranches;
 
 public:
 	TrapezoidLeader(double baseX, double baseY, double baseWidth, double orientation, SurrogateTreeNode* sourceSet);

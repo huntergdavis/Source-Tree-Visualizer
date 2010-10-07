@@ -60,7 +60,7 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 			y = drawItem->locationY;
 			if(index != TRUNK_LAYER)
 			{
-				drawList.push_back(DrawableCircle(x, y, x, y + 1));
+				drawList.push_back(DrawableCircle(x, y, x, y + drawItem->mass));
 			}
 			else
 			{
