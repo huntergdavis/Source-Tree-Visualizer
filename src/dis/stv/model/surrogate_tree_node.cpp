@@ -160,3 +160,48 @@ void SurrogateTreeNode::transform(string property, PropertyTransformer* transfor
 		node->transform(property, transformer);
 	}
 }
+
+// -------------------------------------------------------------------------
+// API :: SurrogateTreeNode::returnXml()
+// PURPOSE :: recursively returns XML for this and all sub tree nodes
+//         ::
+// PARAMETERS ::
+// RETURN :: std::string - containing xml values generated
+// -------------------------------------------------------------------------
+std::string SurrogateTreeNode::returnXml()
+{
+	// temp storage for returned XML
+	std::string returnXml = "<node> ";
+
+	// first loop over all data for this node and put into XML
+	for(unordered_map<string, string>::const_iterator dataIterator = this->data.begin(); dataIterator != this->data.end(); ++dataIterator)
+	{
+		// add an opening tag of first string
+		returnXml += "<";
+		returnXml += dataIterator->first;
+		returnXml += ">";
+
+		// add the data item as the second string
+		returnXml += dataIterator->second;
+
+		// add a closing tag of first string
+		returnXml += "</";
+		returnXml += dataIterator->first;
+		returnXml += "> ";
+
+	}
+
+	// now find any children and do the same
+	SurrogateTreeNode* childNode;
+	for(vector<SurrogateTreeNode*>::iterator iter = this->children->begin(); iter != this->children->end(); ++iter)
+	{
+		returnXml += "\n<child>";
+		childNode = *iter;
+		returnXml += childNode->returnXml();
+		returnXml += "</child>\n";
+	}
+
+	returnXml += "</node>\n";
+	return returnXml;
+};
+

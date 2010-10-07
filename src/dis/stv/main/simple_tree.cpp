@@ -43,6 +43,9 @@ int main(int argc, char **argv)
 	// parse our command line
 	configAgent.parseCommandLine(argc,argv);
 
+	// store our XML
+	std::string megaXmlString;
+
 	// Tree Generation pipeline
 	// create an abstract method for repository access
 	RepositoryAccess* git = configAgent.initializeRepositoryType();
@@ -145,6 +148,11 @@ int main(int argc, char **argv)
 		decorator->decorate(git->source);
 		timerAgent.Toc("Decorating surrogate trees");
 
+		// print an xml file of our last surrogate tree
+		timerAgent.Tic("Creating XML");
+		megaXmlString = git->source->returnXml();
+		timerAgent.Toc("Creating XML");
+
 		// Transform coordinates
 		DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
 		timerAgent.Tic("Transforming tree");
@@ -188,9 +196,14 @@ int main(int argc, char **argv)
 		DiscursiveDebugPrint("default","\n");
 	}
 
+	// print the latest XML
+	DiscursiveDebugPrint("default","%s\n",megaXmlString.c_str());
+
 	// finish the timing on our entire program
 	timerAgent.Toc("Entire SourceTreeVis Program");
 	timerAgent.PrintRunningTotals();
+
+
 	return 0;
 }
 

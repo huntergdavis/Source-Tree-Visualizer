@@ -49,6 +49,7 @@ public:
 	void transform(string property, PropertyTransformer* transformer);
 	void set(string key, string value);
 	void set(string key, int value);
+	std::string returnXml();
 };
 
 #endif /* SURROGATE_TREE_NODE_H_ */
