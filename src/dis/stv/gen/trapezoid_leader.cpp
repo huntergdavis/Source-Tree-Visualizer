@@ -7,7 +7,7 @@
 
 #include "./trapezoid_leader.h"
 
-TrapezoidLeader::TrapezoidLeader(double baseX, double baseY, double baseWidth, double orientation, SurrogateTreeNode* sourceSet):length(0), baseX(baseX), baseY(baseY), baseWidth(baseWidth), endWidth(baseWidth/10.0), orientation(orientation),sourceSet(sourceSet)
+TrapezoidLeader::TrapezoidLeader(double baseX, double baseY, double baseWidth, double orientation, SurrogateTreeNode* sourceSet):length(0), baseX(baseX), baseY(baseY), baseWidth(baseWidth), endWidth(baseWidth), orientation(orientation),sourceSet(sourceSet)
 {
 }
 

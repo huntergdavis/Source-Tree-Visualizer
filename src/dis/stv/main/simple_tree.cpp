@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 		timerAgent.Tic("Transforming tree");
 		int transformerType = TransformFactory::IMAGE_MAGICK_TRANSFORMER;
 //		printf("Calling transform with (%d, %d, %p, %d, %d)\n",transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
-		TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
+		TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.96*git->startHeight));
 		timerAgent.PrintToc("Transforming tree");
 
 		// Digitize decorated surrogate tree into line segment tree

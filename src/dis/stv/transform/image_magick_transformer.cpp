@@ -23,8 +23,8 @@ void ImageMagickTransformer::transform(va_list args)
 	int height = va_arg(args,int);
 //	printf("Transform called with (%p, %d, %d)\n",tree,width,height);
 	// Calculate resize scaling factors
-	double allowedWidth = 0.95*width;
-	double allowedHeight = 0.95*height;
+	double allowedWidth = 0.925*width;
+	double allowedHeight = 0.875*height;
 	double xMax = tree->findMax(TreeNodeKey::X);
 	double xMin = tree->findMin(TreeNodeKey::X);
 	double yMax = tree->findMax(TreeNodeKey::Y);

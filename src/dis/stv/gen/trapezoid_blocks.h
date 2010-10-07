@@ -33,6 +33,7 @@ private:
 	bool shouldSplit(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
 	double orientationBetween(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
 	double orientationBetweenSubtree(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
+	void drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, int leaves, double leafBranchSpacing, double growthUnit);
 	double angleDiff(double ref, double compare);
 	double angleFrom(double aX, double aY, double bX, double bY);
 };

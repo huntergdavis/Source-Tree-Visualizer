@@ -8,6 +8,7 @@
 #ifndef DRAWABLE_DATUM_H_
 #define DRAWABLE_DATUM_H_
 #include "../system/discursive_system.h"
+#include <Magick++.h>
 
 struct MinDrawableDatum
 {
@@ -17,6 +18,7 @@ struct MinDrawableDatum
 	int extent;
 	int mass;
 	double massRatio;
+	Magick::Color color;
 };
 
 
