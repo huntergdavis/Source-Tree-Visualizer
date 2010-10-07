@@ -177,7 +177,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Balance tree
 		double divergence = com - (3.14159/2);
-		printf("CoM: %f, Max: %f, Divergence: %f\n", com, max, divergence);
+//		printf("CoM: %f, Max: %f, Divergence: %f\n", com, max, divergence);
 
 
 		// Calculate first 2 segments of branch
