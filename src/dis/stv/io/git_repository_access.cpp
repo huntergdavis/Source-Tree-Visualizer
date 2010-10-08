@@ -133,6 +133,10 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 		}
 
 		aLocation = fileNameLine.find("... A");
+		if (aLocation <= 0)
+		{
+			aLocation = fileNameLine.find("... M");
+		}
 		if(aLocation > 0)
 		{
 			// locate the filename in git string
@@ -164,7 +168,7 @@ SurrogateTreeNode* GitRepositoryAccess::generateTreeFromLog(std::string *buffer)
 	// Blank ptree
 	SurrogateTreeNode* result = new SurrogateTreeNode();
 	result->set(TreeNodeKey::NAME, TreeNodeKey::ROOT);
-	//DiscursiveDebugPrint("git","LOG: %s\n",buffer);
+	DiscursiveDebugPrint("git","LOG: %s\n",buffer);
 
 	// store most recent file time
 	long fileTime = 0;

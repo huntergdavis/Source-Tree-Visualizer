@@ -197,7 +197,7 @@ int main(int argc, char **argv)
 	}
 
 	// print the latest XML
-	DiscursiveDebugPrint("default","%s\n",megaXmlString.c_str());
+	DiscursiveDebugPrint("xml","%s\n",megaXmlString.c_str());
 
 	// finish the timing on our entire program
 	timerAgent.Toc("Entire SourceTreeVis Program");
