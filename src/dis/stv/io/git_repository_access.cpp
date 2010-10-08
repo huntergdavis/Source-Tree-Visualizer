@@ -47,6 +47,7 @@ void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathn
 		// We have no more path left.  Just a single entry (leaf)
 		SurrogateTreeNode* file = new SurrogateTreeNode();
 		string timeStr = boost::lexical_cast<string>(fileTime);
+		DiscursiveDebugPrint("git","FileTimeString %s, from long int %ld\n",timeStr.c_str(),fileTime);
 		file->set(TreeNodeKey::CREATION_TIME, timeStr);
 		file->set(TreeNodeKey::NAME, pathname);
 		file->set(TreeNodeKey::REVISIONCREATED, localRevs);
@@ -163,6 +164,10 @@ SurrogateTreeNode* GitRepositoryAccess::generateTreeFromLog(std::string *buffer)
 	// Blank ptree
 	SurrogateTreeNode* result = new SurrogateTreeNode();
 	result->set(TreeNodeKey::NAME, TreeNodeKey::ROOT);
+	//DiscursiveDebugPrint("git","LOG: %s\n",buffer);
+
+	// store most recent file time
+	long fileTime = 0;
 
 	// For each time block, parse files and add to ptree
 	char c;
@@ -176,7 +181,11 @@ SurrogateTreeNode* GitRepositoryAccess::generateTreeFromLog(std::string *buffer)
 		}
 		else
 		{
-			long fileTime = atol(str.c_str());
+			// file time strings are 10 in length
+			if(str.length() == 10)
+			{
+				fileTime = atol(str.c_str());
+			}
 			parseTimeBlock(result,fileTime,&str);
 			str.clear();
 		}
