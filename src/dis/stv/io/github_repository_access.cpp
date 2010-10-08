@@ -184,7 +184,7 @@ SurrogateTreeNode* GitHubRepositoryAccess::generateTreeFromGitHub()
 	   std::istringstream topLevelSS(repoLog);
 
 	   // print debug our github top level block
-	   //DiscursiveDebugPrint("github,repository access",buffer);
+	   DiscursiveDebugPrint("github,repository access","GITHUBBUFFER: %s\n",repoLog.c_str());
 
 	   // loop over the outer string stream object and search for sha1 keys
 	   // keep track of line numbering
@@ -435,15 +435,18 @@ long GitHubRepositoryAccess::parseDetailedGitHubFileBlock(std::string *buffer)
 	// loop over the detailed commit and find filenames
 	while (getline (gitHubTimeBlockSS, dateLine))
 	{
-		// the "filename:" identifier will be where we find the files
-		int fileNameDateVal = dateLine.find("date:");
-		int fileDateOffsetVal = fileNameDateVal + 7;
-
-		// if we find date: , we want to keep it
-		if(fileNameDateVal > 0)
+		if(dateFound != 1)
 		{
-			dateFound = 1;
-			dateOnlyString = dateLine.substr(fileDateOffsetVal,dateLine.size()-fileDateOffsetVal-7);
+			// the "filename:" identifier will be where we find the files
+			int fileNameDateVal = dateLine.find("date:");
+			int fileDateOffsetVal = fileNameDateVal + 7;
+
+			// if we find date: , we want to keep it
+			if(fileNameDateVal > 0)
+			{
+				dateFound = 1;
+				dateOnlyString = dateLine.substr(fileDateOffsetVal,dateLine.size()-fileDateOffsetVal-7);
+			}
 		}
 	}
 

@@ -132,10 +132,23 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			}
 		}
 
-		aLocation = fileNameLine.find("... A");
+		//M,A,R,C,U = GIT ADD/MODIFY statuses
+		aLocation = fileNameLine.find("... M");
 		if (aLocation <= 0)
 		{
-			aLocation = fileNameLine.find("... M");
+			aLocation = fileNameLine.find("... A");
+		}
+		if (aLocation <= 0)
+		{
+			aLocation = fileNameLine.find("... R");
+		}
+		if (aLocation <= 0)
+		{
+			aLocation = fileNameLine.find("... C");
+		}
+		if (aLocation <= 0)
+		{
+			aLocation = fileNameLine.find("... U");
 		}
 		if(aLocation > 0)
 		{

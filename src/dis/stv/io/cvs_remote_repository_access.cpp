@@ -177,7 +177,11 @@ void CvsRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 	// loop over the detailed commit and find filenames
 	while (getline (cvsTimeBlockSS, str))
 	{
-		parseTimeBlock(tree,&str);
+		if((str.find("A") == 0) || (str.find("U") == 0) || (str.find("G") == 0))
+		{
+			parseTimeBlock(tree,&str);
+		}
+
 	}
 
 }

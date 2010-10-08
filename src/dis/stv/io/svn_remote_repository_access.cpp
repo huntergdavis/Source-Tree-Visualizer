@@ -259,7 +259,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	// loop over the detailed commit and find filenames
 	while (getline (svnTimeBlockSS, fileNameLine))
 	{
-		if(fileNameLine.find("A") == 3)
+		if((fileNameLine.find("A") == 3) || (fileNameLine.find("U") == 3) || (fileNameLine.find("G") == 3))
 		{
 			fileNameString = fileNameLine.substr(5,fileNameLine.size()-5);
 			//DiscursiveDebugPrint("svn,repository access","\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
