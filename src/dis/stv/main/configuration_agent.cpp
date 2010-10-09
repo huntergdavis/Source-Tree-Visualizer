@@ -335,7 +335,7 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		fileName = optionValue;
 	}
-	if(optionName == "background_image")
+	else if(optionName == "background_image")
 	{
 		backgroundImageName = optionValue;
 	}

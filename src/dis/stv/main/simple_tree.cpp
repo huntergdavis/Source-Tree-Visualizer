@@ -59,6 +59,7 @@ int main(int argc, char **argv)
 	git->startHeight = (double)configAgent.returnOptionByName("startHeight");
 	git->imageWidth = configAgent.returnOptionByName("imageWidth");
 	git->imageHeight = configAgent.returnOptionByName("imageHeight");
+	git->backgroundImageName = configAgent.returnBackgroundImageName();
 	// set our scaling factor from our received or default options
 	git->scaleWidth = git->imageWidth / git->startWidth;
 	git->scaleHeight = git->imageHeight / git->startHeight;
@@ -82,6 +83,20 @@ int main(int argc, char **argv)
 	// output tree info
 	DiscursiveDebugPrint("default","Source tree name is %s\n", git->source->data[TreeNodeKey::NAME].c_str());
 	DiscursiveDebugPrint("default","Source tree has %d revisions which require %d tree inserts\n",git->globalRevs,git->globalInserts);
+
+	// read in background image if exists
+	// create a background image variable for lookup in loop
+	bool useBackgroundImage = 0;
+	timerAgent.Tic("Background Retrieve and scale");
+	Image backgroundImage;
+	if(git->backgroundImageName != "")
+	{
+		backgroundImage.read(git->backgroundImageName);
+		// scale image
+		backgroundImage.scale(Geometry(git->startWidth,git->startHeight));
+		useBackgroundImage = 1;
+	}
+	timerAgent.Toc("Background Retrieve and scale");
 
 	delete(git->source);
 	git->source = NULL;
@@ -173,7 +188,15 @@ int main(int argc, char **argv)
 		// Draw tree
 		DiscursiveDebugPrint("default","Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Drawing Tree with artist.draw");
+		
+		// instantiate canvas and draw lines
 		Image canvas(Geometry(git->startWidth,git->startHeight),"white");
+		if(useBackgroundImage == 1)
+		{
+			timerAgent.Tic("Background Image to Canvas Memory Copy");
+			canvas = backgroundImage;
+			timerAgent.Toc("Background Image to Canvas Memory Copy");
+		}
 		TrapezoidArtist artist;
 		artist.draw(canvas, lines);
 		timerAgent.Toc("Drawing Tree with artist.draw");
