@@ -49,6 +49,9 @@ ConfigurationAgent::ConfigurationAgent()
 	// our filename for output file
 	fileName = "tree.jpg";
 	outputFileNumber = 1000;
+	
+	// our background image name
+	backgroundImageName = "";
 
 	// should we make many jpgs?
 	manyJpgs = 0;
@@ -86,6 +89,7 @@ void ConfigurationAgent::displayUsage( void )
 	usage_string += "\n-C option - expects pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd\n";
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, expects a debug keyword\n";
+	usage_string += "\n-b option - background image, expects an image filename\n";
 	usage_string += "\n-n option - image numbering value, defaults to 1000\n";
 	usage_string += "\n-o or -O option - output file name, defaults to tree.jpg\n";
 	usage_string += "\n-m option - output the creation of the current tree one step at a time via many .images in sequence\n";
@@ -130,6 +134,18 @@ std::string ConfigurationAgent::returnAgentName()
 std::string ConfigurationAgent::returnFileName()
 {
 	return fileName;
+}
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnFileName
+// PURPOSE :: returns the file name
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnBackgroundImageName()
+{
+	return backgroundImageName;
 }
 
 // -------------------------------------------------------------------------
@@ -209,7 +225,7 @@ void ConfigurationAgent::parseConfigFile()
 void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 {
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:R:l:z:n:c:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:b:R:l:z:n:c:ridh?";
 
 	// if a new config file is passed, parse it
 	bool newConfig = 0;
@@ -239,6 +255,9 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 			case 'C':
 				agentName = optarg;
 				agentType = 4;
+				break;
+			case 'b':
+				backgroundImageName = optarg;
 				break;
 			case 'l':
 				sscanf(optarg,"%d:%d",&startWidth,&startHeight);
@@ -315,6 +334,10 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
     if(optionName == "file_name")
 	{
 		fileName = optionValue;
+	}
+	if(optionName == "background_image")
+	{
+		backgroundImageName = optionValue;
 	}
 	else 	if(optionName == "image_width")
 	{
