@@ -92,28 +92,31 @@ double TrapezoidBlocks::angleDiff(double ref, double compare)
 bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 {
 	double STEP_SIZE = 1.0;
-	bool shouldModify;
+	bool shouldModify = false;
 
 	SurrogateTreeNode* source = leader->getSourceSet();
 //	printf("Source contains %d subtrees\n",source->children->size());
 	fflush(stdout);
 	double scomX = atof(source->data[TreeNodeKey::SCOMX].c_str());
 	double scomY = atof(source->data[TreeNodeKey::SCOMY].c_str());
-	double x = leader->getX();
-	double y = leader->getY();
-	double dx = scomX - x;
-	double dy = scomY - y;
-	double dist = sqrt(dx*dx + dy*dy);
+	if(!(scomX == leader->getBaseX() && scomY == leader->getBaseY()))
+	{
+		double x = leader->getX();
+		double y = leader->getY();
+		double dx = scomX - x;
+		double dy = scomY - y;
+		double dist = sqrt(dx*dx + dy*dy);
 
-	double bx = leader->getBaseX();
-	double by = leader->getBaseY();
-	double dbx = scomX - bx;
-	double dby = scomY - by;
-	double bdist = sqrt(dbx*dbx + dby*dby);
+		double bx = leader->getBaseX();
+		double by = leader->getBaseY();
+		double dbx = scomX - bx;
+		double dby = scomY - by;
+		double bdist = sqrt(dbx*dbx + dby*dby);
 
-//	printf("Distance(<%d[%d],%d[%d]> -> <%d,%d>) @ %f is %f\n",(int)x,(int)leader->getBaseX(),(int)y,(int)leader->getBaseY(),(int)scomX,(int)scomY,leader->getOrientation(),dist);
+	//	printf("Distance(<%d[%d],%d[%d]> -> <%d,%d>) @ %f is %f\n",(int)x,(int)leader->getBaseX(),(int)y,(int)leader->getBaseY(),(int)scomX,(int)scomY,leader->getOrientation(),dist);
 
-	shouldModify = (dist >= (2.5 * STEP_SIZE) && bdist >= (5.0 * STEP_SIZE));
+		shouldModify = (dist >= (2.5 * STEP_SIZE) && bdist >= (5.0 * STEP_SIZE));
+	}
 
 	if(shouldModify)
 	{
@@ -127,7 +130,8 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 			for(iter = source->children->begin(); iter < source->children->end(); ++iter)
 			{
 				attractor = *iter;
-				split = this->shouldSplit(attractor,leader); // || attractor->children->size() == 0;
+				// Always split off leaves (0 children)
+				split = this->shouldSplit(attractor,leader) || attractor->children->size() == 0;
 				if(split)
 				{
 					if(attractor->children->size() > 0)
@@ -142,7 +146,7 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 							attractorAngle = leader->getOrientation();
 						}
 						int subtreeMass = atoi(attractor->data[TreeNodeKey::SIZE].c_str());
-//						printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
+						printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
 						TrapezoidLeader* newLeader = new TrapezoidLeader(leader->getX(),leader->getY(), subtreeMass, attractorAngle, attractor);
 						this->initializeLeader(newLeader);
 						// Only allow 1 new leader per step
@@ -356,9 +360,9 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 void TrapezoidBlocks::initializeLeader(TrapezoidLeader* leader)
 {
 	SurrogateTreeNode* source = leader->getSourceSet();
-	double growthUnit = 40.0;
+	double growthUnit = 50.0;
 	// Spacing variables
-	double initialSpacer = 5.0 * growthUnit;
+	double initialSpacer = 2.5 * growthUnit;
 	double leavesPerBranch = 5.0;
 	double leafBranchSpacing = 2 * growthUnit;
 	double lengthPerLeaf = growthUnit;

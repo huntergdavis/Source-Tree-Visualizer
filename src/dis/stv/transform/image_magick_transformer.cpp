@@ -24,7 +24,7 @@ void ImageMagickTransformer::transform(va_list args)
 //	printf("Transform called with (%p, %d, %d)\n",tree,width,height);
 	// Calculate resize scaling factors
 	double allowedWidth = 0.925*width;
-	double allowedHeight = 0.875*height;
+	double allowedHeight = 0.75*height;
 	double xMax = tree->findMax(TreeNodeKey::X);
 	double xMin = tree->findMin(TreeNodeKey::X);
 	double yMax = tree->findMax(TreeNodeKey::Y);
@@ -38,7 +38,7 @@ void ImageMagickTransformer::transform(va_list args)
 	double scalingFactorW = 1;
 	if(currWidth > minDim)
 	{
-		scalingFactorW = minDim/currWidth;
+		scalingFactorW = allowedWidth/currWidth;
 	}
 	double scalingFactorH = minDim/currHeight;
 	if(currHeight > minDim)
@@ -57,7 +57,7 @@ void ImageMagickTransformer::transform(va_list args)
 	tree->transform(TreeNodeKey::X,&shifter);
 	// Scale tree values
 	tree->scale(TreeNodeKey::X, scalingFactorW);
-	PropertyShifter shifter2(minDim / 2.0);
+	PropertyShifter shifter2(allowedWidth / 2.0);
 	tree->transform(TreeNodeKey::X,&shifter2);
 
 	tree->transform(TreeNodeKey::SCOMX,&shifter);

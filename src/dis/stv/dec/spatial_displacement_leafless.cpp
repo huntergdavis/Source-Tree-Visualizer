@@ -11,7 +11,7 @@
 
 using namespace std;
 
-SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(10.0)
+SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(50.0)
 {
 }
 
@@ -184,17 +184,18 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		// Calculate first 2 segments of branch
 		// Branch base first
 		double length = 2.5 * this->growthUnit;
-		if(subtrees == 0)
-		{
-			// If only leaves, no branch spacing.
-			length = 0;
-		}
+//		if(subtrees == 0)
+//		{
+//			// If only leaves, no branch spacing.
+//			length = 0;
+//		}
 
 		// Add leaf branch spacing
-		length += (leaves / 5.0) * (2 * this->growthUnit);
+		length += (ceil(leaves / 5.0) + 1) * (2 * this->growthUnit);
 
 		// Transform positions to arc
-		double arcRadius = 2.0 * maxChild * this->growthUnit;
+		//double arcRadius = 2.0 * maxChild * this->growthUnit;
+		double arcRadius = length;
 		double ratio;
 		double angle;
 
