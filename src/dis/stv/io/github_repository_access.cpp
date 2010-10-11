@@ -295,6 +295,7 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 	else
 	{
 		globalRevs++;
+		localRevs++;
 	}
 
 	// each item does contain the time, but it's stringified

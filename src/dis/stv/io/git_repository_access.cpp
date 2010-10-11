@@ -128,6 +128,7 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			}
 			else
 			{
+				localRevs++;
 				globalRevs++;
 			}
 		}

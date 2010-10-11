@@ -219,6 +219,7 @@ void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 		else
 		{
 			globalRevs++;
+			localRevs++;
 		}
 
 		// set last date
