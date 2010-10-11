@@ -11,7 +11,7 @@
 
 using namespace std;
 
-SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(50.0)
+SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(10.0)
 {
 }
 
@@ -52,8 +52,7 @@ void SpatialDisplacementLeafless::insertOrderedBy(vector<SurrogateTreeNode*>* li
 
 void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAngle, double rootX, double rootY)
 {
-//	bool includeFiles = true;
-
+	// Set this nodes location
 	tree->set(TreeNodeKey::X, boost::lexical_cast<string>(rootX));
 	tree->set(TreeNodeKey::Y, boost::lexical_cast<string>(rootY));
 
@@ -111,7 +110,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		int i = 0;
 		int location;
 		int nodeMass;
-		for(; i < (int)dirs.size(); i++)
+		for(; i < subtrees; i++)
 		{
 			dist = (i+1)/2;
 			nodeMass = atoi(dirs[i]->data[TreeNodeKey::SIZE].c_str());
@@ -148,6 +147,8 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			deltaSplay = splay / (mass - minChildMass);
 		}
 
+		DiscursiveDebugPrint("sdl","Dirs/Leaves [%d/%d], Splay [%f], Splay modifier [%f], Delta splay [%f]\n",(int)dirs.size(),leaves,splay, splayModifier, deltaSplay);
+
 		DiscursiveDebugPrint("sdl","Subtree mass effects [");
 		for(i = 0; i < children; i++)
 		{
@@ -182,17 +183,17 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Calculate first 2 segments of branch
 		// Branch base first
-		double length = 5 * this->growthUnit;
+		double length = 2.5 * this->growthUnit;
+		if(subtrees == 0)
+		{
+			// If only leaves, no branch spacing.
+			length = 0;
+		}
+
 		// Add leaf branch spacing
 		length += (leaves / 5.0) * (2 * this->growthUnit);
 
-
 		// Transform positions to arc
-		//double arcRadius = 10.0;
-//		double deltaAngle = splay / children;
-//		int maxDepth = (int)tree->findMax(TreeNodeKey::DEPTH);
-//		int depth;
-//		double arcRadius = allowedHeight/maxDepth;
 		double arcRadius = 2.0 * maxChild * this->growthUnit;
 		double ratio;
 		double angle;
@@ -210,11 +211,9 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		double ySum = 0;
 		int lmass;
 		double massSum = 0;
-		for(i = 0; i < (int)dirs.size(); i++)
+		for(i = 0; i < subtrees; i++)
 		{
 			node = dirs[i];
-//			depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
-//			ratio = depth / (double)maxDepth;
 			ratio = atoi(node->data[TreeNodeKey::SIZE].c_str())/(double)maxChild;
 			angle = rootAngle - (positions[pairs[node]] - com);
 			double newX = fakeRootX + (ratio * arcRadius * cos(angle));
@@ -223,32 +222,10 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			xSum += (newX * lmass);
 			ySum += (newY * lmass);
 			massSum += lmass;
-//			double newX = ratio * arcRadius * cos(angle);
-//			double newY = ratio * arcRadius * widthHeightScaleFactor * sin(angle);
 			// Run expand on child
 			double childRot = (3.14159/2);//angle;// + ((3.14159/2)-angle)/2;
 			this->expand(node,childRot,newX,newY);
 		}
-		// Then files
-//		if(includeFiles)
-//		{
-//			for(int j = 0; j < (int)files.size(); j++)
-//			{
-//				node = files[j];
-////				depth = atoi(node->data[TreeNodeKey::DEPTH].c_str());
-////				ratio = depth / (double)maxDepth;
-//				ratio = 1 / (double)maxChild;
-//				angle = rootAngle - (positions[pairs[node]] - com);
-//				double newX = fakeRootX + (ratio * arcRadius * cos(angle));
-//				double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-//				lmass = 5.0 / (double)maxChild;
-//				xSum += (newX * lmass);
-//				ySum += (newY * lmass);
-//				massSum += lmass;
-//				node->set(TreeNodeKey::X, boost::lexical_cast<string>(newX));
-//				node->set(TreeNodeKey::Y, boost::lexical_cast<string>(newY));
-//			}
-//		}
 		if(massSum != 0)
 		{
 			xSum /= massSum;
@@ -258,6 +235,8 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 		}
 		else
 		{
+			xSum = fakeRootX;
+			ySum = fakeRootY;
 			tree->set(TreeNodeKey::SCOMX,boost::lexical_cast<string>(rootX));
 			tree->set(TreeNodeKey::SCOMY,boost::lexical_cast<string>(rootY));
 		}
