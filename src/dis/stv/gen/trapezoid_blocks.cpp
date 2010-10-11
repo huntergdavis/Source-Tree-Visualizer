@@ -22,7 +22,7 @@ TrapezoidBlocks::~TrapezoidBlocks()
 
 double TrapezoidBlocks::angleFrom(double aX, double aY, double bX, double bY)
 {
-	double attractorAngle;
+	double attractorAngle = 0.0;
 	double dx = bX - aX;
 	double dy = bY - aY; // Has to be flipped because of stupid drawing orientation rules (y increases down)
 	double dist = sqrt(dx * dx + dy * dy);
@@ -92,28 +92,31 @@ double TrapezoidBlocks::angleDiff(double ref, double compare)
 bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 {
 	double STEP_SIZE = 1.0;
-	bool shouldModify;
+	bool shouldModify = false;
 
 	SurrogateTreeNode* source = leader->getSourceSet();
 //	printf("Source contains %d subtrees\n",source->children->size());
 	fflush(stdout);
 	double scomX = atof(source->data[TreeNodeKey::SCOMX].c_str());
 	double scomY = atof(source->data[TreeNodeKey::SCOMY].c_str());
-	double x = leader->getX();
-	double y = leader->getY();
-	double dx = scomX - x;
-	double dy = scomY - y;
-	double dist = sqrt(dx*dx + dy*dy);
+	if(!(scomX == leader->getBaseX() && scomY == leader->getBaseY()))
+	{
+		double x = leader->getX();
+		double y = leader->getY();
+		double dx = scomX - x;
+		double dy = scomY - y;
+		double dist = sqrt(dx*dx + dy*dy);
 
-	double bx = leader->getBaseX();
-	double by = leader->getBaseY();
-	double dbx = scomX - bx;
-	double dby = scomY - by;
-	double bdist = sqrt(dbx*dbx + dby*dby);
+		double bx = leader->getBaseX();
+		double by = leader->getBaseY();
+		double dbx = scomX - bx;
+		double dby = scomY - by;
+		double bdist = sqrt(dbx*dbx + dby*dby);
 
-//	printf("Distance(<%d[%d],%d[%d]> -> <%d,%d>) @ %f is %f\n",(int)x,(int)leader->getBaseX(),(int)y,(int)leader->getBaseY(),(int)scomX,(int)scomY,leader->getOrientation(),dist);
+	//	printf("Distance(<%d[%d],%d[%d]> -> <%d,%d>) @ %f is %f\n",(int)x,(int)leader->getBaseX(),(int)y,(int)leader->getBaseY(),(int)scomX,(int)scomY,leader->getOrientation(),dist);
 
-	shouldModify = (dist >= (2.5 * STEP_SIZE) && bdist >= (5.0 * STEP_SIZE));
+		shouldModify = (dist >= (2.5 * STEP_SIZE) && bdist >= (5.0 * STEP_SIZE));
+	}
 
 	if(shouldModify)
 	{
@@ -127,7 +130,8 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 			for(iter = source->children->begin(); iter < source->children->end(); ++iter)
 			{
 				attractor = *iter;
-				split = this->shouldSplit(attractor,leader); // || attractor->children->size() == 0;
+				// Always split off leaves (0 children)
+				split = this->shouldSplit(attractor,leader) || attractor->children->size() == 0;
 				if(split)
 				{
 					if(attractor->children->size() > 0)
@@ -137,9 +141,38 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 
 						// Create new Leader with child set that caused split
 						double attractorAngle = orientationBetweenSubtree(attractor, leader);
+						if(attractorAngle == 0)
+						{
+							attractorAngle = leader->getOrientation();
+						}
 						int subtreeMass = atoi(attractor->data[TreeNodeKey::SIZE].c_str());
-//						printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
-						TrapezoidLeader* newLeader = new TrapezoidLeader(leader->getX(),leader->getY(), subtreeMass, attractorAngle, attractor);
+
+						// Calculate trunk width offset
+						double trunkWidth = leader->getBaseWidth() / 2;
+
+						double trunkOrthOrientation = 0;
+						double orientation = leader->getOrientation();
+						if(attractorAngle < orientation)
+						{
+							trunkOrthOrientation = orientation - (3.14159/2);
+							if(trunkOrthOrientation < 0)
+							{
+								trunkOrthOrientation += 2 * 3.14159;
+							}
+						}
+						else
+						{
+							trunkOrthOrientation = orientation + (3.14159/2);
+							if(trunkOrthOrientation > 2 * 3.14159)
+							{
+								trunkOrthOrientation -= 2 * 3.14159;
+							}
+						}
+						double _x = leader->getX() + (trunkWidth * cos(trunkOrthOrientation));
+						double _y = leader->getY() + (trunkWidth * sin(trunkOrthOrientation));
+
+						printf("Adding leader (%s/%s) at (%f, %f) toward %f with SCoM @ (%f,%f)\n",attractor->data[TreeNodeKey::NAME].c_str(),source->data[TreeNodeKey::NAME].c_str(),_x,_y,attractorAngle,attractorX, attractorY);
+						TrapezoidLeader* newLeader = new TrapezoidLeader(_x,_y, subtreeMass, attractorAngle, attractor);
 						this->initializeLeader(newLeader);
 						// Only allow 1 new leader per step
 					}
@@ -177,7 +210,7 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 					attractorAngle = orientationBetweenSubtree(attractor, leader);
 					double attractorX = atof(attractor->data[TreeNodeKey::SCOMX].c_str());
 					double attractorY = atof(attractor->data[TreeNodeKey::SCOMY].c_str());
-//					printf("Hit CoM.  Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
+					printf("Hit CoM.  Adding leader (%s/%s) at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",attractor->data[TreeNodeKey::NAME].c_str(),source->data[TreeNodeKey::NAME].c_str(),leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
 					int subtreeMass = atoi(attractor->data[TreeNodeKey::SIZE].c_str());
 					endMass += subtreeMass;
 					TrapezoidLeader* newLeader = new TrapezoidLeader(leader->getX(),leader->getY(), subtreeMass, attractorAngle, attractor);
@@ -212,7 +245,12 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 
 	double attractorAngle = this->angleFrom(x, -y, attractorX, -attractorY);
 //	DiscursiveDebugPrint("trapezoid_blocks","Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
-//	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
+	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
+
+	if(attractorAngle == 0)
+	{
+		attractorAngle = (3.14159/2);
+	}
 
 	TrapezoidLeader* starter = new TrapezoidLeader(x,y,atoi(source->data[TreeNodeKey::SIZE].c_str()),attractorAngle,source);
 	this->initializeLeader(starter);
@@ -258,8 +296,16 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 
 void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, int leaves, double leafBranchSpacing, double growthUnit)
 {
+
 	bool left = true;
 	int length = leaves * lengthPerLeaf;
+	// Add approx width of this branch
+	length += (int)leader->getBaseWidth();
+
+
+//	printf("Drawing branch (%d) @ (%f,%f) of length %d towards %f\n", leaves, startX, startY, length, branchOrientation);
+
+
 	MinDrawableDatum* datum;
 
 	// Add stem for leaves
@@ -268,10 +314,11 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 	datum->locationY = startY;
 	datum->angle = branchOrientation;
 	datum->extent = length;
-	datum->mass = leader->getEndWidth();
-	if(datum->mass > 10 )
+//	datum->mass = leader->getEndWidth();
+	datum->mass = 2.0 * leaves;
+	if(datum->mass > 4.0 )
 	{
-		datum->massRatio = (10.0/datum->mass);
+		datum->massRatio = (4.0/datum->mass);
 	}
 	else
 	{
@@ -340,7 +387,7 @@ void TrapezoidBlocks::initializeLeader(TrapezoidLeader* leader)
 	SurrogateTreeNode* source = leader->getSourceSet();
 	double growthUnit = 50.0;
 	// Spacing variables
-	double initialSpacer = 5.0 * growthUnit;
+	double initialSpacer = 2.5 * growthUnit;
 	double leavesPerBranch = 5.0;
 	double leafBranchSpacing = 2 * growthUnit;
 	double lengthPerLeaf = growthUnit;
@@ -353,14 +400,14 @@ void TrapezoidBlocks::initializeLeader(TrapezoidLeader* leader)
 
 	// Final shift for leaf branches
 	double branchSpacer = ceil(((source->children->size() / leavesPerBranch) + 1) * leafBranchSpacing);
-	initialSpacer += branchSpacer;
+//	initialSpacer += branchSpacer;
 	leader->step(branchSpacer);
 
 	int leaves = 0;
 
 	SurrogateTreeNode* node;
 
-	bool left = true;
+	bool left = (orientation > (3.14159/2));
 	double branchOrientation;
 	for(vector<SurrogateTreeNode*>::iterator iter = source->children->begin(); iter != source->children->end(); ++iter)
 	{
