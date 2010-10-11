@@ -22,7 +22,7 @@ TrapezoidBlocks::~TrapezoidBlocks()
 
 double TrapezoidBlocks::angleFrom(double aX, double aY, double bX, double bY)
 {
-	double attractorAngle;
+	double attractorAngle = 0.0;
 	double dx = bX - aX;
 	double dy = bY - aY; // Has to be flipped because of stupid drawing orientation rules (y increases down)
 	double dist = sqrt(dx * dx + dy * dy);
@@ -356,7 +356,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 void TrapezoidBlocks::initializeLeader(TrapezoidLeader* leader)
 {
 	SurrogateTreeNode* source = leader->getSourceSet();
-	double growthUnit = 50.0;
+	double growthUnit = 40.0;
 	// Spacing variables
 	double initialSpacer = 5.0 * growthUnit;
 	double leavesPerBranch = 5.0;
@@ -371,7 +371,7 @@ void TrapezoidBlocks::initializeLeader(TrapezoidLeader* leader)
 
 	// Final shift for leaf branches
 	double branchSpacer = ceil(((source->children->size() / leavesPerBranch) + 1) * leafBranchSpacing);
-	initialSpacer += branchSpacer;
+//	initialSpacer += branchSpacer;
 	leader->step(branchSpacer);
 
 	int leaves = 0;
