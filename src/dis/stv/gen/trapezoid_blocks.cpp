@@ -146,8 +146,33 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 							attractorAngle = leader->getOrientation();
 						}
 						int subtreeMass = atoi(attractor->data[TreeNodeKey::SIZE].c_str());
-						printf("Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
-						TrapezoidLeader* newLeader = new TrapezoidLeader(leader->getX(),leader->getY(), subtreeMass, attractorAngle, attractor);
+
+						// Calculate trunk width offset
+						double trunkWidth = leader->getBaseWidth() / 2;
+
+						double trunkOrthOrientation = 0;
+						double orientation = leader->getOrientation();
+						if(attractorAngle < orientation)
+						{
+							trunkOrthOrientation = orientation - (3.14159/2);
+							if(trunkOrthOrientation < 0)
+							{
+								trunkOrthOrientation += 2 * 3.14159;
+							}
+						}
+						else
+						{
+							trunkOrthOrientation = orientation + (3.14159/2);
+							if(trunkOrthOrientation > 2 * 3.14159)
+							{
+								trunkOrthOrientation -= 2 * 3.14159;
+							}
+						}
+						double _x = leader->getX() + (trunkWidth * cos(trunkOrthOrientation));
+						double _y = leader->getY() + (trunkWidth * sin(trunkOrthOrientation));
+
+						printf("Adding leader (%s/%s) at (%f, %f) toward %f with SCoM @ (%f,%f)\n",attractor->data[TreeNodeKey::NAME].c_str(),source->data[TreeNodeKey::NAME].c_str(),_x,_y,attractorAngle,attractorX, attractorY);
+						TrapezoidLeader* newLeader = new TrapezoidLeader(_x,_y, subtreeMass, attractorAngle, attractor);
 						this->initializeLeader(newLeader);
 						// Only allow 1 new leader per step
 					}
@@ -183,9 +208,9 @@ bool TrapezoidBlocks::step(DrawableData* data, TrapezoidLeader* leader)
 				{
 					// Create new Leader with child set that caused split
 					attractorAngle = orientationBetweenSubtree(attractor, leader);
-//					double attractorX = atof(attractor->data[TreeNodeKey::SCOMX].c_str());
-//					double attractorY = atof(attractor->data[TreeNodeKey::SCOMY].c_str());
-//					printf("Hit CoM.  Adding new leader at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
+					double attractorX = atof(attractor->data[TreeNodeKey::SCOMX].c_str());
+					double attractorY = atof(attractor->data[TreeNodeKey::SCOMY].c_str());
+					printf("Hit CoM.  Adding leader (%s/%s) at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",attractor->data[TreeNodeKey::NAME].c_str(),source->data[TreeNodeKey::NAME].c_str(),leader->getX(),leader->getY(),attractorAngle,attractorX, attractorY);
 					int subtreeMass = atoi(attractor->data[TreeNodeKey::SIZE].c_str());
 					endMass += subtreeMass;
 					TrapezoidLeader* newLeader = new TrapezoidLeader(leader->getX(),leader->getY(), subtreeMass, attractorAngle, attractor);
@@ -220,7 +245,7 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 
 	double attractorAngle = this->angleFrom(x, -y, attractorX, -attractorY);
 //	DiscursiveDebugPrint("trapezoid_blocks","Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
-//	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
+	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
 
 	if(attractorAngle == 0)
 	{
@@ -382,7 +407,7 @@ void TrapezoidBlocks::initializeLeader(TrapezoidLeader* leader)
 
 	SurrogateTreeNode* node;
 
-	bool left = true;
+	bool left = (orientation > (3.14159/2));
 	double branchOrientation;
 	for(vector<SurrogateTreeNode*>::iterator iter = source->children->begin(); iter != source->children->end(); ++iter)
 	{

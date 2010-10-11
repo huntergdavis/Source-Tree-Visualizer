@@ -133,11 +133,11 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Calculate spacing to range [0,splay]
 		double deltaSplay = 0;
-		double splayModifier = 8.0;
+		double splayModifier = 4.0;
 		splayModifier /= (2.0 * pow(2,children/5.0));
-		if(splayModifier < 2)
+		if(splayModifier < 1.2)
 		{
-			splayModifier = 2;
+			splayModifier = 1.2;
 		}
 		double splay = 3.14159 / splayModifier;
 		double com;
@@ -149,7 +149,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		DiscursiveDebugPrint("sdl","Dirs/Leaves [%d/%d], Splay [%f], Splay modifier [%f], Delta splay [%f]\n",(int)dirs.size(),leaves,splay, splayModifier, deltaSplay);
 
-		DiscursiveDebugPrint("sdl","Subtree mass effects [");
+		DiscursiveDebugPrint("sdl","Subtree mass effects (%s @ %d) [",tree->data[TreeNodeKey::NAME].c_str(),mass);
 		for(i = 0; i < children; i++)
 		{
 			DiscursiveDebugPrint("sdl","%f,",positions[i]);
@@ -205,7 +205,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Controls width of fan-out.  < 1 : Wide tree
 		//							   > 1 : Narrow tree
-		double widthHeightScaleFactor = 0.8;
+		double widthHeightScaleFactor = 0.75;
 		// Transform positions to arc and Update new positions
 		// Dirs first
 		double xSum = 0;
@@ -219,7 +219,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			angle = rootAngle - (positions[pairs[node]] - com);
 			double newX = fakeRootX + (ratio * arcRadius * cos(angle));
 			double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
-			lmass = 5.0 * atoi(node->data[TreeNodeKey::SIZE].c_str()) / (double)maxChild;
+			lmass = 1.0 * atoi(node->data[TreeNodeKey::SIZE].c_str()) / (double)maxChild;
 			xSum += (newX * lmass);
 			ySum += (newY * lmass);
 			massSum += lmass;
