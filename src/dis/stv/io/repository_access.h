@@ -45,6 +45,7 @@ public:
 
 	long currentTreeSize;
 	std::string fileName;
+	std::string backgroundImageName;
 	SurrogateTreeNode* source;
 	int WriteJPGFromCanvas(Image* canvas);
 	virtual SurrogateTreeNode* retrieve() = 0;

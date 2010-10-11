@@ -34,6 +34,9 @@ private:
 	// Default is unity
 	int startWidth;
 	int startHeight;
+	
+	// our background image name
+	std::string backgroundImageName;
 
 	// our filename for output file
 	std::string fileName;
@@ -67,6 +70,7 @@ public:
 	void parseConfigFile();
 	std::string returnAgentName();
 	std::string returnFileName();
+	std::string returnBackgroundImageName();
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
 	RepositoryAccess* initializeRepositoryType();
