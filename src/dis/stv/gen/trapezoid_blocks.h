@@ -33,9 +33,12 @@ private:
 	bool shouldSplit(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
 	double orientationBetween(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
 	double orientationBetweenSubtree(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
+	void drawBranches(TrapezoidLeader* leader, int leavesPerBranch, double lengthPerLeaf);
 	void drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, int leaves, double leafBranchSpacing, double growthUnit);
 	double angleDiff(double ref, double compare);
 	double angleFrom(double aX, double aY, double bX, double bY);
+	double branchIntro(TrapezoidLeader* leader, double growthUnit);
+	double leafSpacing(TrapezoidLeader* leader, double growthUnit);
 };
 
 #endif /* TRAPEZOID_BLOCKS_H_ */

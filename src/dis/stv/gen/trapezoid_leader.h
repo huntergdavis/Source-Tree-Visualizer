@@ -26,11 +26,13 @@ private:
 	double baseWidth;
 	double endWidth;
 	double orientation;
+	double initSpacer;
 	SurrogateTreeNode* sourceSet;
-//	vector<LeafBranch*>* leafBranches;
+
 
 public:
-	TrapezoidLeader(double baseX, double baseY, double baseWidth, double orientation, SurrogateTreeNode* sourceSet);
+	vector<SurrogateTreeNode*>* leaves;
+	TrapezoidLeader(double baseX, double baseY, double baseWidth, double orientation, double initSpacer, SurrogateTreeNode* sourceSet);
 	~TrapezoidLeader();
 	double getBaseX();
 	double getBaseY();
