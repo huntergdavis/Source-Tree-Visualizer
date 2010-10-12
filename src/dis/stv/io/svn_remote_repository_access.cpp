@@ -253,6 +253,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	else
 	{
 		globalRevs++;
+		localRevs++;
 		DiscursiveDebugPrint("svn,repository access","First Pass: Adding Revision Number %ld \nCurrent Tree Size %ld \n",globalRevs,currentTreeSize);
 	}
 
