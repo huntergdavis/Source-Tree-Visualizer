@@ -262,8 +262,8 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 	double attractorY = atof(source->data[TreeNodeKey::SCOMY].c_str());
 
 	double attractorAngle = this->angleFrom(x, -y, attractorX, -attractorY);
-//	DiscursiveDebugPrint("trapezoid_blocks","Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
-	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
+	DiscursiveDebugPrint("trapezoid_blocks","Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
+//	printf("Adding starter at (%f, %f) pointed at %f with SCoM @ (%f,%f)\n",x,y,attractorAngle, attractorX, attractorY);
 
 	if(attractorAngle == 0)
 	{

@@ -47,21 +47,33 @@ void ImageMagickTransformer::transform(va_list args)
 	}
 
 	// Transform points to look more "naturally tree-like"
-	tree->scale(TreeNodeKey::Y, scalingFactorH);
+	if(currHeight > 0)
+	{
+		tree->scale(TreeNodeKey::Y, scalingFactorH);
+	}
 	PropertyInverter inverter(height * 0.98);
 	tree->transform(TreeNodeKey::Y,&inverter);
-	tree->scale(TreeNodeKey::SCOMY, scalingFactorH);
+	if(currHeight > 0)
+	{
+		tree->scale(TreeNodeKey::SCOMY, scalingFactorH);
+	}
 	tree->transform(TreeNodeKey::SCOMY,&inverter);
 
 	PropertyShifter shifter(-1*((xMax + xMin) / 2));
-	tree->transform(TreeNodeKey::X,&shifter);
-	// Scale tree values
-	tree->scale(TreeNodeKey::X, scalingFactorW);
+	if(currWidth > 0)
+	{
+		tree->transform(TreeNodeKey::X,&shifter);
+		// Scale tree values
+		tree->scale(TreeNodeKey::X, scalingFactorW);
+	}
 	PropertyShifter shifter2(allowedWidth / 2.0);
 	tree->transform(TreeNodeKey::X,&shifter2);
 
-	tree->transform(TreeNodeKey::SCOMX,&shifter);
-	// Scale subtree values
-	tree->scale(TreeNodeKey::SCOMX, scalingFactorW);
+	if(currWidth > 0)
+	{
+		tree->transform(TreeNodeKey::SCOMX,&shifter);
+		// Scale subtree values
+		tree->scale(TreeNodeKey::SCOMX, scalingFactorW);
+	}
 	tree->transform(TreeNodeKey::SCOMX,&shifter2);
 }
