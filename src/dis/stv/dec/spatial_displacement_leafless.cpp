@@ -133,11 +133,11 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Calculate spacing to range [0,splay]
 		double deltaSplay = 0;
-		double splayModifier = 4.0;
-		splayModifier /= (2.0 * pow(2,children/5.0));
-		if(splayModifier < 1.2)
+		double splayModifier = 2.0;
+		splayModifier /= (2.0 * pow(2,log(children+2)));
+		if(splayModifier < 1)
 		{
-			splayModifier = 1.2;
+			splayModifier = 1;
 		}
 		double splay = 3.14159 / splayModifier;
 		double com;

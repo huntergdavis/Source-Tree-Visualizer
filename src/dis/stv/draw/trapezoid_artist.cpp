@@ -53,28 +53,43 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 		}
 		layerData = rediculator->second;
 		DiscursivePrint("Drawing layer %d with %d items\n", index, layerData->size());
+		int mass;
+		double baseRadius;
+		double endRadius;
 		for(vector<MinDrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
 		{
 			drawItem = *dataList;
 			x = drawItem->locationX;
 			y = drawItem->locationY;
+			mass = drawItem->mass;
+			if(mass < 3)
+			{
+				baseRadius = (mass/2.0);
+				endRadius = (baseRadius * drawItem->massRatio);
+			}
+			else
+			{
+				baseRadius = 3 * log(mass);
+				endRadius = 3 * log(mass * drawItem->massRatio);
+			}
+
 			if(index != TRUNK_LAYER)
 			{
-				drawList.push_back(DrawableCircle(x, y, x, y + drawItem->mass));
+				drawList.push_back(DrawableCircle(x, y, x, y + mass));
 			}
 			else
 			{
 				list<Coordinate> trapezoid;
-				dx = (drawItem->mass/2.0) * cos(drawItem->angle);
-				dy = -1 * (drawItem->mass/2.0) * sin(drawItem->angle);
+				dx = baseRadius * cos(drawItem->angle);
+				dy = -1 * baseRadius * sin(drawItem->angle);
 				// Left base pt
 				trapezoid.push_back(Coordinate(x - dy,y + dx));
 				// Right base pt
 				trapezoid.push_back(Coordinate(x + dy,y - dx));
 				endX = x + drawItem->extent * cos(drawItem->angle);
 				endY = y - drawItem->extent * sin(drawItem->angle);
-				dx = (drawItem->mass * drawItem->massRatio/2.0) * cos(drawItem->angle);
-				dy = -1 * (drawItem->mass * drawItem->massRatio/2.0) * sin(drawItem->angle);
+				dx = endRadius * cos(drawItem->angle);
+				dy = -1 * endRadius * sin(drawItem->angle);
 				trapezoid.push_back(Coordinate(endX + dy,endY - dx));
 				trapezoid.push_back(Coordinate(endX - dy,endY + dx));
 //				printf("Drawing polygon [");
@@ -85,7 +100,7 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 //					printf("<%d,%d>,",(int)p.x(),(int)p.y());
 //				}
 //				printf("]\n");
-				drawList.push_back(DrawableCircle(x, y, x, y + (drawItem->mass/2.0)));
+				drawList.push_back(DrawableCircle(x, y, x, y + baseRadius));
 				drawList.push_back(DrawablePolygon(trapezoid));
 			}
 		}
