@@ -195,7 +195,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Transform positions to arc
 		//double arcRadius = 2.0 * maxChild * this->growthUnit;
-		double arcRadius = length;
+		double arcRadius = length * log(subtrees+2);
 		double ratio;
 		double angle;
 
