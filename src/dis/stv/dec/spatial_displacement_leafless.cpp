@@ -77,7 +77,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 			if(node->children->size() > 0)
 			{
 				subtrees++;
-				this->insertOrderedBy(&dirs,node,TreeNodeKey::SIZE,false);
+				this->insertOrderedBy(&dirs,node,TreeNodeKey::REVISIONCREATED,false);
 				childSize = atoi(node->data[TreeNodeKey::SIZE].c_str());
 				mass += childSize;
 				if(childSize > maxChild )
@@ -269,7 +269,7 @@ int SpatialDisplacementLeafless::count(SurrogateTreeNode* tree)
 	}
 	// Assign count to data
 	tree->set(TreeNodeKey::SIZE, boost::lexical_cast<string>(sum));
-	DiscursiveDebugPrint("sdl","Size of tree %s is %s in this and %d sublevels\n",tree->data[TreeNodeKey::NAME].c_str(),tree->data[TreeNodeKey::SIZE].c_str(),maxDepth);
+	DiscursiveDebugPrint("sdl count","Size of tree %s is %s in this and %d sublevels\n",tree->data[TreeNodeKey::NAME].c_str(),tree->data[TreeNodeKey::SIZE].c_str(),maxDepth);
 	tree->set(TreeNodeKey::DEPTH, boost::lexical_cast<string>(maxDepth + 1));
 	return sum;
 }
