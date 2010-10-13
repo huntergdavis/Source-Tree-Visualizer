@@ -400,6 +400,148 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 	}
 }
 
+double TrapezoidBlocks::splitLocation(LeafSplit* leaf, double spacing, bool logGrowth)
+{
+	if(logGrowth)
+	{
+		// +1 keeps log(0) from occurring.
+		return leaf->baseLength + (log(leaf->subCount + 1) * spacing);
+	}
+	else
+	{
+		return leaf->baseLength + (leaf->subCount * spacing);
+	}
+}
+
+void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double growthUnit, bool logGrowth)
+{
+	MinDrawableDatum* datum;
+	double stemLength = this->splitLocation(leaf, spacing, logGrowth) + leaf->baseLength;
+
+	// Add stem
+	datum = (MinDrawableDatum*)malloc(sizeof(MinDrawableDatum));
+	datum->locationX = leaf->rootX;
+	datum->locationY = leaf->rootY;
+	datum->angle = leaf->orientation;
+	datum->extent = stemLength;
+	datum->mass = 3.0;
+	datum->massRatio = 1;
+	this->data->insert(TRUNK_LAYER,datum);
+
+	// Add leaf
+	datum = (MinDrawableDatum*)malloc(sizeof(MinDrawableDatum));
+	datum->locationX = leaf->rootX + ((stemLength + growthUnit) * cos(leaf->orientation));
+	datum->locationY = leaf->rootY - ((stemLength + growthUnit) * sin(leaf->orientation));
+	datum->angle = leaf->orientation;
+	datum->extent = growthUnit;
+	datum->mass = growthUnit;
+	this->data->insert(LEAF_LAYER,datum);
+}
+
+void TrapezoidBlocks::drawBranchAdv(TrapezoidLeader* leader, double startX, double startY, double orientation, double baseLength, double leafBranchSpacing, double growthUnit)
+{
+	// Create fractal datastruct
+	// and draw branches
+	if(leader->leaves->size() > 0)
+	{
+		LeafSplit* head;
+		LeafSplit* fract;
+		LeafSplit* parent;
+		queue<LeafSplit*> splits;
+		double split;
+		vector<SurrogateTreeNode*>::iterator iter = leader->leaves->begin();
+		head = (LeafSplit*)malloc(sizeof(LeafSplit));
+		memset(head,0,sizeof(LeafSplit));
+		head->rootX = startX;
+		head->rootY = startY;
+		head->orientation = orientation;
+		head->baseLength = baseLength;
+		head->subCount = leader->leaves->size() - 1;
+		splits.push(head);
+		// Draw this new stem
+		this->drawMicroBranch(head, leafBranchSpacing, growthUnit, true);
+		// Move to second leaf in list
+		++iter;
+		// Loop over remaining children
+		for(; iter != leader->leaves->end(); ++iter)
+		{
+			parent = splits.front();
+			if(parent == head)
+			{
+				split = this->splitLocation(parent,leafBranchSpacing,true);
+			}
+			else
+			{
+				split = this->splitLocation(parent,leafBranchSpacing/2);
+			}
+			fract = (LeafSplit*)malloc(sizeof(LeafSplit));
+			memset(fract,0,sizeof(LeafSplit));
+			splits.push(fract);
+			fract->baseLength = baseLength;
+
+			// Assign new node to parent
+			// Remove parent from queue if both children are now set
+			if(parent->left == NULL)
+			{
+				fract->subCount = ceil(parent->subCount / 2.0) - 1;
+				fract->orientation = this->angleAdd(parent->orientation,3.14159/4);
+				fract->rootX = parent->rootX + (split * cos(parent->orientation));
+				fract->rootY = parent->rootY - (split * sin(parent->orientation));
+				// Set new node to left child
+				parent->left = fract;
+			}
+			else
+			{
+				fract->subCount = floor(parent->subCount / 2.0) - 1;
+				fract->orientation = this->angleAdd(parent->orientation,-3.14159/4);
+				fract->rootX = parent->rootX + (split * cos(parent->orientation));
+				fract->rootY = parent->rootY - (split * sin(parent->orientation));
+				// Set new node to right child
+				parent->right = fract;
+				// Remove parent from list
+				splits.pop();
+			}
+			this->drawMicroBranch(fract, leafBranchSpacing/2, growthUnit);
+		}
+		// Empty stack
+		while(!splits.empty())
+		{
+			splits.pop();
+		}
+
+		// Free allocated fractal objects
+		this->reclaim(head);
+	}
+}
+
+void TrapezoidBlocks::reclaim(LeafSplit* leaf)
+{
+	if(leaf != NULL)
+	{
+		this->reclaim(leaf->left);
+		leaf->left = NULL;
+		this->reclaim(leaf->right);
+		leaf->right = NULL;
+		free(leaf);
+	}
+}
+
+double TrapezoidBlocks::angleAdd(double origin, double addAmount)
+{
+
+	double newAngle = origin + addAmount;
+	if(newAngle < 0)
+	{
+		newAngle += 2 * 3.14159;
+	}
+	if(newAngle > (2 * 3.14159))
+	{
+		newAngle -= 2 * 3.14159;
+	}
+
+	return newAngle;
+}
+
 void TrapezoidBlocks::drawBranches(TrapezoidLeader* leader, int leavesPerBranch, double lengthPerLeaf)
 {
 	SurrogateTreeNode* source = leader->getSourceSet();
@@ -412,72 +554,80 @@ void TrapezoidBlocks::drawBranches(TrapezoidLeader* leader, int leavesPerBranch,
 	double startX = leader->getBaseX() + (intro * cos(orientation));
 	double startY = leader->getBaseY() - (intro * sin(orientation));
 
-	int leaves = 0;
-	SurrogateTreeNode* node;
+	if(atoi(source->data[TreeNodeKey::DEPTH].c_str()) != FINAL_BRANCH)
+	{
+		int leaves = 0;
+		SurrogateTreeNode* node;
 
-	bool left = (orientation > (3.14159/2));
-	double branchOrientation;
-	for(vector<SurrogateTreeNode*>::iterator iter = leader->leaves->begin(); iter != leader->leaves->end(); ++iter)
-	{
-		node = *iter;
-//		if(node->children->size() == 0)
-//		{
-//			// Note new leaf
-			leaves++;
-			// Draw leaves + branch
-			if(leaves == leavesPerBranch)
+		bool left = (orientation > (3.14159/2));
+		double branchOrientation;
+		for(vector<SurrogateTreeNode*>::iterator iter = leader->leaves->begin(); iter != leader->leaves->end(); ++iter)
+		{
+			node = *iter;
+	//		if(node->children->size() == 0)
+	//		{
+	//			// Note new leaf
+				leaves++;
+				// Draw leaves + branch
+				if(leaves == leavesPerBranch)
+				{
+					if(left)
+					{
+						branchOrientation = orientation - (3.14159/2);
+						if(branchOrientation < 0)
+						{
+							branchOrientation += 2 * 3.14159;
+						}
+					}
+					else
+					{
+						branchOrientation = orientation + (3.14159/2);
+						if(branchOrientation > 2 * 3.14159)
+						{
+							branchOrientation -= 2 * 3.14159;
+						}
+					}
+					// Shift start location
+					startX += (leafBranchSpacing * cos(orientation));
+					startY -= (leafBranchSpacing * sin(orientation));
+					// Draw branch
+					this->drawBranch(leader, startX, startY, orientation, branchOrientation, lengthPerLeaf, leaves, leafBranchSpacing, growthUnit);
+					// Swap sides
+					left = !left;
+					// Reset count
+					leaves = 0;
+				}
+	//		}
+		}
+		if(leaves > 0)
+		{
+			if(left)
 			{
-				if(left)
+				branchOrientation = orientation - (3.14159/2);
+				if(branchOrientation < 0)
 				{
-					branchOrientation = orientation - (3.14159/2);
-					if(branchOrientation < 0)
-					{
-						branchOrientation += 2 * 3.14159;
-					}
+					branchOrientation += 2 * 3.14159;
 				}
-				else
-				{
-					branchOrientation = orientation + (3.14159/2);
-					if(branchOrientation > 2 * 3.14159)
-					{
-						branchOrientation -= 2 * 3.14159;
-					}
-				}
-				// Shift start location
-				startX += (leafBranchSpacing * cos(orientation));
-				startY -= (leafBranchSpacing * sin(orientation));
-				// Draw branch
-				this->drawBranch(leader, startX, startY, orientation, branchOrientation, lengthPerLeaf, leaves, leafBranchSpacing, growthUnit);
-				// Swap sides
-				left = !left;
-				// Reset count
-				leaves = 0;
 			}
-//		}
+			else
+			{
+				branchOrientation = orientation + (3.14159/2);
+				if(branchOrientation > 2 * 3.14159)
+				{
+					branchOrientation -= 2 * 3.14159;
+				}
+			}
+			// Shift start location
+			startX += (leafBranchSpacing * cos(orientation));
+			startY -= (leafBranchSpacing * sin(orientation));
+			// Draw branch
+			this->drawBranch(leader, startX, startY, orientation, branchOrientation, lengthPerLeaf, leaves, leafBranchSpacing, growthUnit);
+		}
 	}
-	if(leaves > 0)
+	else
 	{
-		if(left)
-		{
-			branchOrientation = orientation - (3.14159/2);
-			if(branchOrientation < 0)
-			{
-				branchOrientation += 2 * 3.14159;
-			}
-		}
-		else
-		{
-			branchOrientation = orientation + (3.14159/2);
-			if(branchOrientation > 2 * 3.14159)
-			{
-				branchOrientation -= 2 * 3.14159;
-			}
-		}
-		// Shift start location
-		startX += (leafBranchSpacing * cos(orientation));
-		startY -= (leafBranchSpacing * sin(orientation));
-		// Draw branch
-		this->drawBranch(leader, startX, startY, orientation, branchOrientation, lengthPerLeaf, leaves, leafBranchSpacing, growthUnit);
+		// We are at a final branch and need to do the advance branching
+		this->drawBranchAdv(leader, startX, startY, orientation, lengthPerLeaf, growthUnit, growthUnit);
 	}
 }
 
@@ -489,10 +639,14 @@ double TrapezoidBlocks::branchIntro(TrapezoidLeader* leader, double growthUnit)
 
 double TrapezoidBlocks::leafSpacing(TrapezoidLeader* leader, double growthUnit)
 {
+	double branchSpacer = 0;
 	SurrogateTreeNode* source = leader->getSourceSet();
-	double leavesPerBranch = 5.0;
-	double leafBranchSpacing = 2 * growthUnit;
-	double branchSpacer = ceil(((source->children->size() / leavesPerBranch) + 1) * leafBranchSpacing);
+	if(atoi(source->data[TreeNodeKey::DEPTH].c_str()) > FINAL_BRANCH + 1)
+	{
+		double leavesPerBranch = 5.0;
+		double leafBranchSpacing = 2 * growthUnit;
+		branchSpacer = ceil(((source->children->size() / leavesPerBranch) + 1) * leafBranchSpacing);
+	}
 	return branchSpacer;
 }
 

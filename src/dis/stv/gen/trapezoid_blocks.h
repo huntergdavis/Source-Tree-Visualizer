@@ -8,7 +8,11 @@
 #ifndef TRAPEZOID_BLOCKS_H_
 #define TRAPEZOID_BLOCKS_H_
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include <list>
+#include <queue>
 #include <math.h>
 #include <boost/lexical_cast.hpp>
 #include "./digitizer.h"
@@ -18,9 +22,22 @@
 
 using namespace std;
 
+struct LeafSplit
+{
+	double rootX;
+	double rootY;
+	double orientation;
+	double baseLength;
+	int subCount;
+	LeafSplit* left;
+	LeafSplit* right;
+};
+
 class TrapezoidBlocks: public Digitizer
 {
 public:
+	static const int FINAL_BRANCH = 2;
+
 	TrapezoidBlocks();
 	virtual ~TrapezoidBlocks();
 	DrawableData* digitize(SurrogateTreeNode* source);
@@ -35,10 +52,15 @@ private:
 	double orientationBetweenSubtree(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
 	void drawBranches(TrapezoidLeader* leader, int leavesPerBranch, double lengthPerLeaf);
 	void drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, int leaves, double leafBranchSpacing, double growthUnit);
+	void drawBranchAdv(TrapezoidLeader* leader, double startX, double startY, double orientation, double baseLength, double leafBranchSpacing, double growthUnit);
+	void drawMicroBranch(LeafSplit* leaf, double spacing, double growthUnit, bool logGrowth = false);
 	double angleDiff(double ref, double compare);
 	double angleFrom(double aX, double aY, double bX, double bY);
+	double angleAdd(double origin, double addAmount);
 	double branchIntro(TrapezoidLeader* leader, double growthUnit);
 	double leafSpacing(TrapezoidLeader* leader, double growthUnit);
+	double splitLocation(LeafSplit* leaf, double spacing, bool logGrowth = false);
+	void reclaim(LeafSplit* leaf);
 };
 
 #endif /* TRAPEZOID_BLOCKS_H_ */

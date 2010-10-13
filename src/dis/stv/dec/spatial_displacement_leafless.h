@@ -8,7 +8,7 @@
 #ifndef SPATIAL_DISPLACEMENT_LEAFLESS_H_
 #define SPATIAL_DISPLACEMENT_LEAFLESS_H_
 
-#include "decorator.h"
+#include "./decorator.h"
 #include "../model/surrogate_tree_node.h"
 #include <stdlib.h>
 #include <string.h>

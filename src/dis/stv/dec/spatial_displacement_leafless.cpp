@@ -5,8 +5,8 @@
  *      Author: Mark Christensen
  */
 
-#include "spatial_displacement_leafless.h"
-#include "../system/discursive_system.h"
+#include "./spatial_displacement_leafless.h"
+
 
 
 using namespace std;
