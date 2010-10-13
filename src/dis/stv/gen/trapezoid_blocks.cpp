@@ -62,7 +62,7 @@ bool TrapezoidBlocks::shouldSplit(SurrogateTreeNode* attractor, TrapezoidLeader*
 	double currentOrientation = leader->getOrientation();
 	// Split if angle from leader to attractor is
 	// 'enough' more then current orientation
-	double enough = 3.14159 / 2.3;
+	double enough = 3.14159 / 5;
 	double attractorAngle = orientationBetween(attractor, leader);
 
 	return enough < fabs(attractorAngle - currentOrientation);
@@ -415,7 +415,7 @@ void TrapezoidBlocks::drawBranches(TrapezoidLeader* leader, int leavesPerBranch,
 	int leaves = 0;
 	SurrogateTreeNode* node;
 
-	bool left = (orientation < (3.14159/2));
+	bool left = (orientation > (3.14159/2));
 	double branchOrientation;
 	for(vector<SurrogateTreeNode*>::iterator iter = leader->leaves->begin(); iter != leader->leaves->end(); ++iter)
 	{

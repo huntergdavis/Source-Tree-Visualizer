@@ -183,7 +183,7 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Calculate first 2 segments of branch
 		// Branch base first
-		double length = 2.5 * this->growthUnit;
+		double length = 7.5 * this->growthUnit;
 //		if(subtrees == 0)
 //		{
 //			// If only leaves, no branch spacing.
@@ -191,7 +191,10 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 //		}
 
 		// Add leaf branch spacing
-		length += (ceil(leaves / 5.0) + 1) * (2 * this->growthUnit);
+		// This uses full child node count and not 'leaves'
+		// because of a calc issue in TrapezoidBlocks
+//		length += (ceil(leaves / 5.0) + 1) * (2 * this->growthUnit);
+		length += (ceil(tree->children->size() / 5.0) + 1) * (2 * this->growthUnit);
 
 		// Transform positions to arc
 		//double arcRadius = 2.0 * maxChild * this->growthUnit;
@@ -205,19 +208,27 @@ void SpatialDisplacementLeafless::expand(SurrogateTreeNode* tree, double rootAng
 
 		// Controls width of fan-out.  < 1 : Wide tree
 		//							   > 1 : Narrow tree
-		double widthHeightScaleFactor = 0.75;
+		double widthHeightScaleFactor = 1;
 		// Transform positions to arc and Update new positions
 		// Dirs first
 		double xSum = 0;
 		double ySum = 0;
 		int lmass;
 		double massSum = 0;
+		bool spread = (subtrees > 3);
+		double stepPer = 7.5;
+		int centerIndex = (subtrees / 2);
+		double spreadStep = max * stepPer;
 		for(i = 0; i < subtrees; i++)
 		{
 			node = dirs[i];
 			ratio = atoi(node->data[TreeNodeKey::SIZE].c_str())/(double)maxChild;
 			angle = rootAngle - (positions[pairs[node]] - com);
 			double newX = fakeRootX + (ratio * arcRadius * cos(angle));
+			if(spread)
+			{
+				newX += (i - centerIndex) * spreadStep;
+			}
 			double newY = fakeRootY + (ratio * arcRadius * widthHeightScaleFactor * sin(angle));
 			lmass = 1.0 * atoi(node->data[TreeNodeKey::SIZE].c_str()) / (double)maxChild;
 			xSum += (newX * lmass);
