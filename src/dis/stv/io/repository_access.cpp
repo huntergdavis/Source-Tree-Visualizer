@@ -71,6 +71,32 @@ void RepositoryAccess::ParseFilterKeywords(std::string filterKeywords)
 };
 
 // -------------------------------------------------------------------------
+// API :: RepositoryAccess::ParseFilterKeywords
+// PURPOSE :: parses filter keywords to internal keylist
+//         :: private function shared by public functions
+//         ::
+// PARAMETERS :: std::String filterKeywords - comma sep list of keywords
+// RETURN :: None
+// -------------------------------------------------------------------------
+void RepositoryAccess::ParseInverseFilterKeywords(std::string filterKeywords)
+{
+	// split string by commas and push into global store
+	// use a stringstream to split
+    std::stringstream ss(filterKeywords);
+
+    // store each delimited item in string
+    std::string item;
+
+    // split and push into global store
+    while(std::getline(ss, item, ',')) {
+		if(DoAnyInverseFilterKeywordsMatch(item) == -1)
+		{
+			inverseFilterKeyStore.push_back(item);
+		}
+    }
+};
+
+// -------------------------------------------------------------------------
 // API :: RepositoryAccess::AddFilterKeywords
 // PURPOSE :: adds filter keywords to internal keylist
 //         ::
@@ -82,6 +108,21 @@ void RepositoryAccess::AddFilterKeywords(std::string filterKeyWords)
 {
 	ParseFilterKeywords(filterKeyWords);
 };
+
+
+// -------------------------------------------------------------------------
+// API :: RepositoryAccess::AddInverseFilterKeywords
+// PURPOSE :: adds filter keywords to internal keylist
+//         ::
+//         ::
+// PARAMETERS :: std::String filterKeywords - comma sep list of keywords
+// RETURN :: None
+// -------------------------------------------------------------------------
+void RepositoryAccess::AddInverseFilterKeywords(std::string filterKeyWords)
+{
+	ParseInverseFilterKeywords(filterKeyWords);
+};
+
 
 // -------------------------------------------------------------------------
 // API :: RepositoryAccess::doAnyKeywordsMatch
@@ -119,6 +160,41 @@ int RepositoryAccess::DoAnyFilterKeywordsMatch(std::string filterKeywords)
     return -1;
 };
 
+// -------------------------------------------------------------------------
+// API :: RepositoryAccess::doAnyInverseFilterKeywordsMatch
+// PURPOSE :: tests if any keywords match
+//         :: returns the keyword number if so
+//         ::
+// PARAMETERS :: std::String filterKeywords - comma sep list of keywords
+// RETURN :: int - keyword reference number if there's a match
+// -------------------------------------------------------------------------
+int RepositoryAccess::DoAnyInverseFilterKeywordsMatch(std::string filterKeywords)
+{
+	// split string by commas and test against global store
+	// use a stringstream to split
+    std::stringstream ss(filterKeywords);
+
+    // store each delimited item in string
+    std::string item;
+
+    // store the string iterations
+    int keywordIterator = 0;
+
+    // split and test global store
+    while(std::getline(ss, item, ','))
+    {
+		keywordIterator++;
+		for(std::vector<std::string>::iterator i = inverseFilterKeyStore.begin(); i != inverseFilterKeyStore.end(); ++i)
+		{
+			if(*i == item)
+			{
+				return keywordIterator;
+			}
+		}
+    }
+
+    return -1;
+};
 
 // -------------------------------------------------------------------------
 // API :: RepositoryAccess::DoesThisStringContainFilterKeywords
@@ -135,11 +211,25 @@ int RepositoryAccess::DoesThisStringContainFilterKeywords(std::string textualDat
     int keyWordIterator = 0;
     size_t found = 0;
 
+
+
+    // check for negative keyword matches and fail if found
+	for(std::vector<std::string>::iterator i = inverseFilterKeyStore.begin(); i != inverseFilterKeyStore.end(); ++i)
+	{
+		found = textualData.find(*i);
+		if(found != std::string::npos)
+		{
+			return -1;
+		}
+	}
+
+    // if no negatives and there is no keystore size, return
     if(filterKeyStore.size() == 0)
     {
     	return 0;
     }
 
+    // check for positive keyword matches
 	for(std::vector<std::string>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
 		keyWordIterator++;
@@ -150,6 +240,7 @@ int RepositoryAccess::DoesThisStringContainFilterKeywords(std::string textualDat
 		}
 	}
 
+	// if nothing is found in either bin, and we have both bins, we fail
 	return -1;
 };
 

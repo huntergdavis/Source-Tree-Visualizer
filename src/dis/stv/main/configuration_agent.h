@@ -48,6 +48,9 @@ private:
 	// our filter keywords
 	std::string filterKeyWords;
 
+	// our inverse filter keywords
+	std::string inverseFilterKeyWords;
+
 	// should we make many jpgs?
 	int manyJpgs;
 
@@ -75,6 +78,7 @@ public:
 	std::string returnFileName();
 	std::string returnBackgroundImageName();
 	std::string returnFilterKeyWords();
+	std::string returnInverseFilterKeyWords();
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
 	RepositoryAccess* initializeRepositoryType();
