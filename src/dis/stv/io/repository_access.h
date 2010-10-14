@@ -21,6 +21,9 @@ using namespace Magick;
 
 class RepositoryAccess
 {
+private:
+	std::vector<std::string> filterKeyStore;
+	void ParseFilterKeywords(std::string filterKeywords);
 protected:
 	int repoType;
 	std::string repoLog;
@@ -49,6 +52,9 @@ public:
 	SurrogateTreeNode* source;
 	int WriteJPGFromCanvas(Image* canvas);
 	virtual SurrogateTreeNode* retrieve() = 0;
+	void AddFilterKeywords(std::string filterKeywords);
+	int DoAnyFilterKeywordsMatch(std::string filterKeywords);
+	int DoesThisStringContainFilterKeywords(std::string textualData);
 };
 
 #endif /* REPOSITORY_ACCESS_H_ */

@@ -69,6 +69,9 @@ ConfigurationAgent::ConfigurationAgent()
 	revStart = 2;
 	revStop = 10000;
 
+	// filter keywords
+	filterKeyWords = "";
+
 };
 
 // -------------------------------------------------------------------------
@@ -134,7 +137,19 @@ std::string ConfigurationAgent::returnAgentName()
 std::string ConfigurationAgent::returnFileName()
 {
 	return fileName;
-}
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnFilterKeyWords
+// PURPOSE :: returns the filter keywords, unparsed
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnFilterKeyWords()
+{
+	return filterKeyWords;
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::returnFileName
@@ -394,6 +409,10 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	else 	if(optionName == "debug")
 	{
 		debugAgent.AddDebugKeywords(optionValue);
+	}
+	else 	if(optionName == "input_filter")
+	{
+		filterKeyWords = optionValue;
 	}
 	else if(optionName == "repo_type")
 	{

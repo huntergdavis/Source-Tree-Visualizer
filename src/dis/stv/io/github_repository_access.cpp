@@ -325,22 +325,25 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 			// at this point we have the filename, use that for a query string for the correct date
 			earliestFileDate = retrieveDateFromGitHubFileName(&fileNameString);
 
-			DiscursiveDebugPrint("github,repository access","Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
+			if(DoesThisStringContainFilterKeywords(fileNameString) > -1)
+			{
+				DiscursiveDebugPrint("github,repository access","Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
 
-			// increase the number of global inserts by one
-			if((insertTarget > 0) && (localInserts < insertTarget))
-			{
-				localInserts++;
-				InsertByPathName(treeResult,fileNameString,earliestFileDate);
-			}
-			if((revTarget > 0) && (localRevs < revTarget))
-			{
-				InsertByPathName(treeResult,fileNameString,earliestFileDate);
-			}
-			if((insertTarget == 0) && (revTarget == 0))
-			{
-				globalInserts++;
-				InsertByPathName(treeResult,fileNameString,earliestFileDate);
+				// increase the number of global inserts by one
+				if((insertTarget > 0) && (localInserts < insertTarget))
+				{
+					localInserts++;
+					InsertByPathName(treeResult,fileNameString,earliestFileDate);
+				}
+				if((revTarget > 0) && (localRevs < revTarget))
+				{
+					InsertByPathName(treeResult,fileNameString,earliestFileDate);
+				}
+				if((insertTarget == 0) && (revTarget == 0))
+				{
+					globalInserts++;
+					InsertByPathName(treeResult,fileNameString,earliestFileDate);
+				}
 			}
 		}
 

@@ -278,19 +278,22 @@ void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 
 	// actually insert path into tree
 	// increase the number of global inserts by one
-	if((insertTarget > 0) && (localInserts < insertTarget))
+	if(DoesThisStringContainFilterKeywords(fullyQualifiedName) > -1)
 	{
-		localInserts++;
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
-	}
-	if((revTarget > 0) && (localRevs < revTarget))
-	{
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
-	}
-	if((insertTarget == 0) && (revTarget == 0))
-	{
-		globalInserts++;
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+		if((insertTarget > 0) && (localInserts < insertTarget))
+		{
+			localInserts++;
+			InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+		}
+		if((revTarget > 0) && (localRevs < revTarget))
+		{
+			InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+		}
+		if((insertTarget == 0) && (revTarget == 0))
+		{
+			globalInserts++;
+			InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+		}
 	}
 
 }
