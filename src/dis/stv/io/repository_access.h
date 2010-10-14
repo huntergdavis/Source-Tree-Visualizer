@@ -47,6 +47,7 @@ public:
 	int imageHeight;
 	int scaleWidth;
 	int scaleHeight;
+	int drawFilteredLeaves;
 
 	long currentTreeSize;
 	std::string fileName;
@@ -59,6 +60,7 @@ public:
 	int DoAnyFilterKeywordsMatch(std::string filterKeywords);
 	int DoAnyInverseFilterKeywordsMatch(std::string filterKeywords);
 	int DoesThisStringContainFilterKeywords(std::string textualData);
+	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time, int drawSubLeafs);
 };
 
 #endif /* REPOSITORY_ACCESS_H_ */

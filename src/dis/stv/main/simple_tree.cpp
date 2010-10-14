@@ -57,6 +57,7 @@ int main(int argc, char **argv)
 	// set our textual repository options
 	git->AddFilterKeywords(configAgent.returnFilterKeyWords());
 	git->AddInverseFilterKeywords(configAgent.returnInverseFilterKeyWords());
+	git->drawFilteredLeaves = configAgent.returnOptionByName("drawFilteredLeaves");
 	git->fileName = configAgent.returnFileName();
 	git->startWidth = (double)configAgent.returnOptionByName("startWidth");
 	git->startHeight = (double)configAgent.returnOptionByName("startHeight");

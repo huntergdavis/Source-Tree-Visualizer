@@ -51,6 +51,9 @@ private:
 	// our inverse filter keywords
 	std::string inverseFilterKeyWords;
 
+	// should we draw filtered leaves?
+	int drawFilteredLeaves;
+
 	// should we make many jpgs?
 	int manyJpgs;
 

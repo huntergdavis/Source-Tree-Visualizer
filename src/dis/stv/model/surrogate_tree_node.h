@@ -29,6 +29,7 @@ namespace TreeNodeKey
 	static const string CREATION_TIME = "creation_time";
 	static const string LENGTH = "length";
 	static const string REVISIONCREATED = "revisioncreated";
+	static const string DRAWNODE = "drawleaf";
 };
 
 using namespace std;

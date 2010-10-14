@@ -40,73 +40,6 @@ GitHubRepositoryAccess::GitHubRepositoryAccess(std::string gitHubUserName,std::s
 
 }
 
-void GitHubRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
-{
-	// Split off first part of path
-	int firstIndex = pathname.find("/");
-	if(firstIndex == 0)
-	{
-		// Our path started with a slash but we already have a root
-		// So remove first slash and ignore
-		pathname = pathname.substr(1,pathname.length()-1);
-		firstIndex = pathname.find("/");
-	}
-	if(firstIndex == -1)
-	{
-		// We have no more path left.  Just a single entry (leaf)
-		SurrogateTreeNode* file = new SurrogateTreeNode();
-		string timeStr = boost::lexical_cast<string>(time);
-		file->set(TreeNodeKey::CREATION_TIME, timeStr);
-		file->set(TreeNodeKey::NAME, pathname);
-		file->set(TreeNodeKey::REVISIONCREATED, localRevs);
-		DiscursiveDebugPrint("github,repository access","Adding node '%s' @ time %ld\n",pathname.c_str(),time);
-		tree->children->push_back(file);
-	}
-	else
-	{
-		// Split first string out for this nodes name
-		string name = pathname.substr(0,firstIndex);
-		// Look for node in children
-		SurrogateTreeNode* node = NULL;
-
-		vector<SurrogateTreeNode*>::iterator iter = tree->children->begin();
-		for(;iter != tree->children->end(); ++iter)
-		{
-			SurrogateTreeNode* local = *iter;
-			string nameComp = local->data[TreeNodeKey::NAME];
-			//DiscursiveDebugPrint("github,repository access","Comparing %s to %s\n",nameComp.c_str(),name.c_str());
-			if(!nameComp.compare(name))
-			{
-				// Found node
-				node = (*iter);
-				// Update node time if necessary
-				if(time < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
-				{
-					DiscursiveDebugPrint("github,repository access","Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
-					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(time));
-					node->set(TreeNodeKey::REVISIONCREATED, localRevs);
-				}
-				break;
-			}
-		}
-		// If child not found, add new node
-		if(node == NULL)
-		{
-			node = new SurrogateTreeNode();
-			string timeStr = boost::lexical_cast<string>(time);
-			node->set(TreeNodeKey::CREATION_TIME, timeStr);
-			node->set(TreeNodeKey::NAME, name);
-			node->set(TreeNodeKey::REVISIONCREATED, localRevs);
-			DiscursiveDebugPrint("github,repository access","Adding node '%s' @ time %ld\n",name.c_str(),time);
-			tree->children->push_back(node);
-		}
-		// Else, use found node
-
-		// Parse rest of string
-		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),time);
-	}
-}
-
 
 // -------------------------------------------------------------------------
 // API :: GitRepositoryAccess::generateTreeFromGitHub
@@ -325,25 +258,23 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 			// at this point we have the filename, use that for a query string for the correct date
 			earliestFileDate = retrieveDateFromGitHubFileName(&fileNameString);
 
-			if(DoesThisStringContainFilterKeywords(fileNameString) > -1)
-			{
-				DiscursiveDebugPrint("github,repository access","Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
 
-				// increase the number of global inserts by one
-				if((insertTarget > 0) && (localInserts < insertTarget))
-				{
-					localInserts++;
-					InsertByPathName(treeResult,fileNameString,earliestFileDate);
-				}
-				if((revTarget > 0) && (localRevs < revTarget))
-				{
-					InsertByPathName(treeResult,fileNameString,earliestFileDate);
-				}
-				if((insertTarget == 0) && (revTarget == 0))
-				{
-					globalInserts++;
-					InsertByPathName(treeResult,fileNameString,earliestFileDate);
-				}
+			DiscursiveDebugPrint("github,repository access","Inserting %s @ %ld\n",fileNameString.c_str(),earliestFileDate);
+
+			// increase the number of global inserts by one
+			if((insertTarget > 0) && (localInserts < insertTarget))
+			{
+				localInserts++;
+				InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+			}
+			if((revTarget > 0) && (localRevs < revTarget))
+			{
+				InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+			}
+			if((insertTarget == 0) && (revTarget == 0))
+			{
+				globalInserts++;
+				InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
 			}
 		}
 

@@ -71,6 +71,10 @@ ConfigurationAgent::ConfigurationAgent()
 
 	// filter keywords
 	filterKeyWords = "";
+	inverseFilterKeyWords = "";
+
+	// draw filtered leaves?
+	drawFilteredLeaves = 0;
 
 };
 
@@ -440,6 +444,10 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		inverseFilterKeyWords = optionValue;
 	}
+	else if(optionName == "draw_filtered_leaves")
+	{
+		drawFilteredLeaves = atoi(optionValue.c_str());
+	}
 	else if(optionName == "repo_type")
 	{
 		if(optionValue == "git")
@@ -542,6 +550,10 @@ int ConfigurationAgent::returnOptionByName(std::string optionName)
 	else 	if(optionName == "revStop")
 	{
 		return revStop;
+	}
+	else 	if(optionName == "drawFilteredLeaves")
+	{
+		return drawFilteredLeaves;
 	}
 	else
 	{

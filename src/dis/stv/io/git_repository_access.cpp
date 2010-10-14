@@ -31,72 +31,6 @@ GitRepositoryAccess::GitRepositoryAccess(string repositoryRoot)
 
 }
 
-void GitRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long fileTime)
-{
-	// Split off first part of path
-	int firstIndex = pathname.find("/");
-	if(firstIndex == 0)
-	{
-		// Our path started with a slash but we already have a root
-		// So remove first slash and ignore
-		pathname = pathname.substr(1,pathname.length()-1);
-		firstIndex = pathname.find("/");
-	}
-	if(firstIndex == -1)
-	{
-		// We have no more path left.  Just a single entry (leaf)
-		SurrogateTreeNode* file = new SurrogateTreeNode();
-		string timeStr = boost::lexical_cast<string>(fileTime);
-		DiscursiveDebugPrint("git","FileTimeString %s, from long int %ld\n",timeStr.c_str(),fileTime);
-		file->set(TreeNodeKey::CREATION_TIME, timeStr);
-		file->set(TreeNodeKey::NAME, pathname);
-		file->set(TreeNodeKey::REVISIONCREATED, localRevs);
-		DiscursiveDebugPrint("git,repository access","Adding node '%s' @ time %ld\n",pathname.c_str(),fileTime);
-		tree->children->push_back(file);
-	}
-	else
-	{
-		// Split first string out for this nodes name
-		string name = pathname.substr(0,firstIndex);
-		// Look for node in children
-		SurrogateTreeNode* node = NULL;
-
-		vector<SurrogateTreeNode*>::iterator iter = tree->children->begin();
-		for(;iter != tree->children->end(); ++iter)
-		{
-			SurrogateTreeNode* local = *iter;
-			string nameComp = local->data[TreeNodeKey::NAME];
-			//printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
-			if(!nameComp.compare(name))
-			{
-				// Found node
-				node = (*iter);
-				// Update node time if necessary
-				if(fileTime < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
-				{
-					DiscursiveDebugPrint("git,repository access","Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), fileTime, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
-					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(fileTime));
-					node->set(TreeNodeKey::REVISIONCREATED, localRevs);
-				}
-				break;
-			}
-		}
-		// If child not found, add new node
-		if(node == NULL)
-		{
-			node = new SurrogateTreeNode();
-			string timeStr = boost::lexical_cast<string>(fileTime);
-			node->set(TreeNodeKey::CREATION_TIME, timeStr);
-			node->set(TreeNodeKey::NAME, name);
-			node->set(TreeNodeKey::REVISIONCREATED, localRevs);
-			DiscursiveDebugPrint("git,repository access","Adding node '%s' @ time %ld\n",name.c_str(),fileTime);
-			tree->children->push_back(node);
-		}
-		// Else, use found node
-		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),fileTime);
-	}
-}
-
 void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std::string *buffer)
 {
 	//DiscursiveDebugPrint("git,repository access","Parsing block for time %ld\n BLOCK IS: \n\n%s\n\n",time,buffer->c_str());
@@ -156,26 +90,23 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			// locate the filename in git string
 			fileNameString = fileNameLine.substr(aLocation+6,fileNameLine.size()-aLocation+6);
 
-			if(DoesThisStringContainFilterKeywords(fileNameString) > -1)
+			// increase the number of global inserts by one
+			if((insertTarget > 0) && (localInserts < insertTarget))
 			{
-				// increase the number of global inserts by one
-				if((insertTarget > 0) && (localInserts < insertTarget))
-				{
-						localInserts++;
-						InsertByPathName(tree,fileNameString,time);
-				}
-				if((revTarget > 0) && (localRevs < revTarget))
-				{
-					InsertByPathName(tree,fileNameString,time);
-				}
-				if((insertTarget == 0) && (revTarget == 0))
-				{
-					globalInserts++;
-					InsertByPathName(tree,fileNameString,time);
-				}
+					localInserts++;
+					InsertByPathName(tree,fileNameString,time,1);
 			}
-
+			if((revTarget > 0) && (localRevs < revTarget))
+			{
+				InsertByPathName(tree,fileNameString,time,1);
+			}
+			if((insertTarget == 0) && (revTarget == 0))
+			{
+				globalInserts++;
+				InsertByPathName(tree,fileNameString,time,1);
+			}
 		}
+
 	}
 
 }
