@@ -54,6 +54,9 @@ int main(int argc, char **argv)
 	git->snapshotJpgs = configAgent.returnOptionByName("manyJpgs");
 	git->jpgIndex = configAgent.returnOptionByName("outputFileNumber");
 
+	// set our textual repository options
+	git->AddFilterKeywords(configAgent.returnFilterKeyWords());
+	git->AddInverseFilterKeywords(configAgent.returnInverseFilterKeyWords());
 	git->fileName = configAgent.returnFileName();
 	git->startWidth = (double)configAgent.returnOptionByName("startWidth");
 	git->startHeight = (double)configAgent.returnOptionByName("startHeight");

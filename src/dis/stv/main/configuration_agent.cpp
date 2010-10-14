@@ -69,6 +69,9 @@ ConfigurationAgent::ConfigurationAgent()
 	revStart = 2;
 	revStop = 10000;
 
+	// filter keywords
+	filterKeyWords = "";
+
 };
 
 // -------------------------------------------------------------------------
@@ -134,7 +137,31 @@ std::string ConfigurationAgent::returnAgentName()
 std::string ConfigurationAgent::returnFileName()
 {
 	return fileName;
-}
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnFilterKeyWords
+// PURPOSE :: returns the filter keywords, unparsed
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnFilterKeyWords()
+{
+	return filterKeyWords;
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnInverseFilterKeyWords
+// PURPOSE :: returns the filter keywords, unparsed
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnInverseFilterKeyWords()
+{
+	return inverseFilterKeyWords;
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::returnFileName
@@ -196,7 +223,13 @@ void ConfigurationAgent::parseConfigFile()
 		{
 		  if (cur_node->type == XML_ELEMENT_NODE) {
 			  DiscursiveDebugPrint("xml,configuration","node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
-			  setOptionByName((char*)cur_node->name, (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
+			  char* nodeData;
+			  nodeData = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
+			  if(nodeData != NULL)
+			  {
+				  setOptionByName((char*)cur_node->name,nodeData);
+			  }
+			  delete nodeData;
 		  }
 		}
 
@@ -331,6 +364,10 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 // -------------------------------------------------------------------------
 void ConfigurationAgent::setOptionByName(std::string optionName, std::string optionValue)
 {
+	if((optionValue == "") || (optionValue.empty()))
+	{
+		DiscursiveError("Blank Value for Tag %s",optionName.c_str());
+	}
     if(optionName == "file_name")
 	{
 		fileName = optionValue;
@@ -394,6 +431,14 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	else 	if(optionName == "debug")
 	{
 		debugAgent.AddDebugKeywords(optionValue);
+	}
+	else 	if(optionName == "input_filter")
+	{
+		filterKeyWords = optionValue;
+	}
+	else 	if(optionName == "input_ignore_filter")
+	{
+		inverseFilterKeyWords = optionValue;
 	}
 	else if(optionName == "repo_type")
 	{

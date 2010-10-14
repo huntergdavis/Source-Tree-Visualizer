@@ -156,20 +156,23 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			// locate the filename in git string
 			fileNameString = fileNameLine.substr(aLocation+6,fileNameLine.size()-aLocation+6);
 
-			// increase the number of global inserts by one
-			if((insertTarget > 0) && (localInserts < insertTarget))
+			if(DoesThisStringContainFilterKeywords(fileNameString) > -1)
 			{
-					localInserts++;
+				// increase the number of global inserts by one
+				if((insertTarget > 0) && (localInserts < insertTarget))
+				{
+						localInserts++;
+						InsertByPathName(tree,fileNameString,time);
+				}
+				if((revTarget > 0) && (localRevs < revTarget))
+				{
 					InsertByPathName(tree,fileNameString,time);
-			}
-			if((revTarget > 0) && (localRevs < revTarget))
-			{
-				InsertByPathName(tree,fileNameString,time);
-			}
-			if((insertTarget == 0) && (revTarget == 0))
-			{
-				globalInserts++;
-				InsertByPathName(tree,fileNameString,time);
+				}
+				if((insertTarget == 0) && (revTarget == 0))
+				{
+					globalInserts++;
+					InsertByPathName(tree,fileNameString,time);
+				}
 			}
 
 		}
