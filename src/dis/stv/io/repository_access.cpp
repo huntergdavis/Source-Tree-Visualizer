@@ -135,7 +135,7 @@ int RepositoryAccess::DoesThisStringContainFilterKeywords(std::string textualDat
     int keyWordIterator = 0;
     size_t found = 0;
 
-    if(filterKeyStore.size() < 1)
+    if(filterKeyStore.size() == 0)
     {
     	return 0;
     }
@@ -143,7 +143,7 @@ int RepositoryAccess::DoesThisStringContainFilterKeywords(std::string textualDat
 	for(std::vector<std::string>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
 		keyWordIterator++;
-		found = textualData.find(*i->c_str());
+		found = textualData.find(*i);
 		if(found != std::string::npos)
 		{
 			return keyWordIterator;
