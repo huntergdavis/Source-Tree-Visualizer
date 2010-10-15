@@ -222,6 +222,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 			datum->angle = orientation;
 			datum->extent = this->segLen;
 			datum->mass = atoi(source->data[TreeNodeKey::SIZE].c_str());
+			datum->source = source;
 			//new MinDrawableDatum(x, y, orientation, this->segLen, atoi(source->data[TreeNodeKey::SIZE].c_str()));
 			data->insert(TRUNK_LAYER,datum);
 			// Step leader towards SCoM
@@ -271,6 +272,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 				datum->angle = orientation;
 				datum->extent = this->segLen;
 				datum->mass = atoi(source->data[TreeNodeKey::SIZE].c_str());
+				datum->source = source;
 				// new DrawableDatum(x, y, orientation, this->segLen, atoi(source->data[TreeNodeKey::SIZE].c_str()))
 				data->insert(TRUNK_LAYER,datum);
 				// Step leader towards SCoM
@@ -319,6 +321,7 @@ bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 					datum->angle = 0;
 					datum->extent = this->segLen;
 					datum->mass = this->segLen;
+					datum->source = source;
 					// new DrawableDatum(x, y, 0, this->segLen, this->segLen)
 					data->insert(LEAF_LAYER,datum);
 					// Debugging

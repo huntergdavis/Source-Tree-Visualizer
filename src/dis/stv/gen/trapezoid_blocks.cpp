@@ -332,6 +332,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 	datum->locationY = startY;
 	datum->angle = branchOrientation;
 	datum->extent = length;
+	datum->source = leader->getSourceSet();
 //	datum->mass = leader->getEndWidth();
 	datum->mass = 2.0 * leaves;
 	if(datum->mass > 4.0 )
@@ -366,6 +367,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 		datum->locationY = startY + yShift;
 		datum->angle = branchOrientation;
 		datum->extent = length;
+		datum->source = leader->getSourceSet();
 		this->data->insert(LEAF_LAYER,datum);
 	}
 	// Side leaves
@@ -395,6 +397,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 		}
 		datum->angle = branchOrientation;
 		datum->extent = length;
+		datum->source = leader->getSourceSet();
 		data->insert(LEAF_LAYER,datum);
 		left = !left;
 	}
@@ -426,6 +429,7 @@ void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double gr
 	datum->extent = stemLength;
 	datum->mass = 3.0;
 	datum->massRatio = 1;
+	datum->source = NULL;
 	this->data->insert(TRUNK_LAYER,datum);
 
 	// Add leaf
@@ -435,6 +439,7 @@ void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double gr
 	datum->angle = leaf->orientation;
 	datum->extent = growthUnit;
 	datum->mass = growthUnit;
+	datum->source = NULL;
 	this->data->insert(LEAF_LAYER,datum);
 }
 
@@ -681,6 +686,7 @@ void TrapezoidBlocks::finalizeLeader(TrapezoidLeader* leader)
 	datum->extent = leader->getLength();
 	datum->mass = leader->getBaseWidth();
 	datum->massRatio = (leader->getEndWidth()/datum->mass);
+	datum->source = source;
 //	printf("Adding leader branch at (%d,%d) with dims [l: %d, m: %d, r: %f] pointed at %f\n",datum->locationX,datum->locationY, datum->extent, datum->mass, datum->massRatio, datum->angle);
 	data->insert(TRUNK_LAYER,datum);
 

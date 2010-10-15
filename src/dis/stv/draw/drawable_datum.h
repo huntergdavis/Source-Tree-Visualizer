@@ -7,6 +7,8 @@
 
 #ifndef DRAWABLE_DATUM_H_
 #define DRAWABLE_DATUM_H_
+
+#include "../model/surrogate_tree_node.h"
 #include "../system/discursive_system.h"
 #include <Magick++.h>
 
@@ -19,6 +21,7 @@ struct MinDrawableDatum
 	int mass;
 	double massRatio;
 	Magick::Color color;
+	SurrogateTreeNode* source;
 };
 
 

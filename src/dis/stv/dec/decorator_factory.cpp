@@ -5,7 +5,7 @@
  *      Author: anonymous
  */
 
-#include "decorator_factory.h"
+#include "./decorator_factory.h"
 
 Decorator* DecoratorFactory::getInstance(int instanceType, int argc, ...)
 {
@@ -59,6 +59,25 @@ Decorator* DecoratorFactory::getInstance(int instanceType, int argc, ...)
 		}
 		va_end( args );
 		result = (Decorator*)(new SpatialDisplacementLeafless());
+		break;
+	}
+	case SPATIAL_DISPLACEMENT_FULL_CLUSTERING:
+	{
+		va_list args;
+
+		int width = 0;
+		int height = 0;
+		va_start( args, argc );
+		switch(argc)
+		{
+		case 0:
+			break;
+		default:
+			DiscursiveError("Unable to create SpatialDisplacementLeafless object with %d arguments.\n  Requires 0 arguments.\n", argc);
+			break;
+		}
+		va_end( args );
+		result = (Decorator*)(new SpatialDisplacementClustering());
 		break;
 	}
 	default:
