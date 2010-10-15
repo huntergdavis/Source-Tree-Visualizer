@@ -11,11 +11,13 @@
 #include "./decorator.h"
 #include "./spatial_displacement.h"
 #include "./spatial_displacement_leafless.h"
+#include "./spatial_displacement_clustering.h"
 
 class DecoratorFactory {
 public:
 	static const int SPATIAL_DISPLACEMENT_NAIVE = 0;
 	static const int SPATIAL_DISPLACEMENT_LEAF_CLUSTERING = 1;
+	static const int SPATIAL_DISPLACEMENT_FULL_CLUSTERING = 2;
 
 	static Decorator* getInstance(int instanceType, int argc, ...);
 };

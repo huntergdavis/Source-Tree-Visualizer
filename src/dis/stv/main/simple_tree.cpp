@@ -158,7 +158,7 @@ int main(int argc, char **argv)
 		// Decorate surrogate tree nodes with locations
 		DiscursiveDebugPrint("default","Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Decorating surrogate trees");
-		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_LEAF_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
+		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_FULL_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
 		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
 		decorator->decorate(git->source);
 		timerAgent.Toc("Decorating surrogate trees");
