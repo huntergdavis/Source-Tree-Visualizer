@@ -58,7 +58,7 @@ private:
 	double angleFrom(double aX, double aY, double bX, double bY);
 	double angleAdd(double origin, double addAmount);
 	double branchIntro(TrapezoidLeader* leader, double growthUnit);
-	double leafSpacing(TrapezoidLeader* leader, double growthUnit);
+	double leafSpacing(int depth, int leaves, double growthUnit);
 	double splitLocation(LeafSplit* leaf, double spacing, bool logGrowth = false);
 	void reclaim(LeafSplit* leaf);
 };

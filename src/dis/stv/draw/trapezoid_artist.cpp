@@ -64,8 +64,8 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 			mass = drawItem->mass;
 			if(mass < 3)
 			{
-				baseRadius = (mass/2.0);
-				endRadius = (baseRadius * drawItem->massRatio);
+				baseRadius = 2;//(mass/2.0);
+				endRadius = 2;//(baseRadius * drawItem->massRatio);
 			}
 			else
 			{

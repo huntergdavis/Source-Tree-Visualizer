@@ -11,7 +11,7 @@
 
 using namespace std;
 
-SpatialDisplacementClustering::SpatialDisplacementClustering():growthUnit(50.0)
+SpatialDisplacementClustering::SpatialDisplacementClustering():growthUnit(20.0)
 {
 }
 
@@ -183,6 +183,8 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 	// Set this nodes location
 	tree->set(TreeNodeKey::X, boost::lexical_cast<string>(rootX));
 	tree->set(TreeNodeKey::Y, boost::lexical_cast<string>(rootY));
+	tree->set(TreeNodeKey::ANGLE, boost::lexical_cast<string>(rootAngle));
+	DiscursiveDebugPrint("sdc","  (%s) @ <%f,%f,%f>\n",tree->data[TreeNodeKey::NAME].c_str(),rootX,rootY,rootAngle);
 
 	if(tree->children->size() > 0)
 	{
@@ -261,7 +263,7 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 
 		// Calculate spacing to range [0,splay]
 		double deltaSplay = 0;
-		double splayModifier = 2.0;
+		double splayModifier = 16.0;
 		splayModifier /= (2.0 * pow(2,log(children+2)));
 		if(splayModifier < 1)
 		{
@@ -275,7 +277,7 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 			deltaSplay = splay / (mass - minChildMass);
 		}
 
-		DiscursiveDebugPrint("sdc","Dirs/Leaves [%d/%d], Splay [%f], Splay modifier [%f], Delta splay [%f]\n",(int)dirs.size(),leaves,splay, splayModifier, deltaSplay);
+		DiscursiveDebugPrint("sdc","Dirs/Leaves [%d/%d], Splay [%f], Splay modifier [%f], Delta splay [%f]\n",subtrees,leaves,splay, splayModifier, deltaSplay);
 
 		DiscursiveDebugPrint("sdc","Subtree mass effects (%s @ %d) [",tree->data[TreeNodeKey::NAME].c_str(),mass);
 		for(i = 0; i < children; i++)
@@ -326,7 +328,7 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 
 		// Transform positions to arc
 		//double arcRadius = 2.0 * maxChild * this->growthUnit;
-		double arcRadius = length * log(subtrees+2);
+		double arcRadius = 3 * length * log(subtrees+2);
 		double ratio;
 		double angle;
 
@@ -347,11 +349,17 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 		double stepPer = 7.5;
 		int centerIndex = (subtrees / 2);
 		double spreadStep = max * stepPer;
+		// Bias root upwards
+		rootAngle = (3.14159/2);
 		for(i = 0; i < subtrees; i++)
 		{
 			node = dirs[i];
 			ratio = atoi(node->data[TreeNodeKey::SIZE].c_str())/(double)maxChild;
 			angle = rootAngle - (positions[pairs[node]] - com);
+			if(rootAngle + com > 3.14159)
+			{
+				angle *= (3.14159) / (rootAngle + com);
+			}
 			double newX = fakeRootX + (ratio * arcRadius * cos(angle));
 			if(spread)
 			{
@@ -363,7 +371,7 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 			ySum += (newY * lmass);
 			massSum += lmass;
 			// Run expand on child
-			double childRot = (3.14159/2);//angle;// + ((3.14159/2)-angle)/2;
+			double childRot = angle;//(3.14159/2);//angle;// + ((3.14159/2)-angle)/2;
 			this->expand(node,childRot,newX,newY);
 		}
 		if(massSum != 0)
@@ -399,7 +407,6 @@ int SpatialDisplacementClustering::count(SurrogateTreeNode* tree)
 	for(vector<SurrogateTreeNode*>::iterator iter = tree->children->begin(); iter != tree->children->end(); ++iter)
 	{
 		sum += this->count(*iter);
-		//childDepth = atoi((*iter)->data["count"].c_str());
 		childDepth = atoi((*iter)->data[TreeNodeKey::DEPTH].c_str());
 		if(childDepth > maxDepth)
 		{

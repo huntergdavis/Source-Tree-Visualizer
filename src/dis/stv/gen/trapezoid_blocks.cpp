@@ -318,7 +318,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 	bool left = true;
 	int length = leaves * lengthPerLeaf;
 	// Add approx width of this branch
-	length += (int)leader->getBaseWidth();
+	length += 3 * log((int)leader->getBaseWidth() + 2);
 
 
 //	printf("Drawing branch (%d) @ (%f,%f) of length %d towards %f\n", leaves, startX, startY, length, branchOrientation);
@@ -408,7 +408,7 @@ double TrapezoidBlocks::splitLocation(LeafSplit* leaf, double spacing, bool logG
 	if(logGrowth)
 	{
 		// +1 keeps log(0) from occurring.
-		return leaf->baseLength + (log(leaf->subCount + 1) * spacing);
+		return leaf->baseLength + (pow(log(leaf->subCount + 1),0.5) * spacing);
 	}
 	else
 	{
@@ -477,7 +477,7 @@ void TrapezoidBlocks::drawBranchAdv(TrapezoidLeader* leader, double startX, doub
 			}
 			else
 			{
-				split = this->splitLocation(parent,leafBranchSpacing/2);
+				split = this->splitLocation(parent,leafBranchSpacing/4);
 			}
 			fract = (LeafSplit*)malloc(sizeof(LeafSplit));
 			memset(fract,0,sizeof(LeafSplit));
@@ -506,7 +506,7 @@ void TrapezoidBlocks::drawBranchAdv(TrapezoidLeader* leader, double startX, doub
 				// Remove parent from list
 				splits.pop();
 			}
-			this->drawMicroBranch(fract, leafBranchSpacing/2, growthUnit);
+			this->drawMicroBranch(fract, leafBranchSpacing/4, growthUnit);
 		}
 		// Empty stack
 		while(!splits.empty())
@@ -551,7 +551,7 @@ void TrapezoidBlocks::drawBranches(TrapezoidLeader* leader, int leavesPerBranch,
 {
 	SurrogateTreeNode* source = leader->getSourceSet();
 
-	double growthUnit = 50.0;
+	double growthUnit = 20.0;
 	double leafBranchSpacing = 2 * growthUnit;
 
 	double orientation = leader->getOrientation();
@@ -632,35 +632,42 @@ void TrapezoidBlocks::drawBranches(TrapezoidLeader* leader, int leavesPerBranch,
 	else
 	{
 		// We are at a final branch and need to do the advance branching
-		this->drawBranchAdv(leader, startX, startY, orientation, lengthPerLeaf, growthUnit, growthUnit);
+		this->drawBranchAdv(leader, leader->getX(), leader->getY(), orientation, lengthPerLeaf * 1.25, growthUnit, growthUnit);
 	}
 }
 
 double TrapezoidBlocks::branchIntro(TrapezoidLeader* leader, double growthUnit)
 {
-	double initialSpacer = 7.5 * growthUnit;
+	double initialSpacer = 15 * growthUnit;
 	return initialSpacer;
 }
 
-double TrapezoidBlocks::leafSpacing(TrapezoidLeader* leader, double growthUnit)
+double TrapezoidBlocks::leafSpacing(int depth, int leaves, double growthUnit)
 {
 	double branchSpacer = 0;
-	SurrogateTreeNode* source = leader->getSourceSet();
-	if(atoi(source->data[TreeNodeKey::DEPTH].c_str()) > FINAL_BRANCH + 1)
+//	SurrogateTreeNode* source = leader->getSourceSet();
+
+//	if(atoi(source->data[TreeNodeKey::DEPTH].c_str()) > FINAL_BRANCH + 1)
+	if(depth > FINAL_BRANCH)
 	{
 		double leavesPerBranch = 5.0;
 		double leafBranchSpacing = 2 * growthUnit;
-		branchSpacer = ceil(((source->children->size() / leavesPerBranch) + 1) * leafBranchSpacing);
+//		branchSpacer = ceil(((source->children->size() / leavesPerBranch) + 1) * leafBranchSpacing);
+		branchSpacer = ceil(((leaves / leavesPerBranch) + 1) * leafBranchSpacing);
 	}
 	return branchSpacer;
 }
 
 void TrapezoidBlocks::initializeLeader(TrapezoidLeader* leader)
 {
-	double lengthPerLeaf = 50.0;
+	double lengthPerLeaf = 20.0;
+
+	// Re-orient to predefined orientation
+	leader->setOrientation(atof(leader->getSourceSet()->data[TreeNodeKey::ANGLE].c_str()));
+	printf("--- Changed orientation to %f\n",leader->getOrientation());
 
 	// Set initial step where leaves will go
-	leader->step(this->branchIntro(leader,lengthPerLeaf) + this->leafSpacing(leader,lengthPerLeaf));
+	leader->step(this->branchIntro(leader,lengthPerLeaf) + this->leafSpacing(atoi(leader->getSourceSet()->data[TreeNodeKey::DEPTH].c_str()),leader->getSourceSet()->children->size(),lengthPerLeaf));
 
 	this->leaders.push_back(leader);
 }
@@ -669,26 +676,33 @@ void TrapezoidBlocks::finalizeLeader(TrapezoidLeader* leader)
 {
 //	printf("Finalizing leader\n");
 //	fflush(stdout);
-	double lengthPerLeaf = 50.0;
+	double lengthPerLeaf = 20.0;
+	int leaves = leader->leaves->size();
 	this->drawBranches(leader,5,lengthPerLeaf);
 
 
 	SurrogateTreeNode* source = leader->getSourceSet();
-	// Remove all references to the children
-	source->children->clear();
-	leader->setSourceSet(NULL);
+
 
 	// Create draw objects from leader
 	MinDrawableDatum* datum = (MinDrawableDatum*)malloc(sizeof(MinDrawableDatum));
 	datum->locationX = (int)leader->getBaseX();
 	datum->locationY = (int)leader->getBaseY();
 	datum->angle = leader->getOrientation();
-	datum->extent = leader->getLength();
+	datum->extent = this->branchIntro(leader,lengthPerLeaf) + this->leafSpacing(atoi(leader->getSourceSet()->data[TreeNodeKey::DEPTH].c_str()),leaves,lengthPerLeaf);
+	if(leader->getLength() > datum->extent)
+	{
+		datum->extent = leader->getLength();
+	}
 	datum->mass = leader->getBaseWidth();
 	datum->massRatio = (leader->getEndWidth()/datum->mass);
 	datum->source = source;
 //	printf("Adding leader branch at (%d,%d) with dims [l: %d, m: %d, r: %f] pointed at %f\n",datum->locationX,datum->locationY, datum->extent, datum->mass, datum->massRatio, datum->angle);
 	data->insert(TRUNK_LAYER,datum);
+
+	// Remove all references to the children
+	source->children->clear();
+	leader->setSourceSet(NULL);
 
 	// Clear node
 	delete source;

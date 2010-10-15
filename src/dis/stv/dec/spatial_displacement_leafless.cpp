@@ -11,7 +11,7 @@
 
 using namespace std;
 
-SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(50.0)
+SpatialDisplacementLeafless::SpatialDisplacementLeafless():growthUnit(20.0)
 {
 }
 

@@ -10,8 +10,8 @@
 
 #include <vector>
 #include <boost/lexical_cast.hpp>
-#include "surrogate.h"
-#include "property_transformer.h"
+#include "./surrogate.h"
+#include "./property_transformer.h"
 #include "../system/discursive_system.h"
 
 
@@ -30,6 +30,7 @@ namespace TreeNodeKey
 	static const string LENGTH = "length";
 	static const string REVISIONCREATED = "revisioncreated";
 	static const string DRAWNODE = "drawleaf";
+	static const string ANGLE = "angle";
 };
 
 using namespace std;
