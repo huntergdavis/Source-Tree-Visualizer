@@ -33,6 +33,9 @@ ConfigurationAgent::ConfigurationAgent()
 
 	// config file name defaults to ./simple_tree.config
 	configFileName = "./simple_tree.config";
+	
+	// should we read config file from stdin?
+	readConfigFromStdIn = 0;
 
 	// type of agent to use, ie command line options or interactive
 	agentType = 0;
@@ -90,6 +93,7 @@ void ConfigurationAgent::displayUsage( void )
 	std::string usage_string = "\nsimple_tree [option] [optionstringorint] \n";
 	usage_string += "where option can be any of the following";
 	usage_string += "\n-c option - expects ./configFileName.config \n";
+	usage_string += "\n-p option - pass in config file on stdin\n";
 	usage_string += "\n-g option - expects ~/Projects/source_tree_vis\n";
 	usage_string += "\n-G option - expects gitHubusername:gitHubprojectname\n";
 	usage_string += "\n-S option - expects http://hkit.googlecode.com/svn/trunk/\n";
@@ -194,7 +198,14 @@ void ConfigurationAgent::parseConfigFile()
     xmlNode *root_element = NULL;
 
     // use libxml to read and verify our config file name
-    doc = xmlReadFile(configFileName.c_str(), NULL, 0);
+    if(readConfigFromStdIn == 1)
+    {
+		doc = xmlReadFd(0,NULL, NULL, 0);
+	}
+	else
+	{
+		doc = xmlReadFile(configFileName.c_str(), NULL, 0);
+	}
 
 	if (doc == NULL)
 	  {
@@ -262,7 +273,7 @@ void ConfigurationAgent::parseConfigFile()
 void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 {
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:b:R:l:z:n:c:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:ridh?";
 
 	// if a new config file is passed, parse it
 	bool newConfig = 0;
@@ -295,6 +306,10 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 				break;
 			case 'b':
 				backgroundImageName = optarg;
+				break;
+			case 'p':
+				readConfigFromStdIn = 1;
+				newConfig = 1;
 				break;
 			case 'l':
 				sscanf(optarg,"%d:%d",&startWidth,&startHeight);

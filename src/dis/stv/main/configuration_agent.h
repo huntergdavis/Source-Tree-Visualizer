@@ -44,6 +44,9 @@ private:
 
 	// our config file name
 	std::string configFileName;
+	
+	// should we read a config file in from stdin?
+	int readConfigFromStdIn;
 
 	// our filter keywords
 	std::string filterKeyWords;
