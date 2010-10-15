@@ -39,11 +39,11 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 		switch(index)
 		{
 			case TRUNK_LAYER:
-				drawList.push_back(DrawableFillColor("brown"));
+				drawList.push_back(DrawableFillColor(ColorRGB(0.4627,0.2863,0.0314)));
 				size = 1;
 				break;
 			case LEAF_LAYER:
-				drawList.push_back(DrawableFillColor("green"));
+				drawList.push_back(DrawableFillColor(ColorRGB(0.1294,0.6235,0.0941)));
 				size = 5;
 				break;
 			case DEBUG_LAYER:
