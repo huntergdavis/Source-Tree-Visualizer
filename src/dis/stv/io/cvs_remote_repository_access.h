@@ -33,7 +33,6 @@ private:
 	string root;
 	string remoteServerString;
 	SurrogateTreeNode* generateTreeFromRemoteCvs();
-	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
 	long parseExactDateString(std::string *buffer);
 	void generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer);
 	void parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer);

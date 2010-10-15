@@ -32,7 +32,6 @@ private:
 	string userNameCredentials;
 	string repoNameCredentials;
 	SurrogateTreeNode* generateTreeFromGitHub();
-	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time);
 	void retrieveDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *SHA1);
 	void parseDetailedGitHubBlock(SurrogateTreeNode* treeResult,std::string *buffer);
 	long parseDetailedGitHubFileBlock(std::string *buffer);

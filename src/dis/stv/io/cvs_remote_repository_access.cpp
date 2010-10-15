@@ -30,73 +30,6 @@ CvsRemoteRepositoryAccess::CvsRemoteRepositoryAccess(std::string cvsRemoteServer
 
 }
 
-void CvsRemoteRepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname, long time)
-{
-	// Split off first part of path
-	int firstIndex = pathname.find("/");
-	if(firstIndex == 0)
-	{
-		// Our path started with a slash but we already have a root
-		// So remove first slash and ignore
-		pathname = pathname.substr(1,pathname.length()-1);
-		firstIndex = pathname.find("/");
-	}
-	if(firstIndex == -1)
-	{
-		// We have no more path left.  Just a single entry (leaf)
-		SurrogateTreeNode* file = new SurrogateTreeNode();
-		string timeStr = boost::lexical_cast<string>(time);
-		file->set(TreeNodeKey::CREATION_TIME, timeStr);
-		file->set(TreeNodeKey::NAME, pathname);
-		file->set(TreeNodeKey::REVISIONCREATED, localRevs);
-		//printf("Adding node '%s' @ time %ld\n",pathname.c_str(),time);
-		tree->children->push_back(file);
-	}
-	else
-	{
-		// Split first string out for this nodes name
-		string name = pathname.substr(0,firstIndex);
-		// Look for node in children
-		SurrogateTreeNode* node = NULL;
-
-		vector<SurrogateTreeNode*>::iterator iter = tree->children->begin();
-		for(;iter != tree->children->end(); ++iter)
-		{
-			SurrogateTreeNode* local = *iter;
-			string nameComp = local->data[TreeNodeKey::NAME];
-			//printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
-			if(!nameComp.compare(name))
-			{
-				// Found node
-				node = (*iter);
-				// Update node time if necessary
-				if(time < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
-				{
-					//printf("Updating time of node[\"%s\"] to %ld from %ld\n", name.c_str(), time, atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
-					node->set(TreeNodeKey::CREATION_TIME, boost::lexical_cast<string>(time));
-					node->set(TreeNodeKey::REVISIONCREATED, localRevs);
-				}
-				break;
-			}
-		}
-		// If child not found, add new node
-		if(node == NULL)
-		{
-			node = new SurrogateTreeNode();
-			string timeStr = boost::lexical_cast<string>(time);
-			node->set(TreeNodeKey::CREATION_TIME, timeStr);
-			node->set(TreeNodeKey::NAME, name);
-			node->set(TreeNodeKey::REVISIONCREATED, localRevs);
-			//printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
-			tree->children->push_back(node);
-		}
-		// Else, use found node
-
-		// Parse rest of string
-		this->InsertByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)),time);
-	}
-}
-
 
 // -------------------------------------------------------------------------
 // API :: CvsRemoteRepositoryAccess::generateTreeFromRemoteCvs
@@ -278,19 +211,20 @@ void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 
 	// actually insert path into tree
 	// increase the number of global inserts by one
+
 	if((insertTarget > 0) && (localInserts < insertTarget))
 	{
 		localInserts++;
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+		InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
 	}
 	if((revTarget > 0) && (localRevs < revTarget))
 	{
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+		InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
 	}
 	if((insertTarget == 0) && (revTarget == 0))
 	{
 		globalInserts++;
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch);
+		InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
 	}
 
 }

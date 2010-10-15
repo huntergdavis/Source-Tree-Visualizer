@@ -45,6 +45,15 @@ private:
 	// our config file name
 	std::string configFileName;
 
+	// our filter keywords
+	std::string filterKeyWords;
+
+	// our inverse filter keywords
+	std::string inverseFilterKeyWords;
+
+	// should we draw filtered leaves?
+	int drawFilteredLeaves;
+
 	// should we make many jpgs?
 	int manyJpgs;
 
@@ -71,6 +80,8 @@ public:
 	std::string returnAgentName();
 	std::string returnFileName();
 	std::string returnBackgroundImageName();
+	std::string returnFilterKeyWords();
+	std::string returnInverseFilterKeyWords();
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
 	RepositoryAccess* initializeRepositoryType();
