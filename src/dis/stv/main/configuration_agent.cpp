@@ -54,6 +54,9 @@ ConfigurationAgent::ConfigurationAgent()
 	
 	// our background image name
 	backgroundImageName = "";
+	
+	// default color
+	defaultColor = "black";
 
 	// should we make many jpgs?
 	manyJpgs = 0;
@@ -154,6 +157,18 @@ std::string ConfigurationAgent::returnBackgroundImageName()
 {
 	return backgroundImageName;
 }
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnDefaultColor
+// PURPOSE :: returns the DefaultColor
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnDefaultColor()
+{
+	return defaultColor;
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::parseConfigFile
@@ -485,6 +500,10 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	else if(optionName == "draw_filtered_leaves")
 	{
 		drawFilteredLeaves = atoi(optionValue.c_str());
+	}
+	else if(optionName == "default_color")
+	{
+		defaultColor = optionValue;
 	}
 	else if(optionName == "repo_type")
 	{
