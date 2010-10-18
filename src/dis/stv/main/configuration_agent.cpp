@@ -56,7 +56,8 @@ ConfigurationAgent::ConfigurationAgent()
 	backgroundImageName = "";
 	
 	// default color
-	defaultColor = "black";
+	defaultLeafColor = "black";
+	defaultTrunkColor = "brown";
 
 	// should we make many jpgs?
 	manyJpgs = 0;
@@ -159,15 +160,27 @@ std::string ConfigurationAgent::returnBackgroundImageName()
 }
 
 // -------------------------------------------------------------------------
-// API :: ConfigurationAgent::returnDefaultColor
+// API :: ConfigurationAgent::returnDefaultLeafColor
 // PURPOSE :: returns the DefaultColor
 //         ::
 // PARAMETERS :: None
 // RETURN :: std::string fileName - name of file to output
 // -------------------------------------------------------------------------
-std::string ConfigurationAgent::returnDefaultColor()
+std::string ConfigurationAgent::returnDefaultLeafColor()
 {
-	return defaultColor;
+	return defaultLeafColor;
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnDefaultTrunkColor
+// PURPOSE :: returns the DefaultColor
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnDefaultTrunkColor()
+{
+	return defaultTrunkColor;
 };
 
 // -------------------------------------------------------------------------
@@ -279,6 +292,10 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node,std::str
 			filterKeyProperty singleFKP;
 			singleFKP.keyPropertyName = (char*)cur_node->name;
 			singleFKP.keyPropertyValue = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
+			if(singleFKP.keyPropertyName == "color")
+			{
+				cacheColor(singleFKP.keyPropertyValue);
+			}
 			keyProperties.push_back(singleFKP);
 	  }
 	}
@@ -501,10 +518,16 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		drawFilteredLeaves = atoi(optionValue.c_str());
 	}
-	else if(optionName == "default_color")
+	else if(optionName == "default_leaf_color")
 	{
-		defaultColor = optionValue;
+		defaultLeafColor = optionValue;
+		cacheColor(optionValue);
 	}
+	else if(optionName == "default_trunk_color")
+	{
+		defaultTrunkColor = optionValue;
+		cacheColor(optionValue);
+	}	
 	else if(optionName == "repo_type")
 	{
 		if(optionValue == "git")
@@ -751,12 +774,14 @@ int ConfigurationAgent::DoesThisStringContainFilterKeywords(std::string textualD
 //         ::
 // PARAMETERS :: SurrogateTreeNode* treeNode - node to add properties to
 //            :: std::string searchKey - searchKey to match filter strings to
+//            :: int nodeType - o is trunk, 1 is leaf
 // RETURN :: void
 // -------------------------------------------------------------------------
-void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey)
+void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey, int nodeType)
 {
 	// lexical search results
 	size_t found = 0;
+	size_t colorFound  = 0;
 
 	//for each filter property which matches, add the property to the node
     // loop over all filter types
@@ -768,8 +793,25 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
 		    // add all properties to surrogatetreenode
 			for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)
 			{
+				if(j->keyPropertyName == "color")
+				{
+					colorFound = 1;
+				}
 				treeNode->set(j->keyPropertyName,j->keyPropertyValue);
 			}
+		}
+	}
+	
+	// add default color to node if not previously added
+	if(colorFound == 0)
+	{
+		if(nodeType == 0)
+		{
+			treeNode->set("color",returnDefaultLeafColor());
+		}
+		else if(nodeType == 1)
+		{
+			treeNode->set("color",returnDefaultTrunkColor());
 		}
 	}
 }
@@ -799,4 +841,101 @@ void ConfigurationAgent::PrintFilterProperties()
 	}
 }
 
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::ReturnColorMap
+// PURPOSE :: returns the color map
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN :: unordered_map<std::string,Magick::ColorRGB> color map structure
+// -------------------------------------------------------------------------
+unordered_map<std::string,Magick::ColorRGB> ConfigurationAgent::returnColorMap()
+{
+	return colorMap;
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::CacheColor
+// PURPOSE :: cache the string color as a Magic color
+//         ::
+//         ::
+// PARAMETERS :: std::string - string color value
+// RETURN :: int - status value
+// -------------------------------------------------------------------------
+int ConfigurationAgent::cacheColor(std::string colorString)
+{
+	// store our local color
+	size_t redColor;
+	size_t blueColor;
+	size_t greenColor;
+	
+	// first we validate the string
+	if(colorString == "blue")
+	{
+		redColor = 0;
+		blueColor = 255;
+		greenColor = 0;
+	}
+	else if(colorString == "black")
+	{
+		redColor = 0;
+		blueColor = 0;
+		greenColor = 0;		
+	}
+	else if(colorString == "red")
+	{
+		redColor = 255;
+		blueColor = 0;
+		greenColor = 0;		
+	}
+	else if(colorString == "green")
+	{
+		redColor = 0;
+		blueColor = 0;
+		greenColor = 255;		
+	}
+	else if(colorString == "yellow")
+	{
+		redColor = 255;
+		blueColor = 255;
+		greenColor = 0;		
+	}
+	else if(colorString == "brown")
+	{
+		redColor = 204;
+		blueColor = 153;
+		greenColor = 0;		
+	}
+	else if(colorString == "white")
+	{
+		redColor = 255;
+		blueColor = 255;
+		greenColor = 255;		
+	}
+	else if(colorString == "pink")
+	{
+		redColor = 255;
+		blueColor = 155;
+		greenColor = 103;		
+	}
+	else if(colorString.find('#') == 0)
+	{
+		// convert the hex string to decimal
+		 redColor = strtoul(colorString.substr(1,2).c_str(),NULL, 16);
+		 blueColor = strtoul(colorString.substr(3,2).c_str(),NULL, 16);
+		 greenColor = strtoul(colorString.substr(5,2).c_str(),NULL, 16);
+	}
+	else
+	{
+		// return 0
+		return 0;
+	}
+
+	DiscursiveDebugPrint("color","\ncolor: r%d,g%d,b%d \n",redColor,greenColor,blueColor);
+	// now we add the color value in as decimal
+	Magick::ColorRGB colorToAdd(redColor,greenColor,blueColor);
+	colorMap[colorString] = colorToAdd;
+	return 1;
+	
+};
 
