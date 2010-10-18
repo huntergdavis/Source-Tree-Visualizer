@@ -787,8 +787,22 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
     // loop over all filter types
 	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
+		int searchForItem = 0;
 		found = searchKey.find(i->keyName);
 		if(found != std::string::npos)
+		{
+			searchForItem = 1;
+			if(nodeType == 0)
+			{
+				size_t keyNameSize = i->keyName.size();
+				size_t searchKeySize = searchKey.size();
+				if((searchKeySize - found) != keyNameSize)
+				{
+					searchForItem = 0;
+				}
+			}
+		}
+		if(searchForItem != 0)
 		{
 		    // add all properties to surrogatetreenode
 			for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)
