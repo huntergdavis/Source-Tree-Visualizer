@@ -51,19 +51,20 @@ SurrogateTreeNode::~SurrogateTreeNode()
 		}
 //		printf("--- Done freeing children\n");
 //		fflush(stdout);
+		this->children->clear();
+		delete(this->children);
 	}
-	this->children->clear();
-	delete(this->children);
 
 	// this should work but doesnt
 //	this->data.clear();
 	// Print all data in data!
-	for(unordered_map<string,string>::iterator iter = this->data.begin(); iter != this->data.end(); ++iter)
-	{
-		this->data.erase(iter);
-//		delete iter->first;
-//		delete iter->second;
-	}
+	this->data.clear();
+//	for(unordered_map<string,string>::iterator iter = this->data.begin(); iter != this->data.end(); ++iter)
+//	{
+//		this->data.erase(iter);
+////		delete iter->first;
+////		delete iter->second;
+//	}
 }
 
 void SurrogateTreeNode::set(string key, string value)

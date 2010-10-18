@@ -61,6 +61,7 @@ public:
 	int DoAnyInverseFilterKeywordsMatch(std::string filterKeywords);
 	int DoesThisStringContainFilterKeywords(std::string textualData);
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time, int drawSubLeafs);
+	void RemoveByPathName(SurrogateTreeNode* tree, string pathname);
 };
 
 #endif /* REPOSITORY_ACCESS_H_ */
