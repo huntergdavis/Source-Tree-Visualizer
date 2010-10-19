@@ -74,27 +74,42 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... A");
-			gitStatus = 1;
+			if(aLocation > 0)
+			{
+				gitStatus = 1;
+			}
 		}
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... R");
-			gitStatus = 1;
+			if(aLocation > 0)
+			{
+				gitStatus = 1;
+			}
 		}
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... C");
-			gitStatus = 1;
+			if(aLocation > 0)
+			{
+				gitStatus = 1;
+			}
 		}
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... U");
-			gitStatus = 1;
+			if(aLocation > 0)
+			{
+				gitStatus = 1;
+			}
 		}
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... D");
-			gitStatus = 2;
+			if(aLocation > 0)
+			{
+				gitStatus = 2;
+			}
 		}
 		if(aLocation > 0)
 		{
