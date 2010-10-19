@@ -20,7 +20,7 @@
 //const string TreeNodeKey::SCOMWEIGHT = "creation_time";
 
 
-SurrogateTreeNode::SurrogateTreeNode():children(new vector<SurrogateTreeNode*>())
+SurrogateTreeNode::SurrogateTreeNode():children(new vector<SurrogateTreeNode*>()), isFile(true)
 {
 }
 

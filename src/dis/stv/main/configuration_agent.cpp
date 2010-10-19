@@ -789,11 +789,13 @@ int ConfigurationAgent::DoesThisStringContainFilterKeywords(std::string textualD
 //            :: int nodeType - o is leaf, 1 is trunk
 // RETURN :: void
 // -------------------------------------------------------------------------
-void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey, int nodeType)
+void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey)
 {
 	// lexical search results
 	size_t found = 0;
 	size_t colorFound  = 0;
+
+	bool isFile = treeNode->isFile;
 
 	//for each filter property which matches, add the property to the node
     // loop over all filter types
@@ -804,7 +806,7 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
 		if(found != std::string::npos)
 		{
 			searchForItem = 1;
-			if(nodeType == 0)
+			if(isFile)
 			{
 				size_t keyNameSize = i->keyName.size();
 				size_t searchKeySize = searchKey.size();
@@ -831,11 +833,11 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
 	// add default color to node if not previously added
 	if(colorFound == 0)
 	{
-		if(nodeType == 0)
+		if(isFile)
 		{
 			treeNode->set("color",returnDefaultLeafColor());
 		}
-		else if(nodeType == 1)
+		else
 		{
 			treeNode->set("color",returnDefaultTrunkColor());
 		}

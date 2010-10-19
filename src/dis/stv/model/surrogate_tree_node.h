@@ -44,6 +44,7 @@ public:
 	SurrogateTreeNode();
 	~SurrogateTreeNode();
 	vector<SurrogateTreeNode*>* children;
+	bool isFile;
 
 	SurrogateTreeNode* getChildWithName();
 	double findMin(string property);

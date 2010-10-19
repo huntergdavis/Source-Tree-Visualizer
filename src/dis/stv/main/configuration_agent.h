@@ -119,7 +119,7 @@ public:
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
 	int DoesThisStringContainFilterKeywords(std::string textualData);
-	void AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey, int nodeType);
+	void AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey);
 	void PrintFilterProperties();
 	
 	// color cache and lookup functions

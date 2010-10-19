@@ -56,7 +56,8 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 
 	// our node type
 	// currently 0=leaf 1=trunk
-	int nodeType = 1;
+	//int nodeType = 1;
+	bool isFile = true;
 
 	// Split off first part of path
 	int firstIndex = pathname.find("/");
@@ -70,15 +71,15 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 	if(firstIndex == -1)
 	{
 		name = pathname;
-		nodeType = 0;
 	}
 	else
 	{
 		// Split first string out for this nodes name
 		name = pathname.substr(0,firstIndex);
+		isFile = false;
 	}
 	// test for keyword failure  in file names
-	if(nodeType == 0)
+	if(isFile)
 	{
 		if((configAgent.DoesThisStringContainFilterKeywords(name) < 0))
 		{
@@ -108,8 +109,18 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 					node->set(TreeNodeKey::REVISIONCREATED, localRevs);
 					node->set(TreeNodeKey::DRAWNODE, continueDrawingSubLeaves);
 
+					// Update node directory status if necessary
+					if(node->isFile && !isFile)
+					{
+						node->isFile = isFile;
+					}
+
 					// set all configuration properties from filter items
-					configAgent.AddFilterPropertiesToTreeNode(node,name,nodeType);
+					configAgent.AddFilterPropertiesToTreeNode(node,name);
+					if(name.find("gtk") != string::npos)
+					{
+						printf("-- Updated node '%s' (%s), color '%s'\n", name.c_str(), pathname.c_str(), node->data[TreeNodeKey::COLOR].c_str());
+					}
 				}
 				break;
 			}
@@ -118,6 +129,7 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 		if(node == NULL)
 		{
 			node = new SurrogateTreeNode();
+			node->isFile = isFile;
 			string timeStr = boost::lexical_cast<string>(time);
 			node->set(TreeNodeKey::CREATION_TIME, timeStr);
 			node->set(TreeNodeKey::NAME, name);
@@ -125,7 +137,11 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 			node->set(TreeNodeKey::DRAWNODE, continueDrawingSubLeaves);
 
 			// set all configuration properties from filter items
-			configAgent.AddFilterPropertiesToTreeNode(node,name,nodeType);
+			configAgent.AddFilterPropertiesToTreeNode(node,name);
+			if(!isFile || name.find("gtk") != string::npos)
+			{
+				printf("-- New node '%s' (%s), color '%s'\n", name.c_str(), pathname.c_str(), node->data[TreeNodeKey::COLOR].c_str());
+			}
 
 			//printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children->push_back(node);
