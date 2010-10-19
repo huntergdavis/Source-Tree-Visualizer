@@ -221,6 +221,9 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 	// create an istringstream to parse the suboutput
 	std::istringstream gitHubBlockSS(*buffer);
 
+	// test for deleted file in commit
+	int deletedFileMode = buffer->find("deleted file mode");
+
 	if(revTarget > 0)
 	{
 		localRevs++;
@@ -247,7 +250,7 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 	// loop over the detailed commit and find filenames
 	while (getline (gitHubBlockSS, topLevelLine))
 	{
-		DiscursivePrint("%s\n",topLevelLine.c_str());
+		//DiscursivePrint("%s\n",topLevelLine.c_str());
 		// the "filename:" identifier will be where we find the files
 		int fileNameVal = topLevelLine.find("filename:");
 		int fileValVal = fileNameVal + 10;
@@ -266,16 +269,37 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 			if((insertTarget > 0) && (localInserts < insertTarget))
 			{
 				localInserts++;
-				InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+				if(deletedFileMode > -1)
+				{
+					RemoveByPathName(treeResult,fileNameString);
+				}
+				else
+				{
+					InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+				}
 			}
 			if((revTarget > 0) && (localRevs < revTarget))
 			{
-				InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+				if(deletedFileMode > -1)
+				{
+					RemoveByPathName(treeResult,fileNameString);
+				}
+				else
+				{
+					InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+				}
 			}
 			if((insertTarget == 0) && (revTarget == 0))
 			{
 				globalInserts++;
-				InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+				if(deletedFileMode > -1)
+				{
+					RemoveByPathName(treeResult,fileNameString);
+				}
+				else
+				{
+					InsertByPathName(treeResult,fileNameString,earliestFileDate,1);
+				}
 			}
 		}
 
