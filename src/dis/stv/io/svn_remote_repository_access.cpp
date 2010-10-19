@@ -172,6 +172,9 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	// individual filename storage
 	std::string fileNameString;
 
+	// previous filename storage for SVN lexical issues
+	std::string previousNameString;
+
 	// update either local revisions or global revisions
 	if(revTarget > 0)
 	{
@@ -205,8 +208,26 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 			if(lexicalFromTest != std::string::npos)
 			{
 				fileNameString = fileNameLine.substr(5,(fileNameLine.size()-lexicalFromTest-5));
+
 			}
 
+			// we need to check if the previous name string fully contained in our string
+			// if so, it's a directory and should be removed before we add the new items
+			// this clears out the empty 'file' directory
+			if(previousNameString != "")
+			{
+				if(fileNameString.find(previousNameString.c_str()) != std::string::npos)
+				{
+					RemoveByPathName(tree,previousNameString);
+				}
+			}
+
+			// set the previous name string
+			previousNameString = fileNameString + "/";
+
+
+
+			//printf("FILENAMESTRING: %s\n",fileNameString.c_str());
 			// actually insert the file entry into the tree
 			// increase the number of global inserts by one
 			if((insertTarget > 0) && (localInserts < insertTarget))
