@@ -727,6 +727,7 @@ RepositoryAccess* ConfigurationAgent::initializeRepositoryType()
 //         :: returns the keyword number if so
 //         ::
 // PARAMETERS :: std::String textualData - string to search
+//            :: 
 // RETURN :: int - first keyword reference number if there's a match
 //        :: int - returns zero if there are no filterKeyStore items
 // -------------------------------------------------------------------------
@@ -735,6 +736,9 @@ int ConfigurationAgent::DoesThisStringContainFilterKeywords(std::string textualD
     // store the string iterations
     int keyWordIterator = 0;
     size_t found = 0;
+    // store textualData size
+    size_t searchKeySize = textualData.size();
+	size_t keyNameSize;
 
     // check for negative keyword matches and fail if found
 	for(std::vector<std::string>::iterator i = inverseFilterKeyStore.begin(); i != inverseFilterKeyStore.end(); ++i)
@@ -742,7 +746,11 @@ int ConfigurationAgent::DoesThisStringContainFilterKeywords(std::string textualD
 		found = textualData.find(i->c_str());
 		if(found != std::string::npos)
 		{
-			return -1;
+			keyNameSize = i->size();
+			if((searchKeySize - found) == keyNameSize)
+			{			
+				return -1;
+			}
 		}
 	}
 
@@ -759,7 +767,11 @@ int ConfigurationAgent::DoesThisStringContainFilterKeywords(std::string textualD
 		found = textualData.find(i->keyName);
 		if(found != std::string::npos)
 		{
-			return keyWordIterator;
+			keyNameSize = i->keyName.size();
+			if((searchKeySize - found) == keyNameSize)
+			{			
+				return keyWordIterator;
+			}			
 		}
 	}
 
@@ -774,7 +786,7 @@ int ConfigurationAgent::DoesThisStringContainFilterKeywords(std::string textualD
 //         ::
 // PARAMETERS :: SurrogateTreeNode* treeNode - node to add properties to
 //            :: std::string searchKey - searchKey to match filter strings to
-//            :: int nodeType - o is trunk, 1 is leaf
+//            :: int nodeType - o is leaf, 1 is trunk
 // RETURN :: void
 // -------------------------------------------------------------------------
 void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey, int nodeType)
@@ -787,8 +799,22 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
     // loop over all filter types
 	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
+		int searchForItem = 0;
 		found = searchKey.find(i->keyName);
 		if(found != std::string::npos)
+		{
+			searchForItem = 1;
+			if(nodeType == 0)
+			{
+				size_t keyNameSize = i->keyName.size();
+				size_t searchKeySize = searchKey.size();
+				if((searchKeySize - found) != keyNameSize)
+				{
+					searchForItem = 0;
+				}
+			}
+		}
+		if(searchForItem != 0)
 		{
 		    // add all properties to surrogatetreenode
 			for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)

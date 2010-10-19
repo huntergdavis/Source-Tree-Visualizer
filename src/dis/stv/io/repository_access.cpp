@@ -77,10 +77,13 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 		// Split first string out for this nodes name
 		name = pathname.substr(0,firstIndex);
 	}
-	// test for keyword failure  in folder name
-	if(configAgent.DoesThisStringContainFilterKeywords(name) < 0)
+	// test for keyword failure  in file names
+	if(nodeType == 0)
 	{
-		continueDrawingSubLeaves = 0;
+		if((configAgent.DoesThisStringContainFilterKeywords(name) < 0))
+		{
+			continueDrawingSubLeaves = 0;
+		}
 	}
 	if((continueDrawingSubLeaves > 0) || (drawFilteredLeaves == 1))
 	{
