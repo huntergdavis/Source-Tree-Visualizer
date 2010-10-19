@@ -52,6 +52,9 @@ private:
 	int startWidth;
 	int startHeight;
 	
+	// default color
+	std::string defaultColor;
+	
 	// our background image name
 	std::string backgroundImageName;
 
@@ -102,6 +105,7 @@ public:
 	std::string returnAgentName();
 	std::string returnFileName();
 	std::string returnBackgroundImageName();
+	std::string returnDefaultColor();
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
 	int DoesThisStringContainFilterKeywords(std::string textualData);
