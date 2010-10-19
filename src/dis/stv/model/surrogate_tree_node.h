@@ -31,6 +31,7 @@ namespace TreeNodeKey
 	static const string REVISIONCREATED = "revisioncreated";
 	static const string DRAWNODE = "drawleaf";
 	static const string ANGLE = "angle";
+	static const string COLOR = "color";
 };
 
 using namespace std;

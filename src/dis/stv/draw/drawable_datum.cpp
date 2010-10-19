@@ -36,3 +36,5 @@ double DrawableDatum::getMass()
 {
 	return this->mass;
 }
+
+

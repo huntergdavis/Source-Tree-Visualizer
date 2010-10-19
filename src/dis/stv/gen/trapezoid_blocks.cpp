@@ -335,6 +335,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 	datum->source = leader->getSourceSet();
 //	datum->mass = leader->getEndWidth();
 	datum->mass = 2.0 * leaves;
+	//datum->color = ;
 	if(datum->mass > 4.0 )
 	{
 		datum->massRatio = (4.0/datum->mass);

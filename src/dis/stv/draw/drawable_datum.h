@@ -11,6 +11,7 @@
 #include "../model/surrogate_tree_node.h"
 #include "../system/discursive_system.h"
 #include <Magick++.h>
+#include <unordered_map>
 
 struct MinDrawableDatum
 {
