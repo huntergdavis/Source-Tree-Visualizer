@@ -185,10 +185,21 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	}
 
 	// loop over the detailed commit and find filenames
+	int updateType = 0;
 	while (getline (svnTimeBlockSS, fileNameLine))
 	{
 		if((fileNameLine.find("A") == 3) || (fileNameLine.find("U") == 3) || (fileNameLine.find("G") == 3))
 		{
+			updateType = 1;
+		}
+		if(fileNameLine.find("D") == 3)
+		{
+			updateType = 2;
+		}
+
+		if(updateType > 0)
+		{
+			// pull out the file name string
 			fileNameString = fileNameLine.substr(5,fileNameLine.size()-5);
 			//DiscursiveDebugPrint("svn,repository access","\nFILENAMESTRING: |%s|\n",fileNameString.c_str());
 
@@ -197,18 +208,40 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 			if((insertTarget > 0) && (localInserts < insertTarget))
 			{
 				localInserts++;
-				InsertByPathName(tree,fileNameString,dateEpoch,1);
+				if(updateType == 1)
+				{
+					InsertByPathName(tree,fileNameString,dateEpoch,1);
+				}
+				else
+				{
+					RemoveByPathName(tree,fileNameString);
+				}
 			}
 			if((revTarget > 0) && (localRevs < revTarget))
 			{
-				InsertByPathName(tree,fileNameString,dateEpoch,1);
+				if(updateType == 1)
+				{
+					InsertByPathName(tree,fileNameString,dateEpoch,1);
+				}
+				else
+				{
+					RemoveByPathName(tree,fileNameString);
+				}
 			}
 			if((insertTarget == 0) && (revTarget == 0))
 			{
 				globalInserts++;
-				InsertByPathName(tree,fileNameString,dateEpoch,1);
+				if(updateType == 1)
+				{
+					InsertByPathName(tree,fileNameString,dateEpoch,1);
+				}
+				else
+				{
+					RemoveByPathName(tree,fileNameString);
+				}
 			}
-
+			// reset update type
+			updateType = 0;
 		}
 	}
 

@@ -112,7 +112,11 @@ void CvsRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 	{
 		if((str.find("A") == 0) || (str.find("U") == 0) || (str.find("G") == 0))
 		{
-			parseTimeBlock(tree,&str);
+			parseTimeBlock(tree,&str,0);
+		}
+		if(str.find("D") == 0)
+		{
+			parseTimeBlock(tree,&str,1);
 		}
 
 	}
@@ -125,7 +129,7 @@ void CvsRemoteRepositoryAccess::generateTreeFromLog(SurrogateTreeNode* tree,std:
 // PARAMETERS ::
 // RETURN :: SurrogateTreeNode* - containing tree values generated
 // -------------------------------------------------------------------------
-void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer)
+void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer, int delItem)
 {
 	//printf("\nINDIVIDUAL TIME BLOCK |%s|\n",buffer->c_str());
 
@@ -215,16 +219,37 @@ void CvsRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	if((insertTarget > 0) && (localInserts < insertTarget))
 	{
 		localInserts++;
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
+		if(delItem == 0)
+		{
+			InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
+		}
+		else
+		{
+			RemoveByPathName(tree,fullyQualifiedName);
+		}
 	}
 	if((revTarget > 0) && (localRevs < revTarget))
 	{
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
+		if(delItem == 0)
+		{
+			InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
+		}
+		else
+		{
+			RemoveByPathName(tree,fullyQualifiedName);
+		}
 	}
 	if((insertTarget == 0) && (revTarget == 0))
 	{
 		globalInserts++;
-		InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
+		if(delItem == 0)
+		{
+			InsertByPathName(tree,fullyQualifiedName,dateEpoch,1);
+		}
+		else
+		{
+			RemoveByPathName(tree,fullyQualifiedName);
+		}
 	}
 
 }

@@ -35,7 +35,7 @@ private:
 	SurrogateTreeNode* generateTreeFromRemoteCvs();
 	long parseExactDateString(std::string *buffer);
 	void generateTreeFromLog(SurrogateTreeNode* tree,std::string *buffer);
-	void parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer);
+	void parseTimeBlock(SurrogateTreeNode* tree, std::string *buffer, int delItem);
 
 
 public:

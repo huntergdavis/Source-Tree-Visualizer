@@ -68,22 +68,33 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 		}
 
 		//M,A,R,C,U = GIT ADD/MODIFY statuses
+		//D = delete status
+		int gitStatus = 0;
 		aLocation = fileNameLine.find("... M");
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... A");
+			gitStatus = 1;
 		}
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... R");
+			gitStatus = 1;
 		}
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... C");
+			gitStatus = 1;
 		}
 		if (aLocation <= 0)
 		{
 			aLocation = fileNameLine.find("... U");
+			gitStatus = 1;
+		}
+		if (aLocation <= 0)
+		{
+			aLocation = fileNameLine.find("... D");
+			gitStatus = 2;
 		}
 		if(aLocation > 0)
 		{
@@ -94,16 +105,37 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			if((insertTarget > 0) && (localInserts < insertTarget))
 			{
 					localInserts++;
-					InsertByPathName(tree,fileNameString,time,1);
+					if(gitStatus == 1)
+					{
+						InsertByPathName(tree,fileNameString,time,1);
+					}
+					else
+					{
+						RemoveByPathName(tree,fileNameString);
+					}
 			}
 			if((revTarget > 0) && (localRevs < revTarget))
 			{
-				InsertByPathName(tree,fileNameString,time,1);
+				if(gitStatus == 1)
+				{
+					InsertByPathName(tree,fileNameString,time,1);
+				}
+				else
+				{
+					RemoveByPathName(tree,fileNameString);
+				}
 			}
 			if((insertTarget == 0) && (revTarget == 0))
 			{
 				globalInserts++;
-				InsertByPathName(tree,fileNameString,time,1);
+				if(gitStatus == 1)
+				{
+					InsertByPathName(tree,fileNameString,time,1);
+				}
+				else
+				{
+					RemoveByPathName(tree,fileNameString);
+				}
 			}
 		}
 

@@ -1,0 +1,2607 @@
+Retrieving From Server, Please Wait...
+1277757449
+:000000 100644 0000000... 5229356... A	discursivelabs/about.html
+:000000 100644 0000000... c3309ea... A	discursivelabs/after_content.html
+:000000 100644 0000000... e15aebf... A	discursivelabs/before_content.html
+:000000 100644 0000000... 76ec8c7... A	discursivelabs/contactus.html
+:000000 100644 0000000... aaa7e79... A	discursivelabs/discursive.css
+:000000 100644 0000000... ced65f0... A	discursivelabs/favicon.ico
+:000000 100644 0000000... 576f3c6... A	discursivelabs/footer.html
+:000000 100644 0000000... e14d37f... A	discursivelabs/images/ddxqzghb_86dq3cb7c5_b.jpg
+:000000 100644 0000000... 68b8cdf... A	discursivelabs/images/ddxqzghb_89dhcjsv5h_b.png
+:000000 100644 0000000... f318c12... A	discursivelabs/images/ddxqzghb_90fzrq29ds_b.jpg
+:000000 100644 0000000... 7297d5f... A	discursivelabs/images/drawing_sLvvG3oo4uqrKHYwMK7ENiQ_6.png
+:000000 100644 0000000... b4ab423... A	discursivelabs/images/drawing_secUG1nuYaU9LB9ucQ7Xhyw_2.png
+:000000 100644 0000000... acbc4bd... A	discursivelabs/images/high-res-small.png
+:000000 100644 0000000... abda4d8... A	discursivelabs/images/la_skyline.jpg
+:000000 100644 0000000... 75f440e... A	discursivelabs/images/staring.jpg
+:000000 100644 0000000... 0fce741... A	discursivelabs/images/training.jpg
+:000000 100644 0000000... df08d0b... A	discursivelabs/index.html
+:000000 100644 0000000... 4bd966a... A	discursivelabs/leftdivs.html
+:000000 100644 0000000... 25fab08... A	discursivelabs/menu.html
+:000000 100644 0000000... 902516e... A	discursivelabs/ongoingresearch.html
+:000000 100644 0000000... a229dea... A	discursivelabs/technology.html
+:000000 100644 0000000... d17d99b... A	discursivelabs/testimonials.html
+
+1280955366
+:000000 100644 0000000... 21224dd... A	CHANGES
+
+1280958693
+:000000 100644 0000000... 582b7c6... A	src/example/imagemagick_example.cpp
+:000000 100755 0000000... a360c40... A	src/example/imagemagick_example_compile.sh
+:000000 100644 0000000... 00ae844... A	src/example/leaf.jpg
+
+1280976327
+:000000 100644 0000000... d9eb53f... A	src/example/branch.gif
+:000000 100644 0000000... 4aa2ce8... A	src/example/dark_leaf.gif
+:000000 100644 0000000... 0947736... A	src/example/light_leaf.gif
+:000000 100644 0000000... 3c41505... A	src/example/trunk.gif
+
+1280976379
+:100644 100644 582b7c6... 65edb21... M	src/example/imagemagick_example.cpp
+
+1281109704
+:000000 100755 0000000... 5861536... A	src/compile.sh
+:000000 100644 0000000... e2e6ef1... A	src/generate/tree.cpp
+
+1281120349
+:100755 100755 5861536... 8f09ed5... M	src/compile.sh
+:100644 100644 e2e6ef1... fe8ebb3... M	src/generate/tree.cpp
+
+1281145566
+:100644 100644 fe8ebb3... 1e4e1ee... M	src/generate/tree.cpp
+
+1281150079
+:100644 100644 1e4e1ee... 93d53f7... M	src/generate/tree.cpp
+
+1281459467
+:000000 100644 0000000... eae0518... A	src/generate/git.cpp
+:000000 100644 0000000... 0dfa805... A	src/generate/git.h
+
+1281459469
+:100644 100644 93d53f7... b8da0b5... M	src/generate/tree.cpp
+
+1281459562
+:100644 100644 93d53f7... 1c399a3... M	src/generate/tree.cpp
+
+1281460206
+:100755 100755 8f09ed5... b775d3e... M	src/compile.sh
+
+1281460220
+:100644 100644 eae0518... 058b1d1... M	src/generate/git.cpp
+
+1281460595
+:000000 100755 0000000... 6e7c0e2... A	compile.sh
+:100755 000000 b775d3e... 0000000... D	src/compile.sh
+
+1281544915
+:000000 100644 0000000... c75767a... A	src/generate/xml.cpp
+:000000 100644 0000000... e8d1cfa... A	src/generate/xml.h
+
+1281545306
+:100755 100755 6e7c0e2... 43348a0... M	compile.sh
+
+1281545335
+:100644 100644 c75767a... 903dbfe... M	src/generate/xml.cpp
+:100644 100644 e8d1cfa... 37e35d9... M	src/generate/xml.h
+
+1281547434
+:100644 100644 8e3105d... 4b77ae7... M	src/generate/tree.cpp
+:100644 100644 903dbfe... 75fb409... M	src/generate/xml.cpp
+
+1281627649
+:000000 100644 0000000... ea3942e... A	Makefile
+
+1281627705
+:100755 100755 43348a0... 8723a7c... M	compile.sh
+:100644 100644 75fb409... 200db69... M	src/generate/xml.cpp
+:100644 100644 37e35d9... 99d458b... M	src/generate/xml.h
+
+1281642152
+:100644 100644 65edb21... 52de9de... M	src/example/imagemagick_example.cpp
+
+1281681607
+:100755 100755 8723a7c... 6e5f9d2... M	compile.sh
+:100644 100644 52de9de... d19daab... M	src/example/imagemagick_example.cpp
+:100644 100644 4b77ae7... 4c4cff5... M	src/generate/tree.cpp
+
+1281681622
+:000000 100644 0000000... a07938d... A	src/dis/stv/dec/decorator.h
+:000000 100644 0000000... 7daaede... A	src/dis/stv/dec/spatial_displacement.cpp
+:000000 100644 0000000... b41fd6c... A	src/dis/stv/dec/spatial_displacement.h
+:000000 100644 0000000... 3a3770c... A	src/dis/stv/draw/artist.h
+:000000 100644 0000000... 69c24cb... A	src/dis/stv/draw/drawable_data.h
+:000000 100644 0000000... 55d72d1... A	src/dis/stv/draw/scanline_artist.cpp
+:000000 100644 0000000... 7dfb940... A	src/dis/stv/draw/scanline_artist.h
+:000000 100644 0000000... e7ccc2e... A	src/dis/stv/gen/digitizer.h
+:000000 100644 0000000... 6e285e7... A	src/dis/stv/gen/space_colonizer.cpp
+:000000 100644 0000000... ea01ca9... A	src/dis/stv/gen/space_colonizer.h
+:000000 100644 0000000... 4a48d25... A	src/dis/stv/io/git_repository_access.cpp
+:000000 100644 0000000... 9efe435... A	src/dis/stv/io/git_repository_access.h
+:000000 100644 0000000... 16a6efc... A	src/dis/stv/io/repository_access.h
+:000000 100644 0000000... cff1675... A	src/dis/stv/main/simple_tree.cpp
+
+1281766697
+:100644 100644 7daaede... 8075805... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 b41fd6c... bea137e... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 4a48d25... f2bfe3e... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 9efe435... 8bb28bd... M	src/dis/stv/io/git_repository_access.h
+:100644 100644 cff1675... da2a68e... M	src/dis/stv/main/simple_tree.cpp
+
+1281857930
+:100755 100755 6e5f9d2... 05bcf32... M	compile.sh
+:100644 100644 a07938d... 2391bba... M	src/dis/stv/dec/decorator.h
+:100644 100644 8075805... d491b0e... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 bea137e... e892518... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 e7ccc2e... 21c247a... M	src/dis/stv/gen/digitizer.h
+:100644 100644 6e285e7... 292a4dc... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 ea01ca9... a271f3a... M	src/dis/stv/gen/space_colonizer.h
+:100644 100644 f2bfe3e... fb3b23c... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 8bb28bd... 7067b47... M	src/dis/stv/io/git_repository_access.h
+:100644 100644 16a6efc... 8496a21... M	src/dis/stv/io/repository_access.h
+:100644 100644 da2a68e... 3d9813b... M	src/dis/stv/main/simple_tree.cpp
+
+1281924786
+:100755 100755 05bcf32... 3ba43e5... M	compile.sh
+:100644 100644 d491b0e... d4aeba5... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 e892518... 77c0013... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 fb3b23c... 5ee7b6c... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 3d9813b... fa3e70d... M	src/dis/stv/main/simple_tree.cpp
+
+1281942750
+:100644 100644 d4aeba5... 5037477... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 77c0013... ef99ba8... M	src/dis/stv/dec/spatial_displacement.h
+
+1281942809
+:000000 100644 0000000... 8d0009a... A	src/dis/stv/model/surrogate.h
+:000000 100644 0000000... 7419470... A	src/dis/stv/model/surrogate_tree_node.h
+:000000 100644 0000000... bb23907... A	src/dis/stv/physics/physical_mass.cpp
+:000000 100644 0000000... 0942814... A	src/dis/stv/physics/physical_mass.h
+:000000 100644 0000000... 9a3c9b6... A	src/dis/stv/physics/physics_engine.cpp
+:000000 100644 0000000... b9ef307... A	src/dis/stv/physics/physics_engine.h
+:000000 100644 0000000... 00a0637... A	src/dis/stv/physics/spatial_object.cpp
+:000000 100644 0000000... 29fe4c8... A	src/dis/stv/physics/spatial_object.h
+:000000 100644 0000000... 0f6b7e6... A	src/dis/stv/physics/tethered_spatial_object.cpp
+:000000 100644 0000000... 00b16bd... A	src/dis/stv/physics/tethered_spatial_object.h
+:000000 100644 0000000... b9f005f... A	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:000000 100644 0000000... 5fec86f... A	src/dis/stv/physics/time_stepped_physics_engine.h
+:000000 100644 0000000... 757f7f0... A	src/dis/stv/physics/time_stepped_physics_object.cpp
+:000000 100644 0000000... 863bdc2... A	src/dis/stv/physics/time_stepped_physics_object.h
+:000000 100644 0000000... 476f48a... A	src/dis/stv/physics/tree_displacement_node.cpp
+:000000 100644 0000000... c6c50b3... A	src/dis/stv/physics/tree_displacement_node.h
+
+1281943407
+:100644 100644 5ee7b6c... c665913... M	src/dis/stv/io/git_repository_access.cpp
+
+1281976161
+:100644 100644 5037477... 5f38471... M	src/dis/stv/dec/spatial_displacement.cpp
+
+1281999443
+:100755 100755 3ba43e5... 02a0100... M	compile.sh
+:100644 100644 5f38471... 0707b41... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 ef99ba8... f483fbf... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 00a0637... 0911d5e... M	src/dis/stv/physics/spatial_object.cpp
+:100644 100644 29fe4c8... 8cef989... M	src/dis/stv/physics/spatial_object.h
+:100644 100644 0f6b7e6... 4f115de... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 00b16bd... c0c26e9... M	src/dis/stv/physics/tethered_spatial_object.h
+:100644 100644 b9f005f... 553cea2... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:100644 100644 5fec86f... cf541ff... M	src/dis/stv/physics/time_stepped_physics_engine.h
+:100644 100644 757f7f0... c4c1d1d... M	src/dis/stv/physics/time_stepped_physics_object.cpp
+:100644 100644 863bdc2... 716c240... M	src/dis/stv/physics/time_stepped_physics_object.h
+:100644 100644 476f48a... 2fc9631... M	src/dis/stv/physics/tree_displacement_node.cpp
+:100644 100644 c6c50b3... 00f5f18... M	src/dis/stv/physics/tree_displacement_node.h
+
+1282004784
+:100644 100644 ea3942e... 8a6e383... M	Makefile
+
+1282008715
+:100644 100644 8a6e383... d33433b... M	Makefile
+:100644 100644 0707b41... 9272326... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 b9ef307... e91d22f... M	src/dis/stv/physics/physics_engine.h
+:100644 100644 4f115de... 48be6a2... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 c0c26e9... 082638d... M	src/dis/stv/physics/tethered_spatial_object.h
+:100644 100644 553cea2... 8cd4b57... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:100644 100644 cf541ff... 57bc5ac... M	src/dis/stv/physics/time_stepped_physics_engine.h
+:100644 100644 716c240... 643ba3a... M	src/dis/stv/physics/time_stepped_physics_object.h
+:100644 100644 2fc9631... 6397c19... M	src/dis/stv/physics/tree_displacement_node.cpp
+:100644 100644 00f5f18... 221c2c5... M	src/dis/stv/physics/tree_displacement_node.h
+
+1282010092
+:100644 100644 9272326... cb18753... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 f483fbf... 0ef7386... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 8cd4b57... c8bec1d... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+
+1282016903
+:100644 100644 cb18753... aa740cd... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 e91d22f... 179758d... M	src/dis/stv/physics/physics_engine.h
+:100644 100644 c8bec1d... 2b679fb... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:100644 100644 c4c1d1d... f50e815... M	src/dis/stv/physics/time_stepped_physics_object.cpp
+:100644 100644 643ba3a... 924ccf5... M	src/dis/stv/physics/time_stepped_physics_object.h
+:100644 100644 6397c19... 7f71b02... M	src/dis/stv/physics/tree_displacement_node.cpp
+:100644 100644 221c2c5... 6ec2212... M	src/dis/stv/physics/tree_displacement_node.h
+
+1282022093
+:100644 100644 aa740cd... fc50180... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 48be6a2... 7a84435... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 082638d... 44ba439... M	src/dis/stv/physics/tethered_spatial_object.h
+:100644 100644 2b679fb... 88b286a... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+
+1282107574
+:100644 100644 d33433b... d7e7bce... M	Makefile
+:100644 100644 fc50180... aefc124... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 7a84435... 1bf1cd6... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 88b286a... eb5a3cb... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:100644 100644 7f71b02... b02999b... M	src/dis/stv/physics/tree_displacement_node.cpp
+
+1282115754
+:100644 100644 d7e7bce... a9fe2ca... M	Makefile
+:100644 100644 aefc124... 02aa9c6... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 0ef7386... bcf58ba... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 8cef989... a14d992... M	src/dis/stv/physics/spatial_object.h
+:100644 100644 1bf1cd6... 6a41b6b... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 eb5a3cb... 7785fa0... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:100644 100644 57bc5ac... 86b28b5... M	src/dis/stv/physics/time_stepped_physics_engine.h
+:100644 100644 924ccf5... 9837684... M	src/dis/stv/physics/time_stepped_physics_object.h
+:100644 100644 b02999b... f0896bf... M	src/dis/stv/physics/tree_displacement_node.cpp
+:100644 100644 6ec2212... 35a0929... M	src/dis/stv/physics/tree_displacement_node.h
+
+1282115904
+:100644 100644 02aa9c6... 44c7b67... M	src/dis/stv/dec/spatial_displacement.cpp
+
+1282117006
+:100644 100644 44c7b67... f53ec8e... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 7785fa0... e1e6e21... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+
+1282118186
+:100644 100644 f53ec8e... 5176322... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 bcf58ba... 142415f... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 f0896bf... bd80f3b... M	src/dis/stv/physics/tree_displacement_node.cpp
+:100644 100644 35a0929... 9eb429d... M	src/dis/stv/physics/tree_displacement_node.h
+
+1282160028
+:100644 100644 292a4dc... 970cd74... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 a271f3a... 1ab564a... M	src/dis/stv/gen/space_colonizer.h
+
+1282171816
+:100644 100644 a9fe2ca... ee6228d... M	Makefile
+:000000 100644 0000000... 07e236f... A	src/dis/stv/draw/drawable_data.cpp
+:100644 100644 69c24cb... 42d0503... M	src/dis/stv/draw/drawable_data.h
+:000000 100644 0000000... a7d75af... A	src/dis/stv/draw/drawable_datum.cpp
+:000000 100644 0000000... fe8066e... A	src/dis/stv/draw/drawable_datum.h
+:100644 100644 7dfb940... 67b94dd... M	src/dis/stv/draw/scanline_artist.h
+:100644 100644 21c247a... 36f37e7... M	src/dis/stv/gen/digitizer.h
+:100644 100644 970cd74... dfaa79d... M	src/dis/stv/gen/space_colonizer.cpp
+:000000 100644 0000000... 645d84a... A	src/dis/stv/physics/fixed_attractor.cpp
+:000000 100644 0000000... 52d4820... A	src/dis/stv/physics/fixed_attractor.h
+:000000 100644 0000000... 244092f... A	src/dis/stv/physics/unidimensional_spatial_object.cpp
+:000000 100644 0000000... c160834... A	src/dis/stv/physics/unidimensional_spatial_object.h
+
+1282172868
+:100644 100644 ee6228d... d224c88... M	Makefile
+:100644 100644 07e236f... 1db2e50... M	src/dis/stv/draw/drawable_data.cpp
+:000000 100644 0000000... 4005932... A	src/dis/stv/gen/colonization_leader.cpp
+:000000 100644 0000000... 909471e... A	src/dis/stv/gen/colonization_leader.h
+:000000 100644 0000000... daac6b3... A	src/dis/stv/gen/colonization_leader.o
+:100644 100644 1ab564a... 0d0f0c6... M	src/dis/stv/gen/space_colonizer.h
+
+1282173620
+:100644 100644 c665913... c23a613... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 7067b47... a3757cd... M	src/dis/stv/io/git_repository_access.h
+
+1282174844
+:100644 100644 ee6228d... 69405ab... M	Makefile
+:100644 100644 c23a613... 2e722c3... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 a3757cd... 1df4392... M	src/dis/stv/io/git_repository_access.h
+
+1282179291
+:100644 100644 2e722c3... 4f5c797... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 1df4392... 3823ab4... M	src/dis/stv/io/git_repository_access.h
+:100644 100644 fa3e70d... 2d12563... M	src/dis/stv/main/simple_tree.cpp
+
+1282180929
+:100644 100644 4f5c797... 392b03f... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 3823ab4... a111aaf... M	src/dis/stv/io/git_repository_access.h
+:100644 100644 2d12563... 9d94ccd... M	src/dis/stv/main/simple_tree.cpp
+
+1282181925
+:100644 100644 392b03f... f5584cb... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 a111aaf... ded913b... M	src/dis/stv/io/git_repository_access.h
+
+1282183368
+:100644 100644 f5584cb... 626e3d7... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 ded913b... 3a06ae0... M	src/dis/stv/io/git_repository_access.h
+
+1282183759
+:100644 100644 d224c88... 12d1054... M	Makefile
+:100644 100644 4005932... 71cd45b... M	src/dis/stv/gen/colonization_leader.cpp
+:100644 100644 909471e... 7982fba... M	src/dis/stv/gen/colonization_leader.h
+:100644 100644 daac6b3... 690b3b9... M	src/dis/stv/gen/colonization_leader.o
+:100644 100644 dfaa79d... 10e2118... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 0d0f0c6... 3bcd159... M	src/dis/stv/gen/space_colonizer.h
+
+1282183813
+:100644 000000 690b3b9... 0000000... D	src/dis/stv/gen/colonization_leader.o
+
+1282183839
+:100644 100644 9d94ccd... 689700e... M	src/dis/stv/main/simple_tree.cpp
+
+1282183948
+:100644 100644 626e3d7... 65c5ecb... M	src/dis/stv/io/git_repository_access.cpp
+
+1282186154
+:100644 100644 3a3770c... a970e1f... M	src/dis/stv/draw/artist.h
+:100644 100644 1db2e50... 62c4658... M	src/dis/stv/draw/drawable_data.cpp
+:100644 100644 42d0503... 9a9cd3a... M	src/dis/stv/draw/drawable_data.h
+:100644 100644 55d72d1... 412c431... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 67b94dd... 663d40a... M	src/dis/stv/draw/scanline_artist.h
+:100644 100644 fa3e70d... 1b14891... M	src/dis/stv/main/simple_tree.cpp
+
+1282187918
+:100644 100644 5176322... b11c4e2... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 142415f... 1f19878... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 412c431... bcd3dd6... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 10e2118... 6c25080... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 3bcd159... c58049a... M	src/dis/stv/gen/space_colonizer.h
+:100644 100644 1b14891... 5d7dcc6... M	src/dis/stv/main/simple_tree.cpp
+
+1282191608
+:100644 100644 12d1054... 77061e9... M	Makefile
+:100644 100644 b11c4e2... b00cd40... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 1f19878... 1c34ccf... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 5d7dcc6... c6f18d4... M	src/dis/stv/main/simple_tree.cpp
+:000000 100644 0000000... 1cee426... A	src/dis/stv/model/property_inverter.cpp
+:000000 100644 0000000... c4705fa... A	src/dis/stv/model/property_inverter.h
+:000000 100644 0000000... bec54f0... A	src/dis/stv/model/property_shifter.cpp
+:000000 100644 0000000... fa6a663... A	src/dis/stv/model/property_shifter.h
+:000000 100644 0000000... 0490948... A	src/dis/stv/model/property_transformer.cpp
+:000000 100644 0000000... 77e770e... A	src/dis/stv/model/property_transformer.h
+:100644 100644 8d0009a... 3d24945... M	src/dis/stv/model/surrogate.h
+:000000 100644 0000000... 613896f... A	src/dis/stv/model/surrogate_tree_node.cpp
+:100644 100644 7419470... 59688b0... M	src/dis/stv/model/surrogate_tree_node.h
+
+1282197717
+:100644 100644 b00cd40... 36e8484... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 bcd3dd6... d0f8dea... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 6c25080... faac06a... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 bec54f0... 7ed934a... M	src/dis/stv/model/property_shifter.cpp
+:100644 100644 77e770e... ecc8374... M	src/dis/stv/model/property_transformer.h
+
+1282199233
+:100644 100644 36e8484... a48897b... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 faac06a... f6319e2... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 613896f... 98102d5... M	src/dis/stv/model/surrogate_tree_node.cpp
+
+1282199347
+:100644 100644 a48897b... f14b032... M	src/dis/stv/dec/spatial_displacement.cpp
+
+1282203820
+:100644 100644 f14b032... d3c62fb... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 f6319e2... 4aab5ea... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 d43da90... cd5aa0d... M	src/dis/stv/main/simple_tree.cpp
+
+1282244415
+:100644 100644 61711d6... 6a4eb36... M	Makefile
+:100644 100644 65c5ecb... a776acb... M	src/dis/stv/io/git_repository_access.cpp
+:000000 100644 0000000... 11f6e3c... A	src/dis/stv/io/github_repository_access.cpp
+:000000 100644 0000000... e026124... A	src/dis/stv/io/github_repository_access.h
+:100644 100644 8496a21... c26ded6... M	src/dis/stv/io/repository_access.h
+:100644 100644 cd5aa0d... ad9bd63... M	src/dis/stv/main/simple_tree.cpp
+
+1282244578
+:100644 100644 a776acb... dfb78a4... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 3a06ae0... ec8135a... M	src/dis/stv/io/git_repository_access.h
+
+1282247684
+:100644 100644 11f6e3c... 954ae35... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 e026124... 0799e9e... M	src/dis/stv/io/github_repository_access.h
+
+1282248096
+:100644 100644 d0f8dea... d04f1c6... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 663d40a... 7d56fa8... M	src/dis/stv/draw/scanline_artist.h
+:000000 100644 0000000... 60b9f8d... A	src/dis/stv/event/event.h
+:000000 100644 0000000... 01d207c... A	src/dis/stv/event/event_driven_object.h
+:000000 100644 0000000... f3e5546... A	src/dis/stv/event/event_listener.h
+:000000 100644 0000000... 7dcf099... A	src/dis/stv/event/event_type.h
+:100644 100644 cd5aa0d... 058d9dd... M	src/dis/stv/main/simple_tree.cpp
+
+1282250237
+:100644 100644 6a4eb36... 315cdd2... M	Makefile
+:100644 100644 dfb78a4... db2a0d2... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 954ae35... 14b662a... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 c26ded6... 1164c5b... M	src/dis/stv/io/repository_access.h
+:000000 100644 0000000... 03dc317... A	src/dis/stv/io/svn_remote_repository_access.cpp
+:000000 100644 0000000... 78b4888... A	src/dis/stv/io/svn_remote_repository_access.h
+:100644 100644 ad9bd63... c1db824... M	src/dis/stv/main/simple_tree.cpp
+
+1282251330
+:100644 100644 03dc317... 57304aa... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 78b4888... 5db0fef... M	src/dis/stv/io/svn_remote_repository_access.h
+
+1282254096
+:100644 100644 57304aa... b18b31c... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 c1db824... 1941678... M	src/dis/stv/main/simple_tree.cpp
+
+1282259987
+:100644 100644 315cdd2... b6c9156... M	Makefile
+:000000 100644 0000000... ecc0799... A	src/dis/stv/io/cvs_remote_repository_access.cpp
+:000000 100644 0000000... 586f59a... A	src/dis/stv/io/cvs_remote_repository_access.h
+:100644 100644 db2a0d2... 820a59d... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 ec8135a... 7109566... M	src/dis/stv/io/git_repository_access.h
+:100644 100644 b18b31c... cb8ac4d... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 d0929c0... a7b04ea... M	src/dis/stv/main/simple_tree.cpp
+
+1282262709
+:100644 100644 820a59d... 80085c8... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 7109566... c53aa22... M	src/dis/stv/io/git_repository_access.h
+
+1282263113
+:100644 100644 80085c8... 0e32c1d... M	src/dis/stv/io/git_repository_access.cpp
+
+1282263241
+:000000 100644 0000000... 67a1def... A	LICENCE
+
+1282265483
+:100644 100644 b6c9156... c57d044... M	Makefile
+:100644 100644 d3c62fb... 5aacfdc... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 1c34ccf... bdaccc3... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 a970e1f... d566433... M	src/dis/stv/draw/artist.h
+:100644 100644 62c4658... 57586be... M	src/dis/stv/draw/drawable_data.cpp
+:100644 100644 9a9cd3a... 52c5ff7... M	src/dis/stv/draw/drawable_data.h
+:100644 100644 a7d75af... 93fe7bd... M	src/dis/stv/draw/drawable_datum.cpp
+:100644 100644 fe8066e... 60ffcb1... M	src/dis/stv/draw/drawable_datum.h
+:100644 100644 7d56fa8... e573f44... M	src/dis/stv/draw/scanline_artist.h
+:100644 100644 60b9f8d... 90a78bf... M	src/dis/stv/event/event.h
+:100644 100644 01d207c... ae92562... M	src/dis/stv/event/event_driven_object.h
+:100644 100644 f3e5546... abc6ea2... M	src/dis/stv/event/event_listener.h
+:100644 100644 7dcf099... e8518d2... M	src/dis/stv/event/event_type.h
+:100644 100644 7982fba... 4ba448d... M	src/dis/stv/gen/colonization_leader.h
+:100644 100644 36f37e7... 56c5496... M	src/dis/stv/gen/digitizer.h
+:100644 100644 c58049a... 3a5ad15... M	src/dis/stv/gen/space_colonizer.h
+:100644 100644 ecc0799... d479e99... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 586f59a... 717c2b6... M	src/dis/stv/io/cvs_remote_repository_access.h
+:100644 100644 c53aa22... 1a9e48b... M	src/dis/stv/io/git_repository_access.h
+:100644 100644 0799e9e... 21e70c6... M	src/dis/stv/io/github_repository_access.h
+:100644 100644 1164c5b... bc08ad8... M	src/dis/stv/io/repository_access.h
+:100644 100644 5db0fef... 017c485... M	src/dis/stv/io/svn_remote_repository_access.h
+:100644 100644 a7b04ea... 4370cf2... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 c4705fa... 2d0aa12... M	src/dis/stv/model/property_inverter.h
+:100644 100644 fa6a663... c85841a... M	src/dis/stv/model/property_shifter.h
+:100644 100644 ecc8374... 611c924... M	src/dis/stv/model/property_transformer.h
+:100644 100644 3d24945... d490fbd... M	src/dis/stv/model/surrogate.h
+:100644 100644 59688b0... f4a8158... M	src/dis/stv/model/surrogate_tree_node.h
+:100644 100644 52d4820... d499f07... M	src/dis/stv/physics/fixed_attractor.h
+:100644 100644 0942814... 7c89fc7... M	src/dis/stv/physics/physical_mass.h
+:100644 100644 179758d... d296699... M	src/dis/stv/physics/physics_engine.h
+:100644 100644 a14d992... 64e6a2f... M	src/dis/stv/physics/spatial_object.h
+:100644 100644 44ba439... 4175725... M	src/dis/stv/physics/tethered_spatial_object.h
+:100644 100644 86b28b5... dd0add7... M	src/dis/stv/physics/time_stepped_physics_engine.h
+:100644 100644 9837684... 23b1ba9... M	src/dis/stv/physics/time_stepped_physics_object.h
+:100644 100644 9eb429d... 4c56312... M	src/dis/stv/physics/tree_displacement_node.h
+:000000 100644 0000000... 473419c... A	src/dis/stv/system/discursive_debug.cpp
+:000000 100644 0000000... 1d0321e... A	src/dis/stv/system/discursive_debug.h
+:000000 100644 0000000... 8d22504... A	src/dis/stv/system/discursive_error.cpp
+:000000 100644 0000000... 9197473... A	src/dis/stv/system/discursive_error.h
+:000000 100644 0000000... 97de1e1... A	src/dis/stv/system/discursive_system.h
+
+1282265563
+:100644 100644 4370cf2... d3c2704... M	src/dis/stv/main/simple_tree.cpp
+
+1282265708
+:100644 100644 5aacfdc... c7cae04... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 8d22504... 9895467... M	src/dis/stv/system/discursive_error.cpp
+
+1282266125
+:100644 100644 d479e99... 95d4300... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 14b662a... 6605d6e... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 cb8ac4d... 4db5b2c... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 d3c2704... 6e9864f... M	src/dis/stv/main/simple_tree.cpp
+
+1282266959
+:100644 100644 c7cae04... 3315283... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 d04f1c6... 9e0e734... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 0e32c1d... 3507b80... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 6605d6e... 6482e71... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 4db5b2c... 85d3d5b... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 6a41b6b... 2c98942... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 473419c... a17fed4... M	src/dis/stv/system/discursive_debug.cpp
+:100644 100644 1d0321e... 7d5edfc... M	src/dis/stv/system/discursive_debug.h
+
+1282267556
+:100644 100644 c57d044... 37c6242... M	Makefile
+:000000 100644 0000000... 093b521... A	src/dis/stv/main/interactive_agent.cpp
+:000000 100644 0000000... 8c7e018... A	src/dis/stv/main/interactive_agent.h
+:100644 100644 6e9864f... 89a6494... M	src/dis/stv/main/simple_tree.cpp
+
+1282271207
+:100644 100644 37c6242... 329e2e3... M	Makefile
+:000000 100644 0000000... 849178b... A	src/dis/stv/main/initial_agents.cpp
+:000000 100644 0000000... b4167b8... A	src/dis/stv/main/initial_agents.h
+:100644 000000 093b521... 0000000... D	src/dis/stv/main/interactive_agent.cpp
+:100644 000000 8c7e018... 0000000... D	src/dis/stv/main/interactive_agent.h
+:100644 100644 89a6494... 05f1a39... M	src/dis/stv/main/simple_tree.cpp
+
+1282271364
+:100644 100644 05f1a39... 67b5238... M	src/dis/stv/main/simple_tree.cpp
+
+1282271489
+:100644 100644 849178b... 3a36922... M	src/dis/stv/main/initial_agents.cpp
+
+1282271737
+:100644 100644 3315283... b5095a0... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 9e0e734... 114ca48... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 3507b80... 7a2677b... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 6482e71... 6162935... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 85d3d5b... 9921e61... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 3a36922... 968e2f7... M	src/dis/stv/main/initial_agents.cpp
+:100644 100644 67b5238... 4c2d399... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 2c98942... 82e0f6f... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 a17fed4... 6a7c2e7... M	src/dis/stv/system/discursive_debug.cpp
+:100644 100644 7d5edfc... a3ef6ee... M	src/dis/stv/system/discursive_debug.h
+
+1282273919
+:100644 100644 4c2d399... 6f2e989... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 82e0f6f... 064ba62... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 e1e6e21... 23697bc... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:100644 100644 058b1d1... 6ff7598... M	src/generate/git.cpp
+:100644 100644 4c4cff5... b15db22... M	src/generate/tree.cpp
+
+1282274500
+:100644 100644 6f2e989... e0e872e... M	src/dis/stv/main/simple_tree.cpp
+
+1284411258
+:000000 100644 0000000... d17d99b... A	discursivelabs/contracting.html
+
+1284411654
+:100644 100644 d17d99b... c4b133f... M	discursivelabs/contracting.html
+
+1284413431
+:100644 100644 c4b133f... 7d2c76b... M	discursivelabs/contracting.html
+:100644 100644 25fab08... b1524ae... M	discursivelabs/menu.html
+
+1284414109
+:100644 100644 7d2c76b... c06076a... M	discursivelabs/contracting.html
+:100644 000000 d17d99b... 0000000... D	discursivelabs/testimonials.html
+
+1284434648
+:100644 100644 c06076a... f9a3930... M	discursivelabs/contracting.html
+
+1284435495
+:100644 100644 f9a3930... 2e54b80... M	discursivelabs/contracting.html
+
+1284435946
+:100644 100644 2e54b80... 9facc1c... M	discursivelabs/contracting.html
+
+1284385632
+:100644 100644 9facc1c... 16757b6... M	discursivelabs/contracting.html
+
+1284462365
+:000000 100644 0000000... 8773631... A	discursivelabs/treevis.html
+
+1284462846
+:000000 100644 0000000... d068884... A	discursivelabs/virtualmachinestorage.html
+
+1284465907
+:000000 100644 0000000... 69a513b... A	discursivelabs/blog.html
+
+1284467379
+:000000 100644 0000000... 151c9a6... A	discursivelabs/aboutdiscursive.html
+
+1284553802
+:100644 100644 8773631... ef8f355... M	discursivelabs/treevis.html
+
+1284554444
+:100644 100644 ef8f355... 467e8dd... M	discursivelabs/treevis.html
+
+1284554620
+:100644 100644 d068884... 3d79e84... M	discursivelabs/virtualmachinestorage.html
+
+1284601826
+:100644 100644 16757b6... 94167ef... M	discursivelabs/contracting.html
+
+1284601883
+:100644 000000 94167ef... 0000000... D	discursivelabs/contracting.html
+
+1284601904
+:000000 100644 0000000... 94167ef... A	discursivelabs/consulting.html
+
+1284611387
+:100644 100644 3d79e84... 4f2bc69... M	discursivelabs/virtualmachinestorage.html
+
+1285034622
+:000000 100644 0000000... 6bd45a1... A	discursivelabs/QualnetFormLetter1.odt
+:000000 100644 0000000... 1ece498... A	discursivelabs/QualnetFormLetter2.odt
+:000000 100644 0000000... 34bd5f8... A	discursivelabs/QualnetFormLetter3.odt
+
+1285048820
+:100644 100644 34bd5f8... 0f7e125... M	discursivelabs/QualnetFormLetter3.odt
+:000000 100644 0000000... 35e2f0b... A	discursivelabs/QualnetFormLetter4.odt
+:000000 100644 0000000... 1a7b046... A	discursivelabs/QualnetFormLetter5.odt
+
+1285071943
+:100644 100644 4f2bc69... 218d61a... M	discursivelabs/virtualmachinestorage.html
+
+1285074354
+:000000 100644 0000000... 6fc2dcf... A	discursivelabs/blog2.html
+
+1285189135
+:000000 100644 0000000... ddff144... A	Promotional Materials/intenslybranchingtree.jpg
+:000000 100644 0000000... d725af8... A	Promotional Materials/manydottedtrees.jpg
+:000000 100644 0000000... 8152641... A	Promotional Materials/sparseloopy.jpg
+:000000 100644 0000000... a033a8a... A	Promotional Materials/sproutingtree.jpg
+:000000 100644 0000000... cf07340... A	Promotional Materials/verysparsetree.jpg
+
+1285189749
+:000000 100644 0000000... a6173e3... A	Promotional Materials/divergent_attractors.jpg
+:000000 100644 0000000... e47dabb... A	Promotional Materials/dnastrandtree.jpg
+:000000 100644 0000000... 05d3586... A	Promotional Materials/oddboobstree.jpg
+
+1285189930
+:000000 100644 0000000... a2407d1... A	Promotional Materials/crazymonster.jpg
+
+1285193896
+:100644 100644 b5095a0... 2372d56... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 bdaccc3... 8d6f018... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 e0e872e... e95dd2c... M	src/dis/stv/main/simple_tree.cpp
+
+1285195592
+:000000 100755 0000000... 969d21c... A	createHnWScaleImages.sh
+
+1285197476
+:100755 100755 969d21c... 49a9aa9... M	createHnWScaleImages.sh
+:000000 100755 0000000... ca0f0b2... A	createimages.sh
+
+1285197918
+:100755 100755 49a9aa9... 3465449... M	createHnWScaleImages.sh
+
+1285197955
+:100755 100755 3465449... e236ad4... M	createHnWScaleImages.sh
+
+1285198467
+:100755 100755 e236ad4... 9c4edeb... M	createHnWScaleImages.sh
+
+1285202081
+:100644 100644 329e2e3... 0749135... M	Makefile
+:100755 000000 9c4edeb... 0000000... D	createHnWScaleImages.sh
+:100755 000000 ca0f0b2... 0000000... D	createimages.sh
+:100644 100644 bc08ad8... 7e9817c... M	src/dis/stv/io/repository_access.h
+:100644 100644 e95dd2c... 4ea9992... M	src/dis/stv/main/simple_tree.cpp
+
+1285202113
+:000000 100644 0000000... 2f9bb1f... A	src/dis/stv/io/repository_access.cpp
+
+1285203517
+:100644 100644 2f9bb1f... bac4516... M	src/dis/stv/io/repository_access.cpp
+:100644 100644 7e9817c... f40e530... M	src/dis/stv/io/repository_access.h
+:100644 100644 4ea9992... c467db9... M	src/dis/stv/main/simple_tree.cpp
+
+1285207326
+:100644 100644 7a2677b... 83456dc... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 bac4516... d5f59c3... M	src/dis/stv/io/repository_access.cpp
+:100644 100644 f40e530... 257123e... M	src/dis/stv/io/repository_access.h
+:100644 100644 c467db9... c9d90e8... M	src/dis/stv/main/simple_tree.cpp
+
+1285208458
+:100644 100644 83456dc... 7968a16... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 257123e... a58385f... M	src/dis/stv/io/repository_access.h
+:100644 100644 c9d90e8... 060ced0... M	src/dis/stv/main/simple_tree.cpp
+
+1285209125
+:100644 100644 060ced0... 95d9a51... M	src/dis/stv/main/simple_tree.cpp
+
+1285209396
+:100644 100644 95d4300... 0a96a86... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 6162935... b01b205... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 9921e61... 7823515... M	src/dis/stv/io/svn_remote_repository_access.cpp
+
+1285211431
+:000000 100644 0000000... 9744986... A	Promotional Materials/Animated Gifs/feeds.gif
+:000000 100644 0000000... e6ed4c9... A	Promotional Materials/Animated Gifs/octobot.gif
+:000000 100644 0000000... f323f31... A	Promotional Materials/Animated Gifs/simfinger.gif
+:000000 100644 0000000... 5ba5547... A	Promotional Materials/Animated Gifs/sourcetreevis.gif
+:000000 100644 0000000... 971383e... A	Promotional Materials/Animated Gifs/twittertxtrb.gif
+:100644 100644 95d9a51... 6ce66aa... M	src/dis/stv/main/simple_tree.cpp
+
+1285271982
+:100644 100644 6ce66aa... da85881... M	src/dis/stv/main/simple_tree.cpp
+
+1285281227
+:000000 100755 0000000... deda182... A	ExampleScripts/generateGifFromJpg.sh
+:000000 100755 0000000... 0dddb93... A	ExampleScripts/generate_TreeVis_Jpgs.sh
+:100755 000000 02a0100... 0000000... D	compile.sh
+:100644 100644 da85881... e7c877c... M	src/dis/stv/main/simple_tree.cpp
+
+1285314664
+:100755 100755 deda182... a6ff25e... M	ExampleScripts/generateGifFromJpg.sh
+:100644 100644 2372d56... 151a09b... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 8d6f018... a8ab136... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 114ca48... a67181a... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 e573f44... ca657b2... M	src/dis/stv/draw/scanline_artist.h
+:100644 100644 56c5496... eca1920... M	src/dis/stv/gen/digitizer.h
+:100644 100644 4aab5ea... fd611c3... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 3a5ad15... 038da13... M	src/dis/stv/gen/space_colonizer.h
+:100644 100644 7968a16... 226eb82... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 a58385f... a48b572... M	src/dis/stv/io/repository_access.h
+:100644 100644 064ba62... 6d09d17... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 4175725... 258bda5... M	src/dis/stv/physics/tethered_spatial_object.h
+:100644 100644 6a7c2e7... 72ffb98... M	src/dis/stv/system/discursive_debug.cpp
+
+1285363673
+:100644 100644 71cd45b... 6a3b78b... M	src/dis/stv/gen/colonization_leader.cpp
+:100644 100644 4ba448d... ff88faf... M	src/dis/stv/gen/colonization_leader.h
+:100644 100644 fd611c3... 5bce25b... M	src/dis/stv/gen/space_colonizer.cpp
+
+1285431499
+:100644 100644 0749135... 4176560... M	Makefile
+:000000 100644 0000000... 3368563... A	Promotional Materials/Animated Gifs/octobot2.gif
+:100644 100644 f323f31... 79a7b86... M	Promotional Materials/Animated Gifs/simfinger.gif
+:100644 100644 151a09b... 98a0d92... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 5bce25b... e132d1d... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 226eb82... c714bfa... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 e7c877c... 45c04e4... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 72ffb98... f93a1e1... M	src/dis/stv/system/discursive_debug.cpp
+:000000 100644 0000000... 3246ba2... A	src/dis/stv/system/discursive_print.cpp
+:000000 100644 0000000... b1b0adf... A	src/dis/stv/system/discursive_print.h
+:100644 100644 97de1e1... 19bbe4b... M	src/dis/stv/system/discursive_system.h
+
+1285432713
+:100755 100755 0dddb93... fe03f80... M	ExampleScripts/generate_TreeVis_Jpgs.sh
+:000000 100644 0000000... 931ffc2... A	Promotional Materials/Animated Gifs/feeds2.gif
+:000000 100644 0000000... 433c5ce... A	Promotional Materials/Animated Gifs/sourcetreevis2.gif
+:000000 100644 0000000... 7c662a6... A	Promotional Materials/Animated Gifs/twittertxtrb2.gif
+:100644 100644 45c04e4... 11dabbe... M	src/dis/stv/main/simple_tree.cpp
+
+1285433101
+:100644 000000 6ff7598... 0000000... D	src/generate/git.cpp
+:100644 000000 0dfa805... 0000000... D	src/generate/git.h
+:100644 000000 b15db22... 0000000... D	src/generate/tree.cpp
+:100644 000000 200db69... 0000000... D	src/generate/xml.cpp
+:100644 000000 99d458b... 0000000... D	src/generate/xml.h
+
+1285705450
+:000000 100755 0000000... ea8a993... A	ExampleScripts/generate_TreeVis_Jpgs_By_Revision.sh
+:100644 100644 c714bfa... e0a8b27... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 a48b572... 2f6563f... M	src/dis/stv/io/repository_access.h
+:100644 100644 11dabbe... 21c8c59... M	src/dis/stv/main/simple_tree.cpp
+
+1285706374
+:100644 100644 e0a8b27... 0cb44ec... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 21c8c59... aefe814... M	src/dis/stv/main/simple_tree.cpp
+
+1285707589
+:100644 100644 0a96a86... 4c812e8... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 717c2b6... 0adabb4... M	src/dis/stv/io/cvs_remote_repository_access.h
+:100644 100644 0cb44ec... aff5751... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 968e2f7... 0398b71... M	src/dis/stv/main/initial_agents.cpp
+:100644 100644 aefe814... d2de5ef... M	src/dis/stv/main/simple_tree.cpp
+
+1285708512
+:100644 100644 b01b205... a0731d0... M	src/dis/stv/io/github_repository_access.cpp
+
+1285708869
+:100644 100644 7823515... 3511675... M	src/dis/stv/io/svn_remote_repository_access.cpp
+
+1285712514
+:100644 100644 3511675... b994581... M	src/dis/stv/io/svn_remote_repository_access.cpp
+
+1285713240
+:100644 100644 151a09b... b275c2a... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 a67181a... f458f10... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 5bce25b... 9e3fd56... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 038da13... d3f867e... M	src/dis/stv/gen/space_colonizer.h
+
+1285713763
+:100644 100644 2f6563f... b15d4f4... M	src/dis/stv/io/repository_access.h
+:100644 100644 b994581... b9bae8c... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 d2de5ef... aad72a9... M	src/dis/stv/main/simple_tree.cpp
+
+1285714666
+:100644 100644 b9bae8c... 585c80b... M	src/dis/stv/io/svn_remote_repository_access.cpp
+
+1285715036
+:100644 100644 585c80b... 19dcb0f... M	src/dis/stv/io/svn_remote_repository_access.cpp
+
+1285715700
+:100644 100644 57586be... 7a7dd7e... M	src/dis/stv/draw/drawable_data.cpp
+:100644 100644 52c5ff7... 2027cf7... M	src/dis/stv/draw/drawable_data.h
+:100644 100644 60ffcb1... 8d11dab... M	src/dis/stv/draw/drawable_datum.h
+:100644 100644 f458f10... a928cca... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 3c770f7... cc1ff54... M	src/dis/stv/gen/space_colonizer.cpp
+
+1285715981
+:100644 100644 b15d4f4... f9a1a5b... M	src/dis/stv/io/repository_access.h
+:100644 100644 19dcb0f... caebbac... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 aad72a9... c815665... M	src/dis/stv/main/simple_tree.cpp
+
+1285716336
+:100644 100644 4c812e8... e1f7cad... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 aff5751... a70e4f8... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 1a9e48b... af88b8f... M	src/dis/stv/io/git_repository_access.h
+:100644 100644 caebbac... 3780be8... M	src/dis/stv/io/svn_remote_repository_access.cpp
+
+1285717225
+:100644 100644 a0731d0... 1ae7681... M	src/dis/stv/io/github_repository_access.cpp
+
+1285717942
+:100755 100755 ea8a993... e174933... M	ExampleScripts/generate_TreeVis_Jpgs_By_Revision.sh
+:100644 100644 c815665... 0073fd9... M	src/dis/stv/main/simple_tree.cpp
+
+1285718039
+:100644 100644 0073fd9... 742f29d... M	src/dis/stv/main/simple_tree.cpp
+
+1285723380
+:100644 100644 e9e76c3... 6364653... M	src/dis/stv/dec/spatial_displacement.cpp
+
+1285790977
+:100644 100644 6364653... 5a4db8d... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 eca1920... 0d85464... M	src/dis/stv/gen/digitizer.h
+:100644 100644 cc1ff54... 90e3843... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 d3f867e... 972c847... M	src/dis/stv/gen/space_colonizer.h
+:100644 100644 742f29d... 6e1ebb9... M	src/dis/stv/main/simple_tree.cpp
+
+1285791836
+:100644 100644 6e1ebb9... dc64b94... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 98102d5... 04b6701... M	src/dis/stv/model/surrogate_tree_node.cpp
+:100644 100644 f4a8158... 8364180... M	src/dis/stv/model/surrogate_tree_node.h
+
+1285794084
+:100644 100644 dc64b94... b82ddb4... M	src/dis/stv/main/simple_tree.cpp
+
+1285795829
+:100644 100644 90e3843... 8d7c4c3... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 b82ddb4... 85e5e48... M	src/dis/stv/main/simple_tree.cpp
+
+1285796462
+:100644 100644 7a7dd7e... f5e3942... M	src/dis/stv/draw/drawable_data.cpp
+:100644 100644 2027cf7... 4bfb822... M	src/dis/stv/draw/drawable_data.h
+:100644 100644 0d85464... 5ef57ba... M	src/dis/stv/gen/digitizer.h
+:100644 100644 90e3843... ea2a814... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 972c847... 3a23b0f... M	src/dis/stv/gen/space_colonizer.h
+:100644 100644 b82ddb4... 3e8faa6... M	src/dis/stv/main/simple_tree.cpp
+
+1285797463
+:100644 100644 85e5e48... b170256... M	src/dis/stv/main/simple_tree.cpp
+
+1285799179
+:100644 100644 b170256... eabe9d1... M	src/dis/stv/main/simple_tree.cpp
+
+1285799684
+:100644 100644 eabe9d1... 425cd9b... M	src/dis/stv/main/simple_tree.cpp
+
+1285800473
+:100644 100644 3780be8... fd91e57... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 425cd9b... f2ad608... M	src/dis/stv/main/simple_tree.cpp
+
+1285801814
+:100644 100644 5a4db8d... 25e389e... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 f2ad608... b1b1b9f... M	src/dis/stv/main/simple_tree.cpp
+
+1285803244
+:100644 100644 b1b1b9f... dcf9225... M	src/dis/stv/main/simple_tree.cpp
+
+1285804227
+:100755 100755 a6ff25e... 3ff5600... M	ExampleScripts/generateGifFromJpg.sh
+:100755 100755 fe03f80... a00d7e3... M	ExampleScripts/generate_TreeVis_Jpgs.sh
+:100755 100755 e174933... cc068b8... M	ExampleScripts/generate_TreeVis_Jpgs_By_Revision.sh
+
+1285804463
+:100755 100755 3ff5600... 1de391b... M	ExampleScripts/generateGifFromJpg.sh
+:100755 100755 a00d7e3... 98c5abf... M	ExampleScripts/generate_TreeVis_Jpgs.sh
+:100755 100755 cc068b8... 83102f4... M	ExampleScripts/generate_TreeVis_Jpgs_By_Revision.sh
+
+1285808546
+:100644 100644 dcf9225... 970cddc... M	src/dis/stv/main/simple_tree.cpp
+
+1285808992
+:000000 100755 0000000... 89da042... A	ExampleScripts/generateMpgFromJpgs
+
+1285810277
+:000000 100644 0000000... 764d5b1... A	Promotional Materials/Movies/lucene25fps.avi
+
+1285810661
+:100644 100644 970cddc... 8f07b0d... M	src/dis/stv/main/simple_tree.cpp
+
+1285826116
+:100644 100644 8a983d9... 8890e90... M	src/dis/stv/main/simple_tree.cpp
+
+1285876055
+:100644 100644 d5f59c3... b1e9459... M	src/dis/stv/io/repository_access.cpp
+:100644 100644 8890e90... 87fd014... M	src/dis/stv/main/simple_tree.cpp
+
+1285884432
+:100644 100644 c0a773f... a56b4cb... M	src/dis/stv/io/repository_access.cpp
+:100644 100644 81e033b... dfabcd7... M	src/dis/stv/main/simple_tree.cpp
+
+1285964736
+:100644 100644 4176560... 35cf474... M	Makefile
+:100644 100644 f9a1a5b... a641ccc... M	src/dis/stv/io/repository_access.h
+:100644 100644 dfabcd7... d2f4206... M	src/dis/stv/main/simple_tree.cpp
+
+1285964797
+:000000 100644 0000000... 1e6de20... A	src/dis/stv/main/configuration_agent.cpp
+:000000 100644 0000000... d4d32b8... A	src/dis/stv/main/configuration_agent.h
+
+1285964876
+:100644 100644 d2f4206... 7a83e84... M	src/dis/stv/main/simple_tree.cpp
+
+1285965554
+:100644 100644 1e6de20... d9570ea... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 d4d32b8... 43f75f9... M	src/dis/stv/main/configuration_agent.h
+:100644 100644 7a83e84... 80d9d1c... M	src/dis/stv/main/simple_tree.cpp
+
+1285966288
+:100644 100644 d9570ea... 40c4197... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 43f75f9... 0186652... M	src/dis/stv/main/configuration_agent.h
+:100644 100644 80d9d1c... bda70e2... M	src/dis/stv/main/simple_tree.cpp
+
+1285970266
+:100644 100644 35cf474... 902fc4b... M	Makefile
+:000000 100644 0000000... 9214d13... A	simple_tree.config
+:100644 100644 40c4197... a1c43cb... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 0186652... 5032b29... M	src/dis/stv/main/configuration_agent.h
+
+1285971255
+:100644 100644 9214d13... a5fe7b7... M	simple_tree.config
+:100644 100644 a1c43cb... 4d7ee10... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 5032b29... 364a87e... M	src/dis/stv/main/configuration_agent.h
+:100644 100644 bda70e2... 30da1f6... M	src/dis/stv/main/simple_tree.cpp
+
+1285971378
+:100644 100644 35cf474... e904c38... M	Makefile
+:000000 100644 0000000... 46e567b... A	src/dis/stv/dec/decorator_factory.cpp
+:000000 100644 0000000... a357199... A	src/dis/stv/dec/decorator_factory.h
+:100644 100644 b4d8a41... 1102133... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 a8ab136... 086b009... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 f1d00d1... 827a074... M	src/dis/stv/draw/scanline_artist.cpp
+:000000 100644 0000000... 33efbd4... A	src/dis/stv/gen/digitizer_factory.cpp
+:000000 100644 0000000... cb41107... A	src/dis/stv/gen/digitizer_factory.h
+:100644 100644 a8e2a37... f93eebb... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 bda70e2... 1cdbe1b... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 9895467... e5b2c93... M	src/dis/stv/system/discursive_error.cpp
+:100644 100644 9197473... d19380c... M	src/dis/stv/system/discursive_error.h
+
+1285972580
+:100644 100644 58503ae... 2d47f15... M	Makefile
+:100644 100644 46e567b... d6159e2... M	src/dis/stv/dec/decorator_factory.cpp
+:100644 100644 a357199... 93a7027... M	src/dis/stv/dec/decorator_factory.h
+:000000 100644 0000000... 0aac529... A	src/dis/stv/dec/spatial_displacement_leafless.cpp
+:000000 100644 0000000... 6580007... A	src/dis/stv/dec/spatial_displacement_leafless.h
+:100644 100644 d310e78... 80cf8a3... M	src/dis/stv/main/simple_tree.cpp
+
+1285976729
+:100644 100644 a5fe7b7... cf1da15... M	simple_tree.config
+:100644 100644 4d7ee10... 8d1e7f0... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 364a87e... 27c3317... M	src/dis/stv/main/configuration_agent.h
+
+1285978903
+:100644 100644 0aac529... 59d9094... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+
+1285981201
+:100644 100644 cf1da15... 983fd1a... M	simple_tree.config
+:100644 100644 8d1e7f0... e20aa2f... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 27c3317... 83907ff... M	src/dis/stv/main/configuration_agent.h
+
+1286223237
+:100644 100644 58503ae... a52f2b1... M	Makefile
+:100644 100644 d310e78... e4f2c12... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 19bbe4b... 1ab95a4... M	src/dis/stv/system/discursive_system.h
+:000000 100644 0000000... 0bda174... A	src/dis/stv/system/discursive_time.cpp
+:000000 100644 0000000... be3a0f4... A	src/dis/stv/system/discursive_time.h
+
+1286223432
+:100644 100644 0bda174... ed5a4fa... M	src/dis/stv/system/discursive_time.cpp
+
+1286232374
+:100644 100644 e4f2c12... 9015d55... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 ed5a4fa... d2fbc4e... M	src/dis/stv/system/discursive_time.cpp
+:100644 100644 be3a0f4... b812f38... M	src/dis/stv/system/discursive_time.h
+
+1286233023
+:100644 100644 d2fbc4e... 8b217f5... M	src/dis/stv/system/discursive_time.cpp
+:100644 100644 b812f38... 0f0d990... M	src/dis/stv/system/discursive_time.h
+
+1286245097
+:100644 100644 59d9094... 6016f1c... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+
+1286245444
+:100644 100644 6016f1c... b226704... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+
+1286252444
+:100644 000000 6bd45a1... 0000000... D	discursivelabs/QualnetFormLetter1.odt
+:100644 000000 1ece498... 0000000... D	discursivelabs/QualnetFormLetter2.odt
+:100644 000000 0f7e125... 0000000... D	discursivelabs/QualnetFormLetter3.odt
+:100644 000000 35e2f0b... 0000000... D	discursivelabs/QualnetFormLetter4.odt
+:100644 000000 1a7b046... 0000000... D	discursivelabs/QualnetFormLetter5.odt
+:100644 000000 5229356... 0000000... D	discursivelabs/about.html
+:100644 000000 151c9a6... 0000000... D	discursivelabs/aboutdiscursive.html
+:100644 000000 c3309ea... 0000000... D	discursivelabs/after_content.html
+:100644 000000 e15aebf... 0000000... D	discursivelabs/before_content.html
+:100644 000000 69a513b... 0000000... D	discursivelabs/blog.html
+:100644 000000 6fc2dcf... 0000000... D	discursivelabs/blog2.html
+:100644 000000 94167ef... 0000000... D	discursivelabs/consulting.html
+:100644 000000 76ec8c7... 0000000... D	discursivelabs/contactus.html
+:100644 000000 aaa7e79... 0000000... D	discursivelabs/discursive.css
+:100644 000000 ced65f0... 0000000... D	discursivelabs/favicon.ico
+:100644 000000 576f3c6... 0000000... D	discursivelabs/footer.html
+:100644 000000 e14d37f... 0000000... D	discursivelabs/images/ddxqzghb_86dq3cb7c5_b.jpg
+:100644 000000 68b8cdf... 0000000... D	discursivelabs/images/ddxqzghb_89dhcjsv5h_b.png
+:100644 000000 f318c12... 0000000... D	discursivelabs/images/ddxqzghb_90fzrq29ds_b.jpg
+:100644 000000 7297d5f... 0000000... D	discursivelabs/images/drawing_sLvvG3oo4uqrKHYwMK7ENiQ_6.png
+:100644 000000 b4ab423... 0000000... D	discursivelabs/images/drawing_secUG1nuYaU9LB9ucQ7Xhyw_2.png
+:100644 000000 acbc4bd... 0000000... D	discursivelabs/images/high-res-small.png
+:100644 000000 abda4d8... 0000000... D	discursivelabs/images/la_skyline.jpg
+:100644 000000 75f440e... 0000000... D	discursivelabs/images/staring.jpg
+:100644 000000 0fce741... 0000000... D	discursivelabs/images/training.jpg
+:100644 000000 df08d0b... 0000000... D	discursivelabs/index.html
+:100644 000000 4bd966a... 0000000... D	discursivelabs/leftdivs.html
+:100644 000000 b1524ae... 0000000... D	discursivelabs/menu.html
+:100644 000000 902516e... 0000000... D	discursivelabs/ongoingresearch.html
+:100644 000000 a229dea... 0000000... D	discursivelabs/technology.html
+:100644 000000 467e8dd... 0000000... D	discursivelabs/treevis.html
+:100644 000000 218d61a... 0000000... D	discursivelabs/virtualmachinestorage.html
+:100644 100644 983fd1a... 33674cc... M	simple_tree.config
+:100644 100644 1102133... 9e05b57... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 827a074... 2383872... M	src/dis/stv/draw/scanline_artist.cpp
+:100644 100644 f93eebb... 404696c... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 add018e... 3ae0001... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 3eb63d7... a8ddc54... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 771028f... ec66f20... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 a36ee42... 65f7932... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 e20aa2f... 5807415... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 0398b71... ad9f634... M	src/dis/stv/main/initial_agents.cpp
+:100644 100644 9015d55... fc1ba12... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 6d09d17... f44e90d... M	src/dis/stv/physics/tethered_spatial_object.cpp
+:100644 100644 23697bc... 8bf1ef8... M	src/dis/stv/physics/time_stepped_physics_engine.cpp
+:100644 100644 f93a1e1... f83712b... M	src/dis/stv/system/discursive_debug.cpp
+:100644 100644 a3ef6ee... 931ba37... M	src/dis/stv/system/discursive_debug.h
+:100644 100644 8b217f5... e2e2a7a... M	src/dis/stv/system/discursive_time.cpp
+
+1286252922
+:100644 100644 9e05b57... 4dd326a... M	src/dis/stv/dec/spatial_displacement.cpp
+:100644 100644 fc1ba12... 45a6e87... M	src/dis/stv/main/simple_tree.cpp
+
+1286304339
+:100644 100644 3cf2729... c002b13... M	Makefile
+:100644 100644 983fd1a... 2ebc204... M	simple_tree.config
+:100644 100644 d6159e2... b62f430... M	src/dis/stv/dec/decorator_factory.cpp
+:100644 100644 086b009... 5e5add1... M	src/dis/stv/dec/spatial_displacement.h
+:100644 100644 b226704... af2336e... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+:100644 100644 6580007... ec0856c... M	src/dis/stv/dec/spatial_displacement_leafless.h
+:100644 100644 ca657b2... 5dafb56... M	src/dis/stv/draw/scanline_artist.h
+:100644 100644 a641ccc... e5a59d9... M	src/dis/stv/io/repository_access.h
+:100644 100644 25beac9... f5e3447... M	src/dis/stv/main/simple_tree.cpp
+:100644 000000 1cee426... 0000000... D	src/dis/stv/model/property_inverter.cpp
+:100644 000000 2d0aa12... 0000000... D	src/dis/stv/model/property_inverter.h
+:100644 000000 7ed934a... 0000000... D	src/dis/stv/model/property_shifter.cpp
+:100644 000000 c85841a... 0000000... D	src/dis/stv/model/property_shifter.h
+:100644 000000 0490948... 0000000... D	src/dis/stv/model/property_transformer.cpp
+:100644 000000 611c924... 0000000... D	src/dis/stv/model/property_transformer.h
+:100644 100644 23ca2bf... bf5ac7c... M	src/dis/stv/model/surrogate_tree_node.h
+:000000 100644 0000000... c1ee241... A	src/dis/stv/transform/image_magick_transformer.cpp
+:000000 100644 0000000... 8b5a4e2... A	src/dis/stv/transform/image_magick_transformer.h
+:000000 100644 0000000... cacd9a8... A	src/dis/stv/transform/image_resize_transformer.cpp
+:000000 100644 0000000... 2bd60ef... A	src/dis/stv/transform/image_resize_transformer.h
+:000000 100644 0000000... 1cee426... A	src/dis/stv/transform/property_inverter.cpp
+:000000 100644 0000000... 2d0aa12... A	src/dis/stv/transform/property_inverter.h
+:000000 100644 0000000... 7ed934a... A	src/dis/stv/transform/property_shifter.cpp
+:000000 100644 0000000... c85841a... A	src/dis/stv/transform/property_shifter.h
+:000000 100644 0000000... 0490948... A	src/dis/stv/transform/property_transformer.cpp
+:000000 100644 0000000... 611c924... A	src/dis/stv/transform/property_transformer.h
+:000000 100644 0000000... 6eeaa48... A	src/dis/stv/transform/transform_factory.cpp
+:000000 100644 0000000... c3484be... A	src/dis/stv/transform/transform_factory.h
+:000000 100644 0000000... d9a3781... A	src/dis/stv/transform/transformer.h
+
+1286307248
+:100644 100644 5fc9c14... 94d26f6... M	src/dis/stv/gen/colonization_leader.cpp
+:100644 100644 cac319c... 4521148... M	src/dis/stv/gen/colonization_leader.h
+:100644 100644 33efbd4... 83c3b2f... M	src/dis/stv/gen/digitizer_factory.cpp
+:100644 100644 cb41107... 2fa6a55... M	src/dis/stv/gen/digitizer_factory.h
+:100644 100644 f93eebb... 73f5642... M	src/dis/stv/gen/space_colonizer.cpp
+:100644 100644 f5e3447... e90f668... M	src/dis/stv/main/simple_tree.cpp
+
+1286336179
+:000000 100755 0000000... 4726eca... A	pullfromgit.sh
+
+1286402601
+:100644 100644 c002b13... 4ba27d0... M	Makefile
+:100644 100644 af2336e... 2f29827... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+:100644 100644 8d11dab... 4a65737... M	src/dis/stv/draw/drawable_datum.h
+:000000 100644 0000000... 142923c... A	src/dis/stv/draw/trapezoid_artist.cpp
+:000000 100644 0000000... c6eecc0... A	src/dis/stv/draw/trapezoid_artist.h
+:100644 100644 94d26f6... 6bb9591... M	src/dis/stv/gen/colonization_leader.cpp
+:100644 100644 4521148... f6d5e9e... M	src/dis/stv/gen/colonization_leader.h
+:000000 100644 0000000... b469765... A	src/dis/stv/gen/trapezoid_blocks.cpp
+:000000 100644 0000000... 0c0b085... A	src/dis/stv/gen/trapezoid_blocks.h
+:000000 100644 0000000... 1b2efe6... A	src/dis/stv/gen/trapezoid_leader.cpp
+:000000 100644 0000000... cfbe8f2... A	src/dis/stv/gen/trapezoid_leader.h
+:100644 100644 e90f668... 47375b2... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 c1ee241... 1bb8c7e... M	src/dis/stv/transform/image_magick_transformer.cpp
+
+1286402724
+:100644 100644 142923c... 3ed3204... M	src/dis/stv/draw/trapezoid_artist.cpp
+:100644 100644 47375b2... db10bab... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 1bb8c7e... 6e07019... M	src/dis/stv/transform/image_magick_transformer.cpp
+:100644 100644 cacd9a8... 2f3ba80... M	src/dis/stv/transform/image_resize_transformer.cpp
+
+1286405835
+:100644 100644 ac1bfe4... f84565b... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+:100644 100644 ec0856c... 5057f13... M	src/dis/stv/dec/spatial_displacement_leafless.h
+:100644 100644 bbb66f5... fbf4220... M	src/dis/stv/gen/trapezoid_blocks.cpp
+
+1286408928
+:100644 100644 3ae0001... e445dac... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 a8ddc54... ac727c5... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 ec66f20... 1039c08... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 65f7932... 7ae4101... M	src/dis/stv/io/svn_remote_repository_access.cpp
+:100644 100644 4716086... 32033d4... M	src/dis/stv/model/surrogate_tree_node.cpp
+:100644 100644 bf5ac7c... 0c0023e... M	src/dis/stv/model/surrogate_tree_node.h
+
+1286411122
+:100644 100644 f84565b... dde99c4... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+:100644 100644 f11db9e... 46cce02... M	src/dis/stv/draw/trapezoid_artist.cpp
+:100644 100644 fbf4220... ff25327... M	src/dis/stv/gen/trapezoid_blocks.cpp
+:100644 100644 0c0b085... ef6d3ef... M	src/dis/stv/gen/trapezoid_blocks.h
+:100644 100644 1b2efe6... c3de917... M	src/dis/stv/gen/trapezoid_leader.cpp
+:100644 100644 cfbe8f2... f8dae18... M	src/dis/stv/gen/trapezoid_leader.h
+
+1286467625
+:100644 100644 4a65737... d29b974... M	src/dis/stv/draw/drawable_datum.h
+:100644 100644 ff25327... e95a17b... M	src/dis/stv/gen/trapezoid_blocks.cpp
+:100644 100644 ef6d3ef... b892f34... M	src/dis/stv/gen/trapezoid_blocks.h
+:100644 100644 c3de917... 47c30be... M	src/dis/stv/gen/trapezoid_leader.cpp
+:100644 100644 2aca40c... 7ff093d... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 43ef6ef... 116ab8d... M	src/dis/stv/transform/image_magick_transformer.cpp
+
+1286468032
+:100644 100644 dde99c4... c6ea2fd... M	src/dis/stv/dec/spatial_displacement_leafless.cpp
+:100644 100644 e95a17b... d7ab603... M	src/dis/stv/gen/trapezoid_blocks.cpp
+
+1286478346
+:100644 100644 e1993b9... 8797e41... M	simple_tree.config
+:100644 100644 7ff093d... 41fe7c7... M	src/dis/stv/main/simple_tree.cpp
+:100644 100644 32033d4... df65506... M	src/dis/stv/model/surrogate_tree_node.cpp
+:100644 100644 0c0023e... 46a5c7f... M	src/dis/stv/model/surrogate_tree_node.h
+
+1286567223
+:100644 100644 ac727c5... 973cd63... M	src/dis/stv/io/git_repository_access.cpp
+
+1286568034
+:100644 100644 8797e41... 951eb5d... M	simple_tree.config
+:100644 100644 973cd63... d4783c6... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 41fe7c7... 4374120... M	src/dis/stv/main/simple_tree.cpp
+
+1286569949
+:100644 100644 951eb5d... 880d873... M	simple_tree.config
+:100644 100644 e445dac... 4017674... M	src/dis/stv/io/cvs_remote_repository_access.cpp
+:100644 100644 d4783c6... f4fff36... M	src/dis/stv/io/git_repository_access.cpp
+:100644 100644 1039c08... 046f69a... M	src/dis/stv/io/github_repository_access.cpp
+:100644 100644 7ae4101... 935496f... M	src/dis/stv/io/svn_remote_repository_access.cpp
+
+1286662742
+:100644 100644 880d873... ce7a571... M	simple_tree.config
+:100644 100644 5807415... 49c6679... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 83907ff... 3de7ab4... M	src/dis/stv/main/configuration_agent.h
+
+1286662769
+:000000 100644 0000000... 8f1fadd... A	resources/backgrounds/buffalo-field.jpg
+
+1286665716
+:100644 100644 ce7a571... 212f551... M	simple_tree.config
+:100644 100644 e5a59d9... ce1418f... M	src/dis/stv/io/repository_access.h
+:100644 100644 49c6679... cb0a7a7... M	src/dis/stv/main/configuration_agent.cpp
+:100644 100644 4374120... 646f8bb... M	src/dis/stv/main/simple_tree.cpp
+
+1286666945
+:100644 100644 8f1fadd... 414eae8... M	resources/backgrounds/buffalo-field.jpg
+LOG: ˜¡	
+Adding node 'discursivelabs' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'about.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'after_content.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'before_content.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'contactus.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'discursive.css' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'favicon.ico' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'footer.html' @ time 1277757449
+Adding node 'images' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'ddxqzghb_86dq3cb7c5_b.jpg' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'ddxqzghb_89dhcjsv5h_b.png' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'ddxqzghb_90fzrq29ds_b.jpg' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'drawing_sLvvG3oo4uqrKHYwMK7ENiQ_6.png' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'drawing_secUG1nuYaU9LB9ucQ7Xhyw_2.png' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'high-res-small.png' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'la_skyline.jpg' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'staring.jpg' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'training.jpg' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'index.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'leftdivs.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'menu.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'ongoingresearch.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'technology.html' @ time 1277757449
+FileTimeString 1277757449, from long int 1277757449
+Adding node 'testimonials.html' @ time 1277757449
+FileTimeString 1280955366, from long int 1280955366
+Adding node 'CHANGES' @ time 1280955366
+Adding node 'src' @ time 1280958693
+Adding node 'example' @ time 1280958693
+FileTimeString 1280958693, from long int 1280958693
+Adding node 'imagemagick_example.cpp' @ time 1280958693
+FileTimeString 1280958693, from long int 1280958693
+Adding node 'imagemagick_example_compile.sh' @ time 1280958693
+FileTimeString 1280958693, from long int 1280958693
+Adding node 'leaf.jpg' @ time 1280958693
+FileTimeString 1280976327, from long int 1280976327
+Adding node 'branch.gif' @ time 1280976327
+FileTimeString 1280976327, from long int 1280976327
+Adding node 'dark_leaf.gif' @ time 1280976327
+FileTimeString 1280976327, from long int 1280976327
+Adding node 'light_leaf.gif' @ time 1280976327
+FileTimeString 1280976327, from long int 1280976327
+Adding node 'trunk.gif' @ time 1280976327
+FileTimeString 1280976379, from long int 1280976379
+Adding node 'imagemagick_example.cpp' @ time 1280976379
+FileTimeString 1281109704, from long int 1281109704
+Adding node 'compile.sh' @ time 1281109704
+Adding node 'generate' @ time 1281109704
+FileTimeString 1281109704, from long int 1281109704
+Adding node 'tree.cpp' @ time 1281109704
+FileTimeString 1281120349, from long int 1281120349
+Adding node 'compile.sh' @ time 1281120349
+FileTimeString 1281120349, from long int 1281120349
+Adding node 'tree.cpp' @ time 1281120349
+FileTimeString 1281145566, from long int 1281145566
+Adding node 'tree.cpp' @ time 1281145566
+FileTimeString 1281150079, from long int 1281150079
+Adding node 'tree.cpp' @ time 1281150079
+FileTimeString 1281459467, from long int 1281459467
+Adding node 'git.cpp' @ time 1281459467
+FileTimeString 1281459467, from long int 1281459467
+Adding node 'git.h' @ time 1281459467
+FileTimeString 1281459469, from long int 1281459469
+Adding node 'tree.cpp' @ time 1281459469
+FileTimeString 1281459562, from long int 1281459562
+Adding node 'tree.cpp' @ time 1281459562
+FileTimeString 1281460206, from long int 1281460206
+Adding node 'compile.sh' @ time 1281460206
+FileTimeString 1281460220, from long int 1281460220
+Adding node 'git.cpp' @ time 1281460220
+FileTimeString 1281460595, from long int 1281460595
+Adding node 'compile.sh' @ time 1281460595
+FileTimeString 1281544915, from long int 1281544915
+Adding node 'xml.cpp' @ time 1281544915
+FileTimeString 1281544915, from long int 1281544915
+Adding node 'xml.h' @ time 1281544915
+FileTimeString 1281545306, from long int 1281545306
+Adding node 'compile.sh' @ time 1281545306
+FileTimeString 1281545335, from long int 1281545335
+Adding node 'xml.cpp' @ time 1281545335
+FileTimeString 1281545335, from long int 1281545335
+Adding node 'xml.h' @ time 1281545335
+FileTimeString 1281547434, from long int 1281547434
+Adding node 'tree.cpp' @ time 1281547434
+FileTimeString 1281547434, from long int 1281547434
+Adding node 'xml.cpp' @ time 1281547434
+FileTimeString 1281627649, from long int 1281627649
+Adding node 'Makefile' @ time 1281627649
+FileTimeString 1281627705, from long int 1281627705
+Adding node 'compile.sh' @ time 1281627705
+FileTimeString 1281627705, from long int 1281627705
+Adding node 'xml.cpp' @ time 1281627705
+FileTimeString 1281627705, from long int 1281627705
+Adding node 'xml.h' @ time 1281627705
+FileTimeString 1281642152, from long int 1281642152
+Adding node 'imagemagick_example.cpp' @ time 1281642152
+FileTimeString 1281681607, from long int 1281681607
+Adding node 'compile.sh' @ time 1281681607
+FileTimeString 1281681607, from long int 1281681607
+Adding node 'imagemagick_example.cpp' @ time 1281681607
+FileTimeString 1281681607, from long int 1281681607
+Adding node 'tree.cpp' @ time 1281681607
+Adding node 'dis' @ time 1281681622
+Adding node 'stv' @ time 1281681622
+Adding node 'dec' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'decorator.h' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'spatial_displacement.cpp' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'spatial_displacement.h' @ time 1281681622
+Adding node 'draw' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'artist.h' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'drawable_data.h' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'scanline_artist.cpp' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'scanline_artist.h' @ time 1281681622
+Adding node 'gen' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'digitizer.h' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'space_colonizer.cpp' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'space_colonizer.h' @ time 1281681622
+Adding node 'io' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'git_repository_access.cpp' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'git_repository_access.h' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'repository_access.h' @ time 1281681622
+Adding node 'main' @ time 1281681622
+FileTimeString 1281681622, from long int 1281681622
+Adding node 'simple_tree.cpp' @ time 1281681622
+FileTimeString 1281766697, from long int 1281766697
+Adding node 'spatial_displacement.cpp' @ time 1281766697
+FileTimeString 1281766697, from long int 1281766697
+Adding node 'spatial_displacement.h' @ time 1281766697
+FileTimeString 1281766697, from long int 1281766697
+Adding node 'git_repository_access.cpp' @ time 1281766697
+FileTimeString 1281766697, from long int 1281766697
+Adding node 'git_repository_access.h' @ time 1281766697
+FileTimeString 1281766697, from long int 1281766697
+Adding node 'simple_tree.cpp' @ time 1281766697
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'compile.sh' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'decorator.h' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'spatial_displacement.cpp' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'spatial_displacement.h' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'digitizer.h' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'space_colonizer.cpp' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'space_colonizer.h' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'git_repository_access.cpp' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'git_repository_access.h' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'repository_access.h' @ time 1281857930
+FileTimeString 1281857930, from long int 1281857930
+Adding node 'simple_tree.cpp' @ time 1281857930
+FileTimeString 1281924786, from long int 1281924786
+Adding node 'compile.sh' @ time 1281924786
+FileTimeString 1281924786, from long int 1281924786
+Adding node 'spatial_displacement.cpp' @ time 1281924786
+FileTimeString 1281924786, from long int 1281924786
+Adding node 'spatial_displacement.h' @ time 1281924786
+FileTimeString 1281924786, from long int 1281924786
+Adding node 'git_repository_access.cpp' @ time 1281924786
+FileTimeString 1281924786, from long int 1281924786
+Adding node 'simple_tree.cpp' @ time 1281924786
+FileTimeString 1281942750, from long int 1281942750
+Adding node 'spatial_displacement.cpp' @ time 1281942750
+FileTimeString 1281942750, from long int 1281942750
+Adding node 'spatial_displacement.h' @ time 1281942750
+Adding node 'model' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'surrogate.h' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'surrogate_tree_node.h' @ time 1281942809
+Adding node 'physics' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'physical_mass.cpp' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'physical_mass.h' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'physics_engine.cpp' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'physics_engine.h' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'spatial_object.cpp' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'spatial_object.h' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'tethered_spatial_object.cpp' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'tethered_spatial_object.h' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'time_stepped_physics_engine.cpp' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'time_stepped_physics_engine.h' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'time_stepped_physics_object.cpp' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'time_stepped_physics_object.h' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'tree_displacement_node.cpp' @ time 1281942809
+FileTimeString 1281942809, from long int 1281942809
+Adding node 'tree_displacement_node.h' @ time 1281942809
+FileTimeString 1281943407, from long int 1281943407
+Adding node 'git_repository_access.cpp' @ time 1281943407
+FileTimeString 1281976161, from long int 1281976161
+Adding node 'spatial_displacement.cpp' @ time 1281976161
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'compile.sh' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'spatial_displacement.cpp' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'spatial_displacement.h' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'spatial_object.cpp' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'spatial_object.h' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'tethered_spatial_object.cpp' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'tethered_spatial_object.h' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'time_stepped_physics_engine.cpp' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'time_stepped_physics_engine.h' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'time_stepped_physics_object.cpp' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'time_stepped_physics_object.h' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'tree_displacement_node.cpp' @ time 1281999443
+FileTimeString 1281999443, from long int 1281999443
+Adding node 'tree_displacement_node.h' @ time 1281999443
+FileTimeString 1282004784, from long int 1282004784
+Adding node 'Makefile' @ time 1282004784
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'Makefile' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'spatial_displacement.cpp' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'physics_engine.h' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'tethered_spatial_object.cpp' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'tethered_spatial_object.h' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'time_stepped_physics_engine.h' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'time_stepped_physics_object.h' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'tree_displacement_node.cpp' @ time 1282008715
+FileTimeString 1282008715, from long int 1282008715
+Adding node 'tree_displacement_node.h' @ time 1282008715
+FileTimeString 1282010092, from long int 1282010092
+Adding node 'spatial_displacement.cpp' @ time 1282010092
+FileTimeString 1282010092, from long int 1282010092
+Adding node 'spatial_displacement.h' @ time 1282010092
+FileTimeString 1282010092, from long int 1282010092
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282010092
+FileTimeString 1282016903, from long int 1282016903
+Adding node 'spatial_displacement.cpp' @ time 1282016903
+FileTimeString 1282016903, from long int 1282016903
+Adding node 'physics_engine.h' @ time 1282016903
+FileTimeString 1282016903, from long int 1282016903
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282016903
+FileTimeString 1282016903, from long int 1282016903
+Adding node 'time_stepped_physics_object.cpp' @ time 1282016903
+FileTimeString 1282016903, from long int 1282016903
+Adding node 'time_stepped_physics_object.h' @ time 1282016903
+FileTimeString 1282016903, from long int 1282016903
+Adding node 'tree_displacement_node.cpp' @ time 1282016903
+FileTimeString 1282016903, from long int 1282016903
+Adding node 'tree_displacement_node.h' @ time 1282016903
+FileTimeString 1282022093, from long int 1282022093
+Adding node 'spatial_displacement.cpp' @ time 1282022093
+FileTimeString 1282022093, from long int 1282022093
+Adding node 'tethered_spatial_object.cpp' @ time 1282022093
+FileTimeString 1282022093, from long int 1282022093
+Adding node 'tethered_spatial_object.h' @ time 1282022093
+FileTimeString 1282022093, from long int 1282022093
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282022093
+FileTimeString 1282107574, from long int 1282107574
+Adding node 'Makefile' @ time 1282107574
+FileTimeString 1282107574, from long int 1282107574
+Adding node 'spatial_displacement.cpp' @ time 1282107574
+FileTimeString 1282107574, from long int 1282107574
+Adding node 'tethered_spatial_object.cpp' @ time 1282107574
+FileTimeString 1282107574, from long int 1282107574
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282107574
+FileTimeString 1282107574, from long int 1282107574
+Adding node 'tree_displacement_node.cpp' @ time 1282107574
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'Makefile' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'spatial_displacement.cpp' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'spatial_displacement.h' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'spatial_object.h' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'tethered_spatial_object.cpp' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'time_stepped_physics_engine.h' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'time_stepped_physics_object.h' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'tree_displacement_node.cpp' @ time 1282115754
+FileTimeString 1282115754, from long int 1282115754
+Adding node 'tree_displacement_node.h' @ time 1282115754
+FileTimeString 1282115904, from long int 1282115904
+Adding node 'spatial_displacement.cpp' @ time 1282115904
+FileTimeString 1282117006, from long int 1282117006
+Adding node 'spatial_displacement.cpp' @ time 1282117006
+FileTimeString 1282117006, from long int 1282117006
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282117006
+FileTimeString 1282118186, from long int 1282118186
+Adding node 'spatial_displacement.cpp' @ time 1282118186
+FileTimeString 1282118186, from long int 1282118186
+Adding node 'spatial_displacement.h' @ time 1282118186
+FileTimeString 1282118186, from long int 1282118186
+Adding node 'tree_displacement_node.cpp' @ time 1282118186
+FileTimeString 1282118186, from long int 1282118186
+Adding node 'tree_displacement_node.h' @ time 1282118186
+FileTimeString 1282160028, from long int 1282160028
+Adding node 'space_colonizer.cpp' @ time 1282160028
+FileTimeString 1282160028, from long int 1282160028
+Adding node 'space_colonizer.h' @ time 1282160028
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'Makefile' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'drawable_data.cpp' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'drawable_data.h' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'drawable_datum.cpp' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'drawable_datum.h' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'scanline_artist.h' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'digitizer.h' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'space_colonizer.cpp' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'fixed_attractor.cpp' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'fixed_attractor.h' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'unidimensional_spatial_object.cpp' @ time 1282171816
+FileTimeString 1282171816, from long int 1282171816
+Adding node 'unidimensional_spatial_object.h' @ time 1282171816
+FileTimeString 1282172868, from long int 1282172868
+Adding node 'Makefile' @ time 1282172868
+FileTimeString 1282172868, from long int 1282172868
+Adding node 'drawable_data.cpp' @ time 1282172868
+FileTimeString 1282172868, from long int 1282172868
+Adding node 'colonization_leader.cpp' @ time 1282172868
+FileTimeString 1282172868, from long int 1282172868
+Adding node 'colonization_leader.h' @ time 1282172868
+FileTimeString 1282172868, from long int 1282172868
+Adding node 'colonization_leader.o' @ time 1282172868
+FileTimeString 1282172868, from long int 1282172868
+Adding node 'space_colonizer.h' @ time 1282172868
+FileTimeString 1282173620, from long int 1282173620
+Adding node 'git_repository_access.cpp' @ time 1282173620
+FileTimeString 1282173620, from long int 1282173620
+Adding node 'git_repository_access.h' @ time 1282173620
+FileTimeString 1282174844, from long int 1282174844
+Adding node 'Makefile' @ time 1282174844
+FileTimeString 1282174844, from long int 1282174844
+Adding node 'git_repository_access.cpp' @ time 1282174844
+FileTimeString 1282174844, from long int 1282174844
+Adding node 'git_repository_access.h' @ time 1282174844
+FileTimeString 1282179291, from long int 1282179291
+Adding node 'git_repository_access.cpp' @ time 1282179291
+FileTimeString 1282179291, from long int 1282179291
+Adding node 'git_repository_access.h' @ time 1282179291
+FileTimeString 1282179291, from long int 1282179291
+Adding node 'simple_tree.cpp' @ time 1282179291
+FileTimeString 1282180929, from long int 1282180929
+Adding node 'git_repository_access.cpp' @ time 1282180929
+FileTimeString 1282180929, from long int 1282180929
+Adding node 'git_repository_access.h' @ time 1282180929
+FileTimeString 1282180929, from long int 1282180929
+Adding node 'simple_tree.cpp' @ time 1282180929
+FileTimeString 1282181925, from long int 1282181925
+Adding node 'git_repository_access.cpp' @ time 1282181925
+FileTimeString 1282181925, from long int 1282181925
+Adding node 'git_repository_access.h' @ time 1282181925
+FileTimeString 1282183368, from long int 1282183368
+Adding node 'git_repository_access.cpp' @ time 1282183368
+FileTimeString 1282183368, from long int 1282183368
+Adding node 'git_repository_access.h' @ time 1282183368
+FileTimeString 1282183759, from long int 1282183759
+Adding node 'Makefile' @ time 1282183759
+FileTimeString 1282183759, from long int 1282183759
+Adding node 'colonization_leader.cpp' @ time 1282183759
+FileTimeString 1282183759, from long int 1282183759
+Adding node 'colonization_leader.h' @ time 1282183759
+FileTimeString 1282183759, from long int 1282183759
+Adding node 'colonization_leader.o' @ time 1282183759
+FileTimeString 1282183759, from long int 1282183759
+Adding node 'space_colonizer.cpp' @ time 1282183759
+FileTimeString 1282183759, from long int 1282183759
+Adding node 'space_colonizer.h' @ time 1282183759
+FileTimeString 1282183839, from long int 1282183839
+Adding node 'simple_tree.cpp' @ time 1282183839
+FileTimeString 1282183948, from long int 1282183948
+Adding node 'git_repository_access.cpp' @ time 1282183948
+FileTimeString 1282186154, from long int 1282186154
+Adding node 'artist.h' @ time 1282186154
+FileTimeString 1282186154, from long int 1282186154
+Adding node 'drawable_data.cpp' @ time 1282186154
+FileTimeString 1282186154, from long int 1282186154
+Adding node 'drawable_data.h' @ time 1282186154
+FileTimeString 1282186154, from long int 1282186154
+Adding node 'scanline_artist.cpp' @ time 1282186154
+FileTimeString 1282186154, from long int 1282186154
+Adding node 'scanline_artist.h' @ time 1282186154
+FileTimeString 1282186154, from long int 1282186154
+Adding node 'simple_tree.cpp' @ time 1282186154
+FileTimeString 1282187918, from long int 1282187918
+Adding node 'spatial_displacement.cpp' @ time 1282187918
+FileTimeString 1282187918, from long int 1282187918
+Adding node 'spatial_displacement.h' @ time 1282187918
+FileTimeString 1282187918, from long int 1282187918
+Adding node 'scanline_artist.cpp' @ time 1282187918
+FileTimeString 1282187918, from long int 1282187918
+Adding node 'space_colonizer.cpp' @ time 1282187918
+FileTimeString 1282187918, from long int 1282187918
+Adding node 'space_colonizer.h' @ time 1282187918
+FileTimeString 1282187918, from long int 1282187918
+Adding node 'simple_tree.cpp' @ time 1282187918
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'Makefile' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'spatial_displacement.cpp' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'spatial_displacement.h' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'simple_tree.cpp' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'property_inverter.cpp' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'property_inverter.h' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'property_shifter.cpp' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'property_shifter.h' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'property_transformer.cpp' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'property_transformer.h' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'surrogate.h' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'surrogate_tree_node.cpp' @ time 1282191608
+FileTimeString 1282191608, from long int 1282191608
+Adding node 'surrogate_tree_node.h' @ time 1282191608
+FileTimeString 1282197717, from long int 1282197717
+Adding node 'spatial_displacement.cpp' @ time 1282197717
+FileTimeString 1282197717, from long int 1282197717
+Adding node 'scanline_artist.cpp' @ time 1282197717
+FileTimeString 1282197717, from long int 1282197717
+Adding node 'space_colonizer.cpp' @ time 1282197717
+FileTimeString 1282197717, from long int 1282197717
+Adding node 'property_shifter.cpp' @ time 1282197717
+FileTimeString 1282197717, from long int 1282197717
+Adding node 'property_transformer.h' @ time 1282197717
+FileTimeString 1282199233, from long int 1282199233
+Adding node 'spatial_displacement.cpp' @ time 1282199233
+FileTimeString 1282199233, from long int 1282199233
+Adding node 'space_colonizer.cpp' @ time 1282199233
+FileTimeString 1282199233, from long int 1282199233
+Adding node 'surrogate_tree_node.cpp' @ time 1282199233
+FileTimeString 1282199347, from long int 1282199347
+Adding node 'spatial_displacement.cpp' @ time 1282199347
+FileTimeString 1282203820, from long int 1282203820
+Adding node 'spatial_displacement.cpp' @ time 1282203820
+FileTimeString 1282203820, from long int 1282203820
+Adding node 'space_colonizer.cpp' @ time 1282203820
+FileTimeString 1282203820, from long int 1282203820
+Adding node 'simple_tree.cpp' @ time 1282203820
+FileTimeString 1282244415, from long int 1282244415
+Adding node 'Makefile' @ time 1282244415
+FileTimeString 1282244415, from long int 1282244415
+Adding node 'git_repository_access.cpp' @ time 1282244415
+FileTimeString 1282244415, from long int 1282244415
+Adding node 'github_repository_access.cpp' @ time 1282244415
+FileTimeString 1282244415, from long int 1282244415
+Adding node 'github_repository_access.h' @ time 1282244415
+FileTimeString 1282244415, from long int 1282244415
+Adding node 'repository_access.h' @ time 1282244415
+FileTimeString 1282244415, from long int 1282244415
+Adding node 'simple_tree.cpp' @ time 1282244415
+FileTimeString 1282244578, from long int 1282244578
+Adding node 'git_repository_access.cpp' @ time 1282244578
+FileTimeString 1282244578, from long int 1282244578
+Adding node 'git_repository_access.h' @ time 1282244578
+FileTimeString 1282247684, from long int 1282247684
+Adding node 'github_repository_access.cpp' @ time 1282247684
+FileTimeString 1282247684, from long int 1282247684
+Adding node 'github_repository_access.h' @ time 1282247684
+FileTimeString 1282248096, from long int 1282248096
+Adding node 'scanline_artist.cpp' @ time 1282248096
+FileTimeString 1282248096, from long int 1282248096
+Adding node 'scanline_artist.h' @ time 1282248096
+Adding node 'event' @ time 1282248096
+FileTimeString 1282248096, from long int 1282248096
+Adding node 'event.h' @ time 1282248096
+FileTimeString 1282248096, from long int 1282248096
+Adding node 'event_driven_object.h' @ time 1282248096
+FileTimeString 1282248096, from long int 1282248096
+Adding node 'event_listener.h' @ time 1282248096
+FileTimeString 1282248096, from long int 1282248096
+Adding node 'event_type.h' @ time 1282248096
+FileTimeString 1282248096, from long int 1282248096
+Adding node 'simple_tree.cpp' @ time 1282248096
+FileTimeString 1282250237, from long int 1282250237
+Adding node 'Makefile' @ time 1282250237
+FileTimeString 1282250237, from long int 1282250237
+Adding node 'git_repository_access.cpp' @ time 1282250237
+FileTimeString 1282250237, from long int 1282250237
+Adding node 'github_repository_access.cpp' @ time 1282250237
+FileTimeString 1282250237, from long int 1282250237
+Adding node 'repository_access.h' @ time 1282250237
+FileTimeString 1282250237, from long int 1282250237
+Adding node 'svn_remote_repository_access.cpp' @ time 1282250237
+FileTimeString 1282250237, from long int 1282250237
+Adding node 'svn_remote_repository_access.h' @ time 1282250237
+FileTimeString 1282250237, from long int 1282250237
+Adding node 'simple_tree.cpp' @ time 1282250237
+FileTimeString 1282251330, from long int 1282251330
+Adding node 'svn_remote_repository_access.cpp' @ time 1282251330
+FileTimeString 1282251330, from long int 1282251330
+Adding node 'svn_remote_repository_access.h' @ time 1282251330
+FileTimeString 1282254096, from long int 1282254096
+Adding node 'svn_remote_repository_access.cpp' @ time 1282254096
+FileTimeString 1282254096, from long int 1282254096
+Adding node 'simple_tree.cpp' @ time 1282254096
+FileTimeString 1282259987, from long int 1282259987
+Adding node 'Makefile' @ time 1282259987
+FileTimeString 1282259987, from long int 1282259987
+Adding node 'cvs_remote_repository_access.cpp' @ time 1282259987
+FileTimeString 1282259987, from long int 1282259987
+Adding node 'cvs_remote_repository_access.h' @ time 1282259987
+FileTimeString 1282259987, from long int 1282259987
+Adding node 'git_repository_access.cpp' @ time 1282259987
+FileTimeString 1282259987, from long int 1282259987
+Adding node 'git_repository_access.h' @ time 1282259987
+FileTimeString 1282259987, from long int 1282259987
+Adding node 'svn_remote_repository_access.cpp' @ time 1282259987
+FileTimeString 1282259987, from long int 1282259987
+Adding node 'simple_tree.cpp' @ time 1282259987
+FileTimeString 1282262709, from long int 1282262709
+Adding node 'git_repository_access.cpp' @ time 1282262709
+FileTimeString 1282262709, from long int 1282262709
+Adding node 'git_repository_access.h' @ time 1282262709
+FileTimeString 1282263113, from long int 1282263113
+Adding node 'git_repository_access.cpp' @ time 1282263113
+FileTimeString 1282263241, from long int 1282263241
+Adding node 'LICENCE' @ time 1282263241
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'Makefile' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'spatial_displacement.cpp' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'spatial_displacement.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'artist.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'drawable_data.cpp' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'drawable_data.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'drawable_datum.cpp' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'drawable_datum.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'scanline_artist.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'event.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'event_driven_object.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'event_listener.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'event_type.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'colonization_leader.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'digitizer.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'space_colonizer.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'cvs_remote_repository_access.cpp' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'cvs_remote_repository_access.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'git_repository_access.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'github_repository_access.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'repository_access.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'svn_remote_repository_access.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'simple_tree.cpp' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'property_inverter.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'property_shifter.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'property_transformer.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'surrogate.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'surrogate_tree_node.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'fixed_attractor.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'physical_mass.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'physics_engine.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'spatial_object.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'tethered_spatial_object.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'time_stepped_physics_engine.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'time_stepped_physics_object.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'tree_displacement_node.h' @ time 1282265483
+Adding node 'system' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'discursive_debug.cpp' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'discursive_debug.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'discursive_error.cpp' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'discursive_error.h' @ time 1282265483
+FileTimeString 1282265483, from long int 1282265483
+Adding node 'discursive_system.h' @ time 1282265483
+FileTimeString 1282265563, from long int 1282265563
+Adding node 'simple_tree.cpp' @ time 1282265563
+FileTimeString 1282265708, from long int 1282265708
+Adding node 'spatial_displacement.cpp' @ time 1282265708
+FileTimeString 1282265708, from long int 1282265708
+Adding node 'discursive_error.cpp' @ time 1282265708
+FileTimeString 1282266125, from long int 1282266125
+Adding node 'cvs_remote_repository_access.cpp' @ time 1282266125
+FileTimeString 1282266125, from long int 1282266125
+Adding node 'github_repository_access.cpp' @ time 1282266125
+FileTimeString 1282266125, from long int 1282266125
+Adding node 'svn_remote_repository_access.cpp' @ time 1282266125
+FileTimeString 1282266125, from long int 1282266125
+Adding node 'simple_tree.cpp' @ time 1282266125
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'spatial_displacement.cpp' @ time 1282266959
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'scanline_artist.cpp' @ time 1282266959
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'git_repository_access.cpp' @ time 1282266959
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'github_repository_access.cpp' @ time 1282266959
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'svn_remote_repository_access.cpp' @ time 1282266959
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'tethered_spatial_object.cpp' @ time 1282266959
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'discursive_debug.cpp' @ time 1282266959
+FileTimeString 1282266959, from long int 1282266959
+Adding node 'discursive_debug.h' @ time 1282266959
+FileTimeString 1282267556, from long int 1282267556
+Adding node 'Makefile' @ time 1282267556
+FileTimeString 1282267556, from long int 1282267556
+Adding node 'interactive_agent.cpp' @ time 1282267556
+FileTimeString 1282267556, from long int 1282267556
+Adding node 'interactive_agent.h' @ time 1282267556
+FileTimeString 1282267556, from long int 1282267556
+Adding node 'simple_tree.cpp' @ time 1282267556
+FileTimeString 1282271207, from long int 1282271207
+Adding node 'Makefile' @ time 1282271207
+FileTimeString 1282271207, from long int 1282271207
+Adding node 'initial_agents.cpp' @ time 1282271207
+FileTimeString 1282271207, from long int 1282271207
+Adding node 'initial_agents.h' @ time 1282271207
+FileTimeString 1282271207, from long int 1282271207
+Adding node 'simple_tree.cpp' @ time 1282271207
+FileTimeString 1282271364, from long int 1282271364
+Adding node 'simple_tree.cpp' @ time 1282271364
+FileTimeString 1282271489, from long int 1282271489
+Adding node 'initial_agents.cpp' @ time 1282271489
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'spatial_displacement.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'scanline_artist.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'git_repository_access.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'github_repository_access.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'svn_remote_repository_access.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'initial_agents.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'simple_tree.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'tethered_spatial_object.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'discursive_debug.cpp' @ time 1282271737
+FileTimeString 1282271737, from long int 1282271737
+Adding node 'discursive_debug.h' @ time 1282271737
+FileTimeString 1282273919, from long int 1282273919
+Adding node 'simple_tree.cpp' @ time 1282273919
+FileTimeString 1282273919, from long int 1282273919
+Adding node 'tethered_spatial_object.cpp' @ time 1282273919
+FileTimeString 1282273919, from long int 1282273919
+Adding node 'time_stepped_physics_engine.cpp' @ time 1282273919
+FileTimeString 1282273919, from long int 1282273919
+Adding node 'git.cpp' @ time 1282273919
+FileTimeString 1282273919, from long int 1282273919
+Adding node 'tree.cpp' @ time 1282273919
+FileTimeString 1282274500, from long int 1282274500
+Adding node 'simple_tree.cpp' @ time 1282274500
+FileTimeString 1284411258, from long int 1284411258
+Adding node 'contracting.html' @ time 1284411258
+FileTimeString 1284411654, from long int 1284411654
+Adding node 'contracting.html' @ time 1284411654
+FileTimeString 1284413431, from long int 1284413431
+Adding node 'contracting.html' @ time 1284413431
+FileTimeString 1284413431, from long int 1284413431
+Adding node 'menu.html' @ time 1284413431
+FileTimeString 1284414109, from long int 1284414109
+Adding node 'contracting.html' @ time 1284414109
+FileTimeString 1284434648, from long int 1284434648
+Adding node 'contracting.html' @ time 1284434648
+FileTimeString 1284435495, from long int 1284435495
+Adding node 'contracting.html' @ time 1284435495
+FileTimeString 1284435946, from long int 1284435946
+Adding node 'contracting.html' @ time 1284435946
+FileTimeString 1284385632, from long int 1284385632
+Adding node 'contracting.html' @ time 1284385632
+FileTimeString 1284462365, from long int 1284462365
+Adding node 'treevis.html' @ time 1284462365
+FileTimeString 1284462846, from long int 1284462846
+Adding node 'virtualmachinestorage.html' @ time 1284462846
+FileTimeString 1284465907, from long int 1284465907
+Adding node 'blog.html' @ time 1284465907
+FileTimeString 1284467379, from long int 1284467379
+Adding node 'aboutdiscursive.html' @ time 1284467379
+FileTimeString 1284553802, from long int 1284553802
+Adding node 'treevis.html' @ time 1284553802
+FileTimeString 1284554444, from long int 1284554444
+Adding node 'treevis.html' @ time 1284554444
+FileTimeString 1284554620, from long int 1284554620
+Adding node 'virtualmachinestorage.html' @ time 1284554620
+FileTimeString 1284601826, from long int 1284601826
+Adding node 'contracting.html' @ time 1284601826
+FileTimeString 1284601904, from long int 1284601904
+Adding node 'consulting.html' @ time 1284601904
+FileTimeString 1284611387, from long int 1284611387
+Adding node 'virtualmachinestorage.html' @ time 1284611387
+FileTimeString 1285034622, from long int 1285034622
+Adding node 'QualnetFormLetter1.odt' @ time 1285034622
+FileTimeString 1285034622, from long int 1285034622
+Adding node 'QualnetFormLetter2.odt' @ time 1285034622
+FileTimeString 1285034622, from long int 1285034622
+Adding node 'QualnetFormLetter3.odt' @ time 1285034622
+FileTimeString 1285048820, from long int 1285048820
+Adding node 'QualnetFormLetter3.odt' @ time 1285048820
+FileTimeString 1285048820, from long int 1285048820
+Adding node 'QualnetFormLetter4.odt' @ time 1285048820
+FileTimeString 1285048820, from long int 1285048820
+Adding node 'QualnetFormLetter5.odt' @ time 1285048820
+FileTimeString 1285071943, from long int 1285071943
+Adding node 'virtualmachinestorage.html' @ time 1285071943
+FileTimeString 1285074354, from long int 1285074354
+Adding node 'blog2.html' @ time 1285074354
+Adding node 'Promotional Materials' @ time 1285189135
+FileTimeString 1285189135, from long int 1285189135
+Adding node 'intenslybranchingtree.jpg' @ time 1285189135
+FileTimeString 1285189135, from long int 1285189135
+Adding node 'manydottedtrees.jpg' @ time 1285189135
+FileTimeString 1285189135, from long int 1285189135
+Adding node 'sparseloopy.jpg' @ time 1285189135
+FileTimeString 1285189135, from long int 1285189135
+Adding node 'sproutingtree.jpg' @ time 1285189135
+FileTimeString 1285189135, from long int 1285189135
+Adding node 'verysparsetree.jpg' @ time 1285189135
+FileTimeString 1285189749, from long int 1285189749
+Adding node 'divergent_attractors.jpg' @ time 1285189749
+FileTimeString 1285189749, from long int 1285189749
+Adding node 'dnastrandtree.jpg' @ time 1285189749
+FileTimeString 1285189749, from long int 1285189749
+Adding node 'oddboobstree.jpg' @ time 1285189749
+FileTimeString 1285189930, from long int 1285189930
+Adding node 'crazymonster.jpg' @ time 1285189930
+FileTimeString 1285193896, from long int 1285193896
+Adding node 'spatial_displacement.cpp' @ time 1285193896
+FileTimeString 1285193896, from long int 1285193896
+Adding node 'spatial_displacement.h' @ time 1285193896
+FileTimeString 1285193896, from long int 1285193896
+Adding node 'simple_tree.cpp' @ time 1285193896
+FileTimeString 1285195592, from long int 1285195592
+Adding node 'createHnWScaleImages.sh' @ time 1285195592
+FileTimeString 1285197476, from long int 1285197476
+Adding node 'createHnWScaleImages.sh' @ time 1285197476
+FileTimeString 1285197476, from long int 1285197476
+Adding node 'createimages.sh' @ time 1285197476
+FileTimeString 1285197918, from long int 1285197918
+Adding node 'createHnWScaleImages.sh' @ time 1285197918
+FileTimeString 1285197955, from long int 1285197955
+Adding node 'createHnWScaleImages.sh' @ time 1285197955
+FileTimeString 1285198467, from long int 1285198467
+Adding node 'createHnWScaleImages.sh' @ time 1285198467
+FileTimeString 1285202081, from long int 1285202081
+Adding node 'Makefile' @ time 1285202081
+FileTimeString 1285202081, from long int 1285202081
+Adding node 'repository_access.h' @ time 1285202081
+FileTimeString 1285202081, from long int 1285202081
+Adding node 'simple_tree.cpp' @ time 1285202081
+FileTimeString 1285202113, from long int 1285202113
+Adding node 'repository_access.cpp' @ time 1285202113
+FileTimeString 1285203517, from long int 1285203517
+Adding node 'repository_access.cpp' @ time 1285203517
+FileTimeString 1285203517, from long int 1285203517
+Adding node 'repository_access.h' @ time 1285203517
+FileTimeString 1285203517, from long int 1285203517
+Adding node 'simple_tree.cpp' @ time 1285203517
+FileTimeString 1285207326, from long int 1285207326
+Adding node 'git_repository_access.cpp' @ time 1285207326
+FileTimeString 1285207326, from long int 1285207326
+Adding node 'repository_access.cpp' @ time 1285207326
+FileTimeString 1285207326, from long int 1285207326
+Adding node 'repository_access.h' @ time 1285207326
+FileTimeString 1285207326, from long int 1285207326
+Adding node 'simple_tree.cpp' @ time 1285207326
+FileTimeString 1285208458, from long int 1285208458
+Adding node 'git_repository_access.cpp' @ time 1285208458
+FileTimeString 1285208458, from long int 1285208458
+Adding node 'repository_access.h' @ time 1285208458
+FileTimeString 1285208458, from long int 1285208458
+Adding node 'simple_tree.cpp' @ time 1285208458
+FileTimeString 1285209125, from long int 1285209125
+Adding node 'simple_tree.cpp' @ time 1285209125
+FileTimeString 1285209396, from long int 1285209396
+Adding node 'cvs_remote_repository_access.cpp' @ time 1285209396
+FileTimeString 1285209396, from long int 1285209396
+Adding node 'github_repository_access.cpp' @ time 1285209396
+FileTimeString 1285209396, from long int 1285209396
+Adding node 'svn_remote_repository_access.cpp' @ time 1285209396
+Adding node 'Animated Gifs' @ time 1285211431
+FileTimeString 1285211431, from long int 1285211431
+Adding node 'feeds.gif' @ time 1285211431
+FileTimeString 1285211431, from long int 1285211431
+Adding node 'octobot.gif' @ time 1285211431
+FileTimeString 1285211431, from long int 1285211431
+Adding node 'simfinger.gif' @ time 1285211431
+FileTimeString 1285211431, from long int 1285211431
+Adding node 'sourcetreevis.gif' @ time 1285211431
+FileTimeString 1285211431, from long int 1285211431
+Adding node 'twittertxtrb.gif' @ time 1285211431
+FileTimeString 1285211431, from long int 1285211431
+Adding node 'simple_tree.cpp' @ time 1285211431
+FileTimeString 1285271982, from long int 1285271982
+Adding node 'simple_tree.cpp' @ time 1285271982
+Adding node 'ExampleScripts' @ time 1285281227
+FileTimeString 1285281227, from long int 1285281227
+Adding node 'generateGifFromJpg.sh' @ time 1285281227
+FileTimeString 1285281227, from long int 1285281227
+Adding node 'generate_TreeVis_Jpgs.sh' @ time 1285281227
+FileTimeString 1285281227, from long int 1285281227
+Adding node 'simple_tree.cpp' @ time 1285281227
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'generateGifFromJpg.sh' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'spatial_displacement.cpp' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'spatial_displacement.h' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'scanline_artist.cpp' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'scanline_artist.h' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'digitizer.h' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'space_colonizer.cpp' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'space_colonizer.h' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'git_repository_access.cpp' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'repository_access.h' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'tethered_spatial_object.cpp' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'tethered_spatial_object.h' @ time 1285314664
+FileTimeString 1285314664, from long int 1285314664
+Adding node 'discursive_debug.cpp' @ time 1285314664
+FileTimeString 1285363673, from long int 1285363673
+Adding node 'colonization_leader.cpp' @ time 1285363673
+FileTimeString 1285363673, from long int 1285363673
+Adding node 'colonization_leader.h' @ time 1285363673
+FileTimeString 1285363673, from long int 1285363673
+Adding node 'space_colonizer.cpp' @ time 1285363673
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'Makefile' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'octobot2.gif' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'simfinger.gif' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'spatial_displacement.cpp' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'space_colonizer.cpp' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'git_repository_access.cpp' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'simple_tree.cpp' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'discursive_debug.cpp' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'discursive_print.cpp' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'discursive_print.h' @ time 1285431499
+FileTimeString 1285431499, from long int 1285431499
+Adding node 'discursive_system.h' @ time 1285431499
+FileTimeString 1285432713, from long int 1285432713
+Adding node 'generate_TreeVis_Jpgs.sh' @ time 1285432713
+FileTimeString 1285432713, from long int 1285432713
+Adding node 'feeds2.gif' @ time 1285432713
+FileTimeString 1285432713, from long int 1285432713
+Adding node 'sourcetreevis2.gif' @ time 1285432713
+FileTimeString 1285432713, from long int 1285432713
+Adding node 'twittertxtrb2.gif' @ time 1285432713
+FileTimeString 1285432713, from long int 1285432713
+Adding node 'simple_tree.cpp' @ time 1285432713
+FileTimeString 1285705450, from long int 1285705450
+Adding node 'generate_TreeVis_Jpgs_By_Revision.sh' @ time 1285705450
+FileTimeString 1285705450, from long int 1285705450
+Adding node 'git_repository_access.cpp' @ time 1285705450
+FileTimeString 1285705450, from long int 1285705450
+Adding node 'repository_access.h' @ time 1285705450
+FileTimeString 1285705450, from long int 1285705450
+Adding node 'simple_tree.cpp' @ time 1285705450
+FileTimeString 1285706374, from long int 1285706374
+Adding node 'git_repository_access.cpp' @ time 1285706374
+FileTimeString 1285706374, from long int 1285706374
+Adding node 'simple_tree.cpp' @ time 1285706374
+FileTimeString 1285707589, from long int 1285707589
+Adding node 'cvs_remote_repository_access.cpp' @ time 1285707589
+FileTimeString 1285707589, from long int 1285707589
+Adding node 'cvs_remote_repository_access.h' @ time 1285707589
+FileTimeString 1285707589, from long int 1285707589
+Adding node 'git_repository_access.cpp' @ time 1285707589
+FileTimeString 1285707589, from long int 1285707589
+Adding node 'initial_agents.cpp' @ time 1285707589
+FileTimeString 1285707589, from long int 1285707589
+Adding node 'simple_tree.cpp' @ time 1285707589
+FileTimeString 1285708512, from long int 1285708512
+Adding node 'github_repository_access.cpp' @ time 1285708512
+FileTimeString 1285708869, from long int 1285708869
+Adding node 'svn_remote_repository_access.cpp' @ time 1285708869
+FileTimeString 1285712514, from long int 1285712514
+Adding node 'svn_remote_repository_access.cpp' @ time 1285712514
+FileTimeString 1285713240, from long int 1285713240
+Adding node 'spatial_displacement.cpp' @ time 1285713240
+FileTimeString 1285713240, from long int 1285713240
+Adding node 'scanline_artist.cpp' @ time 1285713240
+FileTimeString 1285713240, from long int 1285713240
+Adding node 'space_colonizer.cpp' @ time 1285713240
+FileTimeString 1285713240, from long int 1285713240
+Adding node 'space_colonizer.h' @ time 1285713240
+FileTimeString 1285713763, from long int 1285713763
+Adding node 'repository_access.h' @ time 1285713763
+FileTimeString 1285713763, from long int 1285713763
+Adding node 'svn_remote_repository_access.cpp' @ time 1285713763
+FileTimeString 1285713763, from long int 1285713763
+Adding node 'simple_tree.cpp' @ time 1285713763
+FileTimeString 1285714666, from long int 1285714666
+Adding node 'svn_remote_repository_access.cpp' @ time 1285714666
+FileTimeString 1285715036, from long int 1285715036
+Adding node 'svn_remote_repository_access.cpp' @ time 1285715036
+FileTimeString 1285715700, from long int 1285715700
+Adding node 'drawable_data.cpp' @ time 1285715700
+FileTimeString 1285715700, from long int 1285715700
+Adding node 'drawable_data.h' @ time 1285715700
+FileTimeString 1285715700, from long int 1285715700
+Adding node 'drawable_datum.h' @ time 1285715700
+FileTimeString 1285715700, from long int 1285715700
+Adding node 'scanline_artist.cpp' @ time 1285715700
+FileTimeString 1285715700, from long int 1285715700
+Adding node 'space_colonizer.cpp' @ time 1285715700
+FileTimeString 1285715981, from long int 1285715981
+Adding node 'repository_access.h' @ time 1285715981
+FileTimeString 1285715981, from long int 1285715981
+Adding node 'svn_remote_repository_access.cpp' @ time 1285715981
+FileTimeString 1285715981, from long int 1285715981
+Adding node 'simple_tree.cpp' @ time 1285715981
+FileTimeString 1285716336, from long int 1285716336
+Adding node 'cvs_remote_repository_access.cpp' @ time 1285716336
+FileTimeString 1285716336, from long int 1285716336
+Adding node 'git_repository_access.cpp' @ time 1285716336
+FileTimeString 1285716336, from long int 1285716336
+Adding node 'git_repository_access.h' @ time 1285716336
+FileTimeString 1285716336, from long int 1285716336
+Adding node 'svn_remote_repository_access.cpp' @ time 1285716336
+FileTimeString 1285717225, from long int 1285717225
+Adding node 'github_repository_access.cpp' @ time 1285717225
+FileTimeString 1285717942, from long int 1285717942
+Adding node 'generate_TreeVis_Jpgs_By_Revision.sh' @ time 1285717942
+FileTimeString 1285717942, from long int 1285717942
+Adding node 'simple_tree.cpp' @ time 1285717942
+FileTimeString 1285718039, from long int 1285718039
+Adding node 'simple_tree.cpp' @ time 1285718039
+FileTimeString 1285723380, from long int 1285723380
+Adding node 'spatial_displacement.cpp' @ time 1285723380
+FileTimeString 1285790977, from long int 1285790977
+Adding node 'spatial_displacement.cpp' @ time 1285790977
+FileTimeString 1285790977, from long int 1285790977
+Adding node 'digitizer.h' @ time 1285790977
+FileTimeString 1285790977, from long int 1285790977
+Adding node 'space_colonizer.cpp' @ time 1285790977
+FileTimeString 1285790977, from long int 1285790977
+Adding node 'space_colonizer.h' @ time 1285790977
+FileTimeString 1285790977, from long int 1285790977
+Adding node 'simple_tree.cpp' @ time 1285790977
+FileTimeString 1285791836, from long int 1285791836
+Adding node 'simple_tree.cpp' @ time 1285791836
+FileTimeString 1285791836, from long int 1285791836
+Adding node 'surrogate_tree_node.cpp' @ time 1285791836
+FileTimeString 1285791836, from long int 1285791836
+Adding node 'surrogate_tree_node.h' @ time 1285791836
+FileTimeString 1285794084, from long int 1285794084
+Adding node 'simple_tree.cpp' @ time 1285794084
+FileTimeString 1285795829, from long int 1285795829
+Adding node 'space_colonizer.cpp' @ time 1285795829
+FileTimeString 1285795829, from long int 1285795829
+Adding node 'simple_tree.cpp' @ time 1285795829
+FileTimeString 1285796462, from long int 1285796462
+Adding node 'drawable_data.cpp' @ time 1285796462
+FileTimeString 1285796462, from long int 1285796462
+Adding node 'drawable_data.h' @ time 1285796462
+FileTimeString 1285796462, from long int 1285796462
+Adding node 'digitizer.h' @ time 1285796462
+FileTimeString 1285796462, from long int 1285796462
+Adding node 'space_colonizer.cpp' @ time 1285796462
+FileTimeString 1285796462, from long int 1285796462
+Adding node 'space_colonizer.h' @ time 1285796462
+FileTimeString 1285796462, from long int 1285796462
+Adding node 'simple_tree.cpp' @ time 1285796462
+FileTimeString 1285797463, from long int 1285797463
+Adding node 'simple_tree.cpp' @ time 1285797463
+FileTimeString 1285799179, from long int 1285799179
+Adding node 'simple_tree.cpp' @ time 1285799179
+FileTimeString 1285799684, from long int 1285799684
+Adding node 'simple_tree.cpp' @ time 1285799684
+FileTimeString 1285800473, from long int 1285800473
+Adding node 'svn_remote_repository_access.cpp' @ time 1285800473
+FileTimeString 1285800473, from long int 1285800473
+Adding node 'simple_tree.cpp' @ time 1285800473
+FileTimeString 1285801814, from long int 1285801814
+Adding node 'spatial_displacement.cpp' @ time 1285801814
+FileTimeString 1285801814, from long int 1285801814
+Adding node 'simple_tree.cpp' @ time 1285801814
+FileTimeString 1285803244, from long int 1285803244
+Adding node 'simple_tree.cpp' @ time 1285803244
+FileTimeString 1285804227, from long int 1285804227
+Adding node 'generateGifFromJpg.sh' @ time 1285804227
+FileTimeString 1285804227, from long int 1285804227
+Adding node 'generate_TreeVis_Jpgs.sh' @ time 1285804227
+FileTimeString 1285804227, from long int 1285804227
+Adding node 'generate_TreeVis_Jpgs_By_Revision.sh' @ time 1285804227
+FileTimeString 1285804463, from long int 1285804463
+Adding node 'generateGifFromJpg.sh' @ time 1285804463
+FileTimeString 1285804463, from long int 1285804463
+Adding node 'generate_TreeVis_Jpgs.sh' @ time 1285804463
+FileTimeString 1285804463, from long int 1285804463
+Adding node 'generate_TreeVis_Jpgs_By_Revision.sh' @ time 1285804463
+FileTimeString 1285808546, from long int 1285808546
+Adding node 'simple_tree.cpp' @ time 1285808546
+FileTimeString 1285808992, from long int 1285808992
+Adding node 'generateMpgFromJpgs' @ time 1285808992
+Adding node 'Movies' @ time 1285810277
+FileTimeString 1285810277, from long int 1285810277
+Adding node 'lucene25fps.avi' @ time 1285810277
+FileTimeString 1285810661, from long int 1285810661
+Adding node 'simple_tree.cpp' @ time 1285810661
+FileTimeString 1285826116, from long int 1285826116
+Adding node 'simple_tree.cpp' @ time 1285826116
+FileTimeString 1285876055, from long int 1285876055
+Adding node 'repository_access.cpp' @ time 1285876055
+FileTimeString 1285876055, from long int 1285876055
+Adding node 'simple_tree.cpp' @ time 1285876055
+FileTimeString 1285884432, from long int 1285884432
+Adding node 'repository_access.cpp' @ time 1285884432
+FileTimeString 1285884432, from long int 1285884432
+Adding node 'simple_tree.cpp' @ time 1285884432
+FileTimeString 1285964736, from long int 1285964736
+Adding node 'Makefile' @ time 1285964736
+FileTimeString 1285964736, from long int 1285964736
+Adding node 'repository_access.h' @ time 1285964736
+FileTimeString 1285964736, from long int 1285964736
+Adding node 'simple_tree.cpp' @ time 1285964736
+FileTimeString 1285964797, from long int 1285964797
+Adding node 'configuration_agent.cpp' @ time 1285964797
+FileTimeString 1285964797, from long int 1285964797
+Adding node 'configuration_agent.h' @ time 1285964797
+FileTimeString 1285964876, from long int 1285964876
+Adding node 'simple_tree.cpp' @ time 1285964876
+FileTimeString 1285965554, from long int 1285965554
+Adding node 'configuration_agent.cpp' @ time 1285965554
+FileTimeString 1285965554, from long int 1285965554
+Adding node 'configuration_agent.h' @ time 1285965554
+FileTimeString 1285965554, from long int 1285965554
+Adding node 'simple_tree.cpp' @ time 1285965554
+FileTimeString 1285966288, from long int 1285966288
+Adding node 'configuration_agent.cpp' @ time 1285966288
+FileTimeString 1285966288, from long int 1285966288
+Adding node 'configuration_agent.h' @ time 1285966288
+FileTimeString 1285966288, from long int 1285966288
+Adding node 'simple_tree.cpp' @ time 1285966288
+FileTimeString 1285970266, from long int 1285970266
+Adding node 'Makefile' @ time 1285970266
+FileTimeString 1285970266, from long int 1285970266
+Adding node 'simple_tree.config' @ time 1285970266
+FileTimeString 1285970266, from long int 1285970266
+Adding node 'configuration_agent.cpp' @ time 1285970266
+FileTimeString 1285970266, from long int 1285970266
+Adding node 'configuration_agent.h' @ time 1285970266
+FileTimeString 1285971255, from long int 1285971255
+Adding node 'simple_tree.config' @ time 1285971255
+FileTimeString 1285971255, from long int 1285971255
+Adding node 'configuration_agent.cpp' @ time 1285971255
+FileTimeString 1285971255, from long int 1285971255
+Adding node 'configuration_agent.h' @ time 1285971255
+FileTimeString 1285971255, from long int 1285971255
+Adding node 'simple_tree.cpp' @ time 1285971255
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'Makefile' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'decorator_factory.cpp' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'decorator_factory.h' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'spatial_displacement.cpp' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'spatial_displacement.h' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'scanline_artist.cpp' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'digitizer_factory.cpp' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'digitizer_factory.h' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'space_colonizer.cpp' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'simple_tree.cpp' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'discursive_error.cpp' @ time 1285971378
+FileTimeString 1285971378, from long int 1285971378
+Adding node 'discursive_error.h' @ time 1285971378
+FileTimeString 1285972580, from long int 1285972580
+Adding node 'Makefile' @ time 1285972580
+FileTimeString 1285972580, from long int 1285972580
+Adding node 'decorator_factory.cpp' @ time 1285972580
+FileTimeString 1285972580, from long int 1285972580
+Adding node 'decorator_factory.h' @ time 1285972580
+FileTimeString 1285972580, from long int 1285972580
+Adding node 'spatial_displacement_leafless.cpp' @ time 1285972580
+FileTimeString 1285972580, from long int 1285972580
+Adding node 'spatial_displacement_leafless.h' @ time 1285972580
+FileTimeString 1285972580, from long int 1285972580
+Adding node 'simple_tree.cpp' @ time 1285972580
+FileTimeString 1285976729, from long int 1285976729
+Adding node 'simple_tree.config' @ time 1285976729
+FileTimeString 1285976729, from long int 1285976729
+Adding node 'configuration_agent.cpp' @ time 1285976729
+FileTimeString 1285976729, from long int 1285976729
+Adding node 'configuration_agent.h' @ time 1285976729
+FileTimeString 1285978903, from long int 1285978903
+Adding node 'spatial_displacement_leafless.cpp' @ time 1285978903
+FileTimeString 1285981201, from long int 1285981201
+Adding node 'simple_tree.config' @ time 1285981201
+FileTimeString 1285981201, from long int 1285981201
+Adding node 'configuration_agent.cpp' @ time 1285981201
+FileTimeString 1285981201, from long int 1285981201
+Adding node 'configuration_agent.h' @ time 1285981201
+FileTimeString 1286223237, from long int 1286223237
+Adding node 'Makefile' @ time 1286223237
+FileTimeString 1286223237, from long int 1286223237
+Adding node 'simple_tree.cpp' @ time 1286223237
+FileTimeString 1286223237, from long int 1286223237
+Adding node 'discursive_system.h' @ time 1286223237
+FileTimeString 1286223237, from long int 1286223237
+Adding node 'discursive_time.cpp' @ time 1286223237
+FileTimeString 1286223237, from long int 1286223237
+Adding node 'discursive_time.h' @ time 1286223237
+FileTimeString 1286223432, from long int 1286223432
+Adding node 'discursive_time.cpp' @ time 1286223432
+FileTimeString 1286232374, from long int 1286232374
+Adding node 'simple_tree.cpp' @ time 1286232374
+FileTimeString 1286232374, from long int 1286232374
+Adding node 'discursive_time.cpp' @ time 1286232374
+FileTimeString 1286232374, from long int 1286232374
+Adding node 'discursive_time.h' @ time 1286232374
+FileTimeString 1286233023, from long int 1286233023
+Adding node 'discursive_time.cpp' @ time 1286233023
+FileTimeString 1286233023, from long int 1286233023
+Adding node 'discursive_time.h' @ time 1286233023
+FileTimeString 1286245097, from long int 1286245097
+Adding node 'spatial_displacement_leafless.cpp' @ time 1286245097
+FileTimeString 1286245444, from long int 1286245444
+Adding node 'spatial_displacement_leafless.cpp' @ time 1286245444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'simple_tree.config' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'spatial_displacement.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'scanline_artist.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'space_colonizer.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'cvs_remote_repository_access.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'git_repository_access.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'github_repository_access.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'svn_remote_repository_access.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'configuration_agent.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'initial_agents.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'simple_tree.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'tethered_spatial_object.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'time_stepped_physics_engine.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'discursive_debug.cpp' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'discursive_debug.h' @ time 1286252444
+FileTimeString 1286252444, from long int 1286252444
+Adding node 'discursive_time.cpp' @ time 1286252444
+FileTimeString 1286252922, from long int 1286252922
+Adding node 'spatial_displacement.cpp' @ time 1286252922
+FileTimeString 1286252922, from long int 1286252922
+Adding node 'simple_tree.cpp' @ time 1286252922
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'Makefile' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'simple_tree.config' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'decorator_factory.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'spatial_displacement.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'spatial_displacement_leafless.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'spatial_displacement_leafless.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'scanline_artist.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'repository_access.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'simple_tree.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'surrogate_tree_node.h' @ time 1286304339
+Adding node 'transform' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'image_magick_transformer.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'image_magick_transformer.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'image_resize_transformer.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'image_resize_transformer.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'property_inverter.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'property_inverter.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'property_shifter.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'property_shifter.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'property_transformer.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'property_transformer.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'transform_factory.cpp' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'transform_factory.h' @ time 1286304339
+FileTimeString 1286304339, from long int 1286304339
+Adding node 'transformer.h' @ time 1286304339
+FileTimeString 1286307248, from long int 1286307248
+Adding node 'colonization_leader.cpp' @ time 1286307248
+FileTimeString 1286307248, from long int 1286307248
+Adding node 'colonization_leader.h' @ time 1286307248
+FileTimeString 1286307248, from long int 1286307248
+Adding node 'digitizer_factory.cpp' @ time 1286307248
+FileTimeString 1286307248, from long int 1286307248
+Adding node 'digitizer_factory.h' @ time 1286307248
+FileTimeString 1286307248, from long int 1286307248
+Adding node 'space_colonizer.cpp' @ time 1286307248
+FileTimeString 1286307248, from long int 1286307248
+Adding node 'simple_tree.cpp' @ time 1286307248
+FileTimeString 1286336179, from long int 1286336179
+Adding node 'pullfromgit.sh' @ time 1286336179
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'Makefile' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'spatial_displacement_leafless.cpp' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'drawable_datum.h' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'trapezoid_artist.cpp' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'trapezoid_artist.h' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'colonization_leader.cpp' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'colonization_leader.h' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'trapezoid_blocks.cpp' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'trapezoid_blocks.h' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'trapezoid_leader.cpp' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'trapezoid_leader.h' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'simple_tree.cpp' @ time 1286402601
+FileTimeString 1286402601, from long int 1286402601
+Adding node 'image_magick_transformer.cpp' @ time 1286402601
+FileTimeString 1286402724, from long int 1286402724
+Adding node 'trapezoid_artist.cpp' @ time 1286402724
+FileTimeString 1286402724, from long int 1286402724
+Adding node 'simple_tree.cpp' @ time 1286402724
+FileTimeString 1286402724, from long int 1286402724
+Adding node 'image_magick_transformer.cpp' @ time 1286402724
+FileTimeString 1286402724, from long int 1286402724
+Adding node 'image_resize_transformer.cpp' @ time 1286402724
+FileTimeString 1286405835, from long int 1286405835
+Adding node 'spatial_displacement_leafless.cpp' @ time 1286405835
+FileTimeString 1286405835, from long int 1286405835
+Adding node 'spatial_displacement_leafless.h' @ time 1286405835
+FileTimeString 1286405835, from long int 1286405835
+Adding node 'trapezoid_blocks.cpp' @ time 1286405835
+FileTimeString 1286408928, from long int 1286408928
+Adding node 'cvs_remote_repository_access.cpp' @ time 1286408928
+FileTimeString 1286408928, from long int 1286408928
+Adding node 'git_repository_access.cpp' @ time 1286408928
+FileTimeString 1286408928, from long int 1286408928
+Adding node 'github_repository_access.cpp' @ time 1286408928
+FileTimeString 1286408928, from long int 1286408928
+Adding node 'svn_remote_repository_access.cpp' @ time 1286408928
+FileTimeString 1286408928, from long int 1286408928
+Adding node 'surrogate_tree_node.cpp' @ time 1286408928
+FileTimeString 1286408928, from long int 1286408928
+Adding node 'surrogate_tree_node.h' @ time 1286408928
+FileTimeString 1286411122, from long int 1286411122
+Adding node 'spatial_displacement_leafless.cpp' @ time 1286411122
+FileTimeString 1286411122, from long int 1286411122
+Adding node 'trapezoid_artist.cpp' @ time 1286411122
+FileTimeString 1286411122, from long int 1286411122
+Adding node 'trapezoid_blocks.cpp' @ time 1286411122
+FileTimeStri

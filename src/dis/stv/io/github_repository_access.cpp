@@ -247,6 +247,7 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 	// loop over the detailed commit and find filenames
 	while (getline (gitHubBlockSS, topLevelLine))
 	{
+		DiscursivePrint("%s\n",topLevelLine.c_str());
 		// the "filename:" identifier will be where we find the files
 		int fileNameVal = topLevelLine.find("filename:");
 		int fileValVal = fileNameVal + 10;
