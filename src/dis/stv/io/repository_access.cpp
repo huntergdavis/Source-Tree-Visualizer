@@ -101,10 +101,6 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 			{
 				// Found node
 				node = (*iter);
-
-				// set all configuration properties from filter items
-				configAgent.AddFilterPropertiesToTreeNode(node,name);
-
 				// Update node time if necessary
 				if(time < atol(node->data[TreeNodeKey::CREATION_TIME].c_str()))
 				{
@@ -119,6 +115,8 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 						node->isFile = isFile;
 					}
 
+					// set all configuration properties from filter items
+					configAgent.AddFilterPropertiesToTreeNode(node,name);
 					if(name.find("gtk") != string::npos)
 					{
 						printf("-- Updated node '%s' (%s), color '%s'\n", name.c_str(), pathname.c_str(), node->data[TreeNodeKey::COLOR].c_str());
