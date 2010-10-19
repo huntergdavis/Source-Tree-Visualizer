@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <unordered_map>
 #include "../dec/decorator_factory.h"
 #include "../gen/digitizer_factory.h"
 #include "../transform/transform_factory.h"
@@ -182,7 +183,9 @@ int main(int argc, char **argv)
 		timerAgent.Tic("Digitizing decorated trees into line segments");
 		int segmentLength = 1;
 		int digitizerType = DigitizerFactory::SIMPLE_TRAPEZOIDER;
+		unordered_map<string, Magick::Color*>* colorMap = NULL;
 		Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,0);
+		digitizer->setColorMap(colorMap);
 		DrawableData* lines = digitizer->digitize(git->source);
 		timerAgent.Toc("Digitizing decorated trees into line segments");
 

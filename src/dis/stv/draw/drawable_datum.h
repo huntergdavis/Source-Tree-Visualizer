@@ -21,7 +21,7 @@ struct MinDrawableDatum
 	int extent;
 	int mass;
 	double massRatio;
-	Magick::Color color;
+	Magick::Color* color;
 	SurrogateTreeNode* source;
 };
 

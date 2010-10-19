@@ -5,7 +5,7 @@
  *      Author: Mark Christensen
  */
 
-#include "digitizer_factory.h"
+#include "./digitizer_factory.h"
 
 Digitizer* DigitizerFactory::getInstance(int instanceType, int argc, ...)
 {

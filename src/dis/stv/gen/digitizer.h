@@ -21,6 +21,7 @@ class Digitizer
 public:
 	virtual ~Digitizer() = 0;
 	virtual DrawableData* digitize(SurrogateTreeNode* source) = 0;
+	virtual void setColorMap(unordered_map<string, Magick::Color*>* colorMap) = 0;
 };
 
 #endif /* DIGITIZER_H_ */

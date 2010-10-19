@@ -15,6 +15,7 @@
 #include <queue>
 #include <math.h>
 #include <boost/lexical_cast.hpp>
+#include <unordered_map>
 #include "./digitizer.h"
 #include "./trapezoid_leader.h"
 #include "../model/surrogate_tree_node.h"
@@ -41,9 +42,11 @@ public:
 	TrapezoidBlocks();
 	virtual ~TrapezoidBlocks();
 	DrawableData* digitize(SurrogateTreeNode* source);
+	void setColorMap(unordered_map<string, Magick::Color*>* colorMap);
 private:
 	DrawableData* data;
 	list<TrapezoidLeader*> leaders;
+	unordered_map<string, Magick::Color*>* colorMap;
 	void initializeLeader(TrapezoidLeader* leader);
 	void finalizeLeader(TrapezoidLeader* leader);
 	bool step(DrawableData* data, TrapezoidLeader* leader);
@@ -53,7 +56,7 @@ private:
 	void drawBranches(TrapezoidLeader* leader, int leavesPerBranch, double lengthPerLeaf);
 	void drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, int leaves, double leafBranchSpacing, double growthUnit);
 	void drawBranchAdv(TrapezoidLeader* leader, double startX, double startY, double orientation, double baseLength, double leafBranchSpacing, double growthUnit);
-	void drawMicroBranch(LeafSplit* leaf, double spacing, double growthUnit, bool logGrowth = false);
+	void drawMicroBranch(LeafSplit* leaf, double spacing, double growthUnit, Magick::Color* branchColor, Magick::Color* leafColor, bool logGrowth = false);
 	double angleDiff(double ref, double compare);
 	double angleFrom(double aX, double aY, double bX, double bY);
 	double angleAdd(double origin, double addAmount);
@@ -61,6 +64,8 @@ private:
 	double leafSpacing(int depth, int leaves, double growthUnit);
 	double splitLocation(LeafSplit* leaf, double spacing, bool logGrowth = false);
 	void reclaim(LeafSplit* leaf);
+	Magick::Color* getColor(string color);
+	void setDatumColor(MinDrawableDatum* datum, string color);
 };
 
 #endif /* TRAPEZOID_BLOCKS_H_ */

@@ -150,6 +150,10 @@ double SpaceColonizer::angleDiff(double ref, double compare)
 	return diff;
 }
 
+void SpaceColonizer::setColorMap(unordered_map<string, Magick::Color*>* colorMap)
+{
+}
+
 // Returns true if # of leaders changed
 bool SpaceColonizer::stepOrSplit(DrawableData* data, ColonizationLeader* leader)
 {

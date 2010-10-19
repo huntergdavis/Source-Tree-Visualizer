@@ -7,7 +7,7 @@
 
 #include "./trapezoid_blocks.h"
 
-TrapezoidBlocks::TrapezoidBlocks():data(new DrawableData())
+TrapezoidBlocks::TrapezoidBlocks():data(new DrawableData()), colorMap(NULL)
 {
 }
 
@@ -18,6 +18,11 @@ TrapezoidBlocks::~TrapezoidBlocks()
 		delete(this->data);
 		this->data = NULL;
 	}
+}
+
+void TrapezoidBlocks::setColorMap(unordered_map<string, Magick::Color*>* colorMap)
+{
+	this->colorMap = colorMap;
 }
 
 double TrapezoidBlocks::angleFrom(double aX, double aY, double bX, double bY)
@@ -312,6 +317,24 @@ DrawableData* TrapezoidBlocks::digitize(SurrogateTreeNode* source)
 	return data;
 }
 
+Magick::Color* TrapezoidBlocks::getColor(string color)
+{
+	Magick::Color* result = NULL;
+	if(this->colorMap != NULL)
+	{
+		result = (*this->colorMap)[color];
+	}
+	return result;
+}
+
+void TrapezoidBlocks::setDatumColor(MinDrawableDatum* datum, string color)
+{
+	if(this->colorMap != NULL && datum != NULL)
+	{
+		datum->color = (*this->colorMap)[color];
+	}
+}
+
 void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, int leaves, double leafBranchSpacing, double growthUnit)
 {
 
@@ -335,7 +358,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 	datum->source = leader->getSourceSet();
 //	datum->mass = leader->getEndWidth();
 	datum->mass = 2.0 * leaves;
-	//datum->color = ;
+	this->setDatumColor(datum, datum->source->data[TreeNodeKey::COLOR]);
 	if(datum->mass > 4.0 )
 	{
 		datum->massRatio = (4.0/datum->mass);
@@ -369,6 +392,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 		datum->angle = branchOrientation;
 		datum->extent = length;
 		datum->source = leader->getSourceSet();
+		this->setDatumColor(datum, datum->source->data[TreeNodeKey::COLOR]);
 		this->data->insert(LEAF_LAYER,datum);
 	}
 	// Side leaves
@@ -399,6 +423,7 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 		datum->angle = branchOrientation;
 		datum->extent = length;
 		datum->source = leader->getSourceSet();
+		this->setDatumColor(datum, datum->source->data[TreeNodeKey::COLOR]);
 		data->insert(LEAF_LAYER,datum);
 		left = !left;
 	}
@@ -417,7 +442,7 @@ double TrapezoidBlocks::splitLocation(LeafSplit* leaf, double spacing, bool logG
 	}
 }
 
-void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double growthUnit, bool logGrowth)
+void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double growthUnit, Magick::Color* branchColor, Magick::Color* leafColor, bool logGrowth)
 {
 	MinDrawableDatum* datum;
 	double stemLength = this->splitLocation(leaf, spacing, logGrowth) + leaf->baseLength;
@@ -431,6 +456,8 @@ void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double gr
 	datum->mass = 3.0;
 	datum->massRatio = 1;
 	datum->source = NULL;
+	datum->color = branchColor;
+	//this->setColor(datum, datum->source->data[TreeNodeKey::COLOR]);
 	this->data->insert(TRUNK_LAYER,datum);
 
 	// Add leaf
@@ -441,6 +468,7 @@ void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double gr
 	datum->extent = growthUnit;
 	datum->mass = growthUnit;
 	datum->source = NULL;
+	datum->color = leafColor;
 	this->data->insert(LEAF_LAYER,datum);
 }
 
@@ -462,16 +490,19 @@ void TrapezoidBlocks::drawBranchAdv(TrapezoidLeader* leader, double startX, doub
 		head->rootY = startY;
 		head->orientation = orientation;
 		head->baseLength = baseLength;
+		SurrogateTreeNode* curr = *iter;
+		++iter;
 		head->subCount = leader->leaves->size() - 1;
 		splits.push(head);
 		// Draw this new stem
-		this->drawMicroBranch(head, leafBranchSpacing, growthUnit, true);
+		this->drawMicroBranch(head, leafBranchSpacing, growthUnit, this->getColor(leader->getSourceSet()->data[TreeNodeKey::COLOR]), this->getColor(curr->data[TreeNodeKey::COLOR]), true);
 		// Move to second leaf in list
 		++iter;
 		// Loop over remaining children
 		for(; iter != leader->leaves->end(); ++iter)
 		{
 			parent = splits.front();
+			curr = *iter;
 			if(parent == head)
 			{
 				split = this->splitLocation(parent,leafBranchSpacing,true);
@@ -507,7 +538,7 @@ void TrapezoidBlocks::drawBranchAdv(TrapezoidLeader* leader, double startX, doub
 				// Remove parent from list
 				splits.pop();
 			}
-			this->drawMicroBranch(fract, leafBranchSpacing/4, growthUnit);
+			this->drawMicroBranch(fract, leafBranchSpacing/4, growthUnit, this->getColor(leader->getSourceSet()->data[TreeNodeKey::COLOR]), this->getColor(curr->data[TreeNodeKey::COLOR]));
 		}
 		// Empty stack
 		while(!splits.empty())
@@ -698,6 +729,7 @@ void TrapezoidBlocks::finalizeLeader(TrapezoidLeader* leader)
 	datum->mass = leader->getBaseWidth();
 	datum->massRatio = (leader->getEndWidth()/datum->mass);
 	datum->source = source;
+	this->setDatumColor(datum, datum->source->data[TreeNodeKey::COLOR]);
 //	printf("Adding leader branch at (%d,%d) with dims [l: %d, m: %d, r: %f] pointed at %f\n",datum->locationX,datum->locationY, datum->extent, datum->mass, datum->massRatio, datum->angle);
 	data->insert(TRUNK_LAYER,datum);
 

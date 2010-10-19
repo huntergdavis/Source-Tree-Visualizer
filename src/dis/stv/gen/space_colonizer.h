@@ -34,6 +34,7 @@ public:
 	SpaceColonizer(int segmentLength);
 	~SpaceColonizer();
 	DrawableData* digitize(SurrogateTreeNode* source);
+	void setColorMap(unordered_map<string, Magick::Color*>* colorMap);
 };
 
 #endif /* SPACE_COLONIZER_H_ */
