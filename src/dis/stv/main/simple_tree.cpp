@@ -79,6 +79,8 @@ int main(int argc, char **argv)
 	DiscursiveDebugPrint("default","Retrieving From Server, Please Wait...\n");
 	timerAgent.Tic("Initial Retrieve");
 	git->source = git->retrieve();
+	git->source->set(TreeNodeKey::COLOR, configAgent.returnDefaultTrunkColor());
+
 	DiscursiveDebugPrint("time","Server Retrieval Took:\n");
 	timerAgent.Toc("Initial Retrieve");
 
@@ -155,7 +157,7 @@ int main(int argc, char **argv)
 
 		// retrieve our source tree
 		git->source = git->retrieve();
-
+		git->source->set(TreeNodeKey::COLOR, configAgent.returnDefaultTrunkColor());
 
 		// Decorate surrogate tree nodes with locations
 		DiscursiveDebugPrint("default","Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
@@ -183,7 +185,7 @@ int main(int argc, char **argv)
 		timerAgent.Tic("Digitizing decorated trees into line segments");
 		int segmentLength = 1;
 		int digitizerType = DigitizerFactory::SIMPLE_TRAPEZOIDER;
-		unordered_map<string, Magick::Color*>* colorMap = NULL;
+		unordered_map<string, Magick::Color*>* colorMap = configAgent.getColorMap();
 		Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,0);
 		digitizer->setColorMap(colorMap);
 		DrawableData* lines = digitizer->digitize(git->source);

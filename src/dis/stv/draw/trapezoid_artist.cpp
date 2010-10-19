@@ -39,11 +39,11 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 		switch(index)
 		{
 			case TRUNK_LAYER:
-				drawList.push_back(DrawableFillColor(ColorRGB(0.4627,0.2863,0.0314)));
+				//drawList.push_back(DrawableFillColor(ColorRGB(0.4627,0.2863,0.0314)));
 				size = 1;
 				break;
 			case LEAF_LAYER:
-				drawList.push_back(DrawableFillColor(ColorRGB(0.1294,0.6235,0.0941)));
+				//drawList.push_back(DrawableFillColor(ColorRGB(0.1294,0.6235,0.0941)));
 				size = 5;
 				break;
 			case DEBUG_LAYER:
@@ -56,6 +56,8 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 		int mass;
 		double baseRadius;
 		double endRadius;
+		Magick::Color* currLeafColor = NULL;
+		Magick::Color* currBranchColor = NULL;
 		for(vector<MinDrawableDatum*>::iterator dataList = layerData->begin(); dataList != layerData->end(); ++dataList)
 		{
 			drawItem = *dataList;
@@ -75,6 +77,11 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 
 			if(index != TRUNK_LAYER)
 			{
+				if(drawItem->color != currLeafColor)
+				{
+					currLeafColor = drawItem->color;
+					drawList.push_back(DrawableFillColor(Color(*currLeafColor)));
+				}
 				drawList.push_back(DrawableCircle(x, y, x, y + mass));
 			}
 			else
@@ -100,6 +107,11 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 //					printf("<%d,%d>,",(int)p.x(),(int)p.y());
 //				}
 //				printf("]\n");
+				if(drawItem->color != currBranchColor)
+				{
+					currBranchColor = drawItem->color;
+					drawList.push_back(DrawableFillColor(Color(*currBranchColor)));
+				}
 				drawList.push_back(DrawableCircle(x, y, x, y + baseRadius));
 				drawList.push_back(DrawablePolygon(trapezoid));
 			}

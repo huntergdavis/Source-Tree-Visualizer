@@ -113,6 +113,7 @@ void SpatialDisplacementClustering::cluster(SurrogateTreeNode* tree, double imba
 						currentNode->set(TreeNodeKey::DEPTH,atoi(node->data[TreeNodeKey::DEPTH].c_str()));
 						currentNode->set(TreeNodeKey::CREATION_TIME,atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
 						currentNode->set(TreeNodeKey::REVISIONCREATED,atol(node->data[TreeNodeKey::REVISIONCREATED].c_str()));
+						currentNode->set(TreeNodeKey::COLOR,string(node->data[TreeNodeKey::COLOR]));
 					}
 					currentNode->children->push_back(node);
 					currentNodeSize += childSize;

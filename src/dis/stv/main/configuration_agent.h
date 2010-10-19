@@ -20,6 +20,10 @@
 #include <iostream>
 
 
+
+#define xtod(c) ((c>='0' && c<='9') ? c-'0' : ((c>='A' && c<='F') ? c-'A'+10 : ((c>='a' && c<='f') ? c-'a'+10 : 0)))
+
+
 class filterKeyProperty
 {
 public:
@@ -58,7 +62,7 @@ private:
 	std::string defaultTrunkColor;
 	
 	// color map for all colors in tree
-	unordered_map<std::string,Magick::ColorRGB> colorMap;
+	unordered_map<std::string,Magick::Color*>* colorMap;
 	
 	// our background image name
 	std::string backgroundImageName;
@@ -119,7 +123,7 @@ public:
 	void PrintFilterProperties();
 	
 	// color cache and lookup functions
-	unordered_map<std::string,Magick::ColorRGB> returnColorMap();
+	unordered_map<std::string,Magick::Color*>* getColorMap();
 	int cacheColor(std::string colorString);
 	RepositoryAccess* initializeRepositoryType();
 

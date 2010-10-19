@@ -25,7 +25,7 @@ ConfigurationAgent::~ConfigurationAgent()
 // PARAMETERS :: None
 // RETURN :: None
 // -------------------------------------------------------------------------
-ConfigurationAgent::ConfigurationAgent()
+ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,Magick::Color*>())
 {
 	// agentName equates to the passed command line parameter argument string
 	agentName.clear();
@@ -849,7 +849,7 @@ void ConfigurationAgent::PrintFilterProperties()
 // PARAMETERS ::
 // RETURN :: unordered_map<std::string,Magick::ColorRGB> color map structure
 // -------------------------------------------------------------------------
-unordered_map<std::string,Magick::ColorRGB> ConfigurationAgent::returnColorMap()
+unordered_map<std::string, Magick::Color*>* ConfigurationAgent::getColorMap()
 {
 	return colorMap;
 };
@@ -922,8 +922,8 @@ int ConfigurationAgent::cacheColor(std::string colorString)
 	{
 		// convert the hex string to decimal
 		 redColor = strtoul(colorString.substr(1,2).c_str(),NULL, 16);
-		 blueColor = strtoul(colorString.substr(3,2).c_str(),NULL, 16);
-		 greenColor = strtoul(colorString.substr(5,2).c_str(),NULL, 16);
+		 greenColor = strtoul(colorString.substr(3,2).c_str(),NULL, 16);
+		 blueColor = strtoul(colorString.substr(5,2).c_str(),NULL, 16);
 	}
 	else
 	{
@@ -933,8 +933,8 @@ int ConfigurationAgent::cacheColor(std::string colorString)
 
 	DiscursiveDebugPrint("color","\ncolor: r%d,g%d,b%d \n",redColor,greenColor,blueColor);
 	// now we add the color value in as decimal
-	Magick::ColorRGB colorToAdd(redColor,greenColor,blueColor);
-	colorMap[colorString] = colorToAdd;
+	Magick::Color* colorToAdd = new Magick::ColorRGB(redColor/255.0,greenColor/255.0,blueColor/255.0);
+	(*colorMap)[colorString] = colorToAdd;
 	return 1;
 	
 };

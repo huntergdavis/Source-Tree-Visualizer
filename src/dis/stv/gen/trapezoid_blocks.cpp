@@ -324,6 +324,7 @@ Magick::Color* TrapezoidBlocks::getColor(string color)
 	{
 		result = (*this->colorMap)[color];
 	}
+	DiscursiveDebugPrint("color","Color lookup: %s -> %p (%d,%d,%d)\n", color.c_str(), result, result->redQuantum(), result->greenQuantum(), result->blueQuantum());
 	return result;
 }
 
@@ -331,7 +332,12 @@ void TrapezoidBlocks::setDatumColor(MinDrawableDatum* datum, string color)
 {
 	if(this->colorMap != NULL && datum != NULL)
 	{
+		DiscursiveDebugPrint("color","Node(%s): Setting datum color to '%s'\n",datum->source->data[TreeNodeKey::NAME].c_str(),color.c_str());
 		datum->color = (*this->colorMap)[color];
+	}
+	else
+	{
+		DiscursiveDebugPrint("color","Node(%s): Can't set color from '%s'\n",datum->source->data[TreeNodeKey::NAME].c_str(),color.c_str());
 	}
 }
 
@@ -379,6 +385,8 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 	startX += (length * cos(branchOrientation));  // Make local adjustment to start position
 	startY -= (length * sin(branchOrientation));  // Make local adjustment to start position
 
+	SurrogateTreeNode* curr;
+
 	// Odd number of leaves?
 	int leafModifier = 1;
 	if(leafModifier == 1)
@@ -392,6 +400,8 @@ void TrapezoidBlocks::drawBranch(TrapezoidLeader* leader, double startX, double 
 		datum->angle = branchOrientation;
 		datum->extent = length;
 		datum->source = leader->getSourceSet();
+//		curr = *iter;
+//		++iter;
 		this->setDatumColor(datum, datum->source->data[TreeNodeKey::COLOR]);
 		this->data->insert(LEAF_LAYER,datum);
 	}
