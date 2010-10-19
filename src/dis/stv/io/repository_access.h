@@ -18,17 +18,12 @@
 using namespace Magick;
 
 
-
 class RepositoryAccess
 {
-private:
-	std::vector<std::string> filterKeyStore;
-	std::vector<std::string> inverseFilterKeyStore;
-	void ParseFilterKeywords(std::string filterKeywords);
-	void ParseInverseFilterKeywords(std::string filterKeywords);
 protected:
 	int repoType;
 	std::string repoLog;
+
 
 public:
 	int snapshotJpgs;
@@ -55,11 +50,6 @@ public:
 	SurrogateTreeNode* source;
 	int WriteJPGFromCanvas(Image* canvas);
 	virtual SurrogateTreeNode* retrieve() = 0;
-	void AddFilterKeywords(std::string filterKeywords);
-	void AddInverseFilterKeywords(std::string filterKeywords);
-	int DoAnyFilterKeywordsMatch(std::string filterKeywords);
-	int DoAnyInverseFilterKeywordsMatch(std::string filterKeywords);
-	int DoesThisStringContainFilterKeywords(std::string textualData);
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time, int drawSubLeafs);
 };
 

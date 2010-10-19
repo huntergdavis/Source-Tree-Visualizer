@@ -8,13 +8,30 @@
 #ifndef CONFIGURATIONL_AGENT_H_
 #define CONFIGURATION_AGENT_H_
 
-#include "repository_access.h"
 #include "initial_agents.h"
+#include <libxml/xmlreader.h>
+#include "../model/surrogate_tree_node.h"
+#include "../io/repository_access.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
+
+
+class filterKeyProperty
+{
+public:
+	std::string keyPropertyName;
+	std::string keyPropertyValue;
+};
+
+class filterKeystoreItem
+{
+public:
+	std::string keyName;
+	std::vector<filterKeyProperty> keyProperties;
+};
 
 
 class ConfigurationAgent
@@ -48,11 +65,9 @@ private:
 	// should we read a config file in from stdin?
 	int readConfigFromStdIn;
 
-	// our filter keywords
-	std::string filterKeyWords;
-
-	// our inverse filter keywords
-	std::string inverseFilterKeyWords;
+	// keystores - vectors of keyword and metatag pairs
+	std::vector<filterKeystoreItem> filterKeyStore;
+	std::vector<std::string> inverseFilterKeyStore;
 
 	// should we draw filtered leaves?
 	int drawFilteredLeaves;
@@ -73,6 +88,10 @@ private:
 	int revStart;
 	int revStop;
 
+	// private functions for parsing filter keywords and properties
+	void ParseInverseKeywords(std::string inverseKeywords);
+	void SetInputFilters(xmlDoc *doc,xmlNode *cur_node, std::string filterNames);
+
 
 public:
 	ConfigurationAgent();
@@ -83,10 +102,11 @@ public:
 	std::string returnAgentName();
 	std::string returnFileName();
 	std::string returnBackgroundImageName();
-	std::string returnFilterKeyWords();
-	std::string returnInverseFilterKeyWords();
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
+	int DoesThisStringContainFilterKeywords(std::string textualData);
+	void AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey);
+	void PrintFilterProperties();
 	RepositoryAccess* initializeRepositoryType();
 
 };

@@ -25,6 +25,7 @@
 
 using namespace Magick;
 DiscursiveDebugAgent debugAgent;
+ConfigurationAgent configAgent;
 
 int main(int argc, char **argv)
 {
@@ -35,8 +36,6 @@ int main(int argc, char **argv)
 	DiscursiveTime timerAgent("Entire SourceTreeVis Program");
 
 	// initialize our configuration agent
-	ConfigurationAgent configAgent;
-
 	// parse our config file and also pre-check command line
 	configAgent.parseConfigFile();
 
@@ -55,8 +54,6 @@ int main(int argc, char **argv)
 	git->jpgIndex = configAgent.returnOptionByName("outputFileNumber");
 
 	// set our textual repository options
-	git->AddFilterKeywords(configAgent.returnFilterKeyWords());
-	git->AddInverseFilterKeywords(configAgent.returnInverseFilterKeyWords());
 	git->drawFilteredLeaves = configAgent.returnOptionByName("drawFilteredLeaves");
 	git->fileName = configAgent.returnFileName();
 	git->startWidth = (double)configAgent.returnOptionByName("startWidth");
@@ -228,6 +225,11 @@ int main(int argc, char **argv)
 
 	// finish the timing on our entire program
 	timerAgent.Toc("Entire SourceTreeVis Program");
+
+	// print out a legend, if necessary
+	configAgent.PrintFilterProperties();
+
+	// print out running totals for all times
 	timerAgent.PrintRunningTotals();
 
 

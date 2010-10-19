@@ -6,7 +6,6 @@
  */
 
 #include "configuration_agent.h"
-#include <libxml/xmlreader.h>
 extern DiscursiveDebugAgent debugAgent;
 
 // -------------------------------------------------------------------------
@@ -71,10 +70,6 @@ ConfigurationAgent::ConfigurationAgent()
 	revStep = 1;
 	revStart = 2;
 	revStop = 10000;
-
-	// filter keywords
-	filterKeyWords = "";
-	inverseFilterKeyWords = "";
 
 	// draw filtered leaves?
 	drawFilteredLeaves = 0;
@@ -147,29 +142,6 @@ std::string ConfigurationAgent::returnFileName()
 	return fileName;
 };
 
-// -------------------------------------------------------------------------
-// API :: ConfigurationAgent::returnFilterKeyWords
-// PURPOSE :: returns the filter keywords, unparsed
-//         ::
-// PARAMETERS :: None
-// RETURN :: std::string fileName - name of file to output
-// -------------------------------------------------------------------------
-std::string ConfigurationAgent::returnFilterKeyWords()
-{
-	return filterKeyWords;
-};
-
-// -------------------------------------------------------------------------
-// API :: ConfigurationAgent::returnInverseFilterKeyWords
-// PURPOSE :: returns the filter keywords, unparsed
-//         ::
-// PARAMETERS :: None
-// RETURN :: std::string fileName - name of file to output
-// -------------------------------------------------------------------------
-std::string ConfigurationAgent::returnInverseFilterKeyWords()
-{
-	return inverseFilterKeyWords;
-};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::returnFileName
@@ -242,7 +214,15 @@ void ConfigurationAgent::parseConfigFile()
 			  nodeData = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
 			  if(nodeData != NULL)
 			  {
-				  setOptionByName((char*)cur_node->name,nodeData);
+				  // input filter needs to test for all metatags
+				  if(strcmp((char*)cur_node->name,"input_filter") == 0)
+				  {
+					  SetInputFilters(doc,cur_node->xmlChildrenNode,nodeData);
+				  }
+				  else
+				  {
+					  setOptionByName((char*)cur_node->name,nodeData);
+				  }
 			  }
 			  delete nodeData;
 		  }
@@ -262,6 +242,53 @@ void ConfigurationAgent::parseConfigFile()
 
 };
 
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::SetInputFilters
+// PURPOSE :: sets input filter and metatag data
+//         ::
+// PARAMETERS :: xmlDoc *doc - current xml parsing document
+//            :: xmlNode *cur_node - current node in xml tree for parsing
+//            :: std::string filterNames - current filter names
+// RETURN :: None
+// -------------------------------------------------------------------------
+void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node,std::string filterNames)
+{
+	// create a temporary storage vector for filterProperties
+	std::vector<filterKeyProperty> keyProperties;
+
+	// loop over node and look for meta tags to add
+	for (cur_node = cur_node; cur_node; cur_node = cur_node->next)
+	{
+	  if (cur_node->type == XML_ELEMENT_NODE)
+	  {
+			filterKeyProperty singleFKP;
+			singleFKP.keyPropertyName = (char*)cur_node->name;
+			singleFKP.keyPropertyValue = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
+			keyProperties.push_back(singleFKP);
+	  }
+	}
+
+	// now that we have all metatags for these values, split the values and add metatags
+	// use a stringstream to split
+	std::stringstream ss(filterNames);
+
+	// store each delimited item in string
+	std::string item;
+
+	// split and push into global store
+	while(std::getline(ss, item, ','))
+	{
+		// create a filter keystore item with all properties
+		filterKeystoreItem singleFKI;
+		singleFKI.keyName = item;
+		singleFKI.keyProperties = keyProperties;
+
+		// push keystore item with all properties onto main filter keystore
+		filterKeyStore.push_back(singleFKI);
+	}
+
+
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::parseCommandLine
@@ -451,13 +478,9 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		debugAgent.AddDebugKeywords(optionValue);
 	}
-	else 	if(optionName == "input_filter")
-	{
-		filterKeyWords = optionValue;
-	}
 	else 	if(optionName == "input_ignore_filter")
 	{
-		inverseFilterKeyWords = optionValue;
+		ParseInverseKeywords(optionValue);
 	}
 	else if(optionName == "draw_filtered_leaves")
 	{
@@ -498,6 +521,49 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		// rufus: what's your favorite number?
 	    DiscursiveError("Failure to set key value: \n" + optionName);
+	}
+};
+
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::ParseInverseKeywords
+// PURPOSE :: adds inverse keywords to the inverse keyword vector
+//         ::
+// PARAMETERS :: std::string inverseKeyWords - comma separated keywords
+// RETURN :: void
+// -------------------------------------------------------------------------
+void ConfigurationAgent::ParseInverseKeywords(std::string inverseKeyWords)
+{
+	// split string by commas and push into global store
+	// use a stringstream to split
+	std::stringstream ss(inverseKeyWords);
+
+	// store each delimited item in string
+	std::string item;
+
+	// lexical search variable
+	size_t found;
+
+	// split and push into global store
+	while(std::getline(ss, item, ','))
+	{
+		// reset found variable
+		found = std::string::npos;
+
+	    // check for negative keyword matches
+		for(std::vector<std::string>::iterator i = inverseFilterKeyStore.begin(); i != inverseFilterKeyStore.end(); ++i)
+		{
+			if(inverseKeyWords.find(i->c_str()) != std::string::npos)
+			{
+				found = 1;
+			}
+		}
+
+		// if negative keywords not found, add
+		if(found == 1)
+		{
+			inverseFilterKeyStore.push_back(item);
+		}
 	}
 };
 
@@ -612,3 +678,106 @@ RepositoryAccess* ConfigurationAgent::initializeRepositoryType()
             break;
 	}
 };
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::DoesThisStringContainFilterKeywords
+// PURPOSE :: tests if any internal filters match
+//         :: returns the keyword number if so
+//         ::
+// PARAMETERS :: std::String textualData - string to search
+// RETURN :: int - first keyword reference number if there's a match
+//        :: int - returns zero if there are no filterKeyStore items
+// -------------------------------------------------------------------------
+int ConfigurationAgent::DoesThisStringContainFilterKeywords(std::string textualData)
+{
+    // store the string iterations
+    int keyWordIterator = 0;
+    size_t found = 0;
+
+    // check for negative keyword matches and fail if found
+	for(std::vector<std::string>::iterator i = inverseFilterKeyStore.begin(); i != inverseFilterKeyStore.end(); ++i)
+	{
+		found = textualData.find(i->c_str());
+		if(found != std::string::npos)
+		{
+			return -1;
+		}
+	}
+
+    // if no negatives and there is no keystore size, return
+    if(filterKeyStore.size() == 0)
+    {
+    	return 0;
+    }
+
+    // check for positive keyword matches
+	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
+	{
+		keyWordIterator++;
+		found = textualData.find(i->keyName);
+		if(found != std::string::npos)
+		{
+			return keyWordIterator;
+		}
+	}
+
+	// if nothing is found in either bin, and we have both bins, we fail
+	return -1;
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::AddFilterPropertiesToTreeNode
+// PURPOSE :: adds node properties for each filter match
+//         :: to the current node
+//         ::
+// PARAMETERS :: SurrogateTreeNode* treeNode - node to add properties to
+//            :: std::string searchKey - searchKey to match filter strings to
+// RETURN :: void
+// -------------------------------------------------------------------------
+void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey)
+{
+	// lexical search results
+	size_t found = 0;
+
+	//for each filter property which matches, add the property to the node
+    // loop over all filter types
+	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
+	{
+		found = searchKey.find(i->keyName);
+		if(found != std::string::npos)
+		{
+		    // add all properties to surrogatetreenode
+			for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)
+			{
+				treeNode->set(j->keyPropertyName,j->keyPropertyValue);
+			}
+		}
+	}
+}
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::PrintFilterProperties
+// PURPOSE :: prints all filter properties
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN ::
+// -------------------------------------------------------------------------
+void ConfigurationAgent::PrintFilterProperties()
+{
+	DiscursivePrint("\nFilter Properties\n");
+
+    // print all positive filter keywords
+	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
+	{
+		DiscursivePrint("Filter Item: %s\n",i->keyName.c_str());
+
+	    // print all positive filter keywords
+		for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)
+		{
+			DiscursivePrint("--%s: %s\n",j->keyPropertyName.c_str(),j->keyPropertyValue.c_str());
+		}
+	}
+}
+
+
