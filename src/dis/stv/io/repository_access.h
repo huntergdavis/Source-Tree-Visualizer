@@ -51,6 +51,7 @@ public:
 	int WriteJPGFromCanvas(Image* canvas);
 	virtual SurrogateTreeNode* retrieve() = 0;
 	void InsertByPathName(SurrogateTreeNode* tree, string pathname, long time, int drawSubLeafs);
+	void RemoveByPathName(SurrogateTreeNode* tree, string pathname);
 };
 
 #endif /* REPOSITORY_ACCESS_H_ */

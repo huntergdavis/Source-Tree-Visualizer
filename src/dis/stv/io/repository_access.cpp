@@ -150,4 +150,70 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 	}
 }
 
+void RepositoryAccess::RemoveByPathName(SurrogateTreeNode* tree, string pathname)
+{
+	bool removeNode = false;
+	DiscursiveDebugPrint("STN OP","RemoveByPathName( %s )\n", pathname.c_str());
+	// Split off first part of path
+	int firstIndex = pathname.find("/");
+	// If path separator is missing, we only have filename or unadorned dir
+	// If path separator is last character, we are removing a directory
+	if(firstIndex == -1 || firstIndex == pathname.length() - 1 )
+	{
+		removeNode = true;
+	}
+	if(firstIndex == 0)
+	{
+		// Our path started with a slash but we already have a root
+		// So remove first slash and restart
+		pathname = pathname.substr(1,pathname.length()-1);
+		//firstIndex = pathname.find("/");
+		this->RemoveByPathName(tree,pathname);
+	}
+	else
+	{
+		// Split first string out for this nodes name
+		string name = pathname.substr(0,firstIndex);
+		// Look for node in children
+		SurrogateTreeNode* node = NULL;
+
+		vector<SurrogateTreeNode*>::iterator iter = tree->children->begin();
+		for(;iter != tree->children->end(); ++iter)
+		{
+			SurrogateTreeNode* local = *iter;
+			string nameComp = local->data[TreeNodeKey::NAME];
+			//printf("Comparing %s to %s\n",nameComp.c_str(),name.c_str());
+			if(!nameComp.compare(name))
+			{
+				// Found node
+				node = (*iter);
+				break;
+			}
+		}
+		// If child not found, specified path was bad.
+		if(node == NULL)
+		{
+			// Log error and exit
+			DiscursiveDebugPrint("STN OP","Unable to delete '%s' under node '%s'\n",pathname.c_str(),tree->data[TreeNodeKey::NAME].c_str());
+		}
+		// Else, use found node
+		else
+		{
+			if(removeNode)
+			{
+				DiscursiveDebugPrint("STN OP","Removing node %s\n", pathname.c_str());
+				// Delete item from child list
+				tree->children->erase(iter);
+				// Remove node
+				delete node;
+			}
+			else
+			{
+				// Parse rest of string
+				this->RemoveByPathName(node, pathname.substr(firstIndex+1,(pathname.length() - firstIndex - 1)));
+			}
+		}
+	}
+}
+
 
