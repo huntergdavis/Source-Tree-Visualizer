@@ -113,13 +113,13 @@ void SpatialDisplacementClustering::cluster(SurrogateTreeNode* tree, double imba
 						currentNode->set(TreeNodeKey::DEPTH,atoi(node->data[TreeNodeKey::DEPTH].c_str()));
 						currentNode->set(TreeNodeKey::CREATION_TIME,atol(node->data[TreeNodeKey::CREATION_TIME].c_str()));
 						currentNode->set(TreeNodeKey::REVISIONCREATED,atol(node->data[TreeNodeKey::REVISIONCREATED].c_str()));
-						currentNode->set(TreeNodeKey::COLOR,string(node->data[TreeNodeKey::COLOR]));
+						currentNode->set(TreeNodeKey::COLOR,string(tree->data[TreeNodeKey::COLOR]));
 					}
 					currentNode->children->push_back(node);
 					currentNodeSize += childSize;
 					if(currentNodeSize >= clusterTarget && currentNode->children->size() > 1)
 					{
-						printf("-- New cluster of size %d/%d\n", currentNode->children->size(), currentNodeSize);
+						printf("-- New cluster of size %d/%d and color '%s'\n", currentNode->children->size(), currentNodeSize,currentNode->data[TreeNodeKey::COLOR].c_str());
 
 						currentNode->set(TreeNodeKey::SIZE,currentNodeSize);
 						clustered.push_back(currentNode);
@@ -131,6 +131,7 @@ void SpatialDisplacementClustering::cluster(SurrogateTreeNode* tree, double imba
 			// If there is an incomplete node, add it to new child set
 			if(currentNode != NULL)
 			{
+				printf("-- New cluster of size %d/%d and color '%s'\n", currentNode->children->size(), currentNodeSize,currentNode->data[TreeNodeKey::COLOR].c_str());
 				currentNode->set(TreeNodeKey::SIZE,currentNodeSize);
 				clustered.push_back(currentNode);
 				currentNode = NULL;

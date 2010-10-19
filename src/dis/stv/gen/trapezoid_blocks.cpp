@@ -484,6 +484,7 @@ void TrapezoidBlocks::drawMicroBranch(LeafSplit* leaf, double spacing, double gr
 
 void TrapezoidBlocks::drawBranchAdv(TrapezoidLeader* leader, double startX, double startY, double orientation, double baseLength, double leafBranchSpacing, double growthUnit)
 {
+	//printf("Drawing microbranches for node '%s'\n", leader->getSourceSet()->data[TreeNodeKey::NAME].c_str());
 	// Create fractal datastruct
 	// and draw branches
 	if(leader->leaves->size() > 0)
@@ -501,7 +502,6 @@ void TrapezoidBlocks::drawBranchAdv(TrapezoidLeader* leader, double startX, doub
 		head->orientation = orientation;
 		head->baseLength = baseLength;
 		SurrogateTreeNode* curr = *iter;
-		++iter;
 		head->subCount = leader->leaves->size() - 1;
 		splits.push(head);
 		// Draw this new stem
