@@ -109,7 +109,7 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 					{
 						InsertByPathName(tree,fileNameString,time,1);
 					}
-					else
+					else if(gitStatus == 2)
 					{
 						RemoveByPathName(tree,fileNameString);
 					}
@@ -120,7 +120,7 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 				{
 					InsertByPathName(tree,fileNameString,time,1);
 				}
-				else
+				else if(gitStatus == 2)
 				{
 					RemoveByPathName(tree,fileNameString);
 				}
@@ -132,7 +132,7 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 				{
 					InsertByPathName(tree,fileNameString,time,1);
 				}
-				else
+				else if(gitStatus == 2)
 				{
 					RemoveByPathName(tree,fileNameString);
 				}
