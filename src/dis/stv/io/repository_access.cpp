@@ -54,6 +54,10 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 	// our name
 	std::string name;
 
+	// our node type
+	// currently 0=leaf 1=trunk
+	int nodeType = 1;
+
 	// Split off first part of path
 	int firstIndex = pathname.find("/");
 	if(firstIndex == 0)
@@ -66,7 +70,7 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 	if(firstIndex == -1)
 	{
 		name = pathname;
-
+		nodeType = 0;
 	}
 	else
 	{
@@ -102,7 +106,7 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 					node->set(TreeNodeKey::DRAWNODE, continueDrawingSubLeaves);
 
 					// set all configuration properties from filter items
-					configAgent.AddFilterPropertiesToTreeNode(node,name);
+					configAgent.AddFilterPropertiesToTreeNode(node,name,nodeType);
 				}
 				break;
 			}
@@ -118,7 +122,7 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 			node->set(TreeNodeKey::DRAWNODE, continueDrawingSubLeaves);
 
 			// set all configuration properties from filter items
-			configAgent.AddFilterPropertiesToTreeNode(node,name);
+			configAgent.AddFilterPropertiesToTreeNode(node,name,nodeType);
 
 			//printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children->push_back(node);

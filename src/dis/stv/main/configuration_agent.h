@@ -10,6 +10,7 @@
 
 #include "initial_agents.h"
 #include <libxml/xmlreader.h>
+#include <Magick++.h>
 #include "../model/surrogate_tree_node.h"
 #include "../io/repository_access.h"
 #include <stdio.h>
@@ -52,8 +53,12 @@ private:
 	int startWidth;
 	int startHeight;
 	
-	// default color
-	std::string defaultColor;
+	// default colors
+	std::string defaultLeafColor;
+	std::string defaultTrunkColor;
+	
+	// color map for all colors in tree
+	unordered_map<std::string,Magick::ColorRGB> colorMap;
 	
 	// our background image name
 	std::string backgroundImageName;
@@ -105,12 +110,17 @@ public:
 	std::string returnAgentName();
 	std::string returnFileName();
 	std::string returnBackgroundImageName();
-	std::string returnDefaultColor();
+	std::string returnDefaultLeafColor();
+	std::string returnDefaultTrunkColor();
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
 	int DoesThisStringContainFilterKeywords(std::string textualData);
-	void AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey);
+	void AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey, int nodeType);
 	void PrintFilterProperties();
+	
+	// color cache and lookup functions
+	unordered_map<std::string,Magick::ColorRGB> returnColorMap();
+	int cacheColor(std::string colorString);
 	RepositoryAccess* initializeRepositoryType();
 
 };
