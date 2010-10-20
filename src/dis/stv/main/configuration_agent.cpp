@@ -5,9 +5,8 @@
  *      Author: Hunter Davis
  */
 
-#include "configuration_agent.h"
-#include <iomanip>
-#include <cmath>
+#include "./configuration_agent.h"
+
 extern DiscursiveDebugAgent debugAgent;
 
 // -------------------------------------------------------------------------

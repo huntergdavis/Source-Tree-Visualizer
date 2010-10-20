@@ -20,6 +20,9 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <iomanip>
+#include <math.h>
+#include <float.h>
 
 
 
