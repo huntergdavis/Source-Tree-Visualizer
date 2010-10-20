@@ -117,10 +117,10 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 
 					// set all configuration properties from filter items
 					configAgent.AddFilterPropertiesToTreeNode(node,name);
-					if(name.find("gtk") != string::npos)
-					{
-						printf("-- Updated node '%s' (%s), color '%s'\n", name.c_str(), pathname.c_str(), node->data[TreeNodeKey::COLOR].c_str());
-					}
+//					if(name.find("gtk") != string::npos)
+//					{
+//						printf("-- Updated node '%s' (%s), color '%s'\n", name.c_str(), pathname.c_str(), node->data[TreeNodeKey::COLOR].c_str());
+//					}
 				}
 				break;
 			}
@@ -138,10 +138,10 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 
 			// set all configuration properties from filter items
 			configAgent.AddFilterPropertiesToTreeNode(node,name);
-			if(!isFile || name.find("gtk") != string::npos)
-			{
-				printf("-- New node '%s' (%s), color '%s'\n", name.c_str(), pathname.c_str(), node->data[TreeNodeKey::COLOR].c_str());
-			}
+//			if(!isFile || name.find("gtk") != string::npos)
+//			{
+//				printf("-- New node '%s' (%s), color '%s'\n", name.c_str(), pathname.c_str(), node->data[TreeNodeKey::COLOR].c_str());
+//			}
 
 			//printf("Adding node '%s' @ time %ld\n",name.c_str(),time);
 			tree->children->push_back(node);

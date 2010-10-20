@@ -54,7 +54,7 @@ private:
 	double orientationBetween(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
 	double orientationBetweenSubtree(SurrogateTreeNode* attractor, TrapezoidLeader* leader);
 	void drawBranches(TrapezoidLeader* leader, int leavesPerBranch, double lengthPerLeaf);
-	void drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, int leaves, double leafBranchSpacing, double growthUnit);
+	void drawBranch(TrapezoidLeader* leader, double startX, double startY, double orientation, double branchOrientation, double lengthPerLeaf, vector<SurrogateTreeNode*> leaves, double leafBranchSpacing, double growthUnit);
 	void drawBranchAdv(TrapezoidLeader* leader, double startX, double startY, double orientation, double baseLength, double leafBranchSpacing, double growthUnit);
 	void drawMicroBranch(LeafSplit* leaf, double spacing, double growthUnit, Magick::Color* branchColor, Magick::Color* leafColor, bool logGrowth = false);
 	double angleDiff(double ref, double compare);
