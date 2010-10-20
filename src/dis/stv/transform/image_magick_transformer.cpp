@@ -32,8 +32,11 @@ void ImageMagickTransformer::transform(va_list args)
 	DiscursiveDebugPrint("imagemagick transformer","Mins: (%f,%f), Maxs: (%f,%f) | Bounds: (%d x %d)\n",xMin,yMin,xMax,yMax,(int)allowedWidth, (int)allowedHeight);
 	double currWidth = xMax - xMin;
 	double currHeight = yMax - yMin;
+	double maxWidthDim = max(fabs(xMax), fabs(xMin));
+	currWidth = 2*maxWidthDim;
 
 	double minDim = min(allowedHeight, allowedWidth);
+
 
 	double scalingFactorW = 1;
 	if(currWidth > minDim)
@@ -59,14 +62,16 @@ void ImageMagickTransformer::transform(va_list args)
 	}
 	tree->transform(TreeNodeKey::SCOMY,&inverter);
 
+	//PropertyShifter shifter(-1*((xMax + xMin) / 2));
 	PropertyShifter shifter(-1*((xMax + xMin) / 2));
 	if(currWidth > 0)
 	{
-		tree->transform(TreeNodeKey::X,&shifter);
+		//tree->transform(TreeNodeKey::X,&shifter);
 		// Scale tree values
 		tree->scale(TreeNodeKey::X, scalingFactorW);
 	}
-	PropertyShifter shifter2(allowedWidth / 2.0);
+	//PropertyShifter shifter2(allowedWidth / 2.0);
+	PropertyShifter shifter2(width / 2.0);
 	tree->transform(TreeNodeKey::X,&shifter2);
 
 	if(currWidth > 0)
