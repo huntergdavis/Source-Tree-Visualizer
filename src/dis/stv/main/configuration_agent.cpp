@@ -995,7 +995,7 @@ double ConfigurationAgent::minDistanceFromColorMap(std::string color)
 {
 	// init distance and minDistance storage
 	double distance = 0;
-	double minDistance = 9999;
+	double minDistance = DBL_MAX;
 
 	// loop over color map and find minimum distance from colors
 	for(unordered_map<std::string,Magick::Color*>::iterator itr = colorMap->begin();itr!=colorMap->end();++itr)
