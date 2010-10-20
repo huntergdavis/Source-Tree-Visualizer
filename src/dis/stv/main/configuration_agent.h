@@ -135,6 +135,8 @@ public:
 	int DoesThisStringContainFilterKeywords(std::string textualData);
 	void AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey);
 	void PrintFilterProperties();
+	std::string returnHTMLFilterProperties();
+	std::string returnXMLFilterProperties();
 	double minDistanceFromColorMap(std::string color);
 	
 	// color cache and lookup functions

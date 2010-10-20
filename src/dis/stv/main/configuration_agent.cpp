@@ -1092,6 +1092,87 @@ void ConfigurationAgent::PrintFilterProperties()
 }
 
 // -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnHTMLFilterProperties
+// PURPOSE :: returns HTML filter properties
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN :: std::string html formatted filter properties
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnHTMLFilterProperties()
+{
+	// start our html return out right
+	std::string htmlString = "<html><head></head><body>";
+
+    // output all positive filter keywords
+	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
+	{
+	    // print all positive filter keywords
+		for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)
+		{
+			//DiscursivePrint("--%s: %s\n",j->keyPropertyName.c_str(),j->keyPropertyValue.c_str());
+			if(j->keyPropertyName == "color")
+			{
+				// set a paragraph with color style of the filter color
+				htmlString += "<p style=\"color:";
+				htmlString += j->keyPropertyValue.c_str();
+				htmlString += "\">";
+				htmlString += i->keyName.c_str();
+				htmlString += " : ";
+				htmlString += j->keyPropertyValue.c_str();
+				htmlString += "</p>\n";
+			}
+		}
+	}
+
+	// close out our html correctly
+	htmlString += "</body></html>";
+
+	return htmlString;
+}
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnXMLFilterProperties
+// PURPOSE :: return XML filter properties
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN :: std::string xml formatted filter properties
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnXMLFilterProperties()
+{
+	// storage for our XML string to return
+	std::string xmlString = "";
+
+	// format xml string like <input_filter>.cpp,Makefile<alt_color>blue</alt_color><type>source files</type></input_filter>
+    // print all positive filter keywords
+	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
+	{
+		xmlString += "<input_filter>";
+		xmlString += i->keyName.c_str();
+
+	    // print all positive filter keywords
+		for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)
+		{
+			// new tag
+			xmlString += "<";
+			xmlString += j->keyPropertyName.c_str();
+			xmlString += ">";
+
+			// tag value
+			xmlString += j->keyPropertyValue.c_str();
+
+			// closing tag
+			xmlString += "</";
+			xmlString += j->keyPropertyName.c_str();
+			xmlString += ">";
+		}
+		xmlString += "</input_filter>\n";
+	}
+	return xmlString;
+}
+
+// -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ReturnColorMap
 // PURPOSE :: returns the color map
 //         ::
