@@ -815,12 +815,12 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
 	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
 		int searchForItem = 0;
-		found = searchKey.find(i->keyName);
-		if(found != std::string::npos)
+		if(isFile)
 		{
-			searchForItem = 1;
-			if(isFile)
+			found = searchKey.find(i->keyName);
+			if(found != std::string::npos)
 			{
+				searchForItem = 1;
 				size_t keyNameSize = i->keyName.size();
 				size_t searchKeySize = searchKey.size();
 				if((searchKeySize - found) != keyNameSize)
@@ -829,6 +829,7 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
 				}
 			}
 		}
+
 		if(searchForItem != 0)
 		{
 		    // add all properties to surrogatetreenode
