@@ -6,6 +6,8 @@
  */
 
 #include "configuration_agent.h"
+#include <iomanip>
+#include <cmath>
 extern DiscursiveDebugAgent debugAgent;
 
 // -------------------------------------------------------------------------
@@ -937,21 +939,132 @@ std::string ConfigurationAgent::deriveNewColor()
 	// storage space for hexified color string
 	std::stringstream localColorString;
 
-	// hex symbol
-	localColorString << "#";
+	// storage space for the furthest mathematically from other colors
+	std::stringstream furthestLocalColorString;
 
-	// currently random, soon to be distance vector
-	// in color space?
+	//our strings are in hex mode
+	localColorString << std::hex << std::setfill('0');
+	furthestLocalColorString << std::hex << std::setfill('0');
 
-	// add 6 random numbers to string
-	for(int i = 0;i<6;i++)
+	// colorspace search timeout variable
+	int searchTimeout = 100;
+
+	// storage for distance metric
+	double distance = 0;
+	double bestDistance = 0;
+
+	while(searchTimeout > 0)
 	{
-		localColorString << rand() %8;
+		// add 6 random numbers to string
+		for(int i = 0;i<6;i++)
+		{
+			localColorString << std::setw(1) << rand() %16;
+		}
+
+		distance = minDistanceFromColorMap(localColorString.str());
+
+		if(distance > bestDistance)
+		{
+			bestDistance = distance;
+			furthestLocalColorString.str("");
+			furthestLocalColorString.clear();
+			furthestLocalColorString << std::hex << std::setfill('0');
+			furthestLocalColorString << localColorString.str();
+		}
+
+		//decrement search timeout and clear color
+		searchTimeout--;
+		localColorString.str("");
+		localColorString.clear();
+		localColorString << std::hex << std::setfill('0');
+	}
+	// return the string
+	return "#" + furthestLocalColorString.str();
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::minDistanceFromColorMap
+// PURPOSE :: return minimum distance of a color from colormap
+//         ::
+//         ::
+// PARAMETERS :: std::string color
+// RETURN :: double minimum distance
+// -------------------------------------------------------------------------
+double ConfigurationAgent::minDistanceFromColorMap(std::string color)
+{
+	// init distance and minDistance storage
+	double distance = 0;
+	double minDistance = 9999;
+
+	// loop over color map and find minimum distance from colors
+	for(unordered_map<std::string,Magick::Color*>::iterator itr = colorMap->begin();itr!=colorMap->end();++itr)
+	{
+		distance = colorDistance(itr->first,color);
+		if(distance < minDistance)
+		{
+			minDistance = distance;
+		}
 	}
 
-	// return the string
-	return localColorString.str();
+	return minDistance;
 };
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::colorDistance
+// ATTRIB :: basic algorithm based on math from http://www.compuphase.com/cmetric.htm
+// PURPOSE :: return distance between 2 hex colors
+//         ::
+//         ::
+// PARAMETERS :: std::string color1, std::string color2
+// RETURN :: double distance between colors
+// -------------------------------------------------------------------------
+double ConfigurationAgent::colorDistance(std::string color1, std::string color2)
+{
+	// storage for our RGB values
+	long r1,r2,g1,g2,b1,b2;
+
+	// convert color1
+	r1 = hexStringToLong(color1.substr(1,2));
+	g1 = hexStringToLong(color1.substr(3,2));
+    b1 = hexStringToLong(color1.substr(5,2));
+
+	// convert color2
+	r2 = hexStringToLong(color2.substr(1,2));
+	g2 = hexStringToLong(color2.substr(3,2));
+    b2 = hexStringToLong(color2.substr(5,2));
+
+	// return the sqrt mean distance between two colors
+	long rmean = ( r1 + r2 ) / 2;
+	long r = r1 - r2;
+	long g = g1 - g2;
+	long b = b1 - b2;
+	return sqrt((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8));
+};
+
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::hexStringToLongm
+// PURPOSE :: converts hex string to long
+//         ::
+//         ::
+// PARAMETERS :: std::string hexString - string to convert
+// RETURN :: double distance between colors
+// -------------------------------------------------------------------------
+long ConfigurationAgent::hexStringToLong(std::string hexString)
+{
+	// stringstream to convert string hex to long value
+	std::stringstream hexConverter;
+
+	// storage for return value
+	long retValue;
+
+    // convert  hex string to int with SS
+	hexConverter << std::hex << hexString;
+	hexConverter >> retValue;
+	return retValue;
+};
+
+
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::PrintFilterProperties

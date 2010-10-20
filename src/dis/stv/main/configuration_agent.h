@@ -109,6 +109,12 @@ private:
 	// private function for returning a generative color string
 	std::string returnGenerativeColor(std::string searchKey);
 
+	// private function for returning the distance between two color strings
+	double colorDistance(std::string color1, std::string color2);
+
+	// private function to convert hex strings to longs
+	long hexStringToLong(std::string hexString);
+
 
 public:
 	ConfigurationAgent();
@@ -126,6 +132,7 @@ public:
 	int DoesThisStringContainFilterKeywords(std::string textualData);
 	void AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNode,std::string searchKey);
 	void PrintFilterProperties();
+	double minDistanceFromColorMap(std::string color);
 	
 	// color cache and lookup functions
 	unordered_map<std::string,Magick::Color*>* getColorMap();
