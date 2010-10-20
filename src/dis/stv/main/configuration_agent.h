@@ -15,13 +15,12 @@
 #include "../io/repository_access.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
-
-
-#define xtod(c) ((c>='0' && c<='9') ? c-'0' : ((c>='A' && c<='F') ? c-'A'+10 : ((c>='a' && c<='f') ? c-'a'+10 : 0)))
 
 
 class filterKeyProperty
@@ -81,6 +80,9 @@ private:
 	std::vector<filterKeystoreItem> filterKeyStore;
 	std::vector<std::string> inverseFilterKeyStore;
 
+	// should we generate filters ?
+	int generativeFilters;
+
 	// should we draw filtered leaves?
 	int drawFilteredLeaves;
 
@@ -104,6 +106,9 @@ private:
 	void ParseInverseKeywords(std::string inverseKeywords);
 	void SetInputFilters(xmlDoc *doc,xmlNode *cur_node, std::string filterNames);
 
+	// private function for returning a generative color string
+	std::string returnGenerativeColor(std::string searchKey);
+
 
 public:
 	ConfigurationAgent();
@@ -126,6 +131,7 @@ public:
 	unordered_map<std::string,Magick::Color*>* getColorMap();
 	int cacheColor(std::string colorString);
 	RepositoryAccess* initializeRepositoryType();
+	std::string deriveNewColor();
 
 };
 

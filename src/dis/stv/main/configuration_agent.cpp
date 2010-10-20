@@ -30,6 +30,10 @@ ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,
 	// agentName equates to the passed command line parameter argument string
 	agentName.clear();
 
+	// our sranded randomizer token, called once
+	/* initialize random seed: */
+	srand(time(NULL));
+
 	// config file name defaults to ./simple_tree.config
 	configFileName = "./simple_tree.config";
 	
@@ -77,6 +81,9 @@ ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,
 
 	// draw filtered leaves?
 	drawFilteredLeaves = 0;
+
+	// generate filters?
+	generativeFilters = 0;
 
 };
 
@@ -518,6 +525,10 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		drawFilteredLeaves = atoi(optionValue.c_str());
 	}
+	else if(optionName == "generative_filters")
+	{
+		generativeFilters = atoi(optionValue.c_str());
+	}
 	else if(optionName == "default_leaf_color")
 	{
 		defaultLeafColor = optionValue;
@@ -835,14 +846,112 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
 	{
 		if(isFile)
 		{
-			treeNode->set("color",returnDefaultLeafColor());
+			if(generativeFilters == 1)
+			{
+				treeNode->set("color",returnGenerativeColor(searchKey));
+			}
+			else if(generativeFilters == 0)
+			{
+				treeNode->set("color",returnDefaultLeafColor());
+			}
 		}
 		else
 		{
 			treeNode->set("color",returnDefaultTrunkColor());
 		}
 	}
-}
+};
+
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnGenerativeColor
+// PURPOSE :: returns a color for the type of file passed in
+//         :: files with no extension get their own filter
+//         ::
+// PARAMETERS :: std::string searchKey - the filename
+// RETURN :: std::string (color) - the stringified color value
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnGenerativeColor(std::string searchKey)
+{
+	// test if this searchKey matches any known keywords
+	int filterFound = DoesThisStringContainFilterKeywords(searchKey);
+
+	// generative color to be returned
+	std::string generatedColor = returnDefaultLeafColor();
+
+	// if we have no matches, we're going to do the following
+	// 1.  derive a new filter
+	// 2.  derive a new color
+	// 3.  add the new filter with derived color
+	if(filterFound <= 0)
+	{
+		// derive a new filter
+		// a filter is a filter key, and a key property
+		filterKeystoreItem singleFKI;
+
+		// set the key property with a random color
+		filterKeyProperty singleFKP;
+		singleFKP.keyPropertyName = "color";
+
+		// derive a new color and cache it
+		generatedColor = deriveNewColor();
+		cacheColor(generatedColor);
+		singleFKP.keyPropertyValue = generatedColor;
+
+		// search for a period
+		size_t periodSearch = searchKey.find(".");
+
+		// if there is no period, the whole search key is the filter
+		// else the filter is the extension
+		if(periodSearch != std::string::npos)
+		{
+			singleFKI.keyName = searchKey.substr(periodSearch,(searchKey.size()-periodSearch));
+		}
+		else
+		{
+			singleFKI.keyName = searchKey;
+		}
+
+		// add the color property to the properties list
+		singleFKI.keyProperties.push_back(singleFKP);
+
+		// add the new filter with derived color to master list
+		filterKeyStore.push_back(singleFKI);
+	}
+
+	// return the color generated
+	DiscursiveDebugPrint("color","Returning Generated Color:%s\n",generatedColor.c_str());
+	return generatedColor;
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::deriveNewColor
+// PURPOSE :: derives a new color
+//         ::
+//         ::
+// PARAMETERS :: none
+// RETURN :: stringified color
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::deriveNewColor()
+{
+	// storage space for hexified color string
+	std::stringstream localColorString;
+
+	// hex symbol
+	localColorString << "#";
+
+	// currently random, soon to be distance vector
+	// in color space?
+
+	// add 6 random numbers to string
+	for(int i = 0;i<6;i++)
+	{
+		localColorString << rand() %8;
+	}
+
+	// return the string
+	return localColorString.str();
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::PrintFilterProperties
