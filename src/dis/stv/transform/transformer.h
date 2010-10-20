@@ -8,6 +8,7 @@
 #ifndef TRANSFORMER_H_
 #define TRANSFORMER_H_
 
+#include <math.h>
 #include "../model/surrogate_tree_node.h"
 
 class Transformer
