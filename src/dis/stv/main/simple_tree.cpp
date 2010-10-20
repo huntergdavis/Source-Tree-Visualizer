@@ -232,7 +232,13 @@ int main(int argc, char **argv)
 	timerAgent.Toc("Entire SourceTreeVis Program");
 
 	// print out a legend, if necessary
-	configAgent.PrintFilterProperties();
+	//configAgent.PrintFilterProperties();
+
+	// print the filter legend as xml
+	DiscursiveDebugPrint("xml,filter_output","%s\n",configAgent.returnXMLFilterProperties().c_str());
+
+	// print the filter legend as html
+	DiscursiveDebugPrint("html,filter_output","%s\n",configAgent.returnHTMLFilterProperties().c_str());
 
 	// print out running totals for all times
 	timerAgent.PrintRunningTotals();
