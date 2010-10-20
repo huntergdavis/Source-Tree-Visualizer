@@ -562,6 +562,10 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 		{
 			agentType = 5;
 		}
+		else if(optionValue == "filesystem")
+		{
+			agentType = 6;
+		}
 		else
 		{
 			DiscursiveError("Wrong repository type: %s\n",optionValue.c_str());
@@ -718,6 +722,7 @@ RepositoryAccess* ConfigurationAgent::initializeRepositoryType()
 		case 2:
 		case 3:
 		case 4:
+		case 6:
 			DiscursiveDebugPrint("configuration,agents","%s\n",agentName.c_str());
 			return noninteractive_agent(agentType, agentName);
 			break;
@@ -876,10 +881,30 @@ void ConfigurationAgent::AddFilterPropertiesToTreeNode(SurrogateTreeNode* treeNo
 std::string ConfigurationAgent::returnGenerativeColor(std::string searchKey)
 {
 	// test if this searchKey matches any known keywords
-	int filterFound = DoesThisStringContainFilterKeywords(searchKey);
+	int filterFound;
 
 	// generative color to be returned
 	std::string generatedColor = returnDefaultLeafColor();
+
+	// search key to use
+	std::string actualSearchKey = searchKey;
+
+	// search for a period
+	size_t periodSearch = actualSearchKey.find(".");
+
+	// if no period, then no filetype, and use blank filetype
+	// if there is no period, the whole search key is the filter
+	// else the filter is the extension
+	if(periodSearch != std::string::npos)
+	{
+		actualSearchKey = searchKey.substr(periodSearch,(searchKey.size()-periodSearch));
+		filterFound  = DoesThisStringContainFilterKeywords(actualSearchKey);
+	}
+	else
+	{
+		actualSearchKey = "__FILES_WITH_NO_EXTENSIONS__";
+		filterFound = DoesThisStringContainFilterKeywords(actualSearchKey);
+	}
 
 	// if we have no matches, we're going to do the following
 	// 1.  derive a new filter
@@ -899,20 +924,7 @@ std::string ConfigurationAgent::returnGenerativeColor(std::string searchKey)
 		generatedColor = deriveNewColor();
 		cacheColor(generatedColor);
 		singleFKP.keyPropertyValue = generatedColor;
-
-		// search for a period
-		size_t periodSearch = searchKey.find(".");
-
-		// if there is no period, the whole search key is the filter
-		// else the filter is the extension
-		if(periodSearch != std::string::npos)
-		{
-			singleFKI.keyName = searchKey.substr(periodSearch,(searchKey.size()-periodSearch));
-		}
-		else
-		{
-			singleFKI.keyName = searchKey;
-		}
+		singleFKI.keyName = actualSearchKey;
 
 		// add the color property to the properties list
 		singleFKI.keyProperties.push_back(singleFKP);

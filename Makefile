@@ -51,6 +51,7 @@ SOURCES = src/dis/stv/system/discursive_error.cpp \
 	src/dis/stv/io/svn_remote_repository_access.cpp \
 	src/dis/stv/io/cvs_remote_repository_access.cpp \
 	src/dis/stv/io/github_repository_access.cpp \
+	src/dis/stv/io/filesystem_repository_access.cpp \
 	src/dis/stv/gen/space_colonizer.cpp \
 	src/dis/stv/gen/colonization_leader.cpp \
 	src/dis/stv/gen/digitizer_factory.cpp \

@@ -17,6 +17,7 @@ RepositoryAccess*  interactive_agent()
 	cout << "\n4==http://hkit.googlecode.com/svn/trunk/\n5==any SVN url";
 	cout << "\n6==pserver:anonymous@bnetd.cvs.sourceforge.net:/cvsroot/bnetd";
 	cout << "\n7==any CVS url\n";
+	cout << "\n8==any filesystem uri\n";
 	int answer = 0;
 	cin >> answer;
 	RepositoryAccess* git;
@@ -63,6 +64,13 @@ RepositoryAccess*  interactive_agent()
 		cin >> cvsRepoBuffer;
 		git = new CvsRemoteRepositoryAccess(cvsRepoBuffer);
 	}
+	else if(answer == 8)
+	{
+		char fSRepoBuffer[255];
+		cout << "\nEnter a qualified FS like /home/programmer/source_tree_vis/\n";
+		cin >> fSRepoBuffer;
+		git = new FileSystemRepositoryAccess(fSRepoBuffer);
+	}
 	return git;
 }
 
@@ -91,6 +99,10 @@ RepositoryAccess* noninteractive_agent(int agentType, std::string agentString)
 	else if(agentType == 4)
 	{
 		git = new CvsRemoteRepositoryAccess(agentString);
+	}
+	else if(agentType == 6)
+	{
+		git = new FileSystemRepositoryAccess(agentString);
 	}
 	return git;
 }

@@ -173,7 +173,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	std::string fileNameString;
 
 	// previous filename storage for SVN lexical issues
-	std::string previousNameString;
+	std::string previousNameString = "";
 
 	// update either local revisions or global revisions
 	if(revTarget > 0)

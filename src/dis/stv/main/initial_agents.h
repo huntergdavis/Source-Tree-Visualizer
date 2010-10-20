@@ -13,7 +13,7 @@
 #include "../io/github_repository_access.h"
 #include "../io/svn_remote_repository_access.h"
 #include "../io/cvs_remote_repository_access.h"
-
+#include "../io/filesystem_repository_access.h"
 
 RepositoryAccess* interactive_agent();
 RepositoryAccess* noninteractive_agent(int agentType, std::string agentString);
