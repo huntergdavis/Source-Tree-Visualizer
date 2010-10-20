@@ -134,15 +134,6 @@ int FileSystemRepositoryAccess::parseLog(SurrogateTreeNode* tree)
 		// ignore the root . directory
 		if((fileNameLine != ".") && (fileNameLine != " \n"))
 		{
-			//fileNameLine = fileNameLine.substr(2,fileNameLine.size()-2);
-
-			// clear out any intro slashes
-			//if(fileNameLine.find("/") == 0)
-			//{
-			//	fileNameLine = fileNameLine.substr(1,fileNameLine.size()-1);
-			//}
-
-
 			// we need to check if the previous name string fully contained in our string
 			// if so, it's a directory and should be removed before we add the new items
 			// this clears out the empty 'file' directory
@@ -156,23 +147,25 @@ int FileSystemRepositoryAccess::parseLog(SurrogateTreeNode* tree)
 
 			// find the creation date for the file
 			long dateEpoch = getFileCreationDate("/" + fileNameLine);
+			if(dateEpoch > -1)
+			{
+				if((insertTarget > 0) && (localInserts < insertTarget))
+				{
+					localInserts++;
+					InsertByPathName(tree,fileNameLine,dateEpoch,1);
+				}
+				if((revTarget > 0) && (localRevs < revTarget))
+				{
+					InsertByPathName(tree,fileNameLine,dateEpoch,1);
+				}
+				if((insertTarget == 0) && (revTarget == 0))
+				{
+					globalInserts++;
+					InsertByPathName(tree,fileNameLine,dateEpoch,1);
+				}
 
-			if((insertTarget > 0) && (localInserts < insertTarget))
-			{
-				localInserts++;
-				InsertByPathName(tree,fileNameLine,dateEpoch,1);
+				previousNameString = fileNameLine + "/";
 			}
-			if((revTarget > 0) && (localRevs < revTarget))
-			{
-				InsertByPathName(tree,fileNameLine,dateEpoch,1);
-			}
-			if((insertTarget == 0) && (revTarget == 0))
-			{
-				globalInserts++;
-				InsertByPathName(tree,fileNameLine,dateEpoch,1);
-			}
-
-			previousNameString = fileNameLine + "/";
 		}
 	}
 	return 1;
@@ -201,7 +194,8 @@ long FileSystemRepositoryAccess::getFileCreationDate(std::string fileNameString)
 	}
 	else
 	{
-	  DiscursiveError("Cannot stat file %s\n",fileNameString.c_str());
+	  //DiscursiveError("Cannot stat file %s\n",fileNameString.c_str());
+		ourFileCreationDate = -1;
 	}
 
 	// return the date
