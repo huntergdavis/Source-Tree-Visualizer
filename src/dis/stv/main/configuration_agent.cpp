@@ -890,7 +890,7 @@ std::string ConfigurationAgent::returnGenerativeColor(std::string searchKey)
 	std::string actualSearchKey = searchKey;
 
 	// search for a period
-	size_t periodSearch = actualSearchKey.find(".");
+	size_t periodSearch = actualSearchKey.rfind(".");
 
 	// if no period, then no filetype, and use blank filetype
 	// if there is no period, the whole search key is the filter
