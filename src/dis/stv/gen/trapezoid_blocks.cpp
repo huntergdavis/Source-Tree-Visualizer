@@ -700,10 +700,13 @@ double TrapezoidBlocks::leafSpacing(int depth, int leaves, double growthUnit)
 //	if(atoi(source->data[TreeNodeKey::DEPTH].c_str()) > FINAL_BRANCH + 1)
 	if(depth > FINAL_BRANCH)
 	{
-		double leavesPerBranch = 5.0;
+		double leavesPerBranch = 15.0;
 		double leafBranchSpacing = 2 * growthUnit;
 //		branchSpacer = ceil(((source->children->size() / leavesPerBranch) + 1) * leafBranchSpacing);
 		branchSpacer = ceil(((leaves / leavesPerBranch) + 1) * leafBranchSpacing);
+
+		// Spoof
+		branchSpacer = 2 * leafBranchSpacing;
 	}
 	return branchSpacer;
 }
@@ -728,7 +731,7 @@ void TrapezoidBlocks::finalizeLeader(TrapezoidLeader* leader)
 //	fflush(stdout);
 	double lengthPerLeaf = 20.0;
 	int leaves = leader->leaves->size();
-	this->drawBranches(leader,5,lengthPerLeaf);
+	this->drawBranches(leader,15,lengthPerLeaf);
 
 
 	SurrogateTreeNode* source = leader->getSourceSet();

@@ -326,7 +326,7 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 		// This uses full child node count and not 'leaves'
 		// because of a calc issue in TrapezoidBlocks
 //		length += (ceil(leaves / 5.0) + 1) * (2 * this->growthUnit);
-		length += (ceil(tree->children->size() / 5.0) + 1) * (2 * this->growthUnit);
+		length += (ceil(tree->children->size() / 15.0) + 1) * (2 * this->growthUnit);
 
 		// Transform positions to arc
 		//double arcRadius = 2.0 * maxChild * this->growthUnit;
