@@ -86,7 +86,7 @@ void SpatialDisplacementClustering::cluster(SurrogateTreeNode* tree, double imba
 		// If we need to cluster
 		if(this->shouldCluster(maxChild, numToCluster, avg, stddev, imbalanceThreshold))
 		{
-			printf("Decision made to cluster '%s' with <%d, %d, %f, %f, %f>\n", tree->data[TreeNodeKey::NAME].c_str(), maxChild, numToCluster, avg, stddev, imbalanceThreshold);
+			DiscursiveDebugPrint("sdc cluster","Decision made to cluster '%s' with <%d, %d, %f, %f, %f>\n", tree->data[TreeNodeKey::NAME].c_str(), maxChild, numToCluster, avg, stddev, imbalanceThreshold);
 			// Holds new child set for clustered old children
 			vector<SurrogateTreeNode*> clustered;
 			SurrogateTreeNode* currentNode = NULL;
@@ -103,7 +103,7 @@ void SpatialDisplacementClustering::cluster(SurrogateTreeNode* tree, double imba
 				if(childSize == maxChild || node->children->size() == 0)
 				{
 					clustered.push_back(node);
-					printf("-- Pushed non-clusterable item\n");
+					DiscursiveDebugPrint("sdc cluster","-- Pushed non-clusterable item\n");
 				}
 				else
 				{
@@ -119,7 +119,7 @@ void SpatialDisplacementClustering::cluster(SurrogateTreeNode* tree, double imba
 					currentNodeSize += childSize;
 					if(currentNodeSize >= clusterTarget && currentNode->children->size() > 1)
 					{
-						printf("-- New cluster of size %d/%d and color '%s'\n", currentNode->children->size(), currentNodeSize,currentNode->data[TreeNodeKey::COLOR].c_str());
+						DiscursiveDebugPrint("sdc cluster","-- New cluster of size %d/%d and color '%s'\n", currentNode->children->size(), currentNodeSize,currentNode->data[TreeNodeKey::COLOR].c_str());
 
 						currentNode->set(TreeNodeKey::SIZE,currentNodeSize);
 						clustered.push_back(currentNode);
@@ -131,7 +131,7 @@ void SpatialDisplacementClustering::cluster(SurrogateTreeNode* tree, double imba
 			// If there is an incomplete node, add it to new child set
 			if(currentNode != NULL)
 			{
-				printf("-- New cluster of size %d/%d and color '%s'\n", currentNode->children->size(), currentNodeSize,currentNode->data[TreeNodeKey::COLOR].c_str());
+				DiscursiveDebugPrint("sdc cluster","-- New cluster of size %d/%d and color '%s'\n", currentNode->children->size(), currentNodeSize,currentNode->data[TreeNodeKey::COLOR].c_str());
 				currentNode->set(TreeNodeKey::SIZE,currentNodeSize);
 				clustered.push_back(currentNode);
 				currentNode = NULL;
@@ -326,7 +326,7 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 		// This uses full child node count and not 'leaves'
 		// because of a calc issue in TrapezoidBlocks
 //		length += (ceil(leaves / 5.0) + 1) * (2 * this->growthUnit);
-		length += (ceil(tree->children->size() / 5.0) + 1) * (2 * this->growthUnit);
+		length += (ceil(tree->children->size() / 15.0) + 1) * (2 * this->growthUnit);
 
 		// Transform positions to arc
 		//double arcRadius = 2.0 * maxChild * this->growthUnit;
