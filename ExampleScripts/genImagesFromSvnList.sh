@@ -15,7 +15,7 @@ do
    	REPO="$i";
 	else
    	NAME="$i";
-	./bin/simple_tree -S $REPO -o $NAME
+	./bin/simple_tree -S $REPO -o $NAME.png
 	fi
 done
 
