@@ -280,6 +280,7 @@ void GitHubRepositoryAccess::parseDetailedGitHubBlock(SurrogateTreeNode* treeRes
 			}
 			if((revTarget > 0) && (localRevs < revTarget))
 			{
+				localInserts++;
 				if(deletedFileMode > -1)
 				{
 					RemoveByPathName(treeResult,fileNameString);

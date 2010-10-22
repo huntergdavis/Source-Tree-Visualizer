@@ -131,6 +131,7 @@ void GitRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, long time, std
 			}
 			if((revTarget > 0) && (localRevs < revTarget))
 			{
+				localInserts++;
 				if(gitStatus == 1)
 				{
 					InsertByPathName(tree,fileNameString,time,1);

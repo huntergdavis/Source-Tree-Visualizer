@@ -73,6 +73,7 @@ int main(int argc, char **argv)
 	git->revTarget = 0;
 	git->currentTreeSize = 0;
 	git->logGenerated = 0;
+	
 
 	// retrieve our source tree
 	DiscursiveDebugPrint("default","Retrieving From Server, Please Wait...\n");
@@ -103,6 +104,17 @@ int main(int argc, char **argv)
 
 	delete(git->source);
 	git->source = NULL;
+
+	// revjpgs can store previous known good canvas element
+	// this dramatically decreases processing speed
+	Image previousCanvas;
+	int previousInserts = 0;
+	if(configAgent.returnOptionByName("revJpgs"))
+	{
+		Image setPreviousCanvas(Geometry(git->imageWidth,git->imageHeight),"white");
+		setPreviousCanvas.matte(true);	
+		previousCanvas = setPreviousCanvas;
+	};
 
 	// create loop step variables generically for any jpg looping type
 	int loopStart = 0;
@@ -158,99 +170,136 @@ int main(int argc, char **argv)
 		git->source = git->retrieve();
 		git->source->set(TreeNodeKey::COLOR, configAgent.returnDefaultTrunkColor());
 
-		// Decorate surrogate tree nodes with locations
-		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
-		timerAgent.Tic("Decorating surrogate trees");
-		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_FULL_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
-		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
-		decorator->decorate(git->source);
-		timerAgent.Toc("Decorating surrogate trees");
+		// should we skip rendering?
+		bool skipRendering = 0;
+	
+		// if revjpgs
+		if(executeLoopType == 3)
+		{	
+			// if we're looping over revisions, we can re-use canvas
+			// if inserts are the same, use old canvas
+			//here we use old canvas
+			if(git->localInserts == previousInserts)
+			{
+				skipRendering = 1;
+				// actually generate a tree
+				timerAgent.Tic("actually generating image from canvas");
+				git->WriteJPGFromCanvas(&previousCanvas);
+				timerAgent.Toc("actually generating image from canvas");
 
-		// print an xml file of our last surrogate tree
-		timerAgent.Tic("Creating XML");
-		megaXmlString = git->source->returnXml();
-		timerAgent.Toc("Creating XML");
-
-		// Transform coordinates
-		DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
-		timerAgent.Tic("Transforming tree");
-		int transformerType = TransformFactory::IMAGE_MAGICK_TRANSFORMER;
-//		printf("Calling transform with (%d, %d, %p, %d, %d)\n",transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
-		TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.96*git->startHeight));
-		timerAgent.PrintToc("Transforming tree");
-
-		// Digitize decorated surrogate tree into line segment tree
-		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
-		timerAgent.Tic("Digitizing decorated trees into line segments");
-		int segmentLength = 1;
-		int digitizerType = DigitizerFactory::SIMPLE_TRAPEZOIDER;
-		unordered_map<string, Magick::Color*>* colorMap = configAgent.getColorMap();
-		Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,0);
-		digitizer->setColorMap(colorMap);
-		DrawableData* lines = digitizer->digitize(git->source);
-		timerAgent.Toc("Digitizing decorated trees into line segments");
-
-		// Draw tree
-		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
-		timerAgent.Tic("Drawing Tree with artist.draw");
+				// increment the output file numbering for any output files
+				configAgent.incrementOutputFileNumbering(loopStep);				
+			}
 		
-		// instantiate canvas and draw lines
-		Image canvas(Geometry(git->startWidth,git->startHeight),"white");
-		canvas.matte(true);
-		if(useBackgroundImage == 1)
-		{
-			timerAgent.Tic("Background Image to Canvas Memory Copy");
-			canvas = backgroundImage;
-			timerAgent.Toc("Background Image to Canvas Memory Copy");
-		}
-		TrapezoidArtist artist;
-		artist.draw(canvas, lines);
-		timerAgent.Toc("Drawing Tree with artist.draw");
-
-		// Transform image
-		DiscursivePrint("Transforming image of size %d x %d to create %d x %d image\n",git->startWidth,git->startHeight,git->imageWidth, git->imageHeight);
-		timerAgent.Tic("Transforming image");
-		transformerType = TransformFactory::IMAGE_RESIZE_TRANSFORMER;
-		TransformFactory::transform(transformerType,3,&canvas,git->imageWidth,git->imageHeight);
-		timerAgent.PrintToc("Transforming image");
-
-
-		if( !configAgent.returnWaterMarkFileName().empty() )
-		{
-			// Draw watermark
-			try
-			{
-				Image watermark;
-				watermark.read( configAgent.returnWaterMarkFileName() );
-				const Geometry wgeom = watermark.size();
-				Geometry geom = canvas.size();
-				canvas.composite(watermark,geom.width() - wgeom.width(), geom.height() - wgeom.height(), OverCompositeOp);
-			}
-			catch(Exception &err)
-			{
-				// Couldn't load watermark, ignore.
-				DiscursiveDebugPrint("watermark","Error creating watermark: %s\n", err.what());
-			}
+		// set previous inserts after
+		previousInserts = git->localInserts;
 		}
 
-		// actually generate a tree
-		timerAgent.Tic("actually generating image from canvas");
-		std::string waterMarkFileName = configAgent.returnWaterMarkFileName();
-		git->WriteJPGFromCanvas(&canvas);
-		timerAgent.Toc("actually generating image from canvas");
+		// if we don't get to skip our rendering pipeline
+		// execute the rendering pipeline
+		if(skipRendering == 0)
+		{
+			// Decorate surrogate tree nodes with locations
+			DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
+			timerAgent.Tic("Decorating surrogate trees");
+			int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_FULL_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
+			Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
+			decorator->decorate(git->source);
+			timerAgent.Toc("Decorating surrogate trees");
 
-		// write out aux files if flags are set
-		timerAgent.Tic("writing html and xml images to files");
-		configAgent.writeXmlToFile();
-		timerAgent.Toc("writing html and xml images to files");
+			// print an xml file of our last surrogate tree
+			timerAgent.Tic("Creating XML");
+			megaXmlString = git->source->returnXml();
+			timerAgent.Toc("Creating XML");
 
-		// increment the output file numbering for any output files
-		configAgent.incrementOutputFileNumbering(loopStep);
+			// Transform coordinates
+			DiscursivePrint("Transforming coordinates to create %d x %d image\n",git->startWidth, git->startHeight);
+			timerAgent.Tic("Transforming tree");
+			int transformerType = TransformFactory::IMAGE_MAGICK_TRANSFORMER;
+	//		printf("Calling transform with (%d, %d, %p, %d, %d)\n",transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
+			TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.96*git->startHeight));
+			timerAgent.PrintToc("Transforming tree");
 
-		delete digitizer;
-		delete decorator;
+			// Digitize decorated surrogate tree into line segment tree
+			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
+			timerAgent.Tic("Digitizing decorated trees into line segments");
+			int segmentLength = 1;
+			int digitizerType = DigitizerFactory::SIMPLE_TRAPEZOIDER;
+			unordered_map<string, Magick::Color*>* colorMap = configAgent.getColorMap();
+			Digitizer* digitizer = DigitizerFactory::getInstance(digitizerType,0);
+			digitizer->setColorMap(colorMap);
+			DrawableData* lines = digitizer->digitize(git->source);
+			timerAgent.Toc("Digitizing decorated trees into line segments");
 
-		DiscursivePrint("\n");
+			// Draw tree
+			DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
+			timerAgent.Tic("Drawing Tree with artist.draw");
+			
+			// instantiate canvas and draw lines
+			Image canvas(Geometry(git->startWidth,git->startHeight),"white");
+			canvas.matte(true);
+			if(useBackgroundImage == 1)
+			{
+				timerAgent.Tic("Background Image to Canvas Memory Copy");
+				canvas = backgroundImage;
+				timerAgent.Toc("Background Image to Canvas Memory Copy");
+			}
+			TrapezoidArtist artist;
+			artist.draw(canvas, lines);
+			timerAgent.Toc("Drawing Tree with artist.draw");
+
+			// Transform image
+			DiscursivePrint("Transforming image of size %d x %d to create %d x %d image\n",git->startWidth,git->startHeight,git->imageWidth, git->imageHeight);
+			timerAgent.Tic("Transforming image");
+			transformerType = TransformFactory::IMAGE_RESIZE_TRANSFORMER;
+			TransformFactory::transform(transformerType,3,&canvas,git->imageWidth,git->imageHeight);
+			timerAgent.PrintToc("Transforming image");
+
+
+			if( !configAgent.returnWaterMarkFileName().empty() )
+			{
+				// Draw watermark
+				try
+				{
+					Image watermark;
+					watermark.read( configAgent.returnWaterMarkFileName() );
+					const Geometry wgeom = watermark.size();
+					Geometry geom = canvas.size();
+					canvas.composite(watermark,geom.width() - wgeom.width(), geom.height() - wgeom.height(), OverCompositeOp);
+				}
+				catch(Exception &err)
+				{
+					// Couldn't load watermark, ignore.
+					DiscursiveDebugPrint("watermark","Error creating watermark: %s\n", err.what());
+				}
+			}
+
+			// actually generate a tree
+			timerAgent.Tic("actually generating image from canvas");
+			std::string waterMarkFileName = configAgent.returnWaterMarkFileName();
+			git->WriteJPGFromCanvas(&canvas);
+			timerAgent.Toc("actually generating image from canvas");
+
+			// write out aux files if flags are set
+			timerAgent.Tic("writing html and xml images to files");
+			configAgent.writeXmlToFile();
+			timerAgent.Toc("writing html and xml images to files");
+
+			// increment the output file numbering for any output files
+			configAgent.incrementOutputFileNumbering(loopStep);
+			
+			// save canvas for revjpgs optimization
+			// if revjpgs
+			if(executeLoopType == 3)
+			{
+				previousCanvas = canvas;
+			}	
+
+			delete digitizer;
+			delete decorator;
+
+			DiscursivePrint("\n");
+		}
 	}
 
 	// write out aux files if flags are set

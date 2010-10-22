@@ -243,6 +243,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 			}
 			if((revTarget > 0) && (localRevs < revTarget))
 			{
+				localInserts++;
 				if(updateType == 1)
 				{
 					InsertByPathName(tree,fileNameString,dateEpoch,1);
