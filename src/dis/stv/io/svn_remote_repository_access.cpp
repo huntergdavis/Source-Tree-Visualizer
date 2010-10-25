@@ -191,11 +191,11 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 	int updateType = 0;
 	while (getline (svnTimeBlockSS, fileNameLine))
 	{
-		if((fileNameLine.find("A") == 3) || (fileNameLine.find("U") == 3) || (fileNameLine.find("G") == 3))
+		if((fileNameLine.find("A ") == 3) || (fileNameLine.find("U ") == 3) || (fileNameLine.find("G ") == 3))
 		{
 			updateType = 1;
 		}
-		if(fileNameLine.find("D") == 3)
+		if(fileNameLine.find("D ") == 3)
 		{
 			updateType = 2;
 		}
@@ -207,8 +207,7 @@ void SvnRemoteRepositoryAccess::parseTimeBlock(SurrogateTreeNode* tree, std::str
 			size_t lexicalFromTest = fileNameLine.find("(");
 			if(lexicalFromTest != std::string::npos)
 			{
-				fileNameString = fileNameLine.substr(5,(fileNameLine.size()-lexicalFromTest-5));
-
+				fileNameString = fileNameLine.substr(5,(fileNameLine.size()-(fileNameLine.size()-lexicalFromTest)-5));
 			}
 
 			// we need to check if the previous name string fully contained in our string
