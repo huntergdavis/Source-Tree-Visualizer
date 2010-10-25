@@ -459,7 +459,8 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 			    // set print mode as file (1 currently)
 				printMode = 1;
 				// set print filename as optarg
-				printModeFileName = optarg;
+				printModeFileName = "./out/";
+				printModeFileName += optarg;
 				break;
 			case 'p':
 				readConfigFromStdIn = 1;
@@ -666,7 +667,7 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	}
 	else if(optionName == "print_mode_filename")
 	{
-		printModeFileName = optionValue;
+		printModeFileName = "./out/" + optionValue;
 	}
 	else if(optionName == "print_mode")
 	{
