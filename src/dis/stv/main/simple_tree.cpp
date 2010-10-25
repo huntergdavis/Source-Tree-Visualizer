@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 		git->source->set(TreeNodeKey::COLOR, configAgent.returnDefaultTrunkColor());
 
 		// Decorate surrogate tree nodes with locations
-		DiscursiveDebugPrint("default","Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursivePrint("Decorating surrogate trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Decorating surrogate trees");
 		int decoratorType = DecoratorFactory::SPATIAL_DISPLACEMENT_FULL_CLUSTERING;  //SPATIAL_DISPLACEMENT_NAIVE;
 		Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
@@ -180,7 +180,7 @@ int main(int argc, char **argv)
 		timerAgent.PrintToc("Transforming tree");
 
 		// Digitize decorated surrogate tree into line segment tree
-		DiscursiveDebugPrint("default","Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Digitizing decorated trees into line segments");
 		int segmentLength = 1;
 		int digitizerType = DigitizerFactory::SIMPLE_TRAPEZOIDER;
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 		timerAgent.Toc("Digitizing decorated trees into line segments");
 
 		// Draw tree
-		DiscursiveDebugPrint("default","Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
+		DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
 		timerAgent.Tic("Drawing Tree with artist.draw");
 		
 		// instantiate canvas and draw lines
@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 		delete digitizer;
 		delete decorator;
 
-		DiscursiveDebugPrint("default","\n");
+		DiscursivePrint("\n");
 	}
 
 	// write out aux files if flags are set

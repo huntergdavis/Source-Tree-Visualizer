@@ -6,6 +6,7 @@
  */
 
 #include "./discursive_debug.h"
+#include "./discursive_error.h"
 
 extern DiscursiveDebugAgent debugAgent;
 
@@ -21,10 +22,29 @@ void DiscursiveDebugPrint(std::string debugKeyWords,std::string debugMessage,...
 {
 	if(debugAgent.doAnyKeywordsMatch(debugKeyWords) >= 0)
 	{
-		va_list args;
-		va_start( args, debugMessage );
-		vprintf(debugMessage.c_str(), args );
-		va_end( args );
+		int outputMode = debugAgent.GetOutputMode();
+		if(outputMode == 0)
+		{
+			va_list args;
+			va_start( args, debugMessage );
+			vprintf(debugMessage.c_str(), args );
+			va_end( args );
+		}
+		else if(outputMode == 1)
+		{
+			FILE * outFile;
+			std::string outputFileName = debugAgent.GetOutputFileName();
+			outFile = fopen (outputFileName.c_str(),"w");
+			va_list args;
+			va_start( args, debugMessage );
+			vfprintf(outFile,debugMessage.c_str(), args );
+			va_end( args );
+			fclose (outFile);
+		}
+		else if(outputMode == 2)
+		{
+			// do nothing for this one, literally ignore
+		}
 	}
 }
 
@@ -39,6 +59,83 @@ void DiscursiveDebugPrint(std::string debugKeyWords,std::string debugMessage,...
 // -------------------------------------------------------------------------
 DiscursiveDebugAgent::DiscursiveDebugAgent()
 {
+	// outputMode
+	outputMode = 0;
+
+	// output file name
+	outputFileName = "./out/log.log";
+};
+
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveDebugAgent::SetOutputFileName()
+// PURPOSE :: change stored output filename
+//         ::
+//         ::
+// PARAMETERS :: std::string newFileName - new file name
+// RETURN :: None
+// -------------------------------------------------------------------------
+void DiscursiveDebugAgent::SetOutputFileName(std::string newFileName)
+{
+	outputFileName = "./out/" + newFileName;
+
+};
+
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveDebugAgent::GetOutputFileName()
+// PURPOSE :: return stored output filename
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN :: std::string - file name
+// -------------------------------------------------------------------------
+std::string DiscursiveDebugAgent::GetOutputFileName()
+{
+	return outputFileName;
+};
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveDebugAgent::GetOutputMode()
+// PURPOSE :: return output mode, 0 = stdout
+//         :: 1 = file
+//         :: 2 = ignore
+// PARAMETERS ::
+// RETURN :: int - output mode
+// -------------------------------------------------------------------------
+int DiscursiveDebugAgent::GetOutputMode()
+{
+	return outputMode;
+}
+
+
+// -------------------------------------------------------------------------
+// API :: DiscursiveDebugAgent::SeteOutputMode()
+// PURPOSE :: change output mode, 0 = stdout
+//         :: 1 = file
+//         :: 2 = ignore
+// PARAMETERS :: std::String outputMode - textual name of output mode
+// RETURN :: None
+// -------------------------------------------------------------------------
+void DiscursiveDebugAgent::SetOutputMode(std::string outputModeName)
+{
+	if(outputModeName == "stdout")
+	{
+		outputMode = 0;
+	}
+	else if(outputModeName == "file")
+	{
+		outputMode = 1;
+	}
+	else if(outputModeName == "ignore")
+	{
+		outputMode = 2;
+	}
+	else
+	{
+		DiscursiveError("Invalid outputModeName %s",outputModeName.c_str());
+	}
+
 };
 
 // -------------------------------------------------------------------------

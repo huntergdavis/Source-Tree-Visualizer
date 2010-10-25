@@ -6,6 +6,8 @@
  */
 
 #include "./discursive_print.h"
+#include "../main/configuration_agent.h"
+extern ConfigurationAgent configAgent;
 
 // -------------------------------------------------------------------------
 // API :: DiscursivePrint
@@ -17,10 +19,33 @@
 // -------------------------------------------------------------------------
 void DiscursivePrint(std::string printMessage,...)
 {
+	int printMode = configAgent.returnOptionByName("printMode");
 
-	va_list args;
-	va_start( args, printMessage );
-	vprintf(printMessage.c_str(), args );
-	va_end( args );
+	if(printMode == 0)
+	{
+		va_list args;
+		va_start( args, printMessage );
+		vprintf(printMessage.c_str(), args );
+		va_end( args );
+	}
+	else if(printMode == 1)
+	{
+		FILE * outFile;
+		std::string outputFileName = configAgent.returnPrintModeFileName();
+		outFile = fopen (outputFileName.c_str(),"w");
+		va_list args;
+		va_start( args, printMessage );
+		vfprintf(outFile,printMessage.c_str(), args );
+		va_end( args );
+		fclose (outFile);
+	}
+	else if(printMode == 2)
+	{
+		// ignore 2 - it's the ignore flag
+	}
+	else
+	{
+		DiscursiveError("Incorrect Print Mode Set %d\n",printMode);
+	}
 }
 

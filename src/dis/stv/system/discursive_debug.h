@@ -22,12 +22,19 @@ class DiscursiveDebugAgent
 private:
 	std::vector<std::string> debugKeyStore;
 	void ParseDebugKeywords(std::string debugKeywords);
+	std::string outputFileName;
+	// outputMode, 0 = stdout, 1 = file, 2 = ignore
+	int outputMode;
 public:
 	DiscursiveDebugAgent();
 	DiscursiveDebugAgent(std::string debugKeywords);
 	~DiscursiveDebugAgent();
 	void AddDebugKeywords(std::string debugKeywords);
+	void SetOutputFileName(std::string newFileName);
+	void SetOutputMode(std::string outputModeName);
 	int doAnyKeywordsMatch(std::string debugKeywords);
+	std::string GetOutputFileName();
+	int GetOutputMode();
 };
 
 #endif /* DISCURSIVE_DEBUG_H_ */

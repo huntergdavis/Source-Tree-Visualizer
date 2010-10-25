@@ -73,8 +73,15 @@ ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,
 	// should we output html?
     htmlOutputToFile = 0;
 
-	// should we output html?
+	// should we output xml?
     xmlOutputToFile = 0;
+
+	// our print mode file name
+	printModeFileName = "./out/standardlog.txt";
+
+	// what is our standard output mode/model
+	// currently 0=stdout,1=file,2=ignore
+	printMode = 0;
 
 	// should we make many jpgs?
 	manyJpgs = 0;
@@ -169,6 +176,18 @@ std::string ConfigurationAgent::returnAgentName()
 std::string ConfigurationAgent::returnFileName()
 {
 	return fileName;
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnFileName
+// PURPOSE :: returns the file name
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnPrintModeFileName()
+{
+	return printModeFileName;
 };
 
 // -------------------------------------------------------------------------
@@ -787,9 +806,13 @@ int ConfigurationAgent::returnOptionByName(std::string optionName)
 	{
 		return indexOutputFiles;
 	}
+	else 	if(optionName == "printMode")
+	{
+		return printMode;
+	}
 	else
 	{
-		// rufus: what's your favorite number?
+		// B&TEA: Rufus: what's your favorite number?
 	    DiscursiveError("Failure to lookup key value" + optionName);
 		return -69;
 	}

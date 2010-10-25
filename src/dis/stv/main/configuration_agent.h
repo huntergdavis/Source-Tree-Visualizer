@@ -82,8 +82,17 @@ private:
 	// our config file name
 	std::string configFileName;
 	
+	// our print mode file name
+	std::string printModeFileName;
+
+	// what is our standard output mode/model
+	// currently 0=stdout,1=file,2=ignore
+	int printMode;
+
 	// should we read a config file in from stdin?
 	int readConfigFromStdIn;
+
+	// where should we write output to
 
 	// keystores - vectors of keyword and metatag pairs
 	std::vector<filterKeystoreItem> filterKeyStore;
@@ -144,6 +153,7 @@ public:
 	std::string returnFileName();
 	std::string returnHTMLFileName();
 	std::string returnXMLFileName();
+	std::string returnPrintModeFileName();
 	std::string returnBackgroundImageName();
 	std::string returnDefaultLeafColor();
 	std::string returnDefaultTrunkColor();
