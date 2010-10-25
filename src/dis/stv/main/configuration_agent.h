@@ -73,6 +73,12 @@ private:
 	std::string fileName;
 	int outputFileNumber;
 
+	// our html filename
+	std::string htmlFileName;
+
+	// our xml filename
+	std::string xmlFileName;
+
 	// our config file name
 	std::string configFileName;
 	
@@ -82,6 +88,12 @@ private:
 	// keystores - vectors of keyword and metatag pairs
 	std::vector<filterKeystoreItem> filterKeyStore;
 	std::vector<std::string> inverseFilterKeyStore;
+
+	// should we output html ?
+	int htmlOutputToFile;
+
+	// should we output xml ?
+	int htmlOutputToFile;
 
 	// should we generate filters ?
 	int generativeFilters;
@@ -127,6 +139,8 @@ public:
 	void parseConfigFile();
 	std::string returnAgentName();
 	std::string returnFileName();
+	std::string returnHTMLFileName();
+	std::string returnXMLFileName();
 	std::string returnBackgroundImageName();
 	std::string returnDefaultLeafColor();
 	std::string returnDefaultTrunkColor();

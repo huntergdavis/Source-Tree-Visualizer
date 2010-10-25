@@ -57,12 +57,18 @@ ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,
 	fileName = "tree.jpg";
 	outputFileNumber = 1000;
 	
+	// our html file name
+	htmlFileName = "tree.html";
+
 	// our background image name
 	backgroundImageName = "";
 	
 	// default color
 	defaultLeafColor = "black";
 	defaultTrunkColor = "brown";
+
+	// should we output html?
+    htmlOutputToFile = 0;
 
 	// should we make many jpgs?
 	manyJpgs = 0;
@@ -108,6 +114,8 @@ void ConfigurationAgent::displayUsage( void )
 	usage_string += "\n-i option - interactive mode (asks you questions) \n";
 	usage_string += "\n-d option - debug level, expects a debug keyword\n";
 	usage_string += "\n-b option - background image, expects an image filename\n";
+	usage_string += "\n-h option - html filename, expects an html filename\n";
+	usage_string += "\n-x option - xml filename, expects an xml filename\n";
 	usage_string += "\n-n option - image numbering value, defaults to 1000\n";
 	usage_string += "\n-o or -O option - output file name, defaults to tree.jpg\n";
 	usage_string += "\n-m option - output the creation of the current tree one step at a time via many .images in sequence\n";
@@ -154,6 +162,29 @@ std::string ConfigurationAgent::returnFileName()
 	return fileName;
 };
 
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnHTMLFileName
+// PURPOSE :: returns the file name
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnHTMLFileName()
+{
+	return htmlfileName;
+};
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnXMLFileName
+// PURPOSE :: returns the file name
+//         ::
+// PARAMETERS :: None
+// RETURN :: std::string fileName - name of file to output
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnXMLFileName()
+{
+	return xmlfileName;
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::returnFileName
@@ -340,7 +371,7 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node,std::str
 void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 {
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:h:x:ridh?";
 
 	// if a new config file is passed, parse it
 	bool newConfig = 0;
@@ -373,6 +404,14 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 				break;
 			case 'b':
 				backgroundImageName = optarg;
+				break;
+			case 'h':
+			    htmlOutputToFile = 1;
+				htmlFileName = optarg;
+				break;
+			case 'x':
+			    xmlOutputToFile = 1;
+				xmlFileName = optarg;
 				break;
 			case 'p':
 				readConfigFromStdIn = 1;
@@ -457,6 +496,19 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
     if(optionName == "file_name")
 	{
 		fileName = optionValue;
+	}
+	else if(optionName == "html_file_name")
+	{
+		htmlFileName = optionValue;
+	}
+	else if(optionName == "html_file_name")
+	{
+		htmlFileName = optionValue;
+		htmlOutputToFile = 1;
+	}
+	else if(optionName == "output_html_file")
+	{
+	    htmlOutputToFile = atoi(optionValue.c_str());
 	}
 	else if(optionName == "background_image")
 	{
@@ -693,6 +745,10 @@ int ConfigurationAgent::returnOptionByName(std::string optionName)
 	else 	if(optionName == "drawFilteredLeaves")
 	{
 		return drawFilteredLeaves;
+	}
+	else 	if(optionName == "htmlOutputToFile")
+	{
+		return htmlOutputToFile;
 	}
 	else
 	{
