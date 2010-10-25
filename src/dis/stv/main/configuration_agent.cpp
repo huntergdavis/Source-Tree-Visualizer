@@ -1291,7 +1291,7 @@ void ConfigurationAgent::writeXmlAndHtmlToFile()
 		{
 			integerPlusFileName << returnOptionByName("outputFileNumber");
 		}
-		integerPlusFileName << returnXMLFileName();
+		integerPlusFileName << returnHTMLFileName();
 		std::string htmlFileNameString = integerPlusFileName.str();
 
 		// write to disk using ofstream
@@ -1329,7 +1329,10 @@ void ConfigurationAgent::writeXmlAndHtmlToFile()
 // -------------------------------------------------------------------------
 void ConfigurationAgent::incrementOutputFileNumbering(int increment)
 {
-	outputFileNumber += increment;
+	if(returnOptionByName("indexOutputFiles") == 1)
+	{
+		outputFileNumber += increment;
+	}
 }
 
 // -------------------------------------------------------------------------
