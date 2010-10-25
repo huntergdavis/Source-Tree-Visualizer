@@ -220,7 +220,7 @@ int main(int argc, char **argv)
 
 		// write out aux files if flags are set
 		timerAgent.Tic("writing html and xml images to files");
-		configAgent.writeXmlAndHtmlToFile();
+		configAgent.writeXmlToFile();
 		timerAgent.Toc("writing html and xml images to files");
 
 		// increment the output file numbering for any output files
@@ -231,6 +231,11 @@ int main(int argc, char **argv)
 
 		DiscursiveDebugPrint("default","\n");
 	}
+
+	// write out aux files if flags are set
+	timerAgent.Tic("writing html and xml images to files");
+	configAgent.writeHtmlToFile();
+	timerAgent.Toc("writing html and xml images to files");
 
 	// print the latest XML
 	DiscursiveDebugPrint("xml","%s\n",megaXmlString.c_str());

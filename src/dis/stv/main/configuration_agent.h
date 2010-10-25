@@ -155,7 +155,9 @@ public:
 	std::string returnHTMLFilterProperties();
 	std::string returnXMLFilterProperties();
 	double minDistanceFromColorMap(std::string color);
-	
+
+	void writeXmlToFile();
+	void writeHtmlToFile();
 	void writeXmlAndHtmlToFile();
 	void incrementOutputFileNumbering(int increment);
 

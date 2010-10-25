@@ -1271,14 +1271,44 @@ std::string ConfigurationAgent::returnXMLFilterProperties()
 
 
 // -------------------------------------------------------------------------
-// API :: ConfigurationAgent::writeXmlAndHtmlToFile
-// PURPOSE :: writes html and xml files to disk if flags are set
+// API :: ConfigurationAgent::writeXmlToFile
+// PURPOSE :: writes xml files to disk if flags are set
 //         ::
 //         ::
 // PARAMETERS ::
 // RETURN ::
 // -------------------------------------------------------------------------
-void ConfigurationAgent::writeXmlAndHtmlToFile()
+void ConfigurationAgent::writeXmlToFile()
+{
+	// output xml to file
+	if(xmlOutputToFile == 1)
+	{
+		// return the xml string and file name string
+		std::string xmlString = returnXMLFilterProperties();
+		std::stringstream integerPlusFileName;
+		integerPlusFileName << "./out/";
+		if(returnOptionByName("indexOutputFiles") == 1)
+		{
+			integerPlusFileName << returnOptionByName("outputFileNumber");
+		}
+		integerPlusFileName << returnXMLFileName();
+		std::string xmlFileNameString = integerPlusFileName.str();
+
+		// write to disk using ofstream
+		std::ofstream xmlFile(xmlFileNameString.c_str(), std::ios_base::binary);
+		xmlFile << xmlString;
+	}
+}
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::writeHtmlToFile
+// PURPOSE :: writes html files to disk if flags are set
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN ::
+// -------------------------------------------------------------------------
+void ConfigurationAgent::writeHtmlToFile()
 {
 	// output html to file
 	if(htmlOutputToFile == 1)
@@ -1298,25 +1328,20 @@ void ConfigurationAgent::writeXmlAndHtmlToFile()
 		std::ofstream htmlFile(htmlFileNameString.c_str(), std::ios_base::binary);
 		htmlFile << htmlString;
 	}
+}
 
-	// output xml to file
-	if(xmlOutputToFile == 1)
-	{
-		// return the xml string and file name string
-		std::string xmlString = returnXMLFilterProperties();
-		std::stringstream integerPlusFileName;
-		integerPlusFileName << "./out/";
-		if(returnOptionByName("indexOutputFiles") == 1)
-		{
-			integerPlusFileName << returnOptionByName("outputFileNumber");
-		}
-		integerPlusFileName << returnXMLFileName();
-		std::string xmlFileNameString = integerPlusFileName.str();
-
-		// write to disk using ofstream
-		std::ofstream xmlFile(xmlFileNameString.c_str(), std::ios_base::binary);
-		xmlFile << xmlString;
-	}
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::writeXmlAndHtmlToFile
+// PURPOSE :: writes html and xml files to disk if flags are set
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN ::
+// -------------------------------------------------------------------------
+void ConfigurationAgent::writeXmlAndHtmlToFile()
+{
+	writeXmlToFile();
+	writeHtmlToFile();
 };
 
 // -------------------------------------------------------------------------
