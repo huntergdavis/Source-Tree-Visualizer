@@ -392,22 +392,26 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 	// split and push into global store
 	while(std::getline(ss, item, ','))
 	{
-		// push back the filter name
-		filterKeyProperty singleFKP;
-		singleFKP.keyPropertyName = "filter";
-		singleFKP.keyPropertyValue = item;
+		int filterFound  = DoesThisStringContainFilterKeywords(item);
+		if(filterFound <= 0)
+		{
+			// push back the filter name
+			filterKeyProperty singleFKP;
+			singleFKP.keyPropertyName = "filter";
+			singleFKP.keyPropertyValue = item;
 
 
-		// create a filter keystore item with all properties
-		filterKeystoreItem singleFKI;
-		singleFKI.keyName = item;
-		singleFKI.keyProperties = keyProperties;
+			// create a filter keystore item with all properties
+			filterKeystoreItem singleFKI;
+			singleFKI.keyName = item;
+			singleFKI.keyProperties = keyProperties;
 
-		// push back the specific filter name
-		singleFKI.keyProperties.push_back(singleFKP);
+			// push back the specific filter name
+			singleFKI.keyProperties.push_back(singleFKP);
 
-		// push keystore item with all properties onto main filter keystore
-		filterKeyStore.push_back(singleFKI);
+			// push keystore item with all properties onto main filter keystore
+			filterKeyStore.push_back(singleFKI);
+		}
 	}
 
 
