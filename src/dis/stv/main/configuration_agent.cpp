@@ -303,13 +303,15 @@ void ConfigurationAgent::parseConfigFile()
 		// loop over all our simple tree options
 		for (cur_node = cur_node; cur_node; cur_node = cur_node->next)
 		{
-		  if (cur_node->type == XML_ELEMENT_NODE) {
+		  if (cur_node->type == XML_ELEMENT_NODE)
+		  {
 			  char* nodeData;
 			  nodeData = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
 			  if(nodeData != NULL)
 			  {
 				  // input filter needs to test for all metatags
-				  if(strcmp((char*)cur_node->name,"input_filter") == 0)
+				  std::string inputFilterLookupString = (char*)cur_node->name;
+				  if(inputFilterLookupString.find("input_filter") != std::string::npos)
 				  {
 					  SetInputFilters(doc,cur_node->xmlChildrenNode);
 				  }
@@ -358,15 +360,18 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 	{
 	  if (cur_node->type == XML_ELEMENT_NODE)
 	  {
+
 			filterKeyProperty singleFKP;
 			singleFKP.keyPropertyName = (char*)cur_node->name;
 			singleFKP.keyPropertyValue = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
 			if(singleFKP.keyPropertyName == "color")
 			{
+
 				cacheColor(singleFKP.keyPropertyValue);
 			}
 			if(singleFKP.keyPropertyName == "filter")
 			{
+
 				filterNames = singleFKP.keyPropertyValue;
 			}
 
@@ -1321,7 +1326,7 @@ std::string ConfigurationAgent::returnXMLFilterProperties()
     // print all positive filter keywords
 	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
-		xmlString += "<input_filter>";
+		xmlString += "<input_filter>filter";
 
 		// keyName is now the <filter> tag
 		//xmlString += i->keyName.c_str();
