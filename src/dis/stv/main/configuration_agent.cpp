@@ -407,7 +407,7 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 {
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:H:x:b:f:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:H:x:B:f:ridh?";
 
 	// if a new config file is passed, parse it
 	bool newConfig = 0;
@@ -449,7 +449,7 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 			    xmlOutputToFile = 1;
 				xmlFileName = optarg;
 				break;
-			case 'b':
+			case 'B':
 			    // set debug type to file
 				debugAgent.SetOutputMode("file");
 				// set debug filename as optarg
