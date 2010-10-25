@@ -304,7 +304,6 @@ void ConfigurationAgent::parseConfigFile()
 		for (cur_node = cur_node; cur_node; cur_node = cur_node->next)
 		{
 		  if (cur_node->type == XML_ELEMENT_NODE) {
-			  DiscursiveDebugPrint("xml,configuration","node type: Element, name: %s\n node type: element, value %s\n", cur_node->name, xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1));
 			  char* nodeData;
 			  nodeData = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
 			  if(nodeData != NULL)
