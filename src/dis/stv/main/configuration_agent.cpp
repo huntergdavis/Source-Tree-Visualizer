@@ -293,7 +293,7 @@ void ConfigurationAgent::parseConfigFile()
 				  // input filter needs to test for all metatags
 				  if(strcmp((char*)cur_node->name,"input_filter") == 0)
 				  {
-					  SetInputFilters(doc,cur_node->xmlChildrenNode,nodeData);
+					  SetInputFilters(doc,cur_node->xmlChildrenNode);
 				  }
 				  else
 				  {
@@ -327,10 +327,13 @@ void ConfigurationAgent::parseConfigFile()
 //            :: std::string filterNames - current filter names
 // RETURN :: None
 // -------------------------------------------------------------------------
-void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node,std::string filterNames)
+void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 {
 	// create a temporary storage vector for filterProperties
 	std::vector<filterKeyProperty> keyProperties;
+
+	// temporary storage for the filter properties string
+	std::string filterNames;
 
 	// loop over node and look for meta tags to add
 	for (cur_node = cur_node; cur_node; cur_node = cur_node->next)
@@ -344,6 +347,11 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node,std::str
 			{
 				cacheColor(singleFKP.keyPropertyValue);
 			}
+			if(singleFKP.keyPropertyName == "filter")
+			{
+				filterNames = singleFKP.keyPropertyValue;
+			}
+
 			keyProperties.push_back(singleFKP);
 	  }
 	}
@@ -1014,6 +1022,12 @@ std::string ConfigurationAgent::returnGenerativeColor(std::string searchKey)
 		// add the color property to the properties list
 		singleFKI.keyProperties.push_back(singleFKP);
 
+
+		// add the value property to the properties list
+		singleFKP.keyPropertyName = "filter";
+		singleFKP.keyPropertyValue = actualSearchKey;
+		singleFKI.keyProperties.push_back(singleFKP);
+
 		// add the new filter with derived color to master list
 		filterKeyStore.push_back(singleFKI);
 	}
@@ -1246,7 +1260,9 @@ std::string ConfigurationAgent::returnXMLFilterProperties()
 	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
 		xmlString += "<input_filter>";
-		xmlString += i->keyName.c_str();
+
+		// keyName is now the <filter> tag
+		//xmlString += i->keyName.c_str();
 
 	    // print all positive filter keywords
 		for(std::vector<filterKeyProperty>::iterator j = i->keyProperties.begin(); j != i->keyProperties.end(); ++j)

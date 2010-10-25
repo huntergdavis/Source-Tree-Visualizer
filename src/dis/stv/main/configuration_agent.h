@@ -122,7 +122,7 @@ private:
 
 	// private functions for parsing filter keywords and properties
 	void ParseInverseKeywords(std::string inverseKeywords);
-	void SetInputFilters(xmlDoc *doc,xmlNode *cur_node, std::string filterNames);
+	void SetInputFilters(xmlDoc *doc,xmlNode *cur_node);
 
 	// private function for returning a generative color string
 	std::string returnGenerativeColor(std::string searchKey);
