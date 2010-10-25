@@ -407,7 +407,7 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 {
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:H:x:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:H:x:b:f:ridh?";
 
 	// if a new config file is passed, parse it
 	bool newConfig = 0;
@@ -448,6 +448,18 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 			case 'x':
 			    xmlOutputToFile = 1;
 				xmlFileName = optarg;
+				break;
+			case 'b':
+			    // set debug type to file
+				debugAgent.SetOutputMode("file");
+				// set debug filename as optarg
+				debugAgent.SetOutputFileName(optarg);
+				break;
+			case 'f':
+			    // set print mode as file (1 currently)
+				printMode = 1;
+				// set print filename as optarg
+				printModeFileName = optarg;
 				break;
 			case 'p':
 				readConfigFromStdIn = 1;
@@ -660,7 +672,7 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		if(optionValue == "stdout")
 		{
-			printMode = 1;
+			printMode = 0;
 		}
 		else if(optionValue == "file")
 		{
@@ -668,7 +680,7 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 		}
 		else if(optionValue == "ignore")
 		{
-			printMode = 1;
+			printMode = 2;
 		}
 	}
 	else if(optionName == "repo_type")

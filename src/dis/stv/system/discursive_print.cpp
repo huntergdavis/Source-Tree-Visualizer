@@ -32,7 +32,7 @@ void DiscursivePrint(std::string printMessage,...)
 	{
 		FILE * outFile;
 		std::string outputFileName = configAgent.returnPrintModeFileName();
-		outFile = fopen (outputFileName.c_str(),"w");
+		outFile = fopen (outputFileName.c_str(),"a");
 		va_list args;
 		va_start( args, printMessage );
 		vfprintf(outFile,printMessage.c_str(), args );

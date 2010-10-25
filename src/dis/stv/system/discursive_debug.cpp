@@ -34,7 +34,7 @@ void DiscursiveDebugPrint(std::string debugKeyWords,std::string debugMessage,...
 		{
 			FILE * outFile;
 			std::string outputFileName = debugAgent.GetOutputFileName();
-			outFile = fopen (outputFileName.c_str(),"w");
+			outFile = fopen (outputFileName.c_str(),"a");
 			va_list args;
 			va_start( args, debugMessage );
 			vfprintf(outFile,debugMessage.c_str(), args );
