@@ -117,7 +117,7 @@ void TrapezoidArtist::draw(Image &image, DrawableData* dataset)
 			}
 		}
 	}
-	printf("Drawlist size %d\n",drawList.size());
+	DiscursivePrint("Drawlist size %d\n",drawList.size());
 	image.draw(drawList);
 }
 
