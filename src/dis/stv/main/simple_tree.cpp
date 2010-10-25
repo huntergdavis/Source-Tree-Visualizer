@@ -220,7 +220,9 @@ int main(int argc, char **argv)
 		timerAgent.Toc("actually generating image from canvas");
 
 		// write out aux files if flags are set
+		timerAgent.Tic("writing html and xml images to files");
 		configAgent.writeXmlAndHtmlToFile();
+		timerAgent.Toc("writing html and xml images to files");
 
 		delete digitizer;
 		delete decorator;
