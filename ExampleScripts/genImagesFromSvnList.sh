@@ -1,4 +1,4 @@
-#/bin/baash
+#!/bin/bash
 
 #// loop through a file, item1= url, item2=name
 cd ~/Projects/source_tree_vis/

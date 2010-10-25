@@ -196,6 +196,7 @@ int main(int argc, char **argv)
 		
 		// instantiate canvas and draw lines
 		Image canvas(Geometry(git->startWidth,git->startHeight),"white");
+		canvas.matte(true);
 		if(useBackgroundImage == 1)
 		{
 			timerAgent.Tic("Background Image to Canvas Memory Copy");
@@ -212,6 +213,21 @@ int main(int argc, char **argv)
 		transformerType = TransformFactory::IMAGE_RESIZE_TRANSFORMER;
 		TransformFactory::transform(transformerType,3,&canvas,git->imageWidth,git->imageHeight);
 		timerAgent.PrintToc("Transforming image");
+
+		// Draw watermark
+		try
+		{
+			Image watermark;
+			watermark.read( "/home/programmer/Projects/source_tree_vis/resources/watermarks/watermark_address.png" );
+			const Geometry wgeom = watermark.size();
+			Geometry geom = canvas.size();
+			canvas.composite(watermark,geom.width() - wgeom.width(), geom.height() - wgeom.height(), OverCompositeOp);
+		}
+		catch(Exception &err)
+		{
+			// Couldn't load watermark, ignore.
+			DiscursiveDebugPrint("watermark","Error creating watermark: %s\n", err.what());
+		}
 
 		// actually generate a tree
 		timerAgent.Tic("actually generating image from canvas");
