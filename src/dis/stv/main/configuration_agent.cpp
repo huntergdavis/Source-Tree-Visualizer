@@ -644,6 +644,33 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 		defaultTrunkColor = optionValue;
 		cacheColor(optionValue);
 	}	
+	else if(optionName == "debug_mode")
+	{
+		debugAgent.SetOutputMode(optionValue);
+	}
+	else if(optionName == "debug_mode_filename")
+	{
+		debugAgent.SetOutputFileName(optionValue);
+	}
+	else if(optionName == "print_mode_filename")
+	{
+		printModeFileName = optionValue;
+	}
+	else if(optionName == "print_mode")
+	{
+		if(optionValue == "stdout")
+		{
+			printMode = 1;
+		}
+		else if(optionValue == "file")
+		{
+			printMode = 1;
+		}
+		else if(optionValue == "ignore")
+		{
+			printMode = 1;
+		}
+	}
 	else if(optionName == "repo_type")
 	{
 		if(optionValue == "git")
