@@ -22,8 +22,6 @@ http://v8cgi.googlecode.com/svn/trunk/
 v8cgi
 http://commitmonitor.googlecode.com/svn/trunk/
 commitmonitor
-http://casacore.googlecode.com/svn/trunk/
-casacore
 http://gens-rerecording.googlecode.com/svn/trunk/
 genesis-tas-emulator
 http://cortex-vfx.googlecode.com/svn/trunk/
@@ -120,8 +118,6 @@ http://logkeys.googlecode.com/svn/trunk/
 logkeys
 http://vutpp.googlecode.com/svn/trunk/
 vutpp
-http://ontl.googlecode.com/svn/branches/x64/
-ontl
 http://unknowndevices.googlecode.com/svn/trunk/
 unknowndevices
 http://v8-juice.googlecode.com/svn/trunk/
