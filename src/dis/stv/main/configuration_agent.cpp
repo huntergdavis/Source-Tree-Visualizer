@@ -60,6 +60,9 @@ ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,
 	// our html file name
 	htmlFileName = "tree.html";
 
+	// our xml file name
+	xmlFileName = "tree.html";
+
 	// our background image name
 	backgroundImageName = "";
 	
@@ -69,6 +72,9 @@ ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,
 
 	// should we output html?
     htmlOutputToFile = 0;
+
+	// should we output html?
+    xmlOutputToFile = 0;
 
 	// should we make many jpgs?
 	manyJpgs = 0;
@@ -501,14 +507,18 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		htmlFileName = optionValue;
 	}
-	else if(optionName == "html_file_name")
+	else if(optionName == "xml_file_name")
 	{
-		htmlFileName = optionValue;
-		htmlOutputToFile = 1;
+		xmlFileName = optionValue;
+		xmlOutputToFile = 1;
 	}
 	else if(optionName == "output_html_file")
 	{
 	    htmlOutputToFile = atoi(optionValue.c_str());
+	}
+	else if(optionName == "output_xml_file")
+	{
+	    xmlOutputToFile = atoi(optionValue.c_str());
 	}
 	else if(optionName == "background_image")
 	{
@@ -1238,7 +1248,43 @@ std::string ConfigurationAgent::returnXMLFilterProperties()
 		xmlString += "</input_filter>\n";
 	}
 	return xmlString;
-}
+};
+
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::writeXmlAndHtmlToFile
+// PURPOSE :: writes html and xml files to disk if flags are set
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN ::
+// -------------------------------------------------------------------------
+void ConfigurationAgent::writeXmlAndHtmlToFile()
+{
+	// output html to file
+	if(htmlOutputToFile == 1)
+	{
+		// return the html string and file name string
+		std::string htmlString = returnHTMLFilterProperties();
+		std::string htmlFileNameString = "./out/" + returnHTMLFileName();
+
+		// write to disk using ofstream
+		std::ofstream htmlFile(htmlFileNameString.c_st(), std::ios_base::binary);
+		htmlFile << htmlString;
+	}
+
+	// output xml to file
+	if(xmlOutputToFile == 1)
+	{
+		// return xml string and file name string
+		std::string xmlString = returnXMLFilterProperties();
+		std::string xmlFileNameString = "./out/" + returnXMLFileName();
+
+		// write to disk using ofstream
+		std::ofstream xmlFile(xmlFileNameString.c_st(), std::ios_base::binary);
+		xmlFile << xmlString;
+	}
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ReturnColorMap

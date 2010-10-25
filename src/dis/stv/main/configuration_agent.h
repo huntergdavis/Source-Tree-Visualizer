@@ -93,7 +93,7 @@ private:
 	int htmlOutputToFile;
 
 	// should we output xml ?
-	int htmlOutputToFile;
+	int xmlOutputToFile;
 
 	// should we generate filters ?
 	int generativeFilters;
@@ -153,6 +153,8 @@ public:
 	std::string returnXMLFilterProperties();
 	double minDistanceFromColorMap(std::string color);
 	
+	void writeXmlAndHtmlToFile();
+
 	// color cache and lookup functions
 	unordered_map<std::string,Magick::Color*>* getColorMap();
 	int cacheColor(std::string colorString);

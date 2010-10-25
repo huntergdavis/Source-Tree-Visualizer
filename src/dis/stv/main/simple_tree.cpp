@@ -219,6 +219,9 @@ int main(int argc, char **argv)
 		git->WriteJPGFromCanvas(&canvas);
 		timerAgent.Toc("actually generating image from canvas");
 
+		// write out aux files if flags are set
+		configAgent.writeXmlAndHtmlToFile();
+
 		delete digitizer;
 		delete decorator;
 
