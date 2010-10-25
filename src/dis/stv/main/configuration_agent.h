@@ -95,6 +95,9 @@ private:
 	// should we output xml ?
 	int xmlOutputToFile;
 
+	// should we index our output files with numbers?
+	int indexOutputFiles;
+
 	// should we generate filters ?
 	int generativeFilters;
 
@@ -154,6 +157,7 @@ public:
 	double minDistanceFromColorMap(std::string color);
 	
 	void writeXmlAndHtmlToFile();
+	void incrementOutputFileNumbering(int increment);
 
 	// color cache and lookup functions
 	unordered_map<std::string,Magick::Color*>* getColorMap();

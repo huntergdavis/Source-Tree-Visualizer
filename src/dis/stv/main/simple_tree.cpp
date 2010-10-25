@@ -52,7 +52,6 @@ int main(int argc, char **argv)
 
     // set our repository single or manyjpg options
 	git->snapshotJpgs = configAgent.returnOptionByName("manyJpgs");
-	git->jpgIndex = configAgent.returnOptionByName("outputFileNumber");
 
 	// set our textual repository options
 	git->drawFilteredLeaves = configAgent.returnOptionByName("drawFilteredLeaves");
@@ -223,6 +222,9 @@ int main(int argc, char **argv)
 		timerAgent.Tic("writing html and xml images to files");
 		configAgent.writeXmlAndHtmlToFile();
 		timerAgent.Toc("writing html and xml images to files");
+
+		// increment the output file numbering for any output files
+		configAgent.incrementOutputFileNumbering(loopStep);
 
 		delete digitizer;
 		delete decorator;

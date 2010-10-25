@@ -34,7 +34,6 @@ public:
 	long globalRevs;
 	long localRevs;
 	long revTarget;
-	long jpgIndex;
 	int logGenerated;
 	int startWidth;
 	int startHeight;

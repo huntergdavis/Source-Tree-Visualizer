@@ -79,6 +79,9 @@ ConfigurationAgent::ConfigurationAgent():colorMap(new unordered_map<std::string,
 	// should we make many jpgs?
 	manyJpgs = 0;
 
+	// do we need to index output files
+	indexOutputFiles = 0;
+
 	// options for many jpgs
 	jpgStep = 1;
 	jpgStart = 3;
@@ -431,6 +434,7 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 				break;
 			case 'm':
 				manyJpgs = 1;
+				indexOutputFiles = 1;
 				sscanf(optarg,"%d:%d:%d",&jpgStart,&jpgStop,&jpgStep);
 				if(jpgStart < 3)
 				{
@@ -442,6 +446,7 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 				break;
 			case 'R':
 				revJpgs = 1;
+				indexOutputFiles = 1;
 				sscanf(optarg,"%d:%d:%d",&revStart,&revStop,&revStep);
 				if(revStart < 3)
 				{
@@ -450,6 +455,7 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 				break;
 			case 'r':
 				revJpgs = 1;
+				indexOutputFiles = 1;
 				revStart = 3;
 				revStop = 100000;
 				revStep = 1;
@@ -538,43 +544,52 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	}
 	else 	if(optionName == "start_height")
 	{
-		 startHeight = atoi(optionValue.c_str());;
+		 startHeight = atoi(optionValue.c_str());
 	}
 	else 	if(optionName == "output_file_number")
 	{
-		 outputFileNumber = atoi(optionValue.c_str());;
+		 outputFileNumber = atoi(optionValue.c_str());
+		 indexOutputFiles = 1;
 	}
 	else 	if(optionName == "many_jpgs")
 	{
-		 manyJpgs = atoi(optionValue.c_str());;
+		 manyJpgs = atoi(optionValue.c_str());
+		 if(manyJpgs == 1)
+		 {
+			 indexOutputFiles = 1;
+		 }
 	}
 	else 	if(optionName == "jpg_step")
 	{
-		 jpgStep = atoi(optionValue.c_str());;
+		 jpgStep = atoi(optionValue.c_str());
 	}
 	else 	if(optionName == "jpg_start")
 	{
-		 jpgStart = atoi(optionValue.c_str());;
+		 jpgStart = atoi(optionValue.c_str());
 	}
 	else 	if(optionName == "jpg_stop")
 	{
-		 jpgStop = atoi(optionValue.c_str());;
+		 jpgStop = atoi(optionValue.c_str());
 	}
 	else 	if(optionName == "rev_jpgs")
 	{
-		 revJpgs = atoi(optionValue.c_str());;
+		 revJpgs = atoi(optionValue.c_str());
+		 if(revJpgs == 1)
+		 {
+			 indexOutputFiles = 1;
+		 }
 	}
 	else 	if(optionName == "rev_step")
 	{
-		 revStep = atoi(optionValue.c_str());;
+		 revStep = atoi(optionValue.c_str());
 	}
 	else 	if(optionName == "rev_start")
 	{
-		 revStart = atoi(optionValue.c_str());;
+		 revStart = atoi(optionValue.c_str());
 	}
 	else 	if(optionName == "rev_stop")
 	{
-		 revStop = atoi(optionValue.c_str());;
+		 revStop = atoi(optionValue.c_str());
 	}
 	else 	if(optionName == "debug")
 	{
@@ -759,6 +774,10 @@ int ConfigurationAgent::returnOptionByName(std::string optionName)
 	else 	if(optionName == "htmlOutputToFile")
 	{
 		return htmlOutputToFile;
+	}
+	else 	if(optionName == "indexOutputFiles")
+	{
+		return indexOutputFiles;
 	}
 	else
 	{
@@ -1266,7 +1285,14 @@ void ConfigurationAgent::writeXmlAndHtmlToFile()
 	{
 		// return the html string and file name string
 		std::string htmlString = returnHTMLFilterProperties();
-		std::string htmlFileNameString = "./out/" + returnHTMLFileName();
+		std::stringstream integerPlusFileName;
+		integerPlusFileName << "./out/";
+		if(returnOptionByName("indexOutputFiles") == 1)
+		{
+			integerPlusFileName << returnOptionByName("outputFileNumber");
+		}
+		integerPlusFileName << returnXMLFileName();
+		std::string htmlFileNameString = integerPlusFileName.str();
 
 		// write to disk using ofstream
 		std::ofstream htmlFile(htmlFileNameString.c_str(), std::ios_base::binary);
@@ -1276,15 +1302,35 @@ void ConfigurationAgent::writeXmlAndHtmlToFile()
 	// output xml to file
 	if(xmlOutputToFile == 1)
 	{
-		// return xml string and file name string
+		// return the xml string and file name string
 		std::string xmlString = returnXMLFilterProperties();
-		std::string xmlFileNameString = "./out/" + returnXMLFileName();
+		std::stringstream integerPlusFileName;
+		integerPlusFileName << "./out/";
+		if(returnOptionByName("indexOutputFiles") == 1)
+		{
+			integerPlusFileName << returnOptionByName("outputFileNumber");
+		}
+		integerPlusFileName << returnXMLFileName();
+		std::string xmlFileNameString = integerPlusFileName.str();
 
 		// write to disk using ofstream
 		std::ofstream xmlFile(xmlFileNameString.c_str(), std::ios_base::binary);
 		xmlFile << xmlString;
 	}
 };
+
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::incrementOutputFileNumbering
+// PURPOSE :: increments the output file numbering
+//         ::
+//         ::
+// PARAMETERS ::
+// RETURN :: unordered_map<std::string,Magick::ColorRGB> color map structure
+// -------------------------------------------------------------------------
+void ConfigurationAgent::incrementOutputFileNumbering(int increment)
+{
+	outputFileNumber += increment;
+}
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ReturnColorMap

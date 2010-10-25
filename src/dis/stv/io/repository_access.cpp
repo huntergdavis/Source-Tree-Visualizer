@@ -26,10 +26,12 @@ int RepositoryAccess::WriteJPGFromCanvas(Image* canvas)
 	// Generate Image Name with preceding integer and increment it
 	std::stringstream integerPlusFileName;
 	integerPlusFileName << "./out/";
-	integerPlusFileName << this->jpgIndex;
+	if(configAgent.returnOptionByName("indexOutputFiles") == 1)
+	{
+		integerPlusFileName << configAgent.returnOptionByName("outputFileNumber");
+	}
 	integerPlusFileName << this->fileName;
 	std::string name = integerPlusFileName.str();
-	this->jpgIndex++;
 
 	DiscursivePrint("Writing JPEG:  %s\n",name.c_str());
 
