@@ -1253,7 +1253,7 @@ std::string ConfigurationAgent::returnHTMLFilterProperties()
 std::string ConfigurationAgent::returnXMLFilterProperties()
 {
 	// storage for our XML string to return
-	std::string xmlString = "";
+	std::string xmlString = "<xml><simple_tree_options>";
 
 	// format xml string like <input_filter>.cpp,Makefile<alt_color>blue</alt_color><type>source files</type></input_filter>
     // print all positive filter keywords
@@ -1282,6 +1282,9 @@ std::string ConfigurationAgent::returnXMLFilterProperties()
 		}
 		xmlString += "</input_filter>\n";
 	}
+
+	// close tags
+	xmlString += "</simple_tree_options></xml>";
 	return xmlString;
 };
 
