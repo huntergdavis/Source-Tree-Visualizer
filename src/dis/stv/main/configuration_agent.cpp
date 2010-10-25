@@ -177,7 +177,7 @@ std::string ConfigurationAgent::returnFileName()
 // -------------------------------------------------------------------------
 std::string ConfigurationAgent::returnHTMLFileName()
 {
-	return htmlfileName;
+	return htmlFileName;
 };
 
 // -------------------------------------------------------------------------
@@ -189,7 +189,7 @@ std::string ConfigurationAgent::returnHTMLFileName()
 // -------------------------------------------------------------------------
 std::string ConfigurationAgent::returnXMLFileName()
 {
-	return xmlfileName;
+	return xmlFileName;
 };
 
 // -------------------------------------------------------------------------
@@ -377,7 +377,7 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node,std::str
 void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 {
 	// our option string
-	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:h:x:ridh?";
+	static const char *optString = "g:G:S:C:O:o:m:pb:R:l:z:n:c:H:x:ridh?";
 
 	// if a new config file is passed, parse it
 	bool newConfig = 0;
@@ -411,7 +411,7 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 			case 'b':
 				backgroundImageName = optarg;
 				break;
-			case 'h':
+			case 'H':
 			    htmlOutputToFile = 1;
 				htmlFileName = optarg;
 				break;
@@ -1269,7 +1269,7 @@ void ConfigurationAgent::writeXmlAndHtmlToFile()
 		std::string htmlFileNameString = "./out/" + returnHTMLFileName();
 
 		// write to disk using ofstream
-		std::ofstream htmlFile(htmlFileNameString.c_st(), std::ios_base::binary);
+		std::ofstream htmlFile(htmlFileNameString.c_str(), std::ios_base::binary);
 		htmlFile << htmlString;
 	}
 
@@ -1281,7 +1281,7 @@ void ConfigurationAgent::writeXmlAndHtmlToFile()
 		std::string xmlFileNameString = "./out/" + returnXMLFileName();
 
 		// write to disk using ofstream
-		std::ofstream xmlFile(xmlFileNameString.c_st(), std::ios_base::binary);
+		std::ofstream xmlFile(xmlFileNameString.c_str(), std::ios_base::binary);
 		xmlFile << xmlString;
 	}
 };
