@@ -177,9 +177,6 @@ public:
 	RepositoryAccess* initializeRepositoryType();
 	std::string deriveNewColor();
 
-	// std::string clearing whitespace
-
-
 };
 
 
