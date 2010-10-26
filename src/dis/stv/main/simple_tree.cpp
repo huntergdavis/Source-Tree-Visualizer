@@ -214,11 +214,12 @@ int main(int argc, char **argv)
 		TransformFactory::transform(transformerType,3,&canvas,git->imageWidth,git->imageHeight);
 		timerAgent.PrintToc("Transforming image");
 
+
 		// Draw watermark
 		try
 		{
 			Image watermark;
-			watermark.read( "/home/programmer/Projects/source_tree_vis/resources/watermarks/watermark_address.png" );
+			watermark.read( configAgent.returnWaterMarkFileName() );
 			const Geometry wgeom = watermark.size();
 			Geometry geom = canvas.size();
 			canvas.composite(watermark,geom.width() - wgeom.width(), geom.height() - wgeom.height(), OverCompositeOp);
@@ -231,6 +232,7 @@ int main(int argc, char **argv)
 
 		// actually generate a tree
 		timerAgent.Tic("actually generating image from canvas");
+		std::string waterMarkFileName = configAgent.returnWaterMarkFileName();
 		git->WriteJPGFromCanvas(&canvas);
 		timerAgent.Toc("actually generating image from canvas");
 

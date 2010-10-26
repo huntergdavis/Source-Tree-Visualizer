@@ -303,13 +303,15 @@ void ConfigurationAgent::parseConfigFile()
 		// loop over all our simple tree options
 		for (cur_node = cur_node; cur_node; cur_node = cur_node->next)
 		{
-		  if (cur_node->type == XML_ELEMENT_NODE) {
+		  if (cur_node->type == XML_ELEMENT_NODE)
+		  {
 			  char* nodeData;
 			  nodeData = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
 			  if(nodeData != NULL)
 			  {
 				  // input filter needs to test for all metatags
-				  if(strcmp((char*)cur_node->name,"input_filter") == 0)
+				  std::string inputFilterLookupString = (char*)cur_node->name;
+				  if(inputFilterLookupString.find("input_filter") != std::string::npos)
 				  {
 					  SetInputFilters(doc,cur_node->xmlChildrenNode);
 				  }
@@ -358,19 +360,29 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 	{
 	  if (cur_node->type == XML_ELEMENT_NODE)
 	  {
+
 			filterKeyProperty singleFKP;
 			singleFKP.keyPropertyName = (char*)cur_node->name;
 			singleFKP.keyPropertyValue = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
+
+			// clear whitespace
+			singleFKP.keyPropertyName.erase(singleFKP.keyPropertyName.find_last_not_of(" \t\n")+1);
+			singleFKP.keyPropertyValue.erase(singleFKP.keyPropertyValue.find_last_not_of(" \t\n")+1);
+
 			if(singleFKP.keyPropertyName == "color")
 			{
 				cacheColor(singleFKP.keyPropertyValue);
 			}
+
+			// don't set filter keywords here ,only later when split
 			if(singleFKP.keyPropertyName == "filter")
 			{
 				filterNames = singleFKP.keyPropertyValue;
 			}
-
-			keyProperties.push_back(singleFKP);
+			else
+			{
+				keyProperties.push_back(singleFKP);
+			}
 	  }
 	}
 
@@ -384,13 +396,27 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 	// split and push into global store
 	while(std::getline(ss, item, ','))
 	{
-		// create a filter keystore item with all properties
-		filterKeystoreItem singleFKI;
-		singleFKI.keyName = item;
-		singleFKI.keyProperties = keyProperties;
+		item.erase(item.find_last_not_of(" \t\n")+1);
+		int filterFound  = DoesThisStringContainFilterKeywords(item);
+		if(filterFound <= 0)
+		{
+			// push back the filter name
+			filterKeyProperty singleFKP;
+			singleFKP.keyPropertyName = "filter";
+			singleFKP.keyPropertyValue = item;
 
-		// push keystore item with all properties onto main filter keystore
-		filterKeyStore.push_back(singleFKI);
+
+			// create a filter keystore item with all properties
+			filterKeystoreItem singleFKI;
+			singleFKI.keyName = item;
+			singleFKI.keyProperties = keyProperties;
+
+			// push back the specific filter name
+			singleFKI.keyProperties.push_back(singleFKP);
+
+			// push keystore item with all properties onto main filter keystore
+			filterKeyStore.push_back(singleFKI);
+		}
 	}
 
 
@@ -540,6 +566,11 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 // -------------------------------------------------------------------------
 void ConfigurationAgent::setOptionByName(std::string optionName, std::string optionValue)
 {
+	// do a pre-trim
+	optionValue.erase(optionValue.find_last_not_of(" \t\n")+1);
+	optionName.erase(optionName.find_last_not_of(" \t\n")+1);
+
+
 	if((optionValue == "") || (optionValue.empty()))
 	{
 		DiscursiveError("Blank Value for Tag %s",optionName.c_str());
@@ -568,6 +599,11 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	else if(optionName == "background_image")
 	{
 		backgroundImageName = optionValue;
+	}
+	else if(optionName == "watermark_file")
+	{
+		// our watermark file name
+		waterMarkFileName = optionValue;
 	}
 	else 	if(optionName == "image_width")
 	{
@@ -725,6 +761,17 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	}
 };
 
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnWaterMarkFileName
+// PURPOSE :: returns water mark file name
+//         ::
+// PARAMETERS ::
+// RETURN :: std::string containing water mark file name
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnWaterMarkFileName()
+{
+	return waterMarkFileName;
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ParseInverseKeywords
@@ -1321,7 +1368,7 @@ std::string ConfigurationAgent::returnXMLFilterProperties()
     // print all positive filter keywords
 	for(std::vector<filterKeystoreItem>::iterator i = filterKeyStore.begin(); i != filterKeyStore.end(); ++i)
 	{
-		xmlString += "<input_filter>";
+		xmlString += "<input_filter>filter";
 
 		// keyName is now the <filter> tag
 		//xmlString += i->keyName.c_str();

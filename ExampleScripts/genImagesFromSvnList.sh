@@ -2,8 +2,10 @@
 
 #// loop through a file, item1= url, item2=name
 cd ~/Projects/source_tree_vis/
-
+touch ./out/start.xml
+echo "<xml><simple_tree_options><print_mode>file</print_mode></simple_tree_options></xml>" > ./out/start.xml
 ITERATOR=1;
+PREVNAME="start"
 NAME="noname"
 REPO="norepo"
 for i in $(cat ./ExampleScripts/svnlist.txt); 
@@ -15,7 +17,8 @@ do
    	REPO="$i";
 	else
    	NAME="$i";
-	./bin/simple_tree -S $REPO -o $NAME.png -H $NAME.html -x $NAME.xml -B $NAME.debuglog -f $NAME.log 
+	./bin/simple_tree -S $REPO -o $NAME.png -H $NAME.html -x $NAME.xml -B $NAME.debuglog -f $NAME.log -c ./out/$PREVNAME.xml
+	PREVNAME=$NAME;
 	fi
 done
 
