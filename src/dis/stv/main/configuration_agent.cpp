@@ -364,6 +364,11 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 			filterKeyProperty singleFKP;
 			singleFKP.keyPropertyName = (char*)cur_node->name;
 			singleFKP.keyPropertyValue = (char*)xmlNodeListGetString(doc, cur_node->xmlChildrenNode, 1);
+
+			// clear whitespace
+			singleFKP.keyPropertyName.erase(singleFKP.keyPropertyName.find_last_not_of(" \t\n")+1);
+			singleFKP.keyPropertyValue.erase(singleFKP.keyPropertyValue.find_last_not_of(" \t\n")+1);
+
 			if(singleFKP.keyPropertyName == "color")
 			{
 				cacheColor(singleFKP.keyPropertyValue);
@@ -372,7 +377,6 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 			// don't set filter keywords here ,only later when split
 			if(singleFKP.keyPropertyName == "filter")
 			{
-
 				filterNames = singleFKP.keyPropertyValue;
 			}
 			else
