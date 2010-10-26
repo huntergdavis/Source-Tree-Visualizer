@@ -392,6 +392,7 @@ void ConfigurationAgent::SetInputFilters(xmlDoc *doc, xmlNode *cur_node)
 	// split and push into global store
 	while(std::getline(ss, item, ','))
 	{
+		item.erase(item.find_last_not_of(" \t\n")+1);
 		int filterFound  = DoesThisStringContainFilterKeywords(item);
 		if(filterFound <= 0)
 		{
@@ -561,6 +562,11 @@ void ConfigurationAgent::parseCommandLine(int argc, char **argv)
 // -------------------------------------------------------------------------
 void ConfigurationAgent::setOptionByName(std::string optionName, std::string optionValue)
 {
+	// do a pre-trim
+	optionValue.erase(optionValue.find_last_not_of(" \t\n")+1);
+	optionName.erase(optionName.find_last_not_of(" \t\n")+1);
+
+
 	if((optionValue == "") || (optionValue.empty()))
 	{
 		DiscursiveError("Blank Value for Tag %s",optionName.c_str());
