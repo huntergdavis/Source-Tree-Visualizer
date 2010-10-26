@@ -53,6 +53,9 @@ void RepositoryAccess::InsertByPathName(SurrogateTreeNode* tree, string pathname
 	// should we continue to draw sub leaves?
 	int continueDrawingSubLeaves = drawSubLeafs;
 
+	// clear off any whitespace
+	pathname.erase(pathname.find_last_not_of(" \t\n")+1);
+
 	// our name
 	std::string name;
 
