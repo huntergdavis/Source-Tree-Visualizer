@@ -85,6 +85,9 @@ private:
 	// our print mode file name
 	std::string printModeFileName;
 
+	// our watermark file name
+	std::string waterMarkFileName;
+
 	// what is our standard output mode/model
 	// currently 0=stdout,1=file,2=ignore
 	int printMode;
@@ -157,6 +160,7 @@ public:
 	std::string returnBackgroundImageName();
 	std::string returnDefaultLeafColor();
 	std::string returnDefaultTrunkColor();
+	std::string returnWaterMarkFileName();
 	int returnOptionByName(std::string optionName);
 	void setOptionByName(std::string optionName, std::string optionValue);
 	int DoesThisStringContainFilterKeywords(std::string textualData);

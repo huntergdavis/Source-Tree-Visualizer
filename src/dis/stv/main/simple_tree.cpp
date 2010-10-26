@@ -215,6 +215,7 @@ int main(int argc, char **argv)
 
 		// actually generate a tree
 		timerAgent.Tic("actually generating image from canvas");
+		std::string waterMarkFileName = configAgent.returnWaterMarkFileName();
 		git->WriteJPGFromCanvas(&canvas);
 		timerAgent.Toc("actually generating image from canvas");
 

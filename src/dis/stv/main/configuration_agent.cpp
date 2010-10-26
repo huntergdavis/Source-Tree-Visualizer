@@ -600,6 +600,11 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	{
 		backgroundImageName = optionValue;
 	}
+	else if(optionName == "watermark_file")
+	{
+		// our watermark file name
+		waterMarkFileName = optionValue;
+	}
 	else 	if(optionName == "image_width")
 	{
 		imageWidth  = atoi(optionValue.c_str());
@@ -756,6 +761,17 @@ void ConfigurationAgent::setOptionByName(std::string optionName, std::string opt
 	}
 };
 
+// -------------------------------------------------------------------------
+// API :: ConfigurationAgent::returnWaterMarkFileName
+// PURPOSE :: returns water mark file name
+//         ::
+// PARAMETERS ::
+// RETURN :: std::string containing water mark file name
+// -------------------------------------------------------------------------
+std::string ConfigurationAgent::returnWaterMarkFileName()
+{
+	return waterMarkFileName;
+};
 
 // -------------------------------------------------------------------------
 // API :: ConfigurationAgent::ParseInverseKeywords
