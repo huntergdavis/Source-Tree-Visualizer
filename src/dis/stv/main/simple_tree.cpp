@@ -215,19 +215,22 @@ int main(int argc, char **argv)
 		timerAgent.PrintToc("Transforming image");
 
 
-		// Draw watermark
-		try
+		if( !configAgent.returnWaterMarkFileName().empty() )
 		{
-			Image watermark;
-			watermark.read( configAgent.returnWaterMarkFileName() );
-			const Geometry wgeom = watermark.size();
-			Geometry geom = canvas.size();
-			canvas.composite(watermark,geom.width() - wgeom.width(), geom.height() - wgeom.height(), OverCompositeOp);
-		}
-		catch(Exception &err)
-		{
-			// Couldn't load watermark, ignore.
-			DiscursiveDebugPrint("watermark","Error creating watermark: %s\n", err.what());
+			// Draw watermark
+			try
+			{
+				Image watermark;
+				watermark.read( configAgent.returnWaterMarkFileName() );
+				const Geometry wgeom = watermark.size();
+				Geometry geom = canvas.size();
+				canvas.composite(watermark,geom.width() - wgeom.width(), geom.height() - wgeom.height(), OverCompositeOp);
+			}
+			catch(Exception &err)
+			{
+				// Couldn't load watermark, ignore.
+				DiscursiveDebugPrint("watermark","Error creating watermark: %s\n", err.what());
+			}
 		}
 
 		// actually generate a tree
