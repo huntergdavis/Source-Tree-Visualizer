@@ -17,7 +17,7 @@ do
    	REPO="$i";
 	else
    	NAME="$i";
-	./bin/simple_tree -S $REPO -o $NAME.png -H $NAME.html -x $NAME.xml -B $NAME.debuglog -f $NAME.log -c ./out/$PREVNAME.xml
+	./bin/simple_tree -r -S $REPO -o $NAME.png -H $NAME.html -x $NAME.xml -B $NAME.debuglog -f $NAME.log -c ./out/$PREVNAME.xml
 	PREVNAME=$NAME;
 	fi
 done
