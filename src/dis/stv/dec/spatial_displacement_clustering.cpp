@@ -209,7 +209,7 @@ void SpatialDisplacementClustering::expand(SurrogateTreeNode* tree, double rootA
 			if(node->children->size() > 0)
 			{
 				subtrees++;
-				this->insertOrderedBy(&dirs,node,TreeNodeKey::REVISIONCREATED,false);
+				this->insertOrderedBy(&dirs,node,TreeNodeKey::CREATION_TIME,false);
 				childSize = atoi(node->data[TreeNodeKey::SIZE].c_str());
 				mass += childSize;
 				if(childSize > maxChild )
