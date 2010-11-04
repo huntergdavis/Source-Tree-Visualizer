@@ -163,6 +163,7 @@ int main(int argc, char **argv)
 		else if(executeLoopType == 3)
 		{
 			git->localRevs = 0;
+			git->localInserts = 0;
 			git->revTarget = i;
 		}
 
