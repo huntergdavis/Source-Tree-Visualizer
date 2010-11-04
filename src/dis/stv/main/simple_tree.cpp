@@ -22,6 +22,7 @@
 #include "../draw/trapezoid_artist.h"
 #include "../gen/space_colonizer.h"
 #include "../transform/transformer.h"
+#include "../../util/system_monitor.h"
 
 
 using namespace Magick;
@@ -30,18 +31,21 @@ ConfigurationAgent configAgent;
 
 int main(int argc, char **argv)
 {
-	// initialize libmagick
-	InitializeMagick(*argv);
-
-	// initialize our timing class
-	DiscursiveTime timerAgent("Entire SourceTreeVis Program");
-
 	// initialize our configuration agent
 	// parse our config file and also pre-check command line
 	configAgent.parseConfigFile();
 
 	// parse our command line
 	configAgent.parseCommandLine(argc,argv);
+
+	System::debugProcessMemory("Config Init");
+
+	// initialize libmagick
+	InitializeMagick(*argv);
+	System::debugProcessMemory("ImageMagick++ Init");
+
+	// initialize our timing class
+	DiscursiveTime timerAgent("Entire SourceTreeVis Program");
 
 	// store our XML
 	std::string megaXmlString;
@@ -153,7 +157,7 @@ int main(int argc, char **argv)
 	// use our user-set parameters to define our step
 	for(int i = loopStart; i<loopStop;i+= loopStep)
 	{
-
+		System::debugProcessMemory("Loop Start");
 		// reset our insert variables
 		if(executeLoopType == 2)
 		{
@@ -170,6 +174,7 @@ int main(int argc, char **argv)
 		// retrieve our source tree
 		git->source = git->retrieve();
 		git->source->set(TreeNodeKey::COLOR, configAgent.returnDefaultTrunkColor());
+		System::debugProcessMemory("Tree Retrieved");
 
 		// should we skip rendering?
 		bool skipRendering = 0;
@@ -207,6 +212,7 @@ int main(int argc, char **argv)
 			Decorator* decorator = DecoratorFactory::getInstance(decoratorType, 0);
 			decorator->decorate(git->source);
 			timerAgent.Toc("Decorating surrogate trees");
+			System::debugProcessMemory("Decorate");
 
 			// print an xml file of our last surrogate tree
 			timerAgent.Tic("Creating XML");
@@ -220,6 +226,7 @@ int main(int argc, char **argv)
 	//		printf("Calling transform with (%d, %d, %p, %d, %d)\n",transformerType,3,git->source,git->startWidth, (int)(0.95*git->startHeight));
 			TransformFactory::transform(transformerType,3,git->source,git->startWidth, (int)(0.96*git->startHeight));
 			timerAgent.PrintToc("Transforming tree");
+			System::debugProcessMemory("Transform");
 
 			// Digitize decorated surrogate tree into line segment tree
 			DiscursivePrint("Digitizing decorated surrogate trees into line segment trees %d out of %d step value %d\n",i,loopStop,loopStep);
@@ -231,6 +238,7 @@ int main(int argc, char **argv)
 			digitizer->setColorMap(colorMap);
 			DrawableData* lines = digitizer->digitize(git->source);
 			timerAgent.Toc("Digitizing decorated trees into line segments");
+			System::debugProcessMemory("Digitize");
 
 			// Draw tree
 			DiscursivePrint("Drawing Tree %d out of %d step value %d\n",i,loopStop,loopStep);
@@ -248,6 +256,7 @@ int main(int argc, char **argv)
 			TrapezoidArtist artist;
 			artist.draw(canvas, lines);
 			timerAgent.Toc("Drawing Tree with artist.draw");
+			System::debugProcessMemory("Draw");
 
 			// Transform image
 			DiscursivePrint("Transforming image of size %d x %d to create %d x %d image\n",git->startWidth,git->startHeight,git->imageWidth, git->imageHeight);
@@ -255,6 +264,7 @@ int main(int argc, char **argv)
 			transformerType = TransformFactory::IMAGE_RESIZE_TRANSFORMER;
 			TransformFactory::transform(transformerType,3,&canvas,git->imageWidth,git->imageHeight);
 			timerAgent.PrintToc("Transforming image");
+			System::debugProcessMemory("Transform");
 
 
 			if( !configAgent.returnWaterMarkFileName().empty() )
@@ -280,6 +290,7 @@ int main(int argc, char **argv)
 			std::string waterMarkFileName = configAgent.returnWaterMarkFileName();
 			git->WriteJPGFromCanvas(&canvas);
 			timerAgent.Toc("actually generating image from canvas");
+			System::debugProcessMemory("Write Image");
 
 			// write out aux files if flags are set
 			timerAgent.Tic("writing html and xml images to files");
@@ -294,7 +305,8 @@ int main(int argc, char **argv)
 			if(executeLoopType == 3)
 			{
 				previousCanvas = canvas;
-			}	
+			}
+			System::debugProcessMemory("Loop End");
 
 			delete digitizer;
 			delete decorator;
