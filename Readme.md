@@ -4,3 +4,6 @@ http://www.hunterdavis.com/source-tree-visualizer/
 You can compile this in any unix-like environment which supports a few standard libraries.  See the top level directory for example config files for generating images.
 
 See examplescripts for example usages for simpletree
+
+Current Tree:
+![ScreenShot](https://raw.github.com/huntergdavis/Source-Tree-Visualizer/master/Promotional%20Materials/source_tree_vis.jpg)
